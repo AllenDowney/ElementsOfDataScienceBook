@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE svg
+  PUBLIC '-//W3C//DTD SVG 1.0//EN'
+  'http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd'>
+<svg fill-rule="evenodd" height="50" preserveAspectRatio="xMinYMin meet" version="1.0" viewBox="0 0 106 50" width="106" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<title>...</title>
+	<desc>...</desc>
+	<clipPath id="clip">
+		<rect height="50" width="106" x="0" y="0"/>
+	</clipPath>
+	<g id="group" style="clip-path: url(#clip)" transform="scale(1,-1) translate(0,-50)">
+		<g transform="">
+			<g transform="">
+				<rect height="50" style="stroke: none; stroke-linecap: butt; stroke-width: 0; fill: none;" width="113" x="0" y="0"/>
+				<rect height="50" style="stroke: rgb(0%,0%,0%); stroke-linecap: butt; stroke-width: 0; fill: rgb(0%,0%,0%);" width="1" x="9" y="0"/>
+				<rect height="50" style="stroke: rgb(0%,0%,0%); stroke-linecap: butt; stroke-width: 0; fill: rgb(0%,0%,0%);" width="1" x="11" y="0"/>
+				<rect height="38.0" style="stroke: rgb(0%,0%,0%); stroke-linecap: butt; stroke-width: 0; fill: rgb(0%,0%,0%);" width="3" x="13" y="12.0"/>
+				<rect height="38.0" style="stroke: rgb(0%,0%,0%); stroke-linecap: butt; stroke-width: 0; fill: rgb(0%,0%,0%);" width="2" x="17" y="12.0"/>
+				<rect height="38.0" style="stroke: rgb(0%,0%,0%); stroke-linecap: butt; stroke-width: 0; fill: rgb(0%,0%,0%);" width="1" x="22" y="12.0"/>
+				<rect height="38.0" style="stroke: rgb(0%,0%,0%); stroke-linecap: butt; stroke-width: 0; fill: rgb(0%,0%,0%);" width="1" x="25" y="12.0"/>
+				<rect height="38.0" style="stroke: rgb(0%,0%,0%); stroke-linecap: butt; stroke-width: 0; fill: rgb(0%,0%,0%);" width="1" x="27" y="12.0"/>
+				<rect height="38.0" style="stroke: rgb(0%,0%,0%); stroke-linecap: butt; stroke-width: 0; fill: rgb(0%,0%,0%);" width="3" x="30" y="12.0"/>
+				<rect height="38.0" style="stroke: rgb(0%,0%,0%); stroke-linecap: butt; stroke-width: 0; fill: rgb(0%,0%,0%);" width="1" x="36" y="12.0"/>
+				<rect height="38.0" style="stroke: rgb(0%,0%,0%); stroke-linecap: butt; stroke-width: 0; fill: rgb(0%,0%,0%);" width="2" x="38" y="12.0"/>
+				<rect height="38.0" style="stroke: rgb(0%,0%,0%); stroke-linecap: butt; stroke-width: 0; fill: rgb(0%,0%,0%);" width="1" x="42" y="12.0"/>
+				<rect height="38.0" style="stroke: rgb(0%,0%,0%); stroke-linecap: butt; stroke-width: 0; fill: rgb(0%,0%,0%);" width="1" x="46" y="12.0"/>
+				<rect height="38.0" style="stroke: rgb(0%,0%,0%); stroke-linecap: butt; stroke-width: 0; fill: rgb(0%,0%,0%);" width="2" x="49" y="12.0"/>
+				<rect height="38.0" style="stroke: rgb(0%,0%,0%); stroke-linecap: butt; stroke-width: 0; fill: rgb(0%,0%,0%);" width="1" x="53" y="12.0"/>
+				<rect height="50" style="stroke: rgb(0%,0%,0%); stroke-linecap: butt; stroke-width: 0; fill: rgb(0%,0%,0%);" width="1" x="55" y="0"/>
+				<rect height="50" style="stroke: rgb(0%,0%,0%); stroke-linecap: butt; stroke-width: 0; fill: rgb(0%,0%,0%);" width="1" x="57" y="0"/>
+				<rect height="38.0" style="stroke: rgb(0%,0%,0%); stroke-linecap: butt; stroke-width: 0; fill: rgb(0%,0%,0%);" width="1" x="59" y="12.0"/>
+				<rect height="38.0" style="stroke: rgb(0%,0%,0%); stroke-linecap: butt; stroke-width: 0; fill: rgb(0%,0%,0%);" width="1" x="61" y="12.0"/>
+				<rect height="38.0" style="stroke: rgb(0%,0%,0%); stroke-linecap: butt; stroke-width: 0; fill: rgb(0%,0%,0%);" width="1" x="66" y="12.0"/>
+				<rect height="38.0" style="stroke: rgb(0%,0%,0%); stroke-linecap: butt; stroke-width: 0; fill: rgb(0%,0%,0%);" width="1" x="70" y="12.0"/>
+				<rect height="38.0" style="stroke: rgb(0%,0%,0%); stroke-linecap: butt; stroke-width: 0; fill: rgb(0%,0%,0%);" width="1" x="73" y="12.0"/>
+				<rect height="38.0" style="stroke: rgb(0%,0%,0%); stroke-linecap: butt; stroke-width: 0; fill: rgb(0%,0%,0%);" width="1" x="77" y="12.0"/>
+				<rect height="38.0" style="stroke: rgb(0%,0%,0%); stroke-linecap: butt; stroke-width: 0; fill: rgb(0%,0%,0%);" width="1" x="80" y="12.0"/>
+				<rect height="38.0" style="stroke: rgb(0%,0%,0%); stroke-linecap: butt; stroke-width: 0; fill: rgb(0%,0%,0%);" width="3" x="83" y="12.0"/>
+				<rect height="38.0" style="stroke: rgb(0%,0%,0%); stroke-linecap: butt; stroke-width: 0; fill: rgb(0%,0%,0%);" width="2" x="87" y="12.0"/>
+				<rect height="38.0" style="stroke: rgb(0%,0%,0%); stroke-linecap: butt; stroke-width: 0; fill: rgb(0%,0%,0%);" width="2" x="91" y="12.0"/>
+				<rect height="38.0" style="stroke: rgb(0%,0%,0%); stroke-linecap: butt; stroke-width: 0; fill: rgb(0%,0%,0%);" width="1" x="94" y="12.0"/>
+				<rect height="38.0" style="stroke: rgb(0%,0%,0%); stroke-linecap: butt; stroke-width: 0; fill: rgb(0%,0%,0%);" width="1" x="98" y="12.0"/>
+				<rect height="50" style="stroke: rgb(0%,0%,0%); stroke-linecap: butt; stroke-width: 0; fill: rgb(0%,0%,0%);" width="1" x="101" y="0"/>
+				<rect height="50" style="stroke: rgb(0%,0%,0%); stroke-linecap: butt; stroke-width: 0; fill: rgb(0%,0%,0%);" width="1" x="103" y="0"/>
+				<text style="font-family: Courier; font-size: 10px; fill: rgb(0%,0%,0%);" transform="translate(0,4) scale(1,-1)" x="1" y="2.4000000000000004">9</text>
+				<text style="font-family: Courier; font-size: 10px; fill: rgb(0%,0%,0%);" transform="translate(0,4) scale(1,-1)" x="15.0" y="2.4000000000000004">780971</text>
+				<text style="font-family: Courier; font-size: 10px; fill: rgb(0%,0%,0%);" transform="translate(0,4) scale(1,-1)" x="62.0" y="2.4000000000000004">677517</text>
+			</g>
+		</g>
+	</g>
+</svg>
