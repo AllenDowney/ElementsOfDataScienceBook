@@ -1,0 +1,603 @@
+\hypertarget{loops-and-files}{%
+\chapter{Loops and files}\label{loops-and-files}}
+
+This chapter presents loops, which are used to express repeated
+computation, and files, which are used to store data. As an example, we
+will download the famous book \emph{War and Peace} from Project
+Gutenberg and write a loop that reads the book and counts the words.
+
+In the next chapter, we'll extend this example to count the number of
+unique words and the number of times each word appears. This example
+presents some computational tools you will need; it is also an
+introduction to working with textual data.
+
+\hypertarget{loops}{%
+\section{Loops}\label{loops}}
+
+One of the most important elements of computation is repetition, and the
+most common way to express repetition is a \passthrough{\lstinline!for!}
+loop. As a simple example, suppose we want to display the elements of a
+tuple. Here's a tuple of three integers:
+
+\begin{lstlisting}[language=Python,style=source]
+t = 1, 2, 3
+\end{lstlisting}
+
+And here's a \passthrough{\lstinline!for!} loop that prints the
+elements.
+
+\begin{lstlisting}[language=Python,style=source]
+for x in t:
+    print(x)
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+1
+2
+3
+\end{lstlisting}
+
+The first line of the loop is a \textbf{header} that specifies the
+tuple, \passthrough{\lstinline!t!}, and a variable name
+\passthrough{\lstinline!x!}. The tuple already exists, but
+\passthrough{\lstinline!x!} does not; the loop will create it. The
+header has to end with a colon, \passthrough{\lstinline!:!}.
+
+Inside the loop is a \passthrough{\lstinline!print!} statement, which
+displays the value of \passthrough{\lstinline!x!}.
+
+So here's what happens:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  When the loop starts, it gets the first element of
+  \passthrough{\lstinline!t!}, which is \passthrough{\lstinline!1!}, and
+  assigns it to \passthrough{\lstinline!x!}. It executes the
+  \passthrough{\lstinline!print!} statement, which displays the value
+  \passthrough{\lstinline!1!}.
+\item
+  Then it gets the second element of \passthrough{\lstinline!t!}, which
+  is \passthrough{\lstinline!2!}, and displays it.
+\item
+  Then it gets the third element of \passthrough{\lstinline!t!}, which
+  is \passthrough{\lstinline!3!}, and displays it.
+\end{enumerate}
+
+After printing the last element of the tuple, the loop ends.
+
+We can also loop through the letters in a string:
+
+\begin{lstlisting}[language=Python,style=source]
+word = 'Data'
+
+for letter in word:
+    print(letter)
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+D
+a
+t
+a
+\end{lstlisting}
+
+When the loop begins, \passthrough{\lstinline!word!} already exists, but
+\passthrough{\lstinline!letter!} does not. Again, the loop creates
+\passthrough{\lstinline!letter!} and assign values to it.
+
+The variable created by the loop is called the ``loop variable''. You
+can give it any name you like; in this example, I chose
+\passthrough{\lstinline!letter!} to remind me what kind of value it
+contains.
+
+After the loop ends, the loop variable contains the last value.
+
+\begin{lstlisting}[language=Python,style=source]
+letter
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+'a'
+\end{lstlisting}
+
+\textbf{Exercise:} Create a list, called
+\passthrough{\lstinline!sequence!} with four elements of any type. Write
+a \passthrough{\lstinline!for!} loop that prints the elements. Call the
+loop variable \passthrough{\lstinline!element!}.
+
+You might wonder why I didn't call the list
+\passthrough{\lstinline!list!}. I avoided it because Python has a
+function named \passthrough{\lstinline!list!} that makes new lists. For
+example, if you have a string, you can make a list of letters, like
+this:
+
+\begin{lstlisting}[language=Python,style=source]
+list('string')
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+['s', 't', 'r', 'i', 'n', 'g']
+\end{lstlisting}
+
+If you create a variable named \passthrough{\lstinline!list!}, you can't
+use the function any more.
+
+\hypertarget{looping-and-counting}{%
+\section{Looping and counting}\label{looping-and-counting}}
+
+\emph{War and Peace} is a famously long book; let's see how long it is.
+To count the words in a book, we need to
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  Loop through a book and
+\item
+  Count.
+\end{enumerate}
+
+We'll start with counting. We've already seen that you can create a
+variable and give it a value, like this:
+
+\begin{lstlisting}[language=Python,style=source]
+count = 0
+count
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+0
+\end{lstlisting}
+
+If you assign a different value to the same variable, the new value
+replaces the old one.
+
+\begin{lstlisting}[language=Python,style=source]
+count = 1
+count
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+1
+\end{lstlisting}
+
+You can increase the value of a variable by reading the old value,
+adding \passthrough{\lstinline!1!}, and assigning the result back to the
+original variable.
+
+\begin{lstlisting}[language=Python,style=source]
+count = count + 1
+count
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+2
+\end{lstlisting}
+
+Increasing the value of a variable is called an \textbf{increment};
+decreasing the value is called a \textbf{decrement}. These operations
+are so common that there are special operators for them.
+
+\begin{lstlisting}[language=Python,style=source]
+count += 1
+count
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+3
+\end{lstlisting}
+
+In this example, the \passthrough{\lstinline!+=!} operator reads the
+value of \passthrough{\lstinline!count!}, adds
+\passthrough{\lstinline!1!}, and assigns the result back to
+\passthrough{\lstinline!count!}. Python also provides
+\passthrough{\lstinline!-=!} and other update operators like
+\passthrough{\lstinline!*=!} and \passthrough{\lstinline!/=!}.
+
+\textbf{Exercise:} The following is a number trick from
+\href{https://www.learn-with-math-games.com/math-number-tricks.html}{Learn
+With Math Games}
+
+"Finding Someone's Age
+
+\begin{itemize}
+\item
+  Ask the person to multiply the first number of their age by 5.
+\item
+  Tell them to add 3.
+\item
+  Now tell them to double this figure.
+\item
+  Finally, have the person add the second number of their age to the
+  figure and have them tell you the answer.
+\item
+  Deduct 6 and you will have their age."
+\end{itemize}
+
+Test this algorithm using your age. Use a single variable and update it
+using \passthrough{\lstinline!+=!} and other update operators.
+
+\hypertarget{files}{%
+\section{Files}\label{files}}
+
+Now that we know how to count, let's see how we can read words from a
+file. We can download \emph{War and Peace} from
+\href{https://www.gutenberg.org}{Project Gutenberg}, which is a
+repository of free books.
+
+In order to read the contents of the file, you have to ``open'' it,
+which you can do with the \passthrough{\lstinline!open!} function.
+
+\begin{lstlisting}[language=Python,style=source]
+fp = open('2600-0.txt')
+fp
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+<_io.TextIOWrapper name='2600-0.txt' mode='r' encoding='UTF-8'>
+\end{lstlisting}
+
+The result is a \passthrough{\lstinline!TextIOWrapper!}, which is a type
+of \textbf{file pointer}. The file pointer contains the name of the
+file, the mode (which is \passthrough{\lstinline!r!} for ``reading'')
+and the encoding (which is \passthrough{\lstinline!UTF!} for ``Unicode
+Transformation Format''). A file pointer is like a bookmark; it keeps
+track of which parts of the file you have read.
+
+If you use a file pointer in a \passthrough{\lstinline!for!} loop, it
+loops through the lines in the file. So we can count the number of lines
+like this:
+
+\begin{lstlisting}[language=Python,style=source]
+fp = open('2600-0.txt')
+count = 0
+for line in fp:
+    count += 1
+\end{lstlisting}
+
+And then display the result.
+
+\begin{lstlisting}[language=Python,style=source]
+count
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+66054
+\end{lstlisting}
+
+There are about 66,000 lines in this file.
+
+\hypertarget{if-statements}{%
+\section{if statements}\label{if-statements}}
+
+We've already see comparison operators, like \passthrough{\lstinline!>!}
+and \passthrough{\lstinline!<!}, which compare values and produce a
+Boolean result, \passthrough{\lstinline!True!} or
+\passthrough{\lstinline!False!}. For example, we can compare the final
+value of \passthrough{\lstinline!count!} to a number:
+
+\begin{lstlisting}[language=Python,style=source]
+count > 60000
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+True
+\end{lstlisting}
+
+We can use a comparison operator in an \passthrough{\lstinline!if!}
+statement to check for a condition and take action accordingly.
+
+\begin{lstlisting}[language=Python,style=source]
+if count > 60000:
+    print('Long book!')
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+Long book!
+\end{lstlisting}
+
+The first line of the \passthrough{\lstinline!if!} statement specifies
+the condition we're checking for. Like the header of a
+\passthrough{\lstinline!for!} statement, the first line of an
+\passthrough{\lstinline!if!} statement has to end with a colon.
+
+If the condition is true, the indented statement runs; otherwise, it
+doesn't. In the previous example, the condition is true, so the
+\passthrough{\lstinline!print!} statement runs. In the following
+example, the condition is false, so the \passthrough{\lstinline!print!}
+statement doesn't run.
+
+\begin{lstlisting}[language=Python,style=source]
+if count < 1000:
+    print('Novella!')
+\end{lstlisting}
+
+We can put a \passthrough{\lstinline!print!} statement inside a
+\passthrough{\lstinline!for!} loop. In this example, we only print a
+line from the book when \passthrough{\lstinline!count!} is
+\passthrough{\lstinline!1!}. The other lines are read, but not
+displayed.
+
+\begin{lstlisting}[language=Python,style=source]
+fp = open('2600-0.txt')
+count = 0
+for line in fp:
+    if count == 1:
+        print(line)
+    count += 1
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+The Project Gutenberg EBook of War and Peace, by Leo Tolstoy
+\end{lstlisting}
+
+Notice the indentation in this example:
+
+\begin{itemize}
+\item
+  Statements inside the \passthrough{\lstinline!for!} loop are indented.
+\item
+  The statement inside the \passthrough{\lstinline!if!} statement is
+  indented.
+\item
+  The statement \passthrough{\lstinline!count += 1!} is
+  \textbf{outdented} from the previous line, so it ends the
+  \passthrough{\lstinline!if!} statement. But it is still inside the
+  \passthrough{\lstinline!for!} loop.
+\end{itemize}
+
+It is legal in Python to use spaces or tabs for indentation, but the
+most common convention is to use four spaces, never tabs. That's what
+I'll do in my code and I strongly suggest you follow the convention.
+
+\hypertarget{break-statement}{%
+\section{break statement}\label{break-statement}}
+
+If we display the final value of \passthrough{\lstinline!count!}, we see
+that the loop reads the entire file, but only prints one line:
+
+\begin{lstlisting}[language=Python,style=source]
+count
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+66054
+\end{lstlisting}
+
+We can avoid reading the whole file by using a
+\passthrough{\lstinline!break!} statement, like this:
+
+\begin{lstlisting}[language=Python,style=source]
+fp = open('2600-0.txt')
+count = 0
+for line in fp:
+    if count == 1:
+        print(line)
+        break
+    count += 1
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+The Project Gutenberg EBook of War and Peace, by Leo Tolstoy
+\end{lstlisting}
+
+The \passthrough{\lstinline!break!} statement ends the loop immediately,
+skipping the rest of the file. We can confirm that by checking the last
+value of \passthrough{\lstinline!count!}:
+
+\begin{lstlisting}[language=Python,style=source]
+count
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+1
+\end{lstlisting}
+
+\textbf{Exercise:} Write a loop that prints the first 5 lines of the
+file and then breaks out of the loop.
+
+\hypertarget{whitespace}{%
+\section{Whitespace}\label{whitespace}}
+
+If we run the loop again and display the final value of
+\passthrough{\lstinline!line!}, we see the special sequence
+\passthrough{\lstinline!\\n!} at the end.
+
+\begin{lstlisting}[language=Python,style=source]
+fp = open('2600-0.txt')
+count = 0
+for line in fp:
+    if count == 1:
+        break
+    count += 1
+
+line
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+'The Project Gutenberg EBook of War and Peace, by Leo Tolstoy\n'
+\end{lstlisting}
+
+This sequence represents a single character, called a \textbf{newline},
+that puts vertical space between lines. If we use a
+\passthrough{\lstinline!print!} statement to display
+\passthrough{\lstinline!line!}, we don't see the special sequence, but
+we do see extra space after the line.
+
+\begin{lstlisting}[language=Python,style=source]
+print(line)
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+The Project Gutenberg EBook of War and Peace, by Leo Tolstoy
+\end{lstlisting}
+
+In other strings, you might see the sequence
+\passthrough{\lstinline!\\t!}, which represents a ``tab'' character.
+When you print a tab character, it adds enough space to make the next
+character appear in a column that is a multiple of 8.
+
+\begin{lstlisting}[language=Python,style=source]
+print('01234567' * 6)
+print('a\tbc\tdef\tghij\tklmno\tpqrstu')
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+012345670123456701234567012345670123456701234567
+a   bc  def ghij    klmno   pqrstu
+\end{lstlisting}
+
+Newline characters, tabs, and spaces are called \textbf{whitespace}
+because when they are printed they leave white space on the page
+(assuming that the background color is white).
+
+\hypertarget{counting-words}{%
+\section{Counting words}\label{counting-words}}
+
+So far we've managed to count the lines in a file, but each line
+contains several words. To split a line into words, we can use a
+function called \passthrough{\lstinline!split!} that returns a list of
+words. To be more precise, \passthrough{\lstinline!split!} doesn't
+actually know what a word is; it just splits the line wherever there's a
+space or other whitespace character.
+
+\begin{lstlisting}[language=Python,style=source]
+line.split()
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+['The',
+ 'Project',
+ 'Gutenberg',
+ 'EBook',
+ 'of',
+ 'War',
+ 'and',
+ 'Peace,',
+ 'by',
+ 'Leo',
+ 'Tolstoy']
+\end{lstlisting}
+
+Notice that the syntax for \passthrough{\lstinline!split!} is different
+from other functions we have seen. Normally when we call a function, we
+name the function and provide values in parentheses. So you might have
+expected to write \passthrough{\lstinline!split(line)!}. Sadly, that
+doesn't work.
+
+The problem is that the \passthrough{\lstinline!split!} function belongs
+to the string \passthrough{\lstinline!line!}; in a sense, the function
+is attached to the string, so we can only refer to it using the string
+and the dot operator (the period between \passthrough{\lstinline!line!}
+and \passthrough{\lstinline!split!}). For historical reasons, functions
+like this are called \textbf{methods}.
+
+Now that we can split a line into a list of words, we can use
+\passthrough{\lstinline!len!} to get the number of words in each list,
+and increment \passthrough{\lstinline!count!} accordingly.
+
+\begin{lstlisting}[language=Python,style=source]
+fp = open('2600-0.txt')
+count = 0
+for line in fp:
+    count += len(line.split())
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python,style=source]
+count
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+566317
+\end{lstlisting}
+
+By this count, there are more than half a million words in \emph{War and
+Peace}.
+
+Actually, there aren't quite that many, because the file we got from
+Project Gutenberg has some introductory text and a table of contents
+before the text. And it has some license information at the end. To skip
+this ``front matter'', we can use one loop to read lines until we get to
+\passthrough{\lstinline!CHAPTER I!}, and then a second loop to count the
+words in the remaining lines.
+
+The file pointer, \passthrough{\lstinline!fp!}, keeps track of where it
+is in the file, so the second loop picks up where the first loop leaves
+off. In the second loop, we check for the end of the book and stop, so
+we ignore the ``end matter'' at the end of the file.
+
+\begin{lstlisting}[language=Python,style=source]
+first_line = "CHAPTER I\n"
+last_line = "End of the Project Gutenberg EBook of War and Peace, by Leo Tolstoy\n"
+
+fp = open('2600-0.txt')
+for line in fp:
+    if line == first_line:
+        break
+
+count = 0
+for line in fp:
+    if line == last_line:
+        print(line)
+        break
+    count += len(line.split())
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+End of the Project Gutenberg EBook of War and Peace, by Leo Tolstoy
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python,style=source]
+count
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+562482
+\end{lstlisting}
+
+Two things to notice about this program:
+
+\begin{itemize}
+\item
+  When we compare two values to see if they are equal, we use the
+  \passthrough{\lstinline!==!} operator, not to be confused with
+  \passthrough{\lstinline!=!}, which is the assignment operator.
+\item
+  The string we compare \passthrough{\lstinline!line!} to has a newline
+  at the end. If we leave that out, it doesn't work.
+\end{itemize}
+
+\textbf{Exercise:}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  In the previous program, replace \passthrough{\lstinline!==!} with
+  \passthrough{\lstinline!=!} and see what happens. This is a common
+  error, so it is good to see what the error message looks like.
+\item
+  Correct the previous error, then remove the newline character after
+  \passthrough{\lstinline!CHAPTER I!}, and see what happens.
+\end{enumerate}
+
+The first error is a ``syntax error'', which means that the program
+violates the rules of Python. If your program has a syntax error, the
+Python interpreter prints an error message, and the program never runs.
+
+The second error is a ``logic error'', which means that there is
+something wrong with the logic of the program. The syntax is legal, and
+the program runs, but it doesn't do what we wanted. Logic errors can be
+hard to find because we don't get any error messages.
+
+If you have a logic error, here are two strategies for debugging:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  Add print statements so the program displays additional information
+  while it runs.
+\item
+  Simplify the program until it does what you expect, and then gradually
+  add more code, testing as you go.
+\end{enumerate}
+
