@@ -7,12 +7,16 @@ import re
 # for output listings, add `style=output`
 
 subs = {
-r'\\includegraphics{https://.*/([^/]*)}': r'\\includegraphics[width=4in]{figs/\1}',
+r'\\includegraphics(.*){https://.*/([^/]*)}': r'\\includegraphics\1{figs/\2}',
 #r'_0.png': '_0.pdf',
 #r'_0.svg': '_0.pdf',
-r'language=Python': r'language=Python,style=source',
-r'begin{lstlisting}$': r'begin{lstlisting}[style=output]',
+#r'language=Python': r'language=Python,style=source',
+#r'begin{lstlisting}$': r'begin{lstlisting}[style=output]',
+r'language=Python': '',
 '\ufeff': '',
+r'\\tightlist': '',
+r'\\toprule': r'\\midrule',
+r'\\bottomrule': r'\\midrule',
 }
 
 def write_line(fout, line):
@@ -44,6 +48,11 @@ filename = sys.argv[1]
 
 lines = open(filename).read()
 
+# get the source code and output into shape
+pattern = r'\\end{lstlisting}\s*\\begin{lstlisting}\n([^\\]*)\n\\end'
+repl = r'(@\\dashfill@)\n@@@\1@@@\n\\end'
+lines = re.sub(pattern, repl, lines)
+
 pattern = r"""\\begin{figure}
 \\centering
 \\includegraphics{(.*)}
@@ -51,7 +60,7 @@ pattern = r"""\\begin{figure}
 \\end{figure}"""
 
 repl = r"""\\begin{center}
-\\includegraphics[scale=0.75]{\1}
+\\includegraphics[width=4in]{\1}
 \\end{center}"""
 
 lines = re.sub(pattern, repl, lines)
