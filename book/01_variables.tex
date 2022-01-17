@@ -1,7 +1,7 @@
 \hypertarget{variables-and-values}{%
-\chapter{Variables and values}\label{variables-and-values}}
+\chapter{Variables and Values}\label{variables-and-values}}
 
-Data Science is the use of data to answers questions and guide decision
+Data science is the use of data to answers questions and guide decision
 making. For example, a topic of current debate is whether we should
 raise the minimum wage in the United States. Some economists think that
 raising the minimum wage would raise families out of poverty; others
@@ -25,7 +25,7 @@ A successful data science project requires three elements:
 \end{itemize}
 
 In an ideal world, we would pose a question, find data, and choose the
-appropriate methods, in that order. More often, the data science is
+appropriate methods, in that order. More often, the process is
 iterative. We might start with one question, get stuck, and pivot to a
 different question. Or we might explore a new dataset and discover the
 questions it can answer. Or we might start with a tool and look for
@@ -106,20 +106,16 @@ Most often, we use \passthrough{\lstinline!int!} to represent counts and
 example of an \passthrough{\lstinline!int!} and a
 \passthrough{\lstinline!float!}:
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[]
 3
+(@\dashfill@)
+@@@3@@@
 \end{lstlisting}
 
-\begin{lstlisting}[style=output]
-3
-\end{lstlisting}
-
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[]
 3.14159
-\end{lstlisting}
-
-\begin{lstlisting}[style=output]
-3.14159
+(@\dashfill@)
+@@@3.14159@@@
 \end{lstlisting}
 
 \passthrough{\lstinline!float!} is short for ``floating-point'', which
@@ -132,42 +128,30 @@ Python provides operators that perform arithmetic. The operators that
 perform addition and subtraction are \passthrough{\lstinline!+!} and
 \passthrough{\lstinline!-!}:
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[]
 3 + 2 - 1
-\end{lstlisting}
-
-\begin{lstlisting}[style=output]
-4
+(@\dashfill@)
+@@@4@@@
 \end{lstlisting}
 
 The operators that perform multiplication and division are
 \passthrough{\lstinline!*!} and \passthrough{\lstinline!/!}:
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[]
 2 * 3
+(@\dashfill@)
+@@@6@@@
 \end{lstlisting}
 
-\begin{lstlisting}[style=output]
-6
-\end{lstlisting}
-
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[]
 2 / 3
-\end{lstlisting}
-
-\begin{lstlisting}[style=output]
-0.6666666666666666
+(@\dashfill@)
+@@@0.6666666666666666@@@
 \end{lstlisting}
 
 And the operator for exponentiation is \passthrough{\lstinline!**!}:
 
-\begin{lstlisting}[language=Python,style=source]
 2**3
-\end{lstlisting}
-
-\begin{lstlisting}[style=output]
-8
-\end{lstlisting}
 
 Unlike math notation, Python does not allow ``implicit multiplication''.
 For example, in math notation, if you write \(3 (2 + 1)\), that's
@@ -179,7 +163,7 @@ The arithmetic operators follow the rules of precedence you might have
 learned as ``PEMDAS'':
 
 \begin{itemize}
-\tightlist
+
 \item
   Parentheses before
 \item
@@ -187,28 +171,24 @@ learned as ``PEMDAS'':
 \item
   Multiplication and division before
 \item
-  Addition and subtraction
+  Addition and subtraction.
 \end{itemize}
 
 So in this expression:
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[]
 1 + 2 * 3
-\end{lstlisting}
-
-\begin{lstlisting}[style=output]
-7
+(@\dashfill@)
+@@@7@@@
 \end{lstlisting}
 
 The multiplication happens first. If that's not what you want, you can
 use parentheses to make the order of operations explicit:
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[]
 (1 + 2) * 3
-\end{lstlisting}
-
-\begin{lstlisting}[style=output]
-9
+(@\dashfill@)
+@@@9@@@
 \end{lstlisting}
 
 \textbf{Exercise:} Write a Python expression that raises
@@ -228,10 +208,10 @@ functions that supplement the Python language.
 
 Actually, there are several libraries that provide math functions; the
 one we'll use is called NumPy, which stands for ``Numerical Python'',
-and is pronounced ``num' pie''. Before you can use a library, you have
-to ``import'' it. Here's how we import NumPy:
+and is pronounced ``num pie''. Before you can use a library, you have to
+\textbf{import} it. Here's how we import NumPy:
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[]
 import numpy as np
 \end{lstlisting}
 
@@ -248,12 +228,10 @@ But assuming we import \passthrough{\lstinline!np!} correctly, we can
 use it to read the value \passthrough{\lstinline!pi!}, which is an
 approximation of the mathematical constant \(\pi\).
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[]
 np.pi
-\end{lstlisting}
-
-\begin{lstlisting}[style=output]
-3.141592653589793
+(@\dashfill@)
+@@@3.141592653589793@@@
 \end{lstlisting}
 
 The result is a \passthrough{\lstinline!float!} with 16 digits. As you
@@ -263,23 +241,19 @@ so this result is only approximate.
 \passthrough{\lstinline!numpy!} provides \passthrough{\lstinline!log!},
 which computes the natural logarithm
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[]
 np.log(100)
-\end{lstlisting}
-
-\begin{lstlisting}[style=output]
-4.605170185988092
+(@\dashfill@)
+@@@4.605170185988092@@@
 \end{lstlisting}
 
 And \passthrough{\lstinline!exp!}, which raises the constant
 \passthrough{\lstinline!e!} to a power.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[]
 np.exp(1)
-\end{lstlisting}
-
-\begin{lstlisting}[style=output]
-2.718281828459045
+(@\dashfill@)
+@@@2.718281828459045@@@
 \end{lstlisting}
 
 \textbf{Exercise:} Use these functions to confirm the mathematical
@@ -295,26 +269,24 @@ which means they don't always behave like math.
 As another example, let's see what happens when you add up
 \passthrough{\lstinline!0.1!} three times:
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[]
 0.1 + 0.1 + 0.1
+(@\dashfill@)
+@@@0.30000000000000004@@@
 \end{lstlisting}
 
-\begin{lstlisting}[style=output]
-0.30000000000000004
-\end{lstlisting}
-
-The result is close to \passthrough{\lstinline!0.3!}, but not exact.\\
+The result is close to \passthrough{\lstinline!0.3!}, but not exact.
 We'll see other examples of floating-point approximation later, and
 learn some ways to deal with it.
 
 \hypertarget{variables}{%
 \section{Variables}\label{variables}}
 
-A variable is a name that refers to a value. The following statement
-assigns the value \passthrough{\lstinline!5!} to a variable named
-\passthrough{\lstinline!x!}:
+A \textbf{variable} is a name that refers to a value. The following
+statement assigns the value \passthrough{\lstinline!5!} to a variable
+named \passthrough{\lstinline!x!}:
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[]
 x = 5
 \end{lstlisting}
 
@@ -324,31 +296,25 @@ and the value \passthrough{\lstinline!5!}.
 If we use \passthrough{\lstinline!x!} as part of an arithmetic
 operation, it represents the value \passthrough{\lstinline!5!}:
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[]
 x + 1
+(@\dashfill@)
+@@@6@@@
 \end{lstlisting}
 
-\begin{lstlisting}[style=output]
-6
-\end{lstlisting}
-
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[]
 x**2
-\end{lstlisting}
-
-\begin{lstlisting}[style=output]
-25
+(@\dashfill@)
+@@@25@@@
 \end{lstlisting}
 
 We can also use \passthrough{\lstinline!x!} with
 \passthrough{\lstinline!numpy!} functions:
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[]
 np.exp(x)
-\end{lstlisting}
-
-\begin{lstlisting}[style=output]
-148.4131591025766
+(@\dashfill@)
+@@@148.4131591025766@@@
 \end{lstlisting}
 
 Notice that the result from \passthrough{\lstinline!exp!} is a
@@ -377,7 +343,7 @@ long as the meaning is clear:
 In Python, every character counts. For example, the following are all
 different:
 
-\begin{lstlisting}[style=output]
+\begin{lstlisting}
 np.exp(x)
 np.Exp(x)
 np.exp[x]
@@ -399,64 +365,45 @@ approximation of the golden ratio:
 Hint: The result should be close to \passthrough{\lstinline!1.618!}.
 
 \hypertarget{calculation-with-variables}{%
-\section{Calculation with variables}\label{calculation-with-variables}}
+\section{Calculation with Variables}\label{calculation-with-variables}}
 
 Now let's use variables to solve a problem involving mathematical
 calculation. Suppose we have the following formula for computing
-compound interest from Wikipedia (see
+compound interest (see
 \url{https://en.wikipedia.org/wiki/Compound_interest\#Periodic_compounding}):
 
-"The total accumulated value, including the principal sum \(P\) plus
-compounded interest \(I\), is given by the formula:
+If we start with a principal sum, \(P\), and earn compounded interest,
+the total accumulated value, \(V\), at the end of time \(t\) is:
 
 \(V=P\left(1+{\frac {r}{n}}\right)^{nt}\)
 
-where:
+where \(r\) is the annual interest rate and \(n\) is the compounding
+frequency.
 
-\begin{itemize}
-\tightlist
-\item
-  \(P\) is the original principal sum
-\item
-  \(V\) is the total accumulated value
-\item
-  \(r\) is the nominal annual interest rate
-\item
-  \(n\) is the compounding frequency
-\item
-  \(t\) is the overall length of time the interest is applied (expressed
-  using the same time units as \(r\), usually years).
-\end{itemize}
+For example, if you deposit \$2,100 in a bank paying an annual interest
+rate of 3.4\% compounded quarterly, we can compute the balance after 7
+years by defining these variables:
 
-"Suppose a principal amount of \$1,500 is deposited in a bank paying an
-annual interest rate of 4.3\%, compounded quarterly. Then the balance
-after 6 years is found by using the formula above, with
-
-\begin{lstlisting}[language=Python,style=source]
-P = 1500
-r = 0.043
+\begin{lstlisting}[]
+P = 2100
+r = 0.034
 n = 4
-t = 6
+t = 7
 \end{lstlisting}
 
-We can compute the total accumulated value by translating the
-mathematical formula into Python syntax:
+And computing the total accumulated value like this.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[]
 P * (1 + r/n)**(n*t)
+(@\dashfill@)
+@@@2661.6108980682593@@@
 \end{lstlisting}
 
-\begin{lstlisting}[style=output]
-1938.8368221341054
-\end{lstlisting}
-
-\textbf{Exercise:} Continuing the example from Wikipedia:
-
-``Suppose the same amount of \$1,500 is compounded biennially'', so
-\passthrough{\lstinline!n = 1/2!}.
-
-What would the total value be after 6 years? Hint: we expect the answer
-to be a bit less than the previous answer.
+\textbf{Exercise:} Continuing the previous example, suppose you start
+with the same principle and the same interest rate, but interest is
+compounded twice per year, so \passthrough{\lstinline!n = 2!}. What
+would the total value be after 7 years? Hint: we expect the answer to be
+a bit less than the previous answer.
 
 \textbf{Exercise:} If interest is compounded continuously, the value
 after time \(t\) is given by the formula:
@@ -466,4 +413,22 @@ after time \(t\) is given by the formula:
 Translate this equation into Python and use it compute the value of the
 investment in the previous example with continuous compounding. Hint: we
 expect the answer to be a bit more than the previous answers.
+
+The primary point of this exercise is to practice using variables. But
+it is also a reminder about logarithms, which we will use extensively.
+
+\hypertarget{summary}{%
+\section{Summary}\label{summary}}
+
+This chapter introduces variables, which are names that refer to values,
+and two kinds of values, integers and floating-point numbers.
+
+It presents mathematical operators, like \passthrough{\lstinline!+!} for
+addition and \passthrough{\lstinline!*!} for multiplication, and
+mathematical functions like \passthrough{\lstinline!log!} for logarithms
+and \passthrough{\lstinline!exp!} for raising
+\passthrough{\lstinline!e!} to a power.
+
+In the next chapter, we'll see additional data types for representing
+letters and words, dates and times, and latitude and longitude.
 
