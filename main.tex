@@ -1,0 +1,87 @@
+\begin{filecontents*}{\jobname.mst}
+delim_0 "\\idxdelim"
+delim_1 "\\idxdelim"
+delim_2 "\\idxdelim"
+delim_n "\\nohyperpage{\\idxdelim}"
+delim_r "--"
+headings_flag 1
+heading_prefix "\\indexgroup{{"
+heading_suffix "}}\\nopagebreak\n"
+\end{filecontents*}
+\documentclass[cfonts]{nostarch}
+
+\input{preamble}
+
+\begin{document}
+
+
+%----------------------------
+% ---------- FRONT ----------
+%----------------------------
+\frontmatter
+
+\input{chapters/front_matter}
+%\input{chapters/intro}
+
+%---------------------------
+% ---------- MAIN ----------
+%---------------------------
+\mainmatter
+
+\part{From Python to Pandas}
+
+\input{chapters/01_variables}
+
+\input{chapters/02_times}
+
+\input{chapters/03_arrays}
+
+\input{chapters/04_loops}
+
+\input{chapters/05_dictionaries}
+
+\input{chapters/06_plotting}
+
+\input{chapters/07_dataframes}
+
+
+\part{Exploratory Data Analysis}
+
+\input{chapters/08_distributions}
+
+\input{chapters/09_relationships}
+
+\input{chapters/10_regression}
+
+
+\part{Statistical Inference}
+
+\input{chapters/11_resampling}
+
+\input{chapters/12_bootstrap}
+
+\input{chapters/13_hypothesis}
+
+
+\part{Case Study: Political Alignment}
+
+\input{chapters/02_polviews_soln}
+
+\input{chapters/03_outlook}
+
+
+\part{Case Study: Algorithmic Fairness}
+
+\input{chapters/01_classification}
+
+\input{chapters/02_calibration}
+
+
+%----------------------------
+%----------- BACK -----------
+%----------------------------
+\backmatter
+
+\input{chapters/back_matter}
+
+\end{document}
