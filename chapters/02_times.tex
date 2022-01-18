@@ -261,7 +261,7 @@ date_of_birth.day_name(), date_of_birth.month_name()
 now = pd.Timestamp.now()
 now
 (@\dashfill@)
-@@@Timestamp('2022-01-18 11:03:57.387577')@@@
+@@@Timestamp('2022-01-18 14:27:32.241819')@@@
 \end{lstlisting}
 
 \textbf{Exercise:} Use the value of \passthrough{\lstinline!now!} to
@@ -278,7 +278,7 @@ operations. For example, you can compute the difference between two
 age = now - date_of_birth
 age
 (@\dashfill@)
-@@@Timedelta('11916 days 11:03:57.387577')@@@
+@@@Timedelta('11916 days 14:27:32.241819')@@@
 \end{lstlisting}
 
 The result is a \passthrough{\lstinline!Timedelta!} that represents the
@@ -291,7 +291,7 @@ hours, etc. between the two \passthrough{\lstinline!Timestamp!} values.
 \begin{lstlisting}[]
 age.components
 (@\dashfill@)
-@@@Components(days=11916, hours=11, minutes=3, seconds=57, milliseconds=387, microseconds=577, nanoseconds=0)@@@
+@@@Components(days=11916, hours=14, minutes=27, seconds=32, milliseconds=241, microseconds=819, nanoseconds=0)@@@
 \end{lstlisting}
 
 You can get one of the components like this:
@@ -687,7 +687,7 @@ world.plot(color='white', edgecolor='gray');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{02_times_files/02_times_122_0.png}
+\includegraphics[width=4in]{chapters/02_times_files/02_times_122_0.png}
 \end{center}
 
 By default, Geopandas uses an equirectangular projection, which provides
@@ -716,11 +716,11 @@ series.plot();
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{02_times_files/02_times_126_0.png}
+\includegraphics[width=4in]{chapters/02_times_files/02_times_126_0.png}
 \end{center}
 
 \begin{center}
-\includegraphics[width=4in]{02_times_files/02_times_126_1.png}
+\includegraphics[width=4in]{chapters/02_times_files/02_times_126_1.png}
 \end{center}
 
 The two plots are on different axes, which is not what we want in this
@@ -746,7 +746,7 @@ series.plot(ax=ax);
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{02_times_files/02_times_130_0.png}
+\includegraphics[width=4in]{chapters/02_times_files/02_times_130_0.png}
 \end{center}
 
 There are a few features in this example I have not explained
