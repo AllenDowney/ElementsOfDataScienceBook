@@ -1,0 +1,45 @@
+% ===== PACKAGES =====
+\usepackage{lipsum}
+\hyphenation{ve-sti-bu-lum sene-c-tus rut-rum con-sec-te-tu-er
+  elei-fend no-num-my li-be-ro}
+\usepackage{natbib}
+\usepackage[italic]{mathastext}
+\usepackage{enumitem}
+\usepackage{pdfpages}
+\usepackage{unicode-math}
+\usepackage{nshyper}
+
+% ===== CONFIGURE =====
+\SetLabelAlign{newline}{\makebox[\dimexpr\linewidth-\labelsep][l]{#1}}%
+\newlist{listhead}{description}{3}
+\setlist[listhead]{align=newline, listparindent=\parindent}
+\setlist[enumerate]{leftmargin=36pt,labelsep=0.15in} % Use normal paragraph indentation in enumerate lists
+\setlist[itemize]{leftmargin=36pt,labelsep=0.18in} % Use normal paragraph indentation in itemize lists
+\setlist[description]{leftmargin=18pt,labelwidth=0pt, labelindent=0pt, labelsep=0pt, itemindent=0pt} % Use normal paragraph indentation in description lists
+\renewcommand{\descriptionlabel}[1]{\hspace{\labelsep}\textbf{#1\quad}} % Add em space to description label
+
+\setcounter{secnumdepth}{0} % Unnumbers sections
+
+\usepackage{array}
+\newcolumntype{?}[1]{!{\vrule width #1}}
+
+\usepackage{cellspace}
+\setlength\cellspacetoplimit{2pt}
+\setlength\cellspacebottomlimit{2pt}
+
+\def\UrlFont{\em} % Change URLs to italic
+
+\newcommand{\passthrough}[1]{#1}
+
+  
+% ===== INDEX, CHICAGO STYLE =====
+\renewcommand{\seename}{See}
+\renewcommand{\alsoname}{See also}
+
+\makeindex
+\makeatletter
+\def\idxdelim{\@ifnextchar{\hyperindexformat}{. }{, }}
+\makeatother
+
+\let\oldhref\href
+\renewcommand{\href}[2]{\oldhref{#1}{\itshape#2}}
