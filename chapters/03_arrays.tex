@@ -1,5 +1,5 @@
 \hypertarget{lists-and-arrays}{%
-\chapter{Lists and arrays}\label{lists-and-arrays}}
+\chapter{Lists and Arrays}\label{lists-and-arrays}}
 
 In the previous chapter we used tuples to represent latitude and
 longitude. In this chapter, you'll see how to use tuples more generally
@@ -24,12 +24,10 @@ they are both floating-point numbers. But in general a tuple can contain
 any number of elements, and the elements can be values of any type. The
 following is a tuple of three integers:
 
-\begin{lstlisting}[language=Python]
-1, 2, 3
-\end{lstlisting}
-
 \begin{lstlisting}[]
-(1, 2, 3)
+1, 2, 3
+(@\dashfill@)
+@@@(1, 2, 3)@@@
 \end{lstlisting}
 
 Notice that when Python displays a tuple, it puts the elements in
@@ -38,34 +36,28 @@ think it is easier to read that way, but you don't have to.
 
 The elements can be any type. Here's a tuple of strings:
 
-\begin{lstlisting}[language=Python]
-'Data', 'Science'
-\end{lstlisting}
-
 \begin{lstlisting}[]
-('Data', 'Science')
+'Data', 'Science'
+(@\dashfill@)
+@@@('Data', 'Science')@@@
 \end{lstlisting}
 
 The elements don't have to be the same type. Here's a tuple with a
 string, an integer, and a floating-point number.
 
-\begin{lstlisting}[language=Python]
-'one', 2, 3.14159 
-\end{lstlisting}
-
 \begin{lstlisting}[]
-('one', 2, 3.14159)
+'one', 2, 3.14159 
+(@\dashfill@)
+@@@('one', 2, 3.14159)@@@
 \end{lstlisting}
 
 If you have a string, you can convert it to a tuple using the
 \passthrough{\lstinline!tuple!} function:
 
-\begin{lstlisting}[language=Python]
-tuple('DataScience')
-\end{lstlisting}
-
 \begin{lstlisting}[]
-('D', 'a', 't', 'a', 'S', 'c', 'i', 'e', 'n', 'c', 'e')
+tuple('DataScience')
+(@\dashfill@)
+@@@('D', 'a', 't', 'a', 'S', 'c', 'i', 'e', 'n', 'c', 'e')@@@
 \end{lstlisting}
 
 The result is a tuple of single-character strings.
@@ -74,25 +66,21 @@ When you create a tuple, the parentheses are optional, but the commas
 are required. So how do you think you create a tuple with a single
 element? You might be tempted to write:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[]
 x = (5)
 x
-\end{lstlisting}
-
-\begin{lstlisting}[]
-5
+(@\dashfill@)
+@@@5@@@
 \end{lstlisting}
 
 But you will find that the result is just a number, not a tuple. To make
 a tuple with a single element, you need a comma:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[]
 t = 5,
 t
-\end{lstlisting}
-
-\begin{lstlisting}[]
-(5,)
+(@\dashfill@)
+@@@(5,)@@@
 \end{lstlisting}
 
 That might look funny, but it does the job.
@@ -104,12 +92,10 @@ Python provides another way to store a sequence of elements: a list.
 
 To create a list, you put a sequence of elements in square brackets.
 
-\begin{lstlisting}[language=Python]
-[1, 2, 3]
-\end{lstlisting}
-
 \begin{lstlisting}[]
 [1, 2, 3]
+(@\dashfill@)
+@@@[1, 2, 3]@@@
 \end{lstlisting}
 
 Lists and tuples are very similar. They can contain any number of
@@ -122,25 +108,23 @@ When you make a list, the brackets are required, but if there is a
 single element, you don't need a comma. So you can make a list like
 this:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[]
 single = [5]
 \end{lstlisting}
 
 It is also possible to make a list with no elements, like this:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[]
 empty = []
 \end{lstlisting}
 
 The \passthrough{\lstinline!len!} function returns the length (number of
 elements) in a list or tuple.
 
-\begin{lstlisting}[language=Python]
-len([1, 2, 3]), len(single), len(empty)
-\end{lstlisting}
-
 \begin{lstlisting}[]
-(3, 1, 0)
+len([1, 2, 3]), len(single), len(empty)
+(@\dashfill@)
+@@@(3, 1, 0)@@@
 \end{lstlisting}
 
 \textbf{Exercise:} Create a list with 4 elements; then use
@@ -157,12 +141,14 @@ sandwich prices.
 In September 2019, \emph{The Economist} published an article comparing
 sandwich prices in Boston and London:
 ``\href{https://www.economist.com/finance-and-economics/2019/09/07/why-americans-pay-more-for-lunch-than-britons-do}{Why
-Americans pay more for lunch than Britons do}.'' It includes this graph
+Americans pay more for lunch than Britons do}''. It includes this graph
 showing prices of several sandwiches in the two cities:
+
+\includegraphics{figs/20190907_FNC941.png}
 
 Here are the sandwich names from the graph, as a list of strings.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[]
 name_list = [
     'Lobster roll',
     'Chicken caesar',
@@ -177,25 +163,23 @@ I contacted \emph{The Economist} to ask for the data they used to create
 that graph, and they were kind enough to share it with me. Here are the
 sandwich prices in Boston:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[]
 boston_price_list = [9.99, 7.99, 7.49, 7.00, 6.29, 4.99]
 \end{lstlisting}
 
 Here are the prices in London, converted to dollars at \$1.25 / £1.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[]
 london_price_list = [7.5, 5, 4.4, 5, 3.75, 2.25]
 \end{lstlisting}
 
 Lists provide some arithmetic operators, but they might not do what you
 want. For example, you can ``add'' two lists:
 
-\begin{lstlisting}[language=Python]
-boston_price_list + london_price_list
-\end{lstlisting}
-
 \begin{lstlisting}[]
-[9.99, 7.99, 7.49, 7.0, 6.29, 4.99, 7.5, 5, 4.4, 5, 3.75, 2.25]
+boston_price_list + london_price_list
+(@\dashfill@)
+@@@[9.99, 7.99, 7.49, 7.0, 6.29, 4.99, 7.5, 5, 4.4, 5, 3.75, 2.25]@@@
 \end{lstlisting}
 
 But it concatenates the two lists, which is not very useful in this
@@ -211,7 +195,7 @@ also provides a type of sequence called an array. You can create a new
 array with the \passthrough{\lstinline!np.array!} function, starting
 with a list or tuple.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[]
 import numpy as np
 
 boston_price_array = np.array(boston_price_list)
@@ -220,12 +204,10 @@ london_price_array = np.array(london_price_list)
 
 The type of the result is \passthrough{\lstinline!numpy.ndarray!}.
 
-\begin{lstlisting}[language=Python]
-type(boston_price_array)
-\end{lstlisting}
-
 \begin{lstlisting}[]
-numpy.ndarray
+type(boston_price_array)
+(@\dashfill@)
+@@@numpy.ndarray@@@
 \end{lstlisting}
 
 The ``nd'' stands for ``n-dimensional'', which indicates that NumPy
@@ -233,43 +215,37 @@ arrays can have any number of dimensions. But for now we will work with
 one-dimensional sequences. If you display an array, Python displays the
 elements:
 
-\begin{lstlisting}[language=Python]
-boston_price_array
-\end{lstlisting}
-
 \begin{lstlisting}[]
-array([9.99, 7.99, 7.49, 7.  , 6.29, 4.99])
+boston_price_array
+(@\dashfill@)
+@@@array([9.99, 7.99, 7.49, 7.  , 6.29, 4.99])@@@
 \end{lstlisting}
 
 You can also display the ``data type'' of the array, which is the type
 of the elements:
 
-\begin{lstlisting}[language=Python]
-boston_price_array.dtype
-\end{lstlisting}
-
 \begin{lstlisting}[]
-dtype('float64')
+boston_price_array.dtype
+(@\dashfill@)
+@@@dtype('float64')@@@
 \end{lstlisting}
 
 \passthrough{\lstinline!float64!} means that the elements are
 floating-point numbers that take up 64 bits each. You don't need to know
-about the storage format of these numbers, but if you are curious,
-\href{https://en.wikipedia.org/wiki/Floating-point_arithmetic\#Internal_representation}{you
-can read about it here}.
+about the storage format of these numbers, but if you are curious, you
+can read about it at
+\url{https://en.wikipedia.org/wiki/Floating-point_arithmetic\#Internal_representation}.
 
 The elements of a NumPy array can be any type, but they all have to be
 the same type. Most often the elements are numbers, but you can also
 make an array of strings.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[]
 name_array = np.array(name_list)
 name_array
-\end{lstlisting}
-
-\begin{lstlisting}[]
-array(['Lobster roll', 'Chicken caesar', 'Bang bang chicken',
-       'Ham and cheese', 'Tuna and cucumber', 'Egg'], dtype='<U17')
+(@\dashfill@)
+@@@array(['Lobster roll', 'Chicken caesar', 'Bang bang chicken',
+       'Ham and cheese', 'Tuna and cucumber', 'Egg'], dtype='<U17')@@@
 \end{lstlisting}
 
 In this example, the \passthrough{\lstinline!dtype!} is
@@ -281,13 +257,11 @@ Now, here's why NumPy arrays are useful: they can do arithmetic. For
 example, to compute the differences between Boston and London prices, we
 can write:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[]
 differences = boston_price_array - london_price_array
 differences
-\end{lstlisting}
-
-\begin{lstlisting}[]
-array([2.49, 2.99, 3.09, 2.  , 2.54, 2.74])
+(@\dashfill@)
+@@@array([2.49, 2.99, 3.09, 2.  , 2.54, 2.74])@@@
 \end{lstlisting}
 
 Subtraction is done ``elementwise''; that is, NumPy lines up the two
@@ -300,36 +274,30 @@ deviation}\label{mean-and-standard-deviation}}
 NumPy provides functions that compute statistical summaries like the
 mean:
 
-\begin{lstlisting}[language=Python]
-np.mean(differences)
-\end{lstlisting}
-
 \begin{lstlisting}[]
-2.6416666666666666
+np.mean(differences)
+(@\dashfill@)
+@@@2.6416666666666666@@@
 \end{lstlisting}
 
 So we could describe the difference in prices like this: ``Sandwiches in
 Boston are more expensive by \$2.64, on average''. We could also compute
 the means first, and then compute their difference:
 
-\begin{lstlisting}[language=Python]
-np.mean(boston_price_array) - np.mean(london_price_array)
-\end{lstlisting}
-
 \begin{lstlisting}[]
-2.6416666666666675
+np.mean(boston_price_array) - np.mean(london_price_array)
+(@\dashfill@)
+@@@2.6416666666666675@@@
 \end{lstlisting}
 
 And that turns out to be the same thing: the difference in means is the
 same as the mean of the differences. As an aside, many of the NumPy
 functions also work with lists, so we could also do this:
 
-\begin{lstlisting}[language=Python]
-np.mean(boston_price_list) - np.mean(london_price_list)
-\end{lstlisting}
-
 \begin{lstlisting}[]
-2.6416666666666675
+np.mean(boston_price_list) - np.mean(london_price_list)
+(@\dashfill@)
+@@@2.6416666666666675@@@
 \end{lstlisting}
 
 \textbf{Exercise:} Standard deviation is way to quantify the variability
@@ -373,45 +341,37 @@ fraction or percentage of a quantity.
 
 Taking the lobster roll as an example, the difference in price is:
 
-\begin{lstlisting}[language=Python]
-9.99 - 7.5
-\end{lstlisting}
-
 \begin{lstlisting}[]
-2.49
+9.99 - 7.5
+(@\dashfill@)
+@@@2.49@@@
 \end{lstlisting}
 
 We can express that difference as a fraction of the London price, like
 this:
 
-\begin{lstlisting}[language=Python]
-(9.99 - 7.5) / 7.5
-\end{lstlisting}
-
 \begin{lstlisting}[]
-0.332
+(9.99 - 7.5) / 7.5
+(@\dashfill@)
+@@@0.332@@@
 \end{lstlisting}
 
 Or as a \emph{percentage} of the London price, like this:
 
-\begin{lstlisting}[language=Python]
-(9.99 - 7.5) / 7.5 * 100
-\end{lstlisting}
-
 \begin{lstlisting}[]
-33.2
+(9.99 - 7.5) / 7.5 * 100
+(@\dashfill@)
+@@@33.2@@@
 \end{lstlisting}
 
 So we might say that the lobster roll is 33\% more expensive in Boston.
 But putting London in the denominator was an arbitrary choice. We could
 also compute the difference as a percentage of the Boston price:
 
-\begin{lstlisting}[language=Python]
-(9.99 - 7.5) / 9.99 * 100
-\end{lstlisting}
-
 \begin{lstlisting}[]
-24.924924924924927
+(9.99 - 7.5) / 9.99 * 100
+(@\dashfill@)
+@@@24.924924924924927@@@
 \end{lstlisting}
 
 If we do that calculation, we might say the lobster roll is 25\% cheaper
@@ -421,62 +381,43 @@ to think about why that choice was made. In this example, if you want to
 make the difference seem bigger, you might put London prices in the
 denominator.
 
-We can use the arrays to compute all of the relative differences:
-
-\begin{lstlisting}[language=Python]
-differences = boston_price_array - london_price_array
-differences
-\end{lstlisting}
+If we do the same calculation with the arrays
+\passthrough{\lstinline!boston\_price\_array!} and
+\passthrough{\lstinline!boston\_price\_array!}, we can compute the
+relative differences for all sandwiches:
 
 \begin{lstlisting}[]
-array([2.49, 2.99, 3.09, 2.  , 2.54, 2.74])
-\end{lstlisting}
-
-\begin{lstlisting}[language=Python]
+differences = boston_price_array - london_price_array
 relative_differences = differences / london_price_array
 relative_differences
+(@\dashfill@)
+@@@array([0.332     , 0.598     , 0.70227273, 0.4       , 0.67733333,
+       1.21777778])@@@
 \end{lstlisting}
+
+And the percent differences.
 
 \begin{lstlisting}[]
-array([0.332     , 0.598     , 0.70227273, 0.4       , 0.67733333,
-       1.21777778])
-\end{lstlisting}
-
-\begin{lstlisting}[language=Python]
 percent_differences = relative_differences * 100
 percent_differences
-\end{lstlisting}
-
-\begin{lstlisting}[]
-array([ 33.2       ,  59.8       ,  70.22727273,  40.        ,
-        67.73333333, 121.77777778])
+(@\dashfill@)
+@@@array([ 33.2       ,  59.8       ,  70.22727273,  40.        ,
+        67.73333333, 121.77777778])@@@
 \end{lstlisting}
 
 \hypertarget{summarizing-relative-differences}{%
 \section{Summarizing Relative
 Differences}\label{summarizing-relative-differences}}
 
-One way to summarize these results is to report the range, which we can
-compute with \passthrough{\lstinline!np.min!} and
+Now let's think about how to summarize an array of percentage
+differences. One option is to report the range, which we can compute
+with \passthrough{\lstinline!np.min!} and
 \passthrough{\lstinline!np.max!}.
 
-\begin{lstlisting}[language=Python]
-np.min(differences), np.max(differences)
-\end{lstlisting}
-
 \begin{lstlisting}[]
-(2.0, 3.09)
-\end{lstlisting}
-
-The differences are mostly between two and three dollars. Here is the
-range of percentage differences:
-
-\begin{lstlisting}[language=Python]
 np.min(percent_differences), np.max(percent_differences)
-\end{lstlisting}
-
-\begin{lstlisting}[]
-(33.2, 121.77777777777779)
+(@\dashfill@)
+@@@(33.2, 121.77777777777779)@@@
 \end{lstlisting}
 
 The lobster roll is only 33\% more expensive in Boston; the egg sandwich
@@ -488,12 +429,10 @@ a sentence that summarizes the results.
 
 Another way to summarize percentage differences is to report the mean.
 
-\begin{lstlisting}[language=Python]
-np.mean(percent_differences)
-\end{lstlisting}
-
 \begin{lstlisting}[]
-65.4563973063973
+np.mean(percent_differences)
+(@\dashfill@)
+@@@65.4563973063973@@@
 \end{lstlisting}
 
 So we might say, on average, sandwiches are 65\% more expensive in
@@ -501,21 +440,17 @@ Boston. But another way to summarize the data is to compute the mean
 price in each city, and then compute the percentage difference of the
 means:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[]
 boston_mean = np.mean(boston_price_array)
 london_mean = np.mean(london_price_array)
 
 (boston_mean - london_mean) / london_mean * 100
-\end{lstlisting}
-
-\begin{lstlisting}[]
-56.81003584229393
+(@\dashfill@)
+@@@56.81003584229393@@@
 \end{lstlisting}
 
 So we might say that the average sandwich price is 56\% higher in
-Boston.
-
-As this example demonstrates:
+Boston. As this example demonstrates:
 
 \begin{itemize}
 \item
@@ -558,16 +493,14 @@ For example, suppose you want to compute, for each sandwich in the
 sandwich list, the midpoint of the Boston and London prices. As a first
 draft, you might write something like this:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[]
 boston_price_list = [9.99, 7.99, 7.49, 7, 6.29, 4.99]
 london_price_list = [7.5, 5, 4.4, 5, 3.75, 2.25]
 
 midpoint_price = np.mean(boston_price_list + london_price_list)
 midpoint_price
-\end{lstlisting}
-
-\begin{lstlisting}[]
-5.970833333333334
+(@\dashfill@)
+@@@5.970833333333334@@@
 \end{lstlisting}
 
 This code runs, and it produces an answer, but the answer is a single
@@ -578,13 +511,11 @@ To debug this code, I would start by splitting the computation into
 smaller steps and displaying the intermediate results. For example, we
 might add the two lists and display the result, like this.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[]
 total_price = boston_price_list + london_price_list
 total_price
-\end{lstlisting}
-
-\begin{lstlisting}[]
-[9.99, 7.99, 7.49, 7, 6.29, 4.99, 7.5, 5, 4.4, 5, 3.75, 2.25]
+(@\dashfill@)
+@@@[9.99, 7.99, 7.49, 7, 6.29, 4.99, 7.5, 5, 4.4, 5, 3.75, 2.25]@@@
 \end{lstlisting}
 
 Looking at the result, we see that it did not add the sandwich prices
@@ -594,27 +525,23 @@ adding the elements.
 
 We can solve this problem by converting the lists to arrays.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[]
 boston_price_array = np.array(boston_price_list)
 london_price_array = np.array(london_price_list)
 
 total_price_array = boston_price_array + london_price_array
 total_price_array
-\end{lstlisting}
-
-\begin{lstlisting}[]
-array([17.49, 12.99, 11.89, 12.  , 10.04,  7.24])
+(@\dashfill@)
+@@@array([17.49, 12.99, 11.89, 12.  , 10.04,  7.24])@@@
 \end{lstlisting}
 
 And then computing the midpoint of each pair of prices, like this:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[]
 midpoint_price_array = total_price_array / 2
 midpoint_price_array
-\end{lstlisting}
-
-\begin{lstlisting}[]
-array([8.745, 6.495, 5.945, 6.   , 5.02 , 3.62 ])
+(@\dashfill@)
+@@@array([8.745, 6.495, 5.945, 6.   , 5.02 , 3.62 ])@@@
 \end{lstlisting}
 
 As you gain experience, you will be able to write bigger chunks of code
@@ -622,4 +549,18 @@ before testing. But while you are getting started, keep it simple! As a
 general rule, each line of code should perform a small number of
 operations, and each cell should contain a small number of statements.
 When you are getting started, this number should be one.
+
+\hypertarget{summary}{%
+\section{Summary}\label{summary}}
+
+This chapter presents three ways to represent a sequence of values:
+tuples, list, and Numpy arrays. Working with data, we will primarily use
+arrays.
+
+It also introduces three ways to represent differences: absolute,
+relative, and percentage; and several ways to summarize a set of values:
+minimum, maximum, mean, and standard deviation.
+
+In the next chapter we'll start working with data files, and we'll use
+loops to process letters and words.
 

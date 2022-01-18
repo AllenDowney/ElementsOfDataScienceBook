@@ -51,13 +51,13 @@ We'll work with the first resampling, \passthrough{\lstinline!gss0!}, to
 get started; at the end of this chapter, we'll see the other two as
 well.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 datafile = 'gss_eda.3.hdf5'
 gss = pd.read_hdf(datafile, 'gss0')
 gss.shape
 \end{lstlisting}
 
-\begin{lstlisting}[]
+\begin{lstlisting}[style=output]
 (64814, 169)
 \end{lstlisting}
 
@@ -75,7 +75,7 @@ a chance, or would they try to be fair?
 
 The possible responses are:
 
-\begin{lstlisting}[]
+\begin{lstlisting}[style=output]
 1   Take advantage
 2   Fair
 3   Depends
@@ -84,7 +84,7 @@ The possible responses are:
 As always, we start by looking at the distribution of responses, that
 is, how many people give each response:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 values(gss['fair'])
 \end{lstlisting}
 
@@ -102,11 +102,11 @@ The plurality think people try to be fair (2), but a substantial
 minority think people would take advantage (1). There are also a number
 of NaNs, mostly respondents who were not asked this question.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 gss['fair'].isna().sum()
 \end{lstlisting}
 
-\begin{lstlisting}[]
+\begin{lstlisting}[style=output]
 23818
 \end{lstlisting}
 
@@ -115,7 +115,7 @@ fair'', I'll use a dictionary to recode option 2 as
 \passthrough{\lstinline!1!} and the other options as
 \passthrough{\lstinline!0!}.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 recode_fair = {1:0, 2:1, 3:0}
 \end{lstlisting}
 
@@ -126,14 +126,14 @@ to 1, or give it less weight by mapping it to an intermediate value like
 We can use \passthrough{\lstinline!replace!} to recode the values and
 store the result as a new column in the DataFrame.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 gss['fair2'] = gss['fair'].replace(recode_fair)
 \end{lstlisting}
 
 And we'll use \passthrough{\lstinline!values!} to check whether it
 worked.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 values(gss['fair2'])
 \end{lstlisting}
 
@@ -152,14 +152,14 @@ values(gss['fair2'])
 As we saw in the previous notebook, we can use
 \passthrough{\lstinline!groupby!} to group responses by year.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 gss_by_year = gss.groupby('year')
 \end{lstlisting}
 
 From the result we can select \passthrough{\lstinline!fair2!} and
 compute the mean.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 fair_by_year = gss_by_year['fair2'].mean()
 \end{lstlisting}
 
@@ -168,7 +168,7 @@ to be fair, plotted over time. As in the previous notebook, we plot the
 data points themselves with circles and a local regression model as a
 line.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 plot_series_lowess(fair_by_year, 'C1')
 
 decorate(xlabel='Year',
@@ -178,7 +178,7 @@ decorate(xlabel='Year',
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[scale=0.75]{chapters/03_outlook_files/03_outlook_32_0.pdf}
+\includegraphics[scale=0.75]{03_outlook_files/03_outlook_32_0.png}
 \end{center}
 
 Sadly, it looks like faith in humanity has declined, at least by this
@@ -195,7 +195,7 @@ In the previous notebook, we looked at responses to
 \passthrough{\lstinline!polviews!}, which asks about political
 alignment. The valid responses are:
 
-\begin{lstlisting}[]
+\begin{lstlisting}[style=output]
 1   Extremely liberal
 2   Liberal
 3   Slightly liberal
@@ -208,7 +208,7 @@ alignment. The valid responses are:
 To make it easier to visualize groups, I'm going to lump the 7-point
 scale into a 3-point scale.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 recode_polviews = {1:'Liberal', 
                    2:'Liberal', 
                    3:'Liberal', 
@@ -221,14 +221,14 @@ recode_polviews = {1:'Liberal',
 I'll use \passthrough{\lstinline!replace!}, as we've seen before, and
 store the result as a new column in the DataFrame.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 gss['polviews3'] = gss['polviews'].replace(recode_polviews)
 \end{lstlisting}
 
 With this scale, there are roughly the same number of people in each
 group.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 values(gss['polviews3'])
 \end{lstlisting}
 
@@ -249,13 +249,13 @@ Now let's see who thinks people are more fair, conservatives or
 liberals. We'll group the respondents by
 \passthrough{\lstinline!polviews3!}.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 by_polviews = gss.groupby('polviews3')
 \end{lstlisting}
 
 And compute the mean of \passthrough{\lstinline!fair2!} in each group.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 by_polviews['fair2'].mean()
 \end{lstlisting}
 
@@ -313,7 +313,7 @@ following arguments:
   \passthrough{\lstinline!mean!} in this example.
 \end{itemize}
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 table = gss.pivot_table(values='fair2', 
                         index='year', 
                         columns='polviews3', 
@@ -325,7 +325,7 @@ alignment running across the columns. Each entry in the table is the
 mean of \passthrough{\lstinline!fair2!} for a given group in a given
 year.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 table.head()
 \end{lstlisting}
 
@@ -356,7 +356,7 @@ up or down; we can get a better view by plotting the results.
 We can use \passthrough{\lstinline!plot\_columns\_lowess!} to see the
 results.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 columns = ['Conservative', 'Liberal', 'Moderate']
 plot_columns_lowess(table, columns, colors)
 
@@ -367,7 +367,7 @@ decorate(xlabel='Year',
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[scale=0.75]{chapters/03_outlook_files/03_outlook_55_0.pdf}
+\includegraphics[scale=0.75]{03_outlook_files/03_outlook_55_0.png}
 \end{center}
 
 The fraction of respondents who think people try to be fair has dropped
@@ -394,7 +394,7 @@ get a sense of how much variation there is due to random sampling.
 To make that easier, the following function contains the code from the
 previous analysis all in one place.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 def plot_by_polviews(gss):
     """Plot mean response by polviews and year.
     
@@ -419,7 +419,7 @@ def plot_by_polviews(gss):
 Now we can loop through the three resampled datasets in the HDF5 file
 and generate a figure for each one.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 for key in ['gss0', 'gss1', 'gss2']:
     df = pd.read_hdf('gss_eda.3.hdf5', key)
 
@@ -428,15 +428,15 @@ for key in ['gss0', 'gss1', 'gss2']:
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[scale=0.75]{chapters/03_outlook_files/03_outlook_60_0.pdf}
+\includegraphics[scale=0.75]{03_outlook_files/03_outlook_60_0.png}
 \end{center}
 
 \begin{center}
-\includegraphics[scale=0.75]{chapters/03_outlook_files/03_outlook_60_1.png}
+\includegraphics[scale=0.75]{03_outlook_files/03_outlook_60_1.png}
 \end{center}
 
 \begin{center}
-\includegraphics[scale=0.75]{chapters/03_outlook_files/03_outlook_60_2.png}
+\includegraphics[scale=0.75]{03_outlook_files/03_outlook_60_2.png}
 \end{center}
 
 Features that are the same in all three figures are more likely to

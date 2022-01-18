@@ -210,7 +210,7 @@ which we can use to convert a string to a
 \begin{lstlisting}[]
 pd.Timestamp('6:30:00')
 (@\dashfill@)
-@@@Timestamp('2022-01-17 06:30:00')@@@
+@@@Timestamp('2022-01-18 06:30:00')@@@
 \end{lstlisting}
 
 Or we can do the same thing using the variable defined above.
@@ -218,7 +218,7 @@ Or we can do the same thing using the variable defined above.
 \begin{lstlisting}[]
 pd.Timestamp(not_really_a_time)
 (@\dashfill@)
-@@@Timestamp('2022-01-17 06:30:00')@@@
+@@@Timestamp('2022-01-18 06:30:00')@@@
 \end{lstlisting}
 
 In this example, the string specifies a time but no date, so Pandas
@@ -261,7 +261,7 @@ date_of_birth.day_name(), date_of_birth.month_name()
 now = pd.Timestamp.now()
 now
 (@\dashfill@)
-@@@Timestamp('2022-01-17 19:35:37.659563')@@@
+@@@Timestamp('2022-01-18 11:03:57.387577')@@@
 \end{lstlisting}
 
 \textbf{Exercise:} Use the value of \passthrough{\lstinline!now!} to
@@ -278,7 +278,7 @@ operations. For example, you can compute the difference between two
 age = now - date_of_birth
 age
 (@\dashfill@)
-@@@Timedelta('11915 days 19:35:37.659563')@@@
+@@@Timedelta('11916 days 11:03:57.387577')@@@
 \end{lstlisting}
 
 The result is a \passthrough{\lstinline!Timedelta!} that represents the
@@ -291,7 +291,7 @@ hours, etc. between the two \passthrough{\lstinline!Timestamp!} values.
 \begin{lstlisting}[]
 age.components
 (@\dashfill@)
-@@@Components(days=11915, hours=19, minutes=35, seconds=37, milliseconds=659, microseconds=563, nanoseconds=0)@@@
+@@@Components(days=11916, hours=11, minutes=3, seconds=57, milliseconds=387, microseconds=577, nanoseconds=0)@@@
 \end{lstlisting}
 
 You can get one of the components like this:
@@ -299,7 +299,7 @@ You can get one of the components like this:
 \begin{lstlisting}[]
 age.days
 (@\dashfill@)
-@@@11915@@@
+@@@11916@@@
 \end{lstlisting}
 
 The biggest component of \passthrough{\lstinline!Timedelta!} is days,
@@ -315,7 +315,7 @@ One way to compute age in years is to divide age in days by 365.24:
 \begin{lstlisting}[]
 age.days / 365.24
 (@\dashfill@)
-@@@32.62238528091118@@@
+@@@32.625123206658635@@@
 \end{lstlisting}
 
 But people usually report their ages in integer years. We can use the

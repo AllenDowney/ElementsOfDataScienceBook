@@ -1,5 +1,5 @@
 \hypertarget{dataframes-and-series}{%
-\chapter{Dataframes and Series}\label{dataframes-and-series}}
+\chapter{DataFrames and Series}\label{dataframes-and-series}}
 
 This chapter introduces Pandas, which is a powerful library for working
 with data. Pandas provides functions for reading and writing data files,
@@ -35,7 +35,7 @@ demonstrate important steps in almost any data science project:
 Let's start by getting the data.
 
 \hypertarget{reading-the-data}{%
-\section{Reading the data}\label{reading-the-data}}
+\section{Reading the Data}\label{reading-the-data}}
 
 We'll use data from the National Survey of Family Growth (NSFG), which
 is available from the National Center for Health Statistics at
@@ -72,7 +72,7 @@ In addition to the data file, we also need the data dictionary, which
 includes the names of the variables and specifies the range of columns
 where each variable appears.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[]
 dict_file = '2015_2017_FemPregSetup.dct'
 data_file = '2015_2017_FemPregData.dat'
 \end{lstlisting}
@@ -80,21 +80,19 @@ data_file = '2015_2017_FemPregData.dat'
 Pandas can read data in most common formats, including CSV, Excel, and
 fixed-width format, but it cannot read the data dictionary, which is in
 Stata format. For that, we'll use a Python library called
-\passthrough{\lstinline!parse\_stata\_dict!}.
+\passthrough{\lstinline!statadict!}.
 
-From \passthrough{\lstinline!parse\_stata\_dict!}, we'll import
+From \passthrough{\lstinline!statadict!}, we'll import
 \passthrough{\lstinline!parse\_stata\_dict!}, which reads the data
 dictionary.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[]
 from statadict import parse_stata_dict
 
 stata_dict = parse_stata_dict(dict_file)
 stata_dict
-\end{lstlisting}
-
-\begin{lstlisting}[]
-<statadict.base.StataDict at 0x7f6d369318d0>
+(@\dashfill@)
+@@@<statadict.base.StataDict at 0x7f77911f8a50>@@@
 \end{lstlisting}
 
 The result is an object that contains
@@ -114,30 +112,28 @@ These values are exactly the arguments we need to use
 \passthrough{\lstinline!read\_fwf!}, which is the Pandas function that
 reads a file in fixed-width format.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[]
 import pandas as pd
 
 nsfg = pd.read_fwf(data_file, 
                    names=stata_dict.names, 
                    colspecs=stata_dict.colspecs)
 type(nsfg)
+(@\dashfill@)
+@@@pandas.core.frame.DataFrame@@@
 \end{lstlisting}
 
-\begin{lstlisting}[]
-pandas.core.frame.DataFrame
-\end{lstlisting}
-
-The result from \passthrough{\lstinline!read\_hdf()!} is a
+The result from \passthrough{\lstinline!read\_fwf()!} is a
 \passthrough{\lstinline!DataFrame!}, which is the primary type Pandas
 uses to store data. \passthrough{\lstinline!DataFrame!} has a method
 called \passthrough{\lstinline!head()!} that shows the first 5 rows:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[]
 nsfg.head()
 \end{lstlisting}
 
 \begin{tabular}{lrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr}
-\toprule
+\midrule
 {} &  CASEID &  PREGORDR &  HOWPREG\_N &  HOWPREG\_P &  MOSCURRP &  NOWPRGDK &  PREGEND1 &  PREGEND2 &  HOWENDDK &  NBRNALIV &  MULTBRTH &  BORNALIV &  DATPRGEN\_Y &  AGEATEND &  HPAGEEND &  GESTASUN\_M &  GESTASUN\_W &  WKSGEST &  MOSGEST &  DK1GEST &  DK2GEST &  DK3GEST &  BABYSEX1 &  BIRTHWGT\_LB1 &  BIRTHWGT\_OZ1 &  LOBTHWGT1 &  BABYSEX2 &  BIRTHWGT\_LB2 &  BIRTHWGT\_OZ2 &  LOBTHWGT2 &  BABYSEX3 &  BIRTHWGT\_LB3 &  BIRTHWGT\_OZ3 &  LOBTHWGT3 &  BABYDOB\_Y &  KIDAGE &  HPAGELB &  BIRTHPLC &  PAYBIRTH1 &  PAYBIRTH2 &  PAYBIRTH3 &  CSECPRIM &  CSECMED1 &  CSECMED2 &  CSECMED3 &  CSECMED4 &  CSECMED5 &  CSECMED6 &  CSECPLAN &  KNEWPREG &  TRIMESTR &  LTRIMEST &  PRIORSMK &  POSTSMKS &  NPOSTSMK &  GETPRENA &  BGNPRENA &  PNCTRIM &  LPNCTRI &  LIVEHERE1 &  ALIVENOW1 &  WHENDIED\_Y1 &  WHENLEFT\_Y1 &  LASTAGE1 &  WHERENOW1 &  LEGAGREE1 &  PARENEND1 &  ANYNURSE1 &  FEDSOLID1 &  FRSTEATD\_N1 &  FRSTEATD\_P1 &  FRSTEATD1 &  QUITNURS1 &  AGEQTNUR\_N1 &  AGEQTNUR\_P1 &  AGEQTNUR1 &  LIVEHERE2 &  ALIVENOW2 &  WHENDIED\_Y2 &  WHENLEFT\_Y2 &  LASTAGE2 &  WHERENOW2 &  LEGAGREE2 &  PARENEND2 &  ANYNURSE2 &  FEDSOLID2 &  FRSTEATD\_N2 &  FRSTEATD\_P2 &  FRSTEATD2 &  QUITNURS2 &  AGEQTNUR\_N2 &  AGEQTNUR\_P2 &  AGEQTNUR2 &  LIVEHERE3 &  ALIVENOW3 &  WHENDIED\_Y3 &  WHENLEFT\_Y3 &  LASTAGE3 &  WHERENOW3 &  LEGAGREE3 &  PARENEND3 &  ANYNURSE3 &  FEDSOLID3 &  FRSTEATD\_N3 &  FRSTEATD\_P3 &  FRSTEATD3 &  QUITNURS3 &  AGEQTNUR\_N3 &  AGEQTNUR\_P3 &  AGEQTNUR3 &  PRGOUTCOME &  OUTCOM\_S &  NBRNLV\_S &  ANYUSINT &  EVUSEINT &  STOPDUSE &  WHYSTOPD &  WHATMETH01 &  WHATMETH02 &  WHATMETH03 &  WHATMETH04 &  RESNOUSE &  WANTBOLD &  PROBBABE &  CNFRMNO &  WANTBLD2 &  TIMINGOK &  TOOSOON\_N &  TOOSOON\_P &  WTHPART1 &  WTHPART2 &  FEELINPG &  HPWNOLD &  TIMOKHP &  COHPBEG &  COHPEND &  TELLFATH &  WHENTELL &  TRYSCALE &  WANTSCAL &  WHYPRG1 &  WHYPRG2 &  WHYNOUSE1 &  WHYNOUSE2 &  WHYNOUSE3 &  WHYNOUSE4 &  WHYNOUSE5 &  WHYNOPG1 &  WHYNOPG2 &  MAINOUSE &  PRGLNGTH &  OUTCOME &  BIRTHORD &  DATEND &  AGEPREG &  DATECON &  AGECON &  FMAROUT5 &  PMARPREG &  RMAROUT6 &  FMARCON5 &  RMARCON6 &  LEARNPRG &  PNCAREWK &  PAYDELIV &  LBW1 &  LIVCHILD &  BFEEDWKS &  OLDWANTR &  OLDWANTP &  WANTRESP &  WANTPART &  TOOSOON &  NEWWANTR &  AGER &  AGESCRN &  FMARITAL &  RMARITAL &  EDUCAT &  HIEDUC &  RACE &  HISPANIC &  HISPRACE &  HISPRACE2 &  RCURPREG &  PREGNUM &  PARITY &  CURR\_INS &  PUBASSIS &  POVERTY &  LABORFOR &  RELIGION &  METRO &  BRNOUT &  YRSTRUS &  PRGLNGTH\_I &  OUTCOME\_I &  BIRTHORD\_I &  DATEND\_I &  AGEPREG\_I &  DATECON\_I &  AGECON\_I &  FMAROUT5\_I &  PMARPREG\_I &  RMAROUT6\_I &  FMARCON5\_I &  RMARCON6\_I &  LEARNPRG\_I &  PNCAREWK\_I &  PAYDELIV\_I &  LBW1\_I &  LIVCHILD\_I &  BFEEDWKS\_I &  OLDWANTR\_I &  OLDWANTP\_I &  WANTRESP\_I &  WANTPART\_I &  TOOSOON\_I &  NEWWANTR\_I &  AGER\_I &  FMARITAL\_I &  RMARITAL\_I &  EDUCAT\_I &  HIEDUC\_I &  RACE\_I &  HISPANIC\_I &  HISPRACE\_I &  HISPRACE2\_I &  RCURPREG\_I &  PREGNUM\_I &  PARITY\_I &  CURR\_INS\_I &  PUBASSIS\_I &  POVERTY\_I &  LABORFOR\_I &  RELIGION\_I &  METRO\_I &  WGT2015\_2017 &  SECU &  SEST &  CMINTVW &  CMLSTYR &  CMJAN3YR &  CMJAN4YR &  CMJAN5YR &  QUARTER &  PHASE &  INTVWYEAR \\
 \midrule
 0 &   70627 &         1 &        NaN &        NaN &       NaN &       NaN &       6.0 &       NaN &       NaN &       1.0 &       NaN &       1.0 &         NaN &       NaN &       NaN &         0.0 &        40.0 &     40.0 &      9.0 &      NaN &      NaN &      NaN &       2.0 &           7.0 &           8.0 &        NaN &       NaN &           NaN &           NaN &        NaN &       NaN &           NaN &           NaN &        NaN &     2009.0 &     6.0 &      5.0 &       NaN &        NaN &        NaN &        NaN &       NaN &       NaN &       NaN &       NaN &       NaN &       NaN &       NaN &       NaN &       NaN &       NaN &       NaN &       NaN &       NaN &       NaN &       NaN &       NaN &      NaN &      NaN &        NaN &        NaN &          NaN &          NaN &       NaN &        NaN &        NaN &        NaN &        1.0 &        NaN &          6.0 &          2.0 &        1.0 &        NaN &          5.0 &          1.0 &        5.0 &        NaN &        NaN &          NaN &          NaN &       NaN &        NaN &        NaN &        NaN &        NaN &        NaN &          NaN &          NaN &        NaN &        NaN &          NaN &          NaN &        NaN &        NaN &        NaN &          NaN &          NaN &       NaN &        NaN &        NaN &        NaN &        NaN &        NaN &          NaN &          NaN &        NaN &        NaN &          NaN &          NaN &        NaN &         1.0 &         1 &       1.0 &         1 &       1.0 &       1.0 &       1.0 &         NaN &         NaN &         NaN &         NaN &       NaN &       NaN &       NaN &      NaN &       NaN &       3.0 &        NaN &        NaN &       1.0 &       NaN &       NaN &        1 &      2.0 &      NaN &      NaN &       NaN &       NaN &       NaN &       NaN &      NaN &      NaN &        NaN &        NaN &        NaN &        NaN &        NaN &       NaN &       NaN &       NaN &        40 &        1 &       1.0 &  2009.0 &     29.0 &     2009 &      28 &       1.0 &       2.0 &       1.0 &         1 &         1 &       NaN &       NaN &       NaN &   2.0 &       1.0 &      22.0 &         1 &         2 &         1 &         2 &      NaN &         1 &    35 &       35 &         1 &         1 &      16 &      12 &     2 &         2 &         2 &          2 &         2 &        3 &       2 &         1 &         2 &      500 &         1 &         2 &      1 &       5 &      NaN &           0 &          0 &           0 &         0 &          0 &          0 &         0 &           0 &           0 &           0 &           0 &           0 &           0 &           0 &           0 &       0 &           0 &           0 &           0 &           0 &           0 &           0 &          0 &           0 &       0 &           0 &           0 &         0 &         0 &       0 &           0 &           0 &            0 &           0 &          0 &         0 &           0 &           0 &          0 &           0 &           0 &        0 &  19877.457610 &     3 &   322 &     1394 &     1382 &      1357 &      1345 &      1333 &       18 &      1 &       2016 \\
@@ -145,7 +141,7 @@ nsfg.head()
 2 &   70627 &         3 &        NaN &        NaN &       NaN &       NaN &       6.0 &       NaN &       NaN &       1.0 &       NaN &       1.0 &         NaN &       NaN &       NaN &         0.0 &        39.0 &     39.0 &      9.0 &      NaN &      NaN &      NaN &       1.0 &           9.0 &           2.0 &        NaN &       NaN &           NaN &           NaN &        NaN &       NaN &           NaN &           NaN &        NaN &     2014.0 &     1.0 &      5.0 &       1.0 &        1.0 &        2.0 &        NaN &       NaN &       NaN &       NaN &       NaN &       NaN &       NaN &       NaN &       NaN &       5.0 &       NaN &       NaN &       0.0 &       5.0 &       NaN &       1.0 &      10.0 &      NaN &      NaN &        NaN &        NaN &          NaN &          NaN &       NaN &        NaN &        NaN &        NaN &        1.0 &        NaN &          3.0 &          1.0 &        3.0 &        1.0 &         12.0 &          1.0 &       12.0 &        NaN &        NaN &          NaN &          NaN &       NaN &        NaN &        NaN &        NaN &        NaN &        NaN &          NaN &          NaN &        NaN &        NaN &          NaN &          NaN &        NaN &        NaN &        NaN &          NaN &          NaN &       NaN &        NaN &        NaN &        NaN &        NaN &        NaN &          NaN &          NaN &        NaN &        NaN &          NaN &          NaN &        NaN &         1.0 &         1 &       1.0 &         5 &       NaN &       NaN &       NaN &         NaN &         NaN &         NaN &         NaN &       1.0 &       NaN &       NaN &      NaN &       NaN &       2.0 &        NaN &        NaN &       1.0 &       NaN &      10.0 &        1 &      2.0 &      NaN &      NaN &       NaN &       NaN &      10.0 &      10.0 &      NaN &      NaN &        NaN &        NaN &        NaN &        NaN &        NaN &       NaN &       NaN &       NaN &        39 &        1 &       2.0 &  2014.0 &     33.0 &     2013 &      33 &       1.0 &       2.0 &       1.0 &         1 &         1 &       5.0 &      10.0 &       3.0 &   2.0 &       1.0 &      52.0 &         2 &         2 &         2 &         2 &      NaN &         2 &    35 &       35 &         1 &         1 &      16 &      12 &     2 &         2 &         2 &          2 &         2 &        3 &       2 &         1 &         2 &      500 &         1 &         2 &      1 &       5 &      NaN &           0 &          0 &           0 &         0 &          0 &          0 &         0 &           0 &           0 &           0 &           0 &           0 &           0 &           0 &           0 &       0 &           0 &           0 &           0 &           0 &           0 &           0 &          0 &           0 &       0 &           0 &           0 &         0 &         0 &       0 &           0 &           0 &            0 &           0 &          0 &         0 &           0 &           0 &          0 &           0 &           0 &        0 &  19877.457610 &     3 &   322 &     1394 &     1382 &      1357 &      1345 &      1333 &       18 &      1 &       2016 \\
 3 &   70628 &         1 &        NaN &        NaN &       NaN &       NaN &       6.0 &       NaN &       NaN &       1.0 &       NaN &       1.0 &         NaN &       NaN &       NaN &         9.0 &         0.0 &     39.0 &      9.0 &      NaN &      NaN &      NaN &       2.0 &           6.0 &           9.0 &        NaN &       NaN &           NaN &           NaN &        NaN &       NaN &           NaN &           NaN &        NaN &     2007.0 &     6.0 &      1.0 &       NaN &        NaN &        NaN &        NaN &       NaN &       NaN &       NaN &       NaN &       NaN &       NaN &       NaN &       NaN &       NaN &       NaN &       NaN &       NaN &       NaN &       NaN &       NaN &       NaN &      NaN &      NaN &        NaN &        NaN &          NaN &          NaN &       NaN &        NaN &        NaN &        NaN &        5.0 &        NaN &          NaN &          NaN &        NaN &        NaN &          NaN &          NaN &        NaN &        NaN &        NaN &          NaN &          NaN &       NaN &        NaN &        NaN &        NaN &        NaN &        NaN &          NaN &          NaN &        NaN &        NaN &          NaN &          NaN &        NaN &        NaN &        NaN &          NaN &          NaN &       NaN &        NaN &        NaN &        NaN &        NaN &        NaN &          NaN &          NaN &        NaN &        NaN &          NaN &          NaN &        NaN &         1.0 &         1 &       1.0 &         1 &       1.0 &       5.0 &       NaN &         3.0 &         4.0 &         NaN &         NaN &       NaN &       5.0 &       NaN &      NaN &       NaN &       NaN &        NaN &        NaN &       NaN &       4.0 &       NaN &        6 &      NaN &      5.0 &      5.0 &       1.0 &       1.0 &       NaN &       NaN &      NaN &      NaN &        NaN &        NaN &        NaN &        NaN &        NaN &       NaN &       NaN &       NaN &        39 &        1 &       1.0 &  2007.0 &     18.0 &     2006 &      17 &       5.0 &       1.0 &       6.0 &         5 &         6 &       NaN &       NaN &       NaN &   2.0 &       1.0 &     995.0 &         5 &         6 &         5 &         6 &      NaN &         6 &    28 &       28 &         1 &         1 &      15 &      11 &     1 &         2 &         3 &          3 &         2 &        3 &       3 &         1 &         2 &      189 &         1 &         3 &      1 &       5 &      NaN &           0 &          0 &           0 &         0 &          0 &          0 &         0 &           0 &           0 &           0 &           0 &           0 &           0 &           0 &           0 &       0 &           0 &           0 &           0 &           0 &           0 &           0 &          0 &           0 &       0 &           0 &           0 &         0 &         0 &       0 &           0 &           0 &            0 &           0 &          0 &         0 &           0 &           0 &          0 &           0 &           0 &        0 &   4221.017695 &     2 &   366 &     1409 &     1397 &      1369 &      1357 &      1345 &       23 &      1 &       2017 \\
 4 &   70628 &         2 &        NaN &        NaN &       NaN &       NaN &       6.0 &       NaN &       NaN &       1.0 &       NaN &       1.0 &         NaN &       NaN &       NaN &         9.0 &         0.0 &     39.0 &      9.0 &      NaN &      NaN &      NaN &       2.0 &           7.0 &           0.0 &        NaN &       NaN &           NaN &           NaN &        NaN &       NaN &           NaN &           NaN &        NaN &     2008.0 &     6.0 &      2.0 &       NaN &        NaN &        NaN &        NaN &       NaN &       NaN &       NaN &       NaN &       NaN &       NaN &       NaN &       NaN &       NaN &       NaN &       NaN &       NaN &       NaN &       NaN &       NaN &       NaN &      NaN &      NaN &        NaN &        NaN &          NaN &          NaN &       NaN &        NaN &        NaN &        NaN &        1.0 &        NaN &          3.0 &          1.0 &        3.0 &        NaN &          3.0 &          1.0 &        3.0 &        NaN &        NaN &          NaN &          NaN &       NaN &        NaN &        NaN &        NaN &        NaN &        NaN &          NaN &          NaN &        NaN &        NaN &          NaN &          NaN &        NaN &        NaN &        NaN &          NaN &          NaN &       NaN &        NaN &        NaN &        NaN &        NaN &        NaN &          NaN &          NaN &        NaN &        NaN &          NaN &          NaN &        NaN &         1.0 &         1 &       1.0 &         5 &       1.0 &       5.0 &       NaN &         3.0 &         NaN &         NaN &         NaN &       NaN &       1.0 &       NaN &      NaN &       NaN &       1.0 &        2.0 &        2.0 &       NaN &       2.0 &       NaN &        6 &      NaN &      1.0 &      1.0 &       NaN &       NaN &       NaN &       NaN &      NaN &      NaN &        NaN &        NaN &        NaN &        NaN &        NaN &       NaN &       NaN &       NaN &        39 &        1 &       2.0 &  2008.0 &     20.0 &     2008 &      19 &       5.0 &       1.0 &       5.0 &         5 &         5 &       NaN &       NaN &       NaN &   2.0 &       1.0 &      13.0 &         3 &         6 &         3 &         6 &     24.0 &         4 &    28 &       28 &         1 &         1 &      15 &      11 &     1 &         2 &         3 &          3 &         2 &        3 &       3 &         1 &         2 &      189 &         1 &         3 &      1 &       5 &      NaN &           0 &          0 &           0 &         0 &          0 &          0 &         0 &           0 &           0 &           0 &           0 &           0 &           0 &           0 &           0 &       0 &           0 &           0 &           0 &           0 &           0 &           0 &          0 &           0 &       0 &           0 &           0 &         0 &         0 &       0 &           0 &           0 &            0 &           0 &          0 &         0 &           0 &           0 &          0 &           0 &           0 &        0 &   4221.017695 &     2 &   366 &     1409 &     1397 &      1369 &      1357 &      1345 &       23 &      1 &       2017 \\
-\bottomrule
+\midrule
 \end{tabular}
 
 The first column is \passthrough{\lstinline!CASEID!}, which is a unique
@@ -159,19 +155,17 @@ the order of the pregnancies for each respondent, starting from
 
 We will learn more about the other variables as we go along.
 
-In addition to methods like \passthrough{\lstinline!head!},
-\passthrough{\lstinline!nsfg!} has several \textbf{attributes}, which
-are variables associated with a particular type. For example,
-\passthrough{\lstinline!nsfg!} has an attribute called
+In addition to methods like \passthrough{\lstinline!head!}, a
+\passthrough{\lstinline!Dataframe!} object has several
+\textbf{attributes}, which are variables associated with the object. For
+example, \passthrough{\lstinline!nsfg!} has an attribute called
 \passthrough{\lstinline!shape!}, which is the number of rows and
 columns:
 
-\begin{lstlisting}[language=Python]
-nsfg.shape
-\end{lstlisting}
-
 \begin{lstlisting}[]
-(9553, 248)
+nsfg.shape
+(@\dashfill@)
+@@@(9553, 248)@@@
 \end{lstlisting}
 
 There are 9553 rows in this dataset, one for each pregnancy, and 248
@@ -180,17 +174,15 @@ columns, one for each variable.
 \passthrough{\lstinline!nsfg!} also has an attribute called
 \passthrough{\lstinline!columns!}, which contains the column names:
 
-\begin{lstlisting}[language=Python]
-nsfg.columns
-\end{lstlisting}
-
 \begin{lstlisting}[]
-Index(['CASEID', 'PREGORDR', 'HOWPREG_N', 'HOWPREG_P', 'MOSCURRP', 'NOWPRGDK',
+nsfg.columns
+(@\dashfill@)
+@@@Index(['CASEID', 'PREGORDR', 'HOWPREG_N', 'HOWPREG_P', 'MOSCURRP', 'NOWPRGDK',
        'PREGEND1', 'PREGEND2', 'HOWENDDK', 'NBRNALIV',
        ...
        'SECU', 'SEST', 'CMINTVW', 'CMLSTYR', 'CMJAN3YR', 'CMJAN4YR',
        'CMJAN5YR', 'QUARTER', 'PHASE', 'INTVWYEAR'],
-      dtype='object', length=248)
+      dtype='object', length=248)@@@
 \end{lstlisting}
 
 The column names are stored in an \passthrough{\lstinline!Index!}, which
@@ -205,11 +197,8 @@ can generate nonsense results and never realize it. So, before we start
 looking at data, let's get familiar with the NSFG codebook, which
 describes every variable.
 
-Until recently, the NSFG codebook was available in an interactive online
-format. Unfortunately, it is no longer available, so we have to make due
-with
-\href{https://github.com/AllenDowney/ElementsOfDataScience/raw/master/data/2015-2017_NSFG_FemPregFile_Codebook-508.pdf}{this
-PDF file}, which contains a short description of each variable.
+You can download the codebook for this dataset from
+\url{https://github.com/AllenDowney/ElementsOfDataScience/raw/master/data/2015-2017_NSFG_FemPregFile_Codebook-508.pdf}.
 
 If you search that document for ``weigh at birth'' you should find these
 variables related to birth weight.
@@ -236,13 +225,11 @@ values. You can select a column from a
 \passthrough{\lstinline!DataFrame!} using the bracket operator, with a
 string as the key.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[]
 pounds = nsfg['BIRTHWGT_LB1']
 type(pounds)
-\end{lstlisting}
-
-\begin{lstlisting}[]
-pandas.core.series.Series
+(@\dashfill@)
+@@@pandas.core.series.Series@@@
 \end{lstlisting}
 
 The result is a \passthrough{\lstinline!Series!}, which is another
@@ -252,12 +239,12 @@ the birth weight, in pounds, for each live birth.
 \passthrough{\lstinline!head!} shows the first five values in the
 series, the name of the series, and the data type:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[]
 pounds.head()
 \end{lstlisting}
 
 \begin{tabular}{lr}
-\toprule
+\midrule
 {} &  BIRTHWGT\_LB1 \\
 \midrule
 0 &           7.0 \\
@@ -265,7 +252,7 @@ pounds.head()
 2 &           9.0 \\
 3 &           6.0 \\
 4 &           7.0 \\
-\bottomrule
+\midrule
 \end{tabular}
 
 One of the values is \passthrough{\lstinline!NaN!}, which stands for
@@ -288,11 +275,14 @@ these types at:
 
 \begin{itemize}
 \item
-  \href{https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html}{DataFrame}
+  DataFrame:
+  \url{https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html}
 \item
-  \href{https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.Index.html}{Index}
+  Index:
+  \url{https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.Index.html}
 \item
-  \href{https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.Series.html}{Series}
+  Series:
+  \url{https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.Series.html}
 \end{itemize}
 
 This documentation can be overwhelming; I don't recommend trying to read
@@ -306,7 +296,7 @@ At this point we have identified the columns we need to answer the
 question and assigned them to variables named
 \passthrough{\lstinline!pounds!} and \passthrough{\lstinline!ounces!}.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[]
 pounds = nsfg['BIRTHWGT_LB1']
 ounces = nsfg['BIRTHWGT_OZ1']
 \end{lstlisting}
@@ -318,12 +308,12 @@ We can use the \passthrough{\lstinline!value\_counts!} method to see
 what values appear in \passthrough{\lstinline!pounds!} and how many
 times each value appears.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[]
 pounds.value_counts()
 \end{lstlisting}
 
 \begin{tabular}{lr}
-\toprule
+\midrule
 {} &  BIRTHWGT\_LB1 \\
 \midrule
 7.0  &          2268 \\
@@ -343,19 +333,19 @@ pounds.value_counts()
 0.0  &             2 \\
 14.0 &             1 \\
 13.0 &             1 \\
-\bottomrule
+\midrule
 \end{tabular}
 
 By default, the results are sorted with the most frequent value first,
 but we can use \passthrough{\lstinline!sort\_index!} to sort them by
 value instead, with the lightest babies first and heaviest babies last.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[]
 pounds.value_counts().sort_index()
 \end{lstlisting}
 
 \begin{tabular}{lr}
-\toprule
+\midrule
 {} &  BIRTHWGT\_LB1 \\
 \midrule
 0.0  &             2 \\
@@ -375,7 +365,7 @@ pounds.value_counts().sort_index()
 14.0 &             1 \\
 98.0 &             2 \\
 99.0 &            89 \\
-\bottomrule
+\midrule
 \end{tabular}
 
 As we'd expect, the most frequent values are 6-8 pounds, but there are
@@ -387,7 +377,7 @@ We can validate the results by comparing them to the codebook, which
 lists the values and their frequencies.
 
 \begin{longtable}[]{@{}lll@{}}
-\toprule
+\midrule
 value & label & Total\tabularnewline
 \midrule
 \endhead
@@ -400,7 +390,7 @@ value & label & Total\tabularnewline
 98 & Refused & 2\tabularnewline
 99 & Don't know & 89\tabularnewline
 & Total & 9553\tabularnewline
-\bottomrule
+\midrule
 \end{longtable}
 
 The results from \passthrough{\lstinline!value\_counts!} agree with the
@@ -412,7 +402,7 @@ column \passthrough{\lstinline!'OUTCOME'!} encodes the outcome of each
 pregnancy as shown below:
 
 \begin{longtable}[]{@{}ll@{}}
-\toprule
+\midrule
 Value & Meaning\tabularnewline
 \midrule
 \endhead
@@ -422,17 +412,15 @@ Value & Meaning\tabularnewline
 4 & Miscarriage\tabularnewline
 5 & Ectopic pregnancy\tabularnewline
 6 & Current pregnancy\tabularnewline
-\bottomrule
+\midrule
 \end{longtable}
 
 Use \passthrough{\lstinline!value\_counts!} to display the values in
 this column and how many times each value appears. Are the results
-consistent with
-\href{https://github.com/AllenDowney/ElementsOfDataScience/raw/master/data/2015-2017_NSFG_FemPregFile_Codebook-508.pdf}{the
-codebook}?
+consistent with the codebook?
 
 \hypertarget{summary-statistics}{%
-\section{Summary statistics}\label{summary-statistics}}
+\section{Summary Statistics}\label{summary-statistics}}
 
 Another way to validate the data is with
 \passthrough{\lstinline!describe!}, which computes summary statistics
@@ -440,12 +428,12 @@ like the mean, standard deviation, minimum, and maximum.
 
 Here are the results for \passthrough{\lstinline!pounds!}.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[]
 pounds.describe()
 \end{lstlisting}
 
 \begin{tabular}{lr}
-\toprule
+\midrule
 {} &  BIRTHWGT\_LB1 \\
 \midrule
 count &   6690.000000 \\
@@ -456,7 +444,7 @@ min   &      0.000000 \\
 50\%   &      7.000000 \\
 75\%   &      8.000000 \\
 max   &     99.000000 \\
-\bottomrule
+\midrule
 \end{tabular}
 
 \passthrough{\lstinline!count!} is the number of values, not including
@@ -476,7 +464,7 @@ really compute the mean, we have to replace those values with
 
 The \passthrough{\lstinline!replace()!} method does what we want:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[]
 import numpy as np
 
 pounds_clean = pounds.replace([98, 99], np.nan)
@@ -491,14 +479,15 @@ as \passthrough{\lstinline!np!}.
 The result from \passthrough{\lstinline!replace()!} is a new Series,
 which I assign to \passthrough{\lstinline!pounds\_clean!}. If we run
 \passthrough{\lstinline!describe!} again, we see that
-\passthrough{\lstinline!count!} includes only the valid values.
+\passthrough{\lstinline!count!} is smaller now because it includes only
+the valid values.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[]
 pounds_clean.describe()
 \end{lstlisting}
 
 \begin{tabular}{lr}
-\toprule
+\midrule
 {} &  BIRTHWGT\_LB1 \\
 \midrule
 count &   6599.000000 \\
@@ -509,7 +498,7 @@ min   &      0.000000 \\
 50\%   &      7.000000 \\
 75\%   &      8.000000 \\
 max   &     14.000000 \\
-\bottomrule
+\midrule
 \end{tabular}
 
 The mean of the new series is about 6.7 pounds. Remember that the mean
@@ -525,7 +514,7 @@ Then use \passthrough{\lstinline!replace!} to replace the special values
 affect the results?
 
 \hypertarget{series-arithmetic}{%
-\section{Series arithmetic}\label{series-arithmetic}}
+\section{Series Arithmetic}\label{series-arithmetic}}
 
 Now we want to combine \passthrough{\lstinline!pounds!} and
 \passthrough{\lstinline!ounces!} into a single Series that contains
@@ -549,18 +538,13 @@ kilogram). What is the mean birth weight in kilograms?
 conception, and \passthrough{\lstinline!'AGEPREG'!} the respondent's age
 at the end of the pregnancy.
 
-Both variables are recorded as integers with two implicit decimal
-places, so the value \passthrough{\lstinline!2575!} means that the
-respondent's age was \passthrough{\lstinline!25.75!}.
-
 \begin{itemize}
 \item
   Read the documentation of these variables. Are there any special
   values we have to deal with?
 \item
   Select \passthrough{\lstinline!'AGECON'!} and
-  \passthrough{\lstinline!'AGEPREG'!}, divide them by
-  \passthrough{\lstinline!100!}, and assign them to variables named
+  \passthrough{\lstinline!'AGEPREG'!} and assign them to variables named
   \passthrough{\lstinline!agecon!} and
   \passthrough{\lstinline!agepreg!}.
 \item
@@ -571,8 +555,8 @@ respondent's age was \passthrough{\lstinline!25.75!}.
   and other summary statistics.
 \end{itemize}
 
-If the mean length of pregnancy seems short, remember that this dataset
-includes all pregnancies, not just the ones that ended in live birth.
+Based on the results, it seems like this might not be a good way to
+estimate the duration of pregnancy. Why not?
 
 \hypertarget{histograms}{%
 \section{Histograms}\label{histograms}}
@@ -582,16 +566,14 @@ for babies in the U.S.?\\
 As an answer we \emph{could} take the results from the previous section
 and compute the mean:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[]
 pounds_clean = pounds.replace([98, 99], np.nan)
 ounces_clean = ounces.replace([98, 99], np.nan)
 
 birth_weight = pounds_clean + ounces_clean / 16
 birth_weight.mean()
-\end{lstlisting}
-
-\begin{lstlisting}[]
-7.180217889908257
+(@\dashfill@)
+@@@7.180217889908257@@@
 \end{lstlisting}
 
 But it is risky to compute a summary statistic, like the mean, before we
@@ -606,7 +588,7 @@ frequencies on the \passthrough{\lstinline!y!} axis.
 \passthrough{\lstinline!hist!} method that makes histograms. And we can
 use Matplotlib to label the axes.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[]
 import matplotlib.pyplot as plt
 
 birth_weight.hist(bins=30)
@@ -616,7 +598,7 @@ plt.title('Distribution of U.S. birth weight');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[scale=0.75]{chapters/07_dataframes_files/07_dataframes_60_0.pdf}
+\includegraphics[width=4in]{07_dataframes_files/07_dataframes_59_0.png}
 \end{center}
 
 The keyword argument, \passthrough{\lstinline!bins!}, tells
@@ -633,7 +615,8 @@ includes some babies that were born preterm.
 \textbf{Exercise:} \passthrough{\lstinline!hist!} takes keyword
 arguments that specify the type and appearance of the histogram. Find
 the documentation of \passthrough{\lstinline!hist!} and see if you can
-figure out how to plot the histogram as an unfilled line.
+figure out how to plot the histogram as an unfilled line against a
+background with no grid lines.
 
 \textbf{Exercise:} As we saw in a previous exercise, the NSFG dataset
 includes a column called \passthrough{\lstinline!AGECON!} that records
@@ -642,16 +625,14 @@ age at conception for each pregnancy.
 \begin{itemize}
 \item
   Select this column from the \passthrough{\lstinline!DataFrame!} and
-  divide by 100 to convert it to years.
-\item
-  Plot the histogram of these values with 20 bins.
+  plot the histogram of the values with 20 bins.
 \item
   Label the \passthrough{\lstinline!x!} and \passthrough{\lstinline!y!}
   axes appropriately.
 \end{itemize}
 
 \hypertarget{boolean-series}{%
-\section{Boolean series}\label{boolean-series}}
+\section{Boolean Series}\label{boolean-series}}
 
 We have seen that the distribution of birth weights is \textbf{skewed}
 to the left; that is, there are more light babies than heavy ones and
@@ -663,13 +644,11 @@ To see which babies are preterm, we can use
 \passthrough{\lstinline!PRGLNGTH!}, which records pregnancy length in
 weeks and compute it to \passthrough{\lstinline!37!}.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[]
 preterm = (nsfg['PRGLNGTH'] < 37)
 preterm.dtype
-\end{lstlisting}
-
-\begin{lstlisting}[]
-dtype('bool')
+(@\dashfill@)
+@@@dtype('bool')@@@
 \end{lstlisting}
 
 When you compare a \passthrough{\lstinline!Series!} to a value, the
@@ -680,12 +659,12 @@ element is a Boolean value, \passthrough{\lstinline!True!} or
 \passthrough{\lstinline!False!} otherwise. We can use
 \passthrough{\lstinline!head!} to see the first 5 elements.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[]
 preterm.head()
 \end{lstlisting}
 
 \begin{tabular}{ll}
-\toprule
+\midrule
 {} &  PRGLNGTH \\
 \midrule
 0 &     False \\
@@ -693,21 +672,19 @@ preterm.head()
 2 &     False \\
 3 &     False \\
 4 &     False \\
-\bottomrule
+\midrule
 \end{tabular}
 
 If you compute the sum of a Boolean \passthrough{\lstinline!Series!}, it
 treats \passthrough{\lstinline!True!} as 1 and
 \passthrough{\lstinline!False!} as 0, so the sum is the number of
 \passthrough{\lstinline!True!} values, which is the number of preterm
-babies, about 3700.
-
-\begin{lstlisting}[language=Python]
-preterm.sum()
-\end{lstlisting}
+babies.
 
 \begin{lstlisting}[]
-3675
+preterm.sum()
+(@\dashfill@)
+@@@3675@@@
 \end{lstlisting}
 
 If you compute the mean of a Boolean \passthrough{\lstinline!Series!},
@@ -715,12 +692,10 @@ you get the \emph{fraction} of \passthrough{\lstinline!True!} values. In
 this case, it's about 0.38; that is, about 38\% of the pregnancies are
 less than 37 weeks.
 
-\begin{lstlisting}[language=Python]
-preterm.mean()
-\end{lstlisting}
-
 \begin{lstlisting}[]
-0.38469590704490736
+preterm.mean()
+(@\dashfill@)
+@@@0.38469590704490736@@@
 \end{lstlisting}
 
 However, this result might be misleading because it includes all
@@ -728,25 +703,21 @@ pregnancy outcomes, not just live births. We can create another Boolean
 \passthrough{\lstinline!Series!} to indicate which pregnancies ended in
 live birth:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[]
 live = (nsfg['OUTCOME'] == 1)
 live.mean()
-\end{lstlisting}
-
-\begin{lstlisting}[]
-0.7006176070344394
+(@\dashfill@)
+@@@0.7006176070344394@@@
 \end{lstlisting}
 
 Now we can use the logical operator \passthrough{\lstinline!\&!} to
 identify pregnancies where the outcome is a preterm live birth:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[]
 live_preterm = (live & preterm)
 live_preterm.mean()
-\end{lstlisting}
-
-\begin{lstlisting}[]
-0.08929132209777034
+(@\dashfill@)
+@@@0.08929132209777034@@@
 \end{lstlisting}
 
 \textbf{Exercise:} Of all live births, what fraction are preterm?
@@ -767,8 +738,9 @@ The other common logical operators are:
 \end{itemize}
 
 The logical operators treat \passthrough{\lstinline!NaN!} the same as
-False. So you should be careful about using the NOT operator with a
-Series that contains \passthrough{\lstinline!NaN!} values. For example,
+\passthrough{\lstinline!False!}. So you should be careful about using
+the NOT operator with a Series that contains
+\passthrough{\lstinline!NaN!} values. For example,
 \passthrough{\lstinline!\~preterm!} would include not just full term
 pregnancies, but also pregnancies with unknown length.
 
@@ -786,44 +758,38 @@ the bracket operator to select values from
 \passthrough{\lstinline!preterm\_weight!} gets birth weights for preterm
 babies.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[]
 preterm_weight = birth_weight[preterm]
 preterm_weight.mean()
-\end{lstlisting}
-
-\begin{lstlisting}[]
-5.480958781362007
+(@\dashfill@)
+@@@5.480958781362007@@@
 \end{lstlisting}
 
 To select full-term babies, we can create a Boolean
 \passthrough{\lstinline!Series!} like this:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[]
 fullterm = (nsfg['PRGLNGTH'] >= 37)
 \end{lstlisting}
 
 And use it to select birth weights for full term babies:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[]
 full_term_weight = birth_weight[fullterm]
 full_term_weight.mean()
-\end{lstlisting}
-
-\begin{lstlisting}[]
-7.429609416096791
+(@\dashfill@)
+@@@7.429609416096791@@@
 \end{lstlisting}
 
 As expected, full term babies are heavier, on average, than preterm
 babies. To be more explicit, we could also limit the results to live
 births, like this:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[]
 full_term_weight = birth_weight[live & fullterm]
 full_term_weight.mean()
-\end{lstlisting}
-
-\begin{lstlisting}[]
-7.429609416096791
+(@\dashfill@)
+@@@7.429609416096791@@@
 \end{lstlisting}
 
 But in this case we get the same result because
@@ -834,19 +800,19 @@ single births and multiple births (twins, triplets, etc.). The variable
 \passthrough{\lstinline!NBRNALIV!} represents the number of babies born
 alive from a single pregnancy.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[]
 nbrnaliv = nsfg['NBRNALIV']
 nbrnaliv.value_counts()
 \end{lstlisting}
 
 \begin{tabular}{lr}
-\toprule
+\midrule
 {} &  NBRNALIV \\
 \midrule
 1.0 &      6573 \\
 2.0 &       111 \\
 3.0 &         6 \\
-\bottomrule
+\midrule
 \end{tabular}
 
 Use \passthrough{\lstinline!nbrnaliv!} and
@@ -863,7 +829,7 @@ what fraction are preterm?
 full-term births?
 
 \hypertarget{weighted-mean}{%
-\section{Weighted mean}\label{weighted-mean}}
+\section{Weighted Mean}\label{weighted-mean}}
 
 We are almost ready to compute the average birth weight, but there's one
 more problem we have to solve: oversampling.
@@ -880,13 +846,13 @@ indicates how many pregnancies it represents. In
 column named \passthrough{\lstinline!wgt2015\_2017!}. Here's what it
 looks like.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[]
 sampling_weight = nsfg['WGT2015_2017']
 sampling_weight.describe()
 \end{lstlisting}
 
 \begin{tabular}{lr}
-\toprule
+\midrule
 {} &   WGT2015\_2017 \\
 \midrule
 count &    9553.000000 \\
@@ -897,7 +863,7 @@ min   &    1924.916000 \\
 50\%   &    7292.490835 \\
 75\%   &   15724.902673 \\
 max   &  106774.400000 \\
-\bottomrule
+\midrule
 \end{tabular}
 
 The median value (50th percentile) in this column is about 7292, which
@@ -927,13 +893,11 @@ with that, we'll use two \passthrough{\lstinline!Series!} methods,
 \passthrough{\lstinline!Series!} that is \passthrough{\lstinline!True!}
 where the corresponding value is \passthrough{\lstinline!NaN!}.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[]
 missing = birth_weight.isna()
 missing.sum()
-\end{lstlisting}
-
-\begin{lstlisting}[]
-3013
+(@\dashfill@)
+@@@3013@@@
 \end{lstlisting}
 
 In \passthrough{\lstinline!birth\_weight!} there are 3013 missing values
@@ -944,27 +908,23 @@ In \passthrough{\lstinline!birth\_weight!} there are 3013 missing values
 where the corresponding value is \emph{not}
 \passthrough{\lstinline!NaN!}.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[]
 valid = birth_weight.notna()
 valid.sum()
-\end{lstlisting}
-
-\begin{lstlisting}[]
-6540
+(@\dashfill@)
+@@@6540@@@
 \end{lstlisting}
 
 We can combine \passthrough{\lstinline!valid!} with the other Boolean
 \passthrough{\lstinline!Series!} we have computed to identify single,
 full term, live births with valid birth weights.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[]
 single = (nbrnaliv == 1)
 selected = valid & live & single & fullterm
 selected.sum()
-\end{lstlisting}
-
-\begin{lstlisting}[]
-5648
+(@\dashfill@)
+@@@5648@@@
 \end{lstlisting}
 
 \textbf{Exercise:} Use \passthrough{\lstinline!selected!},

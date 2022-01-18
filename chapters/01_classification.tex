@@ -135,7 +135,7 @@ The authors of ``Machine Bias'' published their data and analysis at
 We can use Pandas to read the data file and make a
 \passthrough{\lstinline!DataFrame!}.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -144,7 +144,7 @@ cp = pd.read_csv('compas-scores-two-years.csv')
 cp.shape
 \end{lstlisting}
 
-\begin{lstlisting}[]
+\begin{lstlisting}[style=output]
 (7214, 53)
 \end{lstlisting}
 
@@ -159,7 +159,7 @@ supplemental article at
 It includes this table, which summarizes many of the results they
 report:
 
-\includegraphics{figs/machine_bias_table.png}
+\includegraphics[width=4in]{figs/machine_bias_table.png}
 
 The table summarizes results for all defendants and two subgroups:
 defendants classified as white (``Caucasian'' in the original dataset)
@@ -192,7 +192,7 @@ But first let's examine the data and compute some recoded variables. The
 following function displays the values in a Series and the number of
 times each value appears.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 def values(series):
     """Count the values and sort.
     
@@ -207,7 +207,7 @@ Here are the values of \passthrough{\lstinline!decile\_score!}, which is
 the output of the COMPAS algorithm. \passthrough{\lstinline!1!} is the
 lowest risk category; \passthrough{\lstinline!10!} is the highest.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 values(cp['decile_score'])
 \end{lstlisting}
 
@@ -245,7 +245,7 @@ I'll create a Boolean \passthrough{\lstinline!Series!} called
 \passthrough{\lstinline!True!} for respondents with a decile score
 greater than 4.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 high_risk = (cp['decile_score'] > 4)
 high_risk.name = 'HighRisk'
 values(high_risk)
@@ -265,7 +265,7 @@ a defendant was charged with another crime during a two year period,
 after the original charge, when they were not in a correctional
 facility.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 values(cp['two_year_recid'])
 \end{lstlisting}
 
@@ -283,7 +283,7 @@ I'll create another \passthrough{\lstinline!Series!}, called
 \passthrough{\lstinline!True!} for defendants who were charged with
 another crime within two years.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 new_charge_2 = (cp['two_year_recid'] == 1)
 new_charge_2.name = 'NewCharge2'
 values(new_charge_2)
@@ -303,7 +303,7 @@ If we make a cross-tabulation of
 \passthrough{\lstinline!high\_risk!}, the result is a DataFrame that
 indicates how many defendants are in each of four groups:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 pd.crosstab(new_charge_2, high_risk)
 \end{lstlisting}
 
@@ -346,7 +346,7 @@ replicating their analysis correctly.
 I'll also check the confusion matrices for white and black defendants.
 Here are the values of \passthrough{\lstinline!race!}:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 values(cp['race'])
 \end{lstlisting}
 
@@ -365,7 +365,7 @@ Other            &   377 \\
 
 Here's a Boolean Series that's true for white defendants.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 white = (cp['race'] == 'Caucasian')
 white.name = 'white'
 values(white)
@@ -382,7 +382,7 @@ True  &   2454 \\
 
 And here's the confusion matrix for white defendants.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 pd.crosstab(new_charge_2[white], high_risk[white])
 \end{lstlisting}
 
@@ -399,7 +399,7 @@ True       &    461 &    505 \\
 \passthrough{\lstinline!black!} is a Boolean Series that is
 \passthrough{\lstinline!True!} for black defendants.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 black = (cp['race'] == 'African-American')
 black.name = 'black'
 values(black)
@@ -416,7 +416,7 @@ True  &   3696 \\
 
 And here is the confusion matrix for black defendants.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 pd.crosstab(new_charge_2[black], high_risk[black])
 \end{lstlisting}
 
@@ -481,7 +481,7 @@ most common is the one on the
 \href{https://en.wikipedia.org/wiki/Confusion_matrix}{confusion matrix
 Wikipedia page}, which looks like this:
 
-\includegraphics{figs/confusion_matrix1.png}
+\includegraphics[width=4in]{figs/confusion_matrix1.png}
 
 In this arrangement:
 
@@ -520,7 +520,7 @@ fraction (or percentage) of correct predictions. To compute accuracy, it
 is convenient to extract from the confusion matrix the number of true
 positives, false positives, false negatives, and true negatives.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 tp, fp, fn, tn = matrix_all.to_numpy().flatten()
 \end{lstlisting}
 
@@ -528,18 +528,18 @@ The number of true predictions is \passthrough{\lstinline!tp + tn!}. The
 number of false predictions is \passthrough{\lstinline!fp + fn!}. So we
 can compute the fraction of true predictions like this:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 def percent(x, y):
     """Compute the percentage `x/(x+y)*100`."""
     return x / (x+y) * 100
 \end{lstlisting}
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 accuracy = percent(tp + tn, fp + fn)
 accuracy
 \end{lstlisting}
 
-\begin{lstlisting}[]
+\begin{lstlisting}[style=output]
 65.37288605489326
 \end{lstlisting}
 
@@ -573,7 +573,7 @@ charged with a new crime. NPV is the fraction of low risk defendants who
 The following function takes a confusion matrix and computes these
 metrics.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 def predictive_value(m):
     """Compute positive and negative predictive value.
     
@@ -587,12 +587,12 @@ def predictive_value(m):
 
 Here are the predictive values for all defendants.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 ppv, npv = predictive_value(matrix_all)
 ppv, npv
 \end{lstlisting}
 
-\begin{lstlisting}[]
+\begin{lstlisting}[style=output]
 (61.350618028338864, 68.79651013600206)
 \end{lstlisting}
 
@@ -625,7 +625,7 @@ correctly classified as low risk.
 The following function takes a confusion matrix and computes sensitivity
 and specificity.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 def sens_spec(m):
     """Compute sensitivity and specificity.
     
@@ -639,12 +639,12 @@ def sens_spec(m):
 
 Here are sensitivity and specificity for all defendants.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 sens, spec = sens_spec(matrix_all)
 sens, spec
 \end{lstlisting}
 
-\begin{lstlisting}[]
+\begin{lstlisting}[style=output]
 (62.59612426945556, 67.65076961897553)
 \end{lstlisting}
 
@@ -662,7 +662,7 @@ It can be hard to keep all of these metrics straight, especially when
 you are learning about them for the first time. The following diagram
 might help (from \url{https://en.wikipedia.org/wiki/Confusion_matrix}):
 
-\includegraphics{figs/confusion_matrix2.png}
+\includegraphics[width=4in]{figs/confusion_matrix2.png}
 
 PPV and sensitivity are similar in the sense that they both have true
 positives in the numerator. The difference is the denominator:
@@ -722,7 +722,7 @@ In this example:
 The following function takes a confusion matrix and computes false
 positive and false negative rates.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 def error_rates(m):
     """Compute false positive and false negative rate.
     
@@ -736,33 +736,33 @@ def error_rates(m):
 
 Here are the error rates for all defendants.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 fpr, fnr = error_rates(matrix_all)
 fpr, fnr
 \end{lstlisting}
 
-\begin{lstlisting}[]
+\begin{lstlisting}[style=output]
 (32.349230381024476, 37.40387573054445)
 \end{lstlisting}
 
 FPR is the complement of specificity, which means they have to add up to
 100\%
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 fpr + spec
 \end{lstlisting}
 
-\begin{lstlisting}[]
+\begin{lstlisting}[style=output]
 100.0
 \end{lstlisting}
 
 And FNR is the complement of sensitivity.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 fnr + sens
 \end{lstlisting}
 
-\begin{lstlisting}[]
+\begin{lstlisting}[style=output]
 100.0
 \end{lstlisting}
 
@@ -807,7 +807,7 @@ all cases where the condition is positive. In the example, it's the
 fraction of defendants who recidivate. The following function computes
 \textbf{prevalence}:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 def prevalence(df):
     """Compute prevalence.
     
@@ -820,12 +820,12 @@ def prevalence(df):
 
 Here's the prevalence for all defendants:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 prev = prevalence(matrix_all)
 prev
 \end{lstlisting}
 
-\begin{lstlisting}[]
+\begin{lstlisting}[style=output]
 45.06515109509287
 \end{lstlisting}
 
@@ -838,7 +838,7 @@ crime within two years of their release.
 The following function takes a confusion matrix, computes all the
 metrics, and puts them in a DataFrame.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 def compute_metrics(m, name=''):
     """Compute all metrics.
     
@@ -859,7 +859,7 @@ def compute_metrics(m, name=''):
 
 Here are the metrics for all defendants.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 compute_metrics(matrix_all, 'All defendants')
 \end{lstlisting}
 
@@ -881,7 +881,7 @@ analysis agrees with theirs.
 
 Here are the same metrics for black defendants.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 compute_metrics(matrix_black, 'Black defendants')
 \end{lstlisting}
 
@@ -900,7 +900,7 @@ Prevalence       &  51.433983 \\
 
 And for white defendants.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 compute_metrics(matrix_white, 'White defendants')
 \end{lstlisting}
 
@@ -930,19 +930,19 @@ including the headline results:
   (28\%, compared to 48\%).
 \end{enumerate}
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 error_rates(matrix_black)
 \end{lstlisting}
 
-\begin{lstlisting}[]
+\begin{lstlisting}[style=output]
 (44.84679665738162, 27.985270910047344)
 \end{lstlisting}
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 error_rates(matrix_white)
 \end{lstlisting}
 
-\begin{lstlisting}[]
+\begin{lstlisting}[style=output]
 (23.45430107526882, 47.72256728778468)
 \end{lstlisting}
 

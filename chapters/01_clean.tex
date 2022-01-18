@@ -1,15 +1,6 @@
 \hypertarget{cleaning-and-validation}{%
 \chapter{Cleaning and Validation}\label{cleaning-and-validation}}
 
-\hypertarget{introduction}{%
-\section{Introduction}\label{introduction}}
-
-This is the first in a series of notebooks that make up a
-\href{https://allendowney.github.io/PoliticalAlignmentCaseStudy/}{case
-study in exploratory data analysis}. This case study is part of the
-\href{https://allendowney.github.io/ElementsOfDataScience/}{\emph{Elements
-of Data Science}} curriculum.
-
 In this notebook, we
 
 \begin{enumerate}
@@ -23,8 +14,8 @@ In this notebook, we
   Validate the data by comparing the values in the dataset with values
   documented in the codebook.
 \item
-  Generate ``resampled'' datasets that correct for deliberate
-  oversampling in the dataset, and
+  Generate resampled datasets that correct for deliberate oversampling
+  in the dataset, and
 \item
   Store the resampled data in a binary format (HDF5) that makes it
   easier to work with in the notebooks that follow this one.
@@ -33,7 +24,7 @@ In this notebook, we
 The following cell loads the packages we need. If you have everything
 installed, there should be no error messages.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -49,7 +40,7 @@ Explorer}, I selected a subset of the variables in the GSS and made it
 available along with this notebook. The following cell downloads this
 extract.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 from os.path import basename, exists
 
 def download(url):
@@ -77,7 +68,7 @@ The dictionary file is in Stata format, so we'll use the
 \passthrough{\lstinline!statadict!} library to read it. The following
 cell installs it if necessary.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 try:
     import statadict
 except ImportError:
@@ -88,7 +79,7 @@ We can use the Python module \passthrough{\lstinline!tarfile!} to
 extract the dictionary file, and \passthrough{\lstinline!statadict!} to
 read and parse it.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 import tarfile
 from statadict import parse_stata_dict
 
@@ -103,8 +94,8 @@ with tarfile.open(filename) as tf:
 stata_dict
 \end{lstlisting}
 
-\begin{lstlisting}[]
-<statadict.base.StataDict at 0x7f18f62888d0>
+\begin{lstlisting}[style=output]
+<statadict.base.StataDict at 0x7f77ad4824d0>
 \end{lstlisting}
 
 The result is a \passthrough{\lstinline!StataDict!} object that contains
@@ -114,7 +105,7 @@ which indicate where each column is. We can pass these values to
 reads \href{https://en.wikipedia.org/wiki/Flat-file_database}{fixed
 width files}, which is what \passthrough{\lstinline!GSS.dat!} is.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 with tarfile.open(filename) as tf:
     fp = tf.extractfile(data_file)  
     gss = pd.read_fwf(fp,
@@ -125,7 +116,7 @@ with tarfile.open(filename) as tf:
 The column names in the data file are in all caps. I'll convert them to
 lower case because I think it makes the code look better.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 gss.columns = gss.columns.str.lower()
 \end{lstlisting}
 
@@ -133,12 +124,12 @@ We can use \passthrough{\lstinline!shape!} and
 \passthrough{\lstinline!head!} to see what the
 \passthrough{\lstinline!DataFrame!} looks like.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 print(gss.shape)
 gss.head()
 \end{lstlisting}
 
-\begin{lstlisting}[]
+\begin{lstlisting}[style=output]
 (64814, 169)
 \end{lstlisting}
 
@@ -220,7 +211,7 @@ the documentation of this variable in the GSS codebook}.
 
 The responses are encoded like this:
 
-\begin{lstlisting}[]
+\begin{lstlisting}[style=output]
 1   Extremely liberal
 2   Liberal
 3   Slightly liberal
@@ -237,7 +228,7 @@ The following function, \passthrough{\lstinline!values!}, takes a Series
 that represents a single variable and returns the values in the series
 and their frequencies.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 def values(series):
     """Count the values and sort.
     
@@ -250,11 +241,11 @@ def values(series):
 
 Here are the values for the variable \passthrough{\lstinline!polviews!}.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 column = gss['polviews']
 \end{lstlisting}
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 values(column)
 \end{lstlisting}
 
@@ -282,13 +273,13 @@ codebook.
 
 We can select values from a single year like this:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 one_year = (gss['year'] == 1974)
 \end{lstlisting}
 
 And look at the values and their frequencies:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 values(column[one_year])
 \end{lstlisting}
 
@@ -341,29 +332,29 @@ I'll replace the numeric codes 8, 9, and 0 with
 \passthrough{\lstinline!NaN!}, which is a special value used to indicate
 missing data.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 clean = column.replace([0, 8, 9], np.nan)
 \end{lstlisting}
 
 We can use \passthrough{\lstinline!notna!} and
 \passthrough{\lstinline!sum!} to count the valid responses:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 clean.notna().sum()
 \end{lstlisting}
 
-\begin{lstlisting}[]
+\begin{lstlisting}[style=output]
 55328
 \end{lstlisting}
 
 And we use \passthrough{\lstinline!isna!} to count the missing
 responses:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 clean.isna().sum()
 \end{lstlisting}
 
-\begin{lstlisting}[]
+\begin{lstlisting}[style=output]
 9486
 \end{lstlisting}
 
@@ -378,19 +369,19 @@ However, in this example, the results don't match. The codebook reports
 To figure out what was wrong, I looked at the difference between the
 values in the codebook and the values I computed from the dataset.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 clean.notna().sum() - 53081
 \end{lstlisting}
 
-\begin{lstlisting}[]
+\begin{lstlisting}[style=output]
 2247
 \end{lstlisting}
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 clean.isna().sum() - 9385
 \end{lstlisting}
 
-\begin{lstlisting}[]
+\begin{lstlisting}[style=output]
 101
 \end{lstlisting}
 
@@ -399,28 +390,28 @@ the code book might not include the most recent data, from 2018.
 
 Here are the numbers from 2018.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 one_year = (gss['year'] == 2018)
 one_year.sum()
 \end{lstlisting}
 
-\begin{lstlisting}[]
+\begin{lstlisting}[style=output]
 2348
 \end{lstlisting}
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 clean[one_year].notna().sum()
 \end{lstlisting}
 
-\begin{lstlisting}[]
+\begin{lstlisting}[style=output]
 2247
 \end{lstlisting}
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 clean[one_year].isna().sum()
 \end{lstlisting}
 
-\begin{lstlisting}[]
+\begin{lstlisting}[style=output]
 101
 \end{lstlisting}
 
@@ -439,7 +430,7 @@ and identified the special values that indicate missing data.
 I recorded that information in the following function, which is intended
 to replace special values with \passthrough{\lstinline!NaN!}.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 def replace_invalid(df, columns, bad):
     for column in columns:
         df[column].replace(bad, np.nan, inplace=True)
@@ -511,11 +502,11 @@ def gss_replace_invalid(df):
     df.rincome.replace([0, 13, 98, 99], np.nan, inplace=True)    
 \end{lstlisting}
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 gss_replace_invalid(gss)
 \end{lstlisting}
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 # try to make the dataset smaller by replacing
 # 64-bit FP numbers with 32-bit.
 
@@ -540,13 +531,13 @@ If you get \passthrough{\lstinline!year!} or
 \passthrough{\lstinline!id\_!}, run the cell again to get a different
 variable name.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 np.random.seed(None)
 np.random.choice(gss.columns)
 \end{lstlisting}
 
-\begin{lstlisting}[]
-'natenrgy'
+\begin{lstlisting}[style=output]
+'racpres'
 \end{lstlisting}
 
 Go back through the previous two sections of this notebook and replace
@@ -573,7 +564,7 @@ by ``resampling'', that is, by drawing a random sample from the dataset,
 where each respondent's chance of appearing in the sample is
 proportional to their sampling weight.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 def resample_rows_weighted(df, column):
     """Resamples a DataFrame using probabilities proportional to given column.
 
@@ -587,7 +578,7 @@ def resample_rows_weighted(df, column):
     return sample
 \end{lstlisting}
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 def resample_by_year(df, column):
     """Resample rows within each year.
 
@@ -603,7 +594,7 @@ def resample_by_year(df, column):
     return sample
 \end{lstlisting}
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 np.random.seed(19)
 sample = resample_by_year(gss, 'wtssall')
 \end{lstlisting}
@@ -640,24 +631,24 @@ exists, we should overwrite it.
 With compression level \passthrough{\lstinline!3!}, it reduces the size
 of the file by a factor of 10.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 # save the original
 
 gss.to_hdf('gss_eda.hdf5', 'gss', 'w', complevel=3)
 \end{lstlisting}
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 !ls -l gss_eda.hdf5
 \end{lstlisting}
 
-\begin{lstlisting}[]
--rw-rw-r-- 1 downey downey 6939805 May  6 10:24 gss_eda.hdf5
+\begin{lstlisting}[style=output]
+-rw-rw-r-- 1 downey downey 6939805 May 13 11:23 gss_eda.hdf5
 \end{lstlisting}
 
 And I'll create a second file with three random resamplings of the
 original dataset.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 # if the file already exists, remove it
 import os
 
@@ -669,7 +660,7 @@ This file contains three keys, \passthrough{\lstinline!gss0!},
 \passthrough{\lstinline!gss1!}, and \passthrough{\lstinline!gss2!},
 which map to three DataFrames.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 # generate and store three resamplings
 keys = ['gss0', 'gss1', 'gss2']
 
@@ -680,12 +671,12 @@ for i in range(3):
     sample.to_hdf('gss_eda.3.hdf5', keys[i], complevel=3)
 \end{lstlisting}
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 !ls -l gss_eda.3.hdf5
 \end{lstlisting}
 
-\begin{lstlisting}[]
--rw-rw-r-- 1 downey downey 20717248 May  6 10:24 gss_eda.3.hdf5
+\begin{lstlisting}[style=output]
+-rw-rw-r-- 1 downey downey 20717248 May 13 11:23 gss_eda.3.hdf5
 \end{lstlisting}
 
 For the other notebooks in this case study, we'll load this resampled

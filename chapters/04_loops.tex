@@ -1,5 +1,5 @@
 \hypertarget{loops-and-files}{%
-\chapter{Loops and files}\label{loops-and-files}}
+\chapter{Loops and Files}\label{loops-and-files}}
 
 This chapter presents loops, which are used to express repeated
 computation, and files, which are used to store data. As an example, we
@@ -19,22 +19,20 @@ most common way to express repetition is a \passthrough{\lstinline!for!}
 loop. As a simple example, suppose we want to display the elements of a
 tuple. Here's a tuple of three integers:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[]
 t = 1, 2, 3
 \end{lstlisting}
 
 And here's a \passthrough{\lstinline!for!} loop that prints the
 elements.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[]
 for x in t:
     print(x)
-\end{lstlisting}
-
-\begin{lstlisting}[]
-1
+(@\dashfill@)
+@@@1
 2
-3
+3@@@
 \end{lstlisting}
 
 The first line of the loop is a \textbf{header} that specifies the
@@ -68,18 +66,16 @@ After printing the last element of the tuple, the loop ends.
 
 We can also loop through the letters in a string:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[]
 word = 'Data'
 
 for letter in word:
     print(letter)
-\end{lstlisting}
-
-\begin{lstlisting}[]
-D
+(@\dashfill@)
+@@@D
 a
 t
-a
+a@@@
 \end{lstlisting}
 
 When the loop begins, \passthrough{\lstinline!word!} already exists, but
@@ -93,12 +89,10 @@ contains.
 
 After the loop ends, the loop variable contains the last value.
 
-\begin{lstlisting}[language=Python]
-letter
-\end{lstlisting}
-
 \begin{lstlisting}[]
-'a'
+letter
+(@\dashfill@)
+@@@'a'@@@
 \end{lstlisting}
 
 \textbf{Exercise:} Create a list, called
@@ -112,19 +106,17 @@ function named \passthrough{\lstinline!list!} that makes new lists. For
 example, if you have a string, you can make a list of letters, like
 this:
 
-\begin{lstlisting}[language=Python]
-list('string')
-\end{lstlisting}
-
 \begin{lstlisting}[]
-['s', 't', 'r', 'i', 'n', 'g']
+list('string')
+(@\dashfill@)
+@@@['s', 't', 'r', 'i', 'n', 'g']@@@
 \end{lstlisting}
 
 If you create a variable named \passthrough{\lstinline!list!}, you can't
 use the function any more.
 
 \hypertarget{looping-and-counting}{%
-\section{Looping and counting}\label{looping-and-counting}}
+\section{Looping and Counting}\label{looping-and-counting}}
 
 \emph{War and Peace} is a famously long book; let's see how long it is.
 To count the words in a book, we need to
@@ -140,51 +132,43 @@ To count the words in a book, we need to
 We'll start with counting. We've already seen that you can create a
 variable and give it a value, like this:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[]
 count = 0
 count
-\end{lstlisting}
-
-\begin{lstlisting}[]
-0
+(@\dashfill@)
+@@@0@@@
 \end{lstlisting}
 
 If you assign a different value to the same variable, the new value
 replaces the old one.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[]
 count = 1
 count
-\end{lstlisting}
-
-\begin{lstlisting}[]
-1
+(@\dashfill@)
+@@@1@@@
 \end{lstlisting}
 
 You can increase the value of a variable by reading the old value,
 adding \passthrough{\lstinline!1!}, and assigning the result back to the
 original variable.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[]
 count = count + 1
 count
-\end{lstlisting}
-
-\begin{lstlisting}[]
-2
+(@\dashfill@)
+@@@2@@@
 \end{lstlisting}
 
 Increasing the value of a variable is called an \textbf{increment};
 decreasing the value is called a \textbf{decrement}. These operations
 are so common that there are special operators for them.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[]
 count += 1
 count
-\end{lstlisting}
-
-\begin{lstlisting}[]
-3
+(@\dashfill@)
+@@@3@@@
 \end{lstlisting}
 
 In this example, the \passthrough{\lstinline!+=!} operator reads the
@@ -194,11 +178,12 @@ value of \passthrough{\lstinline!count!}, adds
 \passthrough{\lstinline!-=!} and other update operators like
 \passthrough{\lstinline!*=!} and \passthrough{\lstinline!/=!}.
 
-\textbf{Exercise:} The following is a number trick from
-\href{https://www.learn-with-math-games.com/math-number-tricks.html}{Learn
-With Math Games}
+\textbf{Exercise:} The following is a number trick from \emph{Learn With
+Math Games} at
+\url{https://www.learn-with-math-games.com/math-number-tricks.html}:
 
-"Finding Someone's Age
+\begin{quote}
+\emph{Finding Someone's Age}
 
 \begin{itemize}
 \item
@@ -213,6 +198,7 @@ With Math Games}
 \item
   Deduct 6 and you will have their age."
 \end{itemize}
+\end{quote}
 
 Test this algorithm using your age. Use a single variable and update it
 using \passthrough{\lstinline!+=!} and other update operators.
@@ -221,20 +207,17 @@ using \passthrough{\lstinline!+=!} and other update operators.
 \section{Files}\label{files}}
 
 Now that we know how to count, let's see how we can read words from a
-file. We can download \emph{War and Peace} from
-\href{https://www.gutenberg.org}{Project Gutenberg}, which is a
-repository of free books.
+file. We can download \emph{War and Peace} from Project Gutenberg, which
+is a repository of free books at \url{https://www.gutenberg.org}.
 
 In order to read the contents of the file, you have to ``open'' it,
 which you can do with the \passthrough{\lstinline!open!} function.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[]
 fp = open('2600-0.txt')
 fp
-\end{lstlisting}
-
-\begin{lstlisting}[]
-<_io.TextIOWrapper name='2600-0.txt' mode='r' encoding='UTF-8'>
+(@\dashfill@)
+@@@<_io.TextIOWrapper name='2600-0.txt' mode='r' encoding='UTF-8'>@@@
 \end{lstlisting}
 
 The result is a \passthrough{\lstinline!TextIOWrapper!}, which is a type
@@ -248,7 +231,7 @@ If you use a file pointer in a \passthrough{\lstinline!for!} loop, it
 loops through the lines in the file. So we can count the number of lines
 like this:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[]
 fp = open('2600-0.txt')
 count = 0
 for line in fp:
@@ -257,18 +240,16 @@ for line in fp:
 
 And then display the result.
 
-\begin{lstlisting}[language=Python]
-count
-\end{lstlisting}
-
 \begin{lstlisting}[]
-66054
+count
+(@\dashfill@)
+@@@66054@@@
 \end{lstlisting}
 
 There are about 66,000 lines in this file.
 
 \hypertarget{if-statements}{%
-\section{if statements}\label{if-statements}}
+\section{if Statements}\label{if-statements}}
 
 We've already see comparison operators, like \passthrough{\lstinline!>!}
 and \passthrough{\lstinline!<!}, which compare values and produce a
@@ -276,24 +257,20 @@ Boolean result, \passthrough{\lstinline!True!} or
 \passthrough{\lstinline!False!}. For example, we can compare the final
 value of \passthrough{\lstinline!count!} to a number:
 
-\begin{lstlisting}[language=Python]
-count > 60000
-\end{lstlisting}
-
 \begin{lstlisting}[]
-True
+count > 60000
+(@\dashfill@)
+@@@True@@@
 \end{lstlisting}
 
 We can use a comparison operator in an \passthrough{\lstinline!if!}
 statement to check for a condition and take action accordingly.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[]
 if count > 60000:
     print('Long book!')
-\end{lstlisting}
-
-\begin{lstlisting}[]
-Long book!
+(@\dashfill@)
+@@@Long book!@@@
 \end{lstlisting}
 
 The first line of the \passthrough{\lstinline!if!} statement specifies
@@ -307,7 +284,7 @@ doesn't. In the previous example, the condition is true, so the
 example, the condition is false, so the \passthrough{\lstinline!print!}
 statement doesn't run.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[]
 if count < 1000:
     print('Novella!')
 \end{lstlisting}
@@ -318,17 +295,15 @@ line from the book when \passthrough{\lstinline!count!} is
 \passthrough{\lstinline!1!}. The other lines are read, but not
 displayed.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[]
 fp = open('2600-0.txt')
 count = 0
 for line in fp:
     if count == 1:
         print(line)
     count += 1
-\end{lstlisting}
-
-\begin{lstlisting}[]
-The Project Gutenberg EBook of War and Peace, by Leo Tolstoy
+(@\dashfill@)
+@@@The Project Gutenberg EBook of War and Peace, by Leo Tolstoy@@@
 \end{lstlisting}
 
 Notice the indentation in this example:
@@ -350,24 +325,22 @@ It is legal in Python to use spaces or tabs for indentation, but the
 most common convention is to use four spaces, never tabs. That's what
 I'll do in my code and I strongly suggest you follow the convention.
 
-\hypertarget{break-statement}{%
-\section{break statement}\label{break-statement}}
+\hypertarget{the-break-statement}{%
+\section{The break Statement}\label{the-break-statement}}
 
 If we display the final value of \passthrough{\lstinline!count!}, we see
 that the loop reads the entire file, but only prints one line:
 
-\begin{lstlisting}[language=Python]
-count
-\end{lstlisting}
-
 \begin{lstlisting}[]
-66054
+count
+(@\dashfill@)
+@@@66054@@@
 \end{lstlisting}
 
 We can avoid reading the whole file by using a
 \passthrough{\lstinline!break!} statement, like this:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[]
 fp = open('2600-0.txt')
 count = 0
 for line in fp:
@@ -375,22 +348,18 @@ for line in fp:
         print(line)
         break
     count += 1
-\end{lstlisting}
-
-\begin{lstlisting}[]
-The Project Gutenberg EBook of War and Peace, by Leo Tolstoy
+(@\dashfill@)
+@@@The Project Gutenberg EBook of War and Peace, by Leo Tolstoy@@@
 \end{lstlisting}
 
 The \passthrough{\lstinline!break!} statement ends the loop immediately,
 skipping the rest of the file. We can confirm that by checking the last
 value of \passthrough{\lstinline!count!}:
 
-\begin{lstlisting}[language=Python]
-count
-\end{lstlisting}
-
 \begin{lstlisting}[]
-1
+count
+(@\dashfill@)
+@@@1@@@
 \end{lstlisting}
 
 \textbf{Exercise:} Write a loop that prints the first 5 lines of the
@@ -403,7 +372,7 @@ If we run the loop again and display the final value of
 \passthrough{\lstinline!line!}, we see the special sequence
 \passthrough{\lstinline!\\n!} at the end.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[]
 fp = open('2600-0.txt')
 count = 0
 for line in fp:
@@ -414,7 +383,7 @@ for line in fp:
 line
 \end{lstlisting}
 
-\begin{lstlisting}[]
+\begin{lstlisting}
 'The Project Gutenberg EBook of War and Peace, by Leo Tolstoy\n'
 \end{lstlisting}
 
@@ -424,12 +393,10 @@ that puts vertical space between lines. If we use a
 \passthrough{\lstinline!line!}, we don't see the special sequence, but
 we do see extra space after the line.
 
-\begin{lstlisting}[language=Python]
-print(line)
-\end{lstlisting}
-
 \begin{lstlisting}[]
-The Project Gutenberg EBook of War and Peace, by Leo Tolstoy
+print(line)
+(@\dashfill@)
+@@@The Project Gutenberg EBook of War and Peace, by Leo Tolstoy@@@
 \end{lstlisting}
 
 In other strings, you might see the sequence
@@ -437,14 +404,12 @@ In other strings, you might see the sequence
 When you print a tab character, it adds enough space to make the next
 character appear in a column that is a multiple of 8.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[]
 print('01234567' * 6)
 print('a\tbc\tdef\tghij\tklmno\tpqrstu')
-\end{lstlisting}
-
-\begin{lstlisting}[]
-012345670123456701234567012345670123456701234567
-a   bc  def ghij    klmno   pqrstu
+(@\dashfill@)
+@@@012345670123456701234567012345670123456701234567
+a   bc  def ghij    klmno   pqrstu@@@
 \end{lstlisting}
 
 Newline characters, tabs, and spaces are called \textbf{whitespace}
@@ -452,7 +417,7 @@ because when they are printed they leave white space on the page
 (assuming that the background color is white).
 
 \hypertarget{counting-words}{%
-\section{Counting words}\label{counting-words}}
+\section{Counting Words}\label{counting-words}}
 
 So far we've managed to count the lines in a file, but each line
 contains several words. To split a line into words, we can use a
@@ -461,12 +426,10 @@ words. To be more precise, \passthrough{\lstinline!split!} doesn't
 actually know what a word is; it just splits the line wherever there's a
 space or other whitespace character.
 
-\begin{lstlisting}[language=Python]
-line.split()
-\end{lstlisting}
-
 \begin{lstlisting}[]
-['The',
+line.split()
+(@\dashfill@)
+@@@['The',
  'Project',
  'Gutenberg',
  'EBook',
@@ -476,7 +439,7 @@ line.split()
  'Peace,',
  'by',
  'Leo',
- 'Tolstoy']
+ 'Tolstoy']@@@
 \end{lstlisting}
 
 Notice that the syntax for \passthrough{\lstinline!split!} is different
@@ -496,19 +459,17 @@ Now that we can split a line into a list of words, we can use
 \passthrough{\lstinline!len!} to get the number of words in each list,
 and increment \passthrough{\lstinline!count!} accordingly.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[]
 fp = open('2600-0.txt')
 count = 0
 for line in fp:
     count += len(line.split())
 \end{lstlisting}
 
-\begin{lstlisting}[language=Python]
-count
-\end{lstlisting}
-
 \begin{lstlisting}[]
-566317
+count
+(@\dashfill@)
+@@@566317@@@
 \end{lstlisting}
 
 By this count, there are more than half a million words in \emph{War and
@@ -526,7 +487,7 @@ is in the file, so the second loop picks up where the first loop leaves
 off. In the second loop, we check for the end of the book and stop, so
 we ignore the ``end matter'' at the end of the file.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[]
 first_line = "CHAPTER I\n"
 last_line = "End of the Project Gutenberg EBook of War and Peace, by Leo Tolstoy\n"
 
@@ -541,18 +502,14 @@ for line in fp:
         print(line)
         break
     count += len(line.split())
+(@\dashfill@)
+@@@End of the Project Gutenberg EBook of War and Peace, by Leo Tolstoy@@@
 \end{lstlisting}
 
 \begin{lstlisting}[]
-End of the Project Gutenberg EBook of War and Peace, by Leo Tolstoy
-\end{lstlisting}
-
-\begin{lstlisting}[language=Python]
 count
-\end{lstlisting}
-
-\begin{lstlisting}[]
-562482
+(@\dashfill@)
+@@@562482@@@
 \end{lstlisting}
 
 Two things to notice about this program:
@@ -600,4 +557,17 @@ If you have a logic error, here are two strategies for debugging:
   Simplify the program until it does what you expect, and then gradually
   add more code, testing as you go.
 \end{enumerate}
+
+\hypertarget{summary}{%
+\section{Summary}\label{summary}}
+
+This chapter presents loops, \passthrough{\lstinline!if!} statements,
+and the \passthrough{\lstinline!break!} statement. It also introduces
+tools for working with letters and words, and a simple kind of textual
+analysis, word counting.
+
+In the next chapter we'll continue this example, counting the number of
+unique words in a text and the number of times each word appears. And
+we'll see one more way to represent a collection of values, a Python
+dictionary.
 

@@ -38,7 +38,7 @@ over the same period.
 The following cell installs the \passthrough{\lstinline!empiricaldist!}
 library if necessary.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 try:
     import empiricaldist
 except ImportError:
@@ -48,7 +48,7 @@ except ImportError:
 If everything we need is installed, the following cell should run
 without error.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -60,7 +60,7 @@ from empiricaldist import Pmf
 The following cell defines a function I use to decorate the axes in
 plots.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 def decorate(**options):
     """Decorate the current axes.
     
@@ -92,7 +92,7 @@ notebooks, we'll download the HDF5 file and load it.
 
 The following cell downloads the file if necessary.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 from os.path import basename, exists
 
 def download(url):
@@ -111,13 +111,13 @@ data. We'll work with the first resampling,
 \passthrough{\lstinline!gss0!}, to get started; at the end of this
 notebook, we'll see the other two as well.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 datafile = 'gss_eda.3.hdf5'
 gss = pd.read_hdf(datafile, 'gss0')
 gss.shape
 \end{lstlisting}
 
-\begin{lstlisting}[]
+\begin{lstlisting}[style=output]
 (64814, 169)
 \end{lstlisting}
 
@@ -143,7 +143,7 @@ scale?
 
 Here are the valid responses:
 
-\begin{lstlisting}[]
+\begin{lstlisting}[style=output]
 1   Extremely liberal
 2   Liberal
 3   Slightly liberal
@@ -158,27 +158,27 @@ the beginning and end of the observation period.
 
 First I'll select the column.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 polviews = gss['polviews']
 \end{lstlisting}
 
 Then compute a Boolean Series that's \passthrough{\lstinline!True!} for
 responses from 1974.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 year74 = (gss['year'] == 1974)
 \end{lstlisting}
 
 Now we can select the responses from 1974.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 polviews74 = polviews[year74]
 \end{lstlisting}
 
 As in the previous notebook, we'll use \passthrough{\lstinline!values!}
 to plot the values in the series and their frequencies.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 def values(series):
     """Count the values and sort.
     
@@ -191,7 +191,7 @@ def values(series):
 
 Here are the responses from 1974.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 values(polviews74)
 \end{lstlisting}
 
@@ -211,7 +211,7 @@ values(polviews74)
 
 And here are the responses from 2018.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 year18 = (gss['year'] == 2018)
 polviews18 = polviews[year18]
 values(polviews18)
@@ -242,13 +242,13 @@ people who gave each response, rather than the number.
 I'll use the \passthrough{\lstinline!Pmf!} class from
 \passthrough{\lstinline!empiricaldist!} to compute them.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 from empiricaldist import Pmf
 \end{lstlisting}
 
 Here's the distribution from 1974:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 pmf74 = Pmf.from_seq(polviews74)
 pmf74.bar(label='1974', color='C0', alpha=0.7)
 
@@ -258,12 +258,12 @@ decorate(xlabel='Political view on a 7-point scale',
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[scale=0.75]{02_polviews_files/02_polviews_30_0.pdf}
+\includegraphics[scale=0.75]{02_polviews_files/02_polviews_30_0.png}
 \end{center}
 
 And from 2018:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 pmf18 = Pmf.from_seq(polviews18)
 pmf18.bar(label='2018', color='C1', alpha=0.7)
 
@@ -273,7 +273,7 @@ decorate(xlabel='Political view on a 7-point scale',
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[scale=0.75]{02_polviews_files/02_polviews_32_0.pdf}
+\includegraphics[scale=0.75]{02_polviews_files/02_polviews_32_0.png}
 \end{center}
 
 In both cases, the most common response is \passthrough{\lstinline!4!},
@@ -285,7 +285,7 @@ So maybe we're not so polarized after all.
 To make it easier to compare the distributions, I'll plot them side by
 side.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 pmf74.bar(label='1974', width=-0.45, align='edge', alpha=0.7)
 
 pmf18.bar(label='2018', width=0.45, align='edge', alpha=0.7)
@@ -296,7 +296,7 @@ decorate(xlabel='Political view on a 7-point scale',
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[scale=0.75]{02_polviews_files/02_polviews_34_0.pdf}
+\includegraphics[scale=0.75]{02_polviews_files/02_polviews_34_0.png}
 \end{center}
 
 Now we can see the changes in the distribution more clearly. It looks
@@ -334,25 +334,25 @@ compute the mean of \passthrough{\lstinline!polviews!} during each year.
 First I'll use \passthrough{\lstinline!groupby!} to group the
 respondents by year.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 gss_by_year = gss.groupby('year')
 gss_by_year
 \end{lstlisting}
 
-\begin{lstlisting}[]
-<pandas.core.groupby.generic.DataFrameGroupBy object at 0x7f9b95ac7250>
+\begin{lstlisting}[style=output]
+<pandas.core.groupby.generic.DataFrameGroupBy object at 0x7f0788fdc8d0>
 \end{lstlisting}
 
 The result is a \passthrough{\lstinline!DataFrameGroupBy!} object that
 represents a collection of groups. We can loop through the groups and
 display the number of respondents in each:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 for year, group in gss_by_year:
     print(year, len(group))
 \end{lstlisting}
 
-\begin{lstlisting}[]
+\begin{lstlisting}[style=output]
 1972 1613
 1973 1504
 1974 1484
@@ -391,13 +391,13 @@ In many ways the \passthrough{\lstinline!DataFrameGroupBy!} behaves like
 a \passthrough{\lstinline!DataFrame!}. We can use the bracket operator
 to select a column:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 polviews_by_year = gss_by_year['polviews']
 polviews_by_year
 \end{lstlisting}
 
-\begin{lstlisting}[]
-<pandas.core.groupby.generic.SeriesGroupBy object at 0x7f9b95a1e710>
+\begin{lstlisting}[style=output]
+<pandas.core.groupby.generic.SeriesGroupBy object at 0x7f0788f0a750>
 \end{lstlisting}
 
 A column from a \passthrough{\lstinline!DataFrameGroupBy!} is a
@@ -406,13 +406,13 @@ A column from a \passthrough{\lstinline!DataFrameGroupBy!} is a
 contains the mean of \passthrough{\lstinline!polviews!} for each year of
 the survey.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 mean_series = polviews_by_year.mean()
 \end{lstlisting}
 
 And here's what it looks like.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 mean_series.plot(color='C2', label='polviews')
 decorate(xlabel='Year', 
          ylabel='Mean (7 point scale)',
@@ -420,7 +420,7 @@ decorate(xlabel='Year',
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[scale=0.75]{02_polviews_files/02_polviews_46_0.pdf}
+\includegraphics[scale=0.75]{02_polviews_files/02_polviews_46_0.png}
 \end{center}
 
 \textbf{Exercise:} The standard deviation quantifies the spread of the
@@ -445,7 +445,7 @@ The following function takes a Pandas Series and uses and algorithm
 called LOWESS to compute a smooth line. LOWESS stands for ``locally
 weighted scatterplot smoothing''.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 from statsmodels.nonparametric.smoothers_lowess import lowess
 
 def make_lowess(series):
@@ -467,7 +467,7 @@ def make_lowess(series):
 We'll use the following function to plot data points and the smoothed
 line.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 def plot_series_lowess(series, color):
     """Plots a series of data points and a smooth line.
     
@@ -482,7 +482,7 @@ def plot_series_lowess(series, color):
 The following figure shows the mean of
 \passthrough{\lstinline!polviews!} and a smooth line.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 mean_series = gss_by_year['polviews'].mean()
 plot_series_lowess(mean_series, 'C2')
 decorate(ylabel='Mean (7 point scale)',
@@ -492,7 +492,7 @@ decorate(ylabel='Mean (7 point scale)',
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[scale=0.75]{02_polviews_files/02_polviews_53_0.pdf}
+\includegraphics[scale=0.75]{02_polviews_files/02_polviews_53_0.png}
 \end{center}
 
 One reason the PMFs for 1974 and 2018 did not look very different is
@@ -528,7 +528,7 @@ tabulation}.
 
 It takes two Series as arguments and returns a DataFrame.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 year = gss['year']
 column = gss['polviews']
 
@@ -537,7 +537,7 @@ xtab = pd.crosstab(year, column)
 
 Here are the first few lines from the result.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 xtab.head()
 \end{lstlisting}
 
@@ -567,13 +567,13 @@ The number of respondents varies from year to year, so we need to
 \passthrough{\lstinline!crosstab!} takes an optional argument that
 normalizes each row.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 xtab_norm = pd.crosstab(year, column, normalize='index')
 \end{lstlisting}
 
 Here's what that looks like for the 7-point scale.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 xtab_norm.head()
 \end{lstlisting}
 
@@ -594,7 +594,7 @@ To make the results easier to interpret, I'm going to replace the
 numeric codes 1-7 with strings. First I'll make a dictionary that maps
 from numbers to strings:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 # recode the 7 point scale with words
 d7 = {1: 'Extremely liberal', 
       2: 'Liberal', 
@@ -608,14 +608,14 @@ d7 = {1: 'Extremely liberal',
 Then we can use the \passthrough{\lstinline!replace!} function like
 this:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 polviews7 = gss['polviews'].replace(d7)
 \end{lstlisting}
 
 We can use \passthrough{\lstinline!values!} to confirm that the values
 in \passthrough{\lstinline!polviews7!} are strings.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 values(polviews7)
 \end{lstlisting}
 
@@ -636,7 +636,7 @@ Slightly liberal       &      6981 \\
 If we make the cross tabulation again, we can see that the column names
 are strings.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 xtab_norm = pd.crosstab(year, polviews7, normalize='index')
 xtab_norm.head()
 \end{lstlisting}
@@ -666,37 +666,37 @@ can read about here}.
 To represent political views, I'll use a diverging palette from blue to
 red.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 palette = sns.color_palette('RdBu_r', 7)
 sns.palplot(palette)
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[scale=0.75]{02_polviews_files/02_polviews_74_0.pdf}
+\includegraphics[scale=0.75]{02_polviews_files/02_polviews_74_0.png}
 \end{center}
 
 The middle color is white, which won't work when we plot it, so I will
 replace it with a purple color from another palette.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 muted = sns.color_palette('muted', 7)
 purple = muted[4]
 sns.palplot(muted)
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[scale=0.75]{02_polviews_files/02_polviews_76_0.pdf}
+\includegraphics[scale=0.75]{02_polviews_files/02_polviews_76_0.png}
 \end{center}
 
 Here's the modified diverging palette with purple in the middle.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 palette[3] = purple
 sns.palplot(palette)
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[scale=0.75]{02_polviews_files/02_polviews_78_0.pdf}
+\includegraphics[scale=0.75]{02_polviews_files/02_polviews_78_0.png}
 \end{center}
 
 A feature of this color map is that the colors are meaningful, at least
@@ -708,7 +708,7 @@ the colors are indistinguishable to people who are
 Now I'll make a dictionary that maps from the responses to the
 corresponding colors.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 columns = ['Extremely liberal', 
            'Liberal', 
            'Slightly liberal', 
@@ -718,14 +718,14 @@ columns = ['Extremely liberal',
            'Extremely conservative']
 \end{lstlisting}
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 color_map = dict(zip(columns, palette))
 
 for key, value in color_map.items():
     print(key, value)
 \end{lstlisting}
 
-\begin{lstlisting}[]
+\begin{lstlisting}[style=output]
 Extremely liberal (0.16339869281045757, 0.44498269896193776, 0.6975009611687812)
 Liberal (0.4206843521722416, 0.6764321414840447, 0.8186851211072664)
 Slightly liberal (0.7614763552479817, 0.8685121107266438, 0.924567474048443)
@@ -742,7 +742,7 @@ To plot the results, I use the following function, which takes a
 \passthrough{\lstinline!DataFrame!} and plots each column using
 \passthrough{\lstinline!plot\_series\_lowess!}.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 def plot_columns_lowess(table, columns, colors):
     """Plot the columns in a DataFrame.
     
@@ -757,7 +757,7 @@ def plot_columns_lowess(table, columns, colors):
 
 The following function sets the position of the figure legend.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 def anchor_legend(x, y):
     """Place the upper left corner of the legend box.
     
@@ -769,7 +769,7 @@ def anchor_legend(x, y):
 
 Here are the 7 categories plotted as a function of time.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 plot_columns_lowess(xtab_norm, columns, color_map)
 decorate(xlabel='Year',
          ylabel='Proportion',
@@ -780,7 +780,7 @@ anchor_legend(1.02, 1.02)
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[scale=0.75]{02_polviews_files/02_polviews_87_0.pdf}
+\includegraphics[scale=0.75]{02_polviews_files/02_polviews_87_0.png}
 \end{center}
 
 This way of looking at the results suggests that changes in political
@@ -796,7 +796,7 @@ see clearly in this figure.
 
 We can get a better view by plotting just the extremes.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 columns2 = ['Extremely liberal', 'Extremely conservative']
 
 plot_columns_lowess(xtab_norm, columns2, color_map)
@@ -809,7 +809,7 @@ anchor_legend(1.02, 1.02)
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[scale=0.75]{02_polviews_files/02_polviews_89_0.pdf}
+\includegraphics[scale=0.75]{02_polviews_files/02_polviews_89_0.png}
 \end{center}
 
 This figure shows that the fraction of people who describe themselves as
@@ -829,7 +829,7 @@ Democrat, Independent, or what?
 
 The valid responses are:
 
-\begin{lstlisting}[]
+\begin{lstlisting}[style=output]
 0   Strong democrat
 1   Not str democrat
 2   Ind,near dem

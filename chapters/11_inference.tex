@@ -68,16 +68,16 @@ To see where that comes from, I'll simulate the result of spinning an
 
 Here's an example with 10 spins:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 import numpy as np
 
 spins = np.random.random(10) < 0.5
 spins
 \end{lstlisting}
 
-\begin{lstlisting}[]
-array([ True,  True,  True, False,  True,  True,  True,  True,  True,
-       False])
+\begin{lstlisting}[style=output]
+array([False, False, False,  True,  True,  True,  True,  True,  True,
+        True])
 \end{lstlisting}
 
 \passthrough{\lstinline!np.random.random!} returns numbers between 0 and
@@ -87,19 +87,19 @@ array([ True,  True,  True, False,  True,  True,  True,  True,  True,
 The sum of the array is the number of \passthrough{\lstinline!True!}
 elements, that is, the number of heads:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 np.sum(spins)
 \end{lstlisting}
 
-\begin{lstlisting}[]
-8
+\begin{lstlisting}[style=output]
+7
 \end{lstlisting}
 
 We can wrap that in a function that simulates
 \passthrough{\lstinline!n!} spins with probability
 \passthrough{\lstinline!p!}.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 def spin(n, p):
     return np.sum(np.random.random(n) < p)
 \end{lstlisting}
@@ -107,18 +107,18 @@ def spin(n, p):
 Here's an example with the actual sample size (250) and hypothetical
 probability (50\%).
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 heads, tails = 140, 110
 sample_size = heads + tails
 \end{lstlisting}
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 hypo_prob = 0.5
 spin(sample_size, hypo_prob)
 \end{lstlisting}
 
-\begin{lstlisting}[]
-119
+\begin{lstlisting}[style=output]
+110
 \end{lstlisting}
 
 Since we are generating random numbers, we expect to see different
@@ -126,7 +126,7 @@ values if we run the experiment more than once.
 
 Here's a loop that runs \passthrough{\lstinline!spin!} 10 times.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 n = 250
 p = 0.5
 
@@ -134,17 +134,17 @@ for i in range(10):
     print(spin(n, p))
 \end{lstlisting}
 
-\begin{lstlisting}[]
-114
-121
-116
-131
-141
-139
-135
+\begin{lstlisting}[style=output]
+124
+115
 129
-127
-133
+120
+128
+124
+131
+106
+130
+115
 \end{lstlisting}
 
 As expected, the results vary from one run to the next.
@@ -152,7 +152,7 @@ As expected, the results vary from one run to the next.
 Now let's run the simulated experiment 10000 times and store the results
 in a NumPy array.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 outcomes = np.empty(1000)
 
 for i in range(len(outcomes)):
@@ -169,30 +169,30 @@ of heads in a simulated experiment.
 
 The mean of \passthrough{\lstinline!outcomes!} is about 125:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 np.mean(outcomes)
 \end{lstlisting}
 
-\begin{lstlisting}[]
-124.967
+\begin{lstlisting}[style=output]
+125.016
 \end{lstlisting}
 
 Which makes sense. On average, the expected number of heads is the
 product of the hypothetical probability and the sample size:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 expected = hypo_prob * sample_size
 expected
 \end{lstlisting}
 
-\begin{lstlisting}[]
+\begin{lstlisting}[style=output]
 125.0
 \end{lstlisting}
 
 Now let's see how much the values in \passthrough{\lstinline!outcomes!}
 differ from the expected value:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 diffs = outcomes - expected
 \end{lstlisting}
 
@@ -201,12 +201,12 @@ of each experiment from the expected value, 125.
 
 Here's the mean of the absolute deviations:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 np.mean(abs(diffs))
 \end{lstlisting}
 
-\begin{lstlisting}[]
-6.673
+\begin{lstlisting}[style=output]
+6.306
 \end{lstlisting}
 
 So a typical experiment deviates from the mean by about 6.
@@ -215,7 +215,7 @@ To see the whole distribution of deviations, we can plot a histogram.
 The following function uses Matplotlib to plot a histogram and adjust
 some of the settings.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 import matplotlib.pyplot as plt
 
 def plot_hist(values):
@@ -233,18 +233,16 @@ def plot_hist(values):
 
 Here's what the distribution of deviations looks like:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 plot_hist(diffs)
 
 plt.title('Sampling distribution (n=250)')
 plt.xlabel('Deviation from expected number of heads');
 \end{lstlisting}
 
-\begin{figure}
-\centering
-\includegraphics{11_inference_files/11_inference_29_0.pdf}
-\caption{png}
-\end{figure}
+\begin{center}
+\includegraphics[scale=0.75]{11_inference_files/11_inference_29_0.png}
+\end{center}
 
 This is the ``sampling distribution'' of deviations. It shows how much
 variation we should expect between experiments with this sample size (n
@@ -266,24 +264,24 @@ heads.
 The observed deviation is the difference between the observed and
 expected number of heads:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 observed_diff = heads - expected
 observed_diff
 \end{lstlisting}
 
-\begin{lstlisting}[]
+\begin{lstlisting}[style=output]
 15.0
 \end{lstlisting}
 
 Let's see how many times the simulated \passthrough{\lstinline!diffs!}
 exceed the observed deviation:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 np.mean(diffs >= observed_diff)
 \end{lstlisting}
 
-\begin{lstlisting}[]
-0.039
+\begin{lstlisting}[style=output]
+0.032
 \end{lstlisting}
 
 It's around 3\%. But Dr.~Blight said 7\%. Where did that come from?
@@ -295,23 +293,23 @@ is \emph{fewer} than expected.
 Here's the probability of falling below the expected number by 15 or
 more.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 np.mean(diffs <= -observed_diff)
 \end{lstlisting}
 
-\begin{lstlisting}[]
+\begin{lstlisting}[style=output]
 0.033
 \end{lstlisting}
 
 To get the total probability of a result ``as extreme as that'', we can
 use the absolute value of the simulated differences:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 np.mean(abs(diffs) >= observed_diff)
 \end{lstlisting}
 
-\begin{lstlisting}[]
-0.072
+\begin{lstlisting}[style=output]
+0.065
 \end{lstlisting}
 
 So that's consistent with what Dr.~Blight reported.
@@ -320,7 +318,7 @@ To show what that looks like graphically, I'll use the following
 function, which fills in the histogram between
 \passthrough{\lstinline!low!} and \passthrough{\lstinline!high!}.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 def fill_hist(low, high, patch):
     fill = plt.axvspan(low, high, 
                        clip_path=patch,
@@ -333,7 +331,7 @@ The following plot shows the sampling distribution of
 represent the probability that an unbiased coin yields a deviation from
 the expected as extreme as 15.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 patch = plot_hist(diffs)
 
 # fill the right tail of the hist
@@ -351,11 +349,9 @@ plt.xlabel('Deviation from expected number of heads')
 plt.ylabel('Density');
 \end{lstlisting}
 
-\begin{figure}
-\centering
-\includegraphics{11_inference_files/11_inference_42_0.pdf}
-\caption{png}
-\end{figure}
+\begin{center}
+\includegraphics[scale=0.75]{11_inference_files/11_inference_42_0.png}
+\end{center}
 
 These results show that there is a non-negligible chance of getting a
 result as extreme as 140 heads, even if the coin is actually fair.
@@ -420,14 +416,14 @@ I got the data from their web page,
 https://www.cdc.gov/nchs/nsfg/index.htm, and wrote some code to get it
 into a Pandas Dataframe:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 import pandas as pd
 
 nsfg = pd.read_hdf('nsfg.hdf5')
 nsfg.shape
 \end{lstlisting}
 
-\begin{lstlisting}[]
+\begin{lstlisting}[style=output]
 (9358, 11)
 \end{lstlisting}
 
@@ -437,7 +433,7 @@ selected.
 
 Here are the first few lines.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 nsfg.head()
 \end{lstlisting}
 
@@ -459,21 +455,21 @@ pregnancy length in weeks.
 
 I'll make two boolean Series, one for first babies and one for others.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 firsts = (nsfg.birthord == 1)
 others = (nsfg.birthord > 1)
 
 np.sum(firsts), np.sum(others)
 \end{lstlisting}
 
-\begin{lstlisting}[]
+\begin{lstlisting}[style=output]
 (3067, 3422)
 \end{lstlisting}
 
 We can use the boolean Series to select pregnancy lengths for the two
 groups and compute their means:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 prglngth = nsfg['prglngth']
 
 mean_first = prglngth[firsts].mean() 
@@ -482,28 +478,28 @@ mean_other = prglngth[others].mean()
 mean_first, mean_other
 \end{lstlisting}
 
-\begin{lstlisting}[]
+\begin{lstlisting}[style=output]
 (38.57124225627649, 38.36908240794857)
 \end{lstlisting}
 
 Here's the difference in means, in weeks.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 diff = mean_first - mean_other
 diff
 \end{lstlisting}
 
-\begin{lstlisting}[]
+\begin{lstlisting}[style=output]
 0.20215984832792344
 \end{lstlisting}
 
 Here it is converted to days:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 diff * 7
 \end{lstlisting}
 
-\begin{lstlisting}[]
+\begin{lstlisting}[style=output]
 1.415118938295464
 \end{lstlisting}
 
@@ -555,7 +551,7 @@ Here's how:
 We have already done step 1, but to make it easier to repeat, I'll wrap
 it in a function.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 def test_stat(group1, group2):
     """Difference in means.
     
@@ -573,7 +569,7 @@ the difference in their means.
 
 Here's how we use it to compute the actual difference in the sample.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 group1 = prglngth[firsts]
 group2 = prglngth[others]
 
@@ -581,7 +577,7 @@ actual_diff = test_stat(group1, group2)
 actual_diff
 \end{lstlisting}
 
-\begin{lstlisting}[]
+\begin{lstlisting}[style=output]
 0.20215984832792344
 \end{lstlisting}
 
@@ -595,53 +591,53 @@ is the same for both groups.
 
 I'll use \passthrough{\lstinline!concatenate!} to pool the groups.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 len(group1), len(group2)
 \end{lstlisting}
 
-\begin{lstlisting}[]
+\begin{lstlisting}[style=output]
 (3067, 3422)
 \end{lstlisting}
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 pool = np.concatenate([group1, group2])
 pool.shape
 \end{lstlisting}
 
-\begin{lstlisting}[]
+\begin{lstlisting}[style=output]
 (6489,)
 \end{lstlisting}
 
 I'll use \passthrough{\lstinline!shuffle!} to reorder them.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 np.random.shuffle(pool)
 \end{lstlisting}
 
 Then I'll use \passthrough{\lstinline!split!} to make two simulated
 groups, the same size as the originals.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 n = len(group1)
 sim_group1, sim_group2 = np.split(pool, [n])
 \end{lstlisting}
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 len(sim_group1), len(sim_group2)
 \end{lstlisting}
 
-\begin{lstlisting}[]
+\begin{lstlisting}[style=output]
 (3067, 3422)
 \end{lstlisting}
 
 Now we can compute the test statistic for the simulated data.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 test_stat(sim_group1, sim_group2)
 \end{lstlisting}
 
-\begin{lstlisting}[]
--0.014237551111094149
+\begin{lstlisting}[style=output]
+0.012348415105691402
 \end{lstlisting}
 
 In the simulated data, the distribution of pregnancy lengths is the same
@@ -653,7 +649,7 @@ different value each time we run it.
 To see what the whole distribution looks like, we can run the simulation
 many times and store the results.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 diffs = np.empty(1000)
 
 for i in range(len(diffs)):
@@ -669,28 +665,26 @@ The mean of this distribution should close to zero, because it is based
 on the assumption that there is actually no difference between the
 groups.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 np.mean(diffs)
 \end{lstlisting}
 
-\begin{lstlisting}[]
-0.0021146729470806775
+\begin{lstlisting}[style=output]
+0.001760399490284783
 \end{lstlisting}
 
 And here's what the whole distribution looks like.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 plot_hist(diffs)
 
 plt.xlabel('Difference in mean (weeks)')
 plt.title('Distribution of test statistic under null hypothesis');
 \end{lstlisting}
 
-\begin{figure}
-\centering
-\includegraphics{11_inference_files/11_inference_79_0.pdf}
-\caption{png}
-\end{figure}
+\begin{center}
+\includegraphics[scale=0.75]{11_inference_files/11_inference_79_0.png}
+\end{center}
 
 If there were actually no difference between the groups, we would expect
 to see a difference as big as 0.15 weeks by chance, at least
@@ -702,12 +696,12 @@ in the means.
 
 The result is a ``p-value''.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 p_value = np.mean(diffs >= actual_diff)
 p_value
 \end{lstlisting}
 
-\begin{lstlisting}[]
+\begin{lstlisting}[style=output]
 0.0
 \end{lstlisting}
 
@@ -778,7 +772,7 @@ premier system of health-related telephone surveys that collect state
 data about U.S. residents regarding their health-related risk behaviors,
 chronic health conditions, and use of preventive services.''
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 from os.path import basename, exists
 
 def download(url):
@@ -792,42 +786,42 @@ download('https://github.com/AllenDowney/' +
          'ElementsOfDataScience/raw/master/brfss.hdf5')
 \end{lstlisting}
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 import pandas as pd
 
 brfss = pd.read_hdf('brfss.hdf5', 'brfss')
 brfss.shape
 \end{lstlisting}
 
-\begin{lstlisting}[]
+\begin{lstlisting}[style=output]
 (100000, 9)
 \end{lstlisting}
 
 We can use \passthrough{\lstinline!SEX!} to select male respondents.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 male = (brfss.SEX == 1)
 np.mean(male)
 \end{lstlisting}
 
-\begin{lstlisting}[]
+\begin{lstlisting}[style=output]
 0.48589
 \end{lstlisting}
 
 Then we select height data.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 heights = brfss['HTM4']
 data = heights[male]
 \end{lstlisting}
 
 We can use \passthrough{\lstinline!isnan!} to check for NaN values:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 np.mean(np.isnan(data)) * 100
 \end{lstlisting}
 
-\begin{lstlisting}[]
+\begin{lstlisting}[style=output]
 4.338430508962934
 \end{lstlisting}
 
@@ -835,12 +829,12 @@ About 4\% of the values are missing.
 
 Here are the mean and standard deviation, ignoring missing data.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 print('Mean male height in cm =', np.nanmean(data))
 print('Std male height in cm =', np.nanstd(data))
 \end{lstlisting}
 
-\begin{lstlisting}[]
+\begin{lstlisting}[style=output]
 Mean male height in cm = 177.53804780447925
 Std male height in cm = 8.350063691943435
 \end{lstlisting}
@@ -888,13 +882,13 @@ population, and I will draw random samples from them.
 We can use \passthrough{\lstinline!np.random.choice!} to resample the
 data:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 size = len(data)
 sim_data = np.random.choice(data, size, replace=True)
 sim_data.shape
 \end{lstlisting}
 
-\begin{lstlisting}[]
+\begin{lstlisting}[style=output]
 (48589,)
 \end{lstlisting}
 
@@ -908,18 +902,18 @@ identical to the original, so that's no good.)
 Now we can use \passthrough{\lstinline!nanmean!} to compute the mean of
 the simulated data, ignoring missing values.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 np.nanmean(sim_data)
 \end{lstlisting}
 
-\begin{lstlisting}[]
-177.52799586999075
+\begin{lstlisting}[style=output]
+177.5239397790174
 \end{lstlisting}
 
 If we repeat this process 1000 times, we can see how much the results
 vary.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 outcomes = np.empty(1000)
 size = len(data)
 
@@ -932,17 +926,15 @@ The result is the ``sampling distribution'', which shows how much the
 results of the experiment would vary if we ran it many times. Here's
 what it looks like:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 plot_hist(outcomes)
 plt.title('Sampling distribution of the mean')
 plt.xlabel('Mean adult male height, U.S.');
 \end{lstlisting}
 
-\begin{figure}
-\centering
-\includegraphics{11_inference_files/11_inference_105_0.pdf}
-\caption{png}
-\end{figure}
+\begin{center}
+\includegraphics[scale=0.75]{11_inference_files/11_inference_105_0.png}
+\end{center}
 
 The width of this distribution shows how much the results vary from one
 experiment to the next.
@@ -950,13 +942,13 @@ experiment to the next.
 We can quantify this variability by computing the standard deviation of
 the sampling distribution, which is called ``standard error''.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 std_err = np.std(outcomes)
 std_err
 \end{lstlisting}
 
-\begin{lstlisting}[]
-0.038376132495234826
+\begin{lstlisting}[style=output]
+0.03926696517492854
 \end{lstlisting}
 
 We can also summarize the sampling distribution with a ``confidence
@@ -966,19 +958,19 @@ interval'', which is a range that contains a specified fraction, like
 The central 90\% confidence interval is between the 5th and 95th
 percentiles of the sampling distribution.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 ci_90 = np.percentile(outcomes, [5, 95])
 ci_90
 \end{lstlisting}
 
-\begin{lstlisting}[]
-array([177.47655879, 177.60152771])
+\begin{lstlisting}[style=output]
+array([177.47293167, 177.60519339])
 \end{lstlisting}
 
 The following function plots a histogram and shades the 90\% confidence
 interval.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 def plot_sampling_dist(outcomes):
     """Plot sampling distribution.
     
@@ -995,39 +987,37 @@ def plot_sampling_dist(outcomes):
 Here's what it looks like for the sampling distribution of mean adult
 height:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 plot_sampling_dist(outcomes)
 plt.xlabel('Mean adult male height, U.S. (%)');
 \end{lstlisting}
 
-\begin{lstlisting}[]
-Mean =  177.5401473153372
-Std error =  0.038376132495234826
-90% CI =  (177.47655879241216, 177.60152770795776)
+\begin{lstlisting}[style=output]
+Mean =  177.5387671969162
+Std error =  0.03926696517492854
+90% CI =  (177.47293167397532, 177.605193393553)
 \end{lstlisting}
 
-\begin{figure}
-\centering
-\includegraphics{11_inference_files/11_inference_113_1.png}
-\caption{png}
-\end{figure}
+\begin{center}
+\includegraphics[scale=0.75]{11_inference_files/11_inference_113_1.png}
+\end{center}
 
 For an experiment like this, we can compute the standard error
 analytically.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 size = len(data)
 analytic_std_err = np.std(data) / np.sqrt(size)
 \end{lstlisting}
 
 The result is close to what we observed computationally.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 analytic_std_err, std_err
 \end{lstlisting}
 
-\begin{lstlisting}[]
-(0.03788094526418763, 0.038376132495234826)
+\begin{lstlisting}[style=output]
+(0.03788094526418763, 0.03926696517492854)
 \end{lstlisting}
 
 This result indicates that our estimate of the mean is \emph{precise};
@@ -1049,12 +1039,12 @@ For example, suppose we want to estimate the coefficient of variation
 (standard deviation as a fraction of the mean) for adult male height.
 Here's how we can compute it.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 cv = np.nanstd(data) / np.nanmean(data)
 cv
 \end{lstlisting}
 
-\begin{lstlisting}[]
+\begin{lstlisting}[style=output]
 0.04703253074596872
 \end{lstlisting}
 
