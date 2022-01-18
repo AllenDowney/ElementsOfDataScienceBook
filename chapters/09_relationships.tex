@@ -85,7 +85,7 @@ plt.title('Scatter plot of weight versus height');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{09_relationships_files/09_relationships_13_0.png}
+\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_13_0.png}
 \end{center}
 
 In general, it looks like taller people are heavier, but there are a few
@@ -110,7 +110,7 @@ plt.title('Scatter plot of weight versus height');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{09_relationships_files/09_relationships_15_0.png}
+\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_15_0.png}
 \end{center}
 
 This is better, but there are so many data points, the scatter plot is
@@ -127,7 +127,7 @@ plt.title('Scatter plot of weight versus height');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{09_relationships_files/09_relationships_17_0.png}
+\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_17_0.png}
 \end{center}
 
 Again, this is better, but now we can see that the points fall in
@@ -159,7 +159,7 @@ plt.title('Scatter plot of weight versus height');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{09_relationships_files/09_relationships_21_0.png}
+\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_21_0.png}
 \end{center}
 
 The columns are gone, but now we can see that there are rows where
@@ -181,7 +181,7 @@ plt.title('Scatter plot of weight versus height');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{09_relationships_files/09_relationships_24_0.png}
+\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_24_0.png}
 \end{center}
 
 Finally, let's zoom in on the area where most of the data points are.
@@ -205,7 +205,7 @@ plt.title('Scatter plot of weight versus height');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{09_relationships_files/09_relationships_26_0.png}
+\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_26_0.png}
 \end{center}
 
 Now we have a reliable picture of the relationship between height and
@@ -245,7 +245,7 @@ plt.tight_layout()
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{09_relationships_files/09_relationships_28_0.png}
+\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_28_0.png}
 \end{center}
 
 The point of this example is that it takes some effort to make an
@@ -293,7 +293,7 @@ plt.title('Distribution of weight');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{09_relationships_files/09_relationships_34_0.png}
+\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_34_0.png}
 \end{center}
 
 To get a better view of this distribution, try plotting the CDF.
@@ -350,7 +350,7 @@ plt.title('Weight versus age');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{09_relationships_files/09_relationships_39_0.png}
+\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_39_0.png}
 \end{center}
 
 In this version of the scatter plot, I adjusted the jittering of the
@@ -389,7 +389,7 @@ plt.title('Weight versus age');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{09_relationships_files/09_relationships_43_0.png}
+\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_43_0.png}
 \end{center}
 
 The \passthrough{\lstinline!x!} and \passthrough{\lstinline!y!}
@@ -416,7 +416,7 @@ plt.title('Weight versus age');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{09_relationships_files/09_relationships_45_0.png}
+\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_45_0.png}
 \end{center}
 
 I included the argument \passthrough{\lstinline!whis=10!} to turn off a
@@ -461,7 +461,7 @@ plt.title('Weight versus age');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{09_relationships_files/09_relationships_47_0.png}
+\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_47_0.png}
 \end{center}
 
 To show the relationship between age and weight most clearly, this is
@@ -588,7 +588,7 @@ plt.title('Weight versus age');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{09_relationships_files/09_relationships_58_0.png}
+\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_58_0.png}
 \end{center}
 
 People in their forties are the heaviest; younger and older people are
@@ -618,7 +618,7 @@ plt.title('Scatter plot of a fake dataset');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{09_relationships_files/09_relationships_62_0.png}
+\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_62_0.png}
 \end{center}
 
 It's clear that this is a strong relationship; if you are given
@@ -628,8 +628,8 @@ It's clear that this is a strong relationship; if you are given
 \begin{lstlisting}[]
 np.corrcoef(xs, ys)
 (@\dashfill@)
-@@@array([[1.       , 0.0197947],
-       [0.0197947, 1.       ]])@@@
+@@@array([[ 1.        , -0.01229169],
+       [-0.01229169,  1.        ]])@@@
 \end{lstlisting}
 
 Even though there is a strong non-linear relationship, the computed
@@ -666,7 +666,7 @@ plt.title('Fake dataset #1');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{09_relationships_files/09_relationships_67_0.png}
+\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_67_0.png}
 \end{center}
 
 And here's the second dataset:
@@ -683,7 +683,7 @@ plt.title('Fake dataset #2');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{09_relationships_files/09_relationships_69_0.png}
+\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_69_0.png}
 \end{center}
 
 I constructed these examples so they look similar, but they have
@@ -795,7 +795,7 @@ plt.tight_layout()
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{09_relationships_files/09_relationships_78_0.png}
+\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_78_0.png}
 \end{center}
 
 The one on the left has higher correlation, about 0.75 compared to 0.5.
@@ -880,7 +880,7 @@ plt.title('Fake Dataset #1');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{09_relationships_files/09_relationships_88_0.png}
+\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_88_0.png}
 \end{center}
 
 And the same thing for the second example.
@@ -898,7 +898,7 @@ plt.title('Fake Dataset #2');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{09_relationships_files/09_relationships_90_0.png}
+\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_90_0.png}
 \end{center}
 
 The visualization here might be misleading unless you look closely at
@@ -923,7 +923,7 @@ plt.title('Scatter plot of weight versus height');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{09_relationships_files/09_relationships_93_0.png}
+\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_93_0.png}
 \end{center}
 
 Now we can compute the regression line.
@@ -978,7 +978,7 @@ plt.title('Scatter plot of weight versus height');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{09_relationships_files/09_relationships_101_0.png}
+\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_101_0.png}
 \end{center}
 
 The slope of this line seems consistent with the scatter plot.
@@ -998,7 +998,7 @@ plt.title('Weight versus age');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{09_relationships_files/09_relationships_103_0.png}
+\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_103_0.png}
 \end{center}
 
 People in their 40s are the heaviest; younger and older people are
@@ -1041,7 +1041,7 @@ plt.title('Weight versus age');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{09_relationships_files/09_relationships_107_0.png}
+\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_107_0.png}
 \end{center}
 
 A straight line does not capture the relationship between these

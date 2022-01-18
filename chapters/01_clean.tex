@@ -24,7 +24,7 @@ In this notebook, we
 The following cell loads the packages we need. If you have everything
 installed, there should be no error messages.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[,style=source]
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -40,7 +40,7 @@ Explorer}, I selected a subset of the variables in the GSS and made it
 available along with this notebook. The following cell downloads this
 extract.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[,style=source]
 from os.path import basename, exists
 
 def download(url):
@@ -68,7 +68,7 @@ The dictionary file is in Stata format, so we'll use the
 \passthrough{\lstinline!statadict!} library to read it. The following
 cell installs it if necessary.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[,style=source]
 try:
     import statadict
 except ImportError:
@@ -79,7 +79,7 @@ We can use the Python module \passthrough{\lstinline!tarfile!} to
 extract the dictionary file, and \passthrough{\lstinline!statadict!} to
 read and parse it.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[,style=source]
 import tarfile
 from statadict import parse_stata_dict
 
@@ -105,7 +105,7 @@ which indicate where each column is. We can pass these values to
 reads \href{https://en.wikipedia.org/wiki/Flat-file_database}{fixed
 width files}, which is what \passthrough{\lstinline!GSS.dat!} is.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[,style=source]
 with tarfile.open(filename) as tf:
     fp = tf.extractfile(data_file)  
     gss = pd.read_fwf(fp,
@@ -116,7 +116,7 @@ with tarfile.open(filename) as tf:
 The column names in the data file are in all caps. I'll convert them to
 lower case because I think it makes the code look better.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[,style=source]
 gss.columns = gss.columns.str.lower()
 \end{lstlisting}
 
@@ -124,7 +124,7 @@ We can use \passthrough{\lstinline!shape!} and
 \passthrough{\lstinline!head!} to see what the
 \passthrough{\lstinline!DataFrame!} looks like.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[,style=source]
 print(gss.shape)
 gss.head()
 \end{lstlisting}
@@ -134,7 +134,7 @@ gss.head()
 \end{lstlisting}
 
 \begin{tabular}{lrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr}
-\toprule
+\midrule
 {} &  year &  id\_ &  agewed &  divorce &  sibs &  childs &  age &  educ &  paeduc &  maeduc &  speduc &  degree &  padeg &  madeg &  spdeg &  sex &  race &  res16 &  reg16 &  srcbelt &  partyid &  pres04 &  pres08 &  pres12 &  polviews &  natspac &  natenvir &  natheal &  natcity &  natcrime &  natdrug &  nateduc &  natrace &  natarms &  nataid &  natfare &  spkath &  colath &  libath &  spkhomo &  colhomo &  libhomo &  cappun &  gunlaw &  grass &  relig &  fund &  attend &  reliten &  postlife &  pray &  relig16 &  fund16 &  sprel16 &  prayer &  bible &  racmar &  racpres &  affrmact &  happy &  hapmar &  health &  life &  helpful &  fair &  trust &  conclerg &  coneduc &  confed &  conpress &  conjudge &  conlegis &  conarmy &  satjob &  class\_ &  satfin &  finrela &  union\_ &  fepol &  abany &  chldidel &  sexeduc &  premarsx &  xmarsex &  homosex &  spanking &  fear &  owngun &  pistol &  hunt &  phone &  memchurh &  realinc &  cohort &  marcohrt &  ballot &  wtssall &  adults &  compuse &  databank &  wtssnr &  spkrac &  spkcom &  spkmil &  spkmslm &  colrac &  librac &  colcom &  libcom &  colmil &  libmil &  colmslm &  libmslm &  natcrimy &  racopen &  divlaw &  teensex &  pornlaw &  letdie1 &  polopts &  natroad &  natsoc &  natmass &  natpark &  natchld &  natsci &  natenrgy &  natspacy &  natenviy &  nathealy &  natcityy &  natdrugy &  nateducy &  natracey &  natarmsy &  nataidy &  natfarey &  confinan &  conbus &  conlabor &  conmedic &  contv &  consci &  abdefect &  abnomore &  abhlth &  abpoor &  abrape &  absingle &  god &  reborn &  savesoul &  relpersn &  sprtprsn &  relexp &  relactiv &  fechld &  fepresch &  fefam &  fejobaff &  discaffm &  discaffw &  fehire &  meovrwrk &  avoidbuy &  income &  rincome &  realrinc &  china \\
 \midrule
 0 &  1972 &    1 &       0 &        0 &     3 &       0 &   23 &    16 &      10 &      97 &      97 &       3 &      0 &      7 &      7 &    2 &     1 &      5 &      2 &        3 &        2 &       0 &       0 &       0 &         0 &        0 &         0 &        0 &        0 &         0 &        0 &        0 &        0 &        0 &       0 &        0 &       1 &       4 &       2 &        0 &        0 &        0 &       0 &       1 &      0 &      3 &     3 &       2 &        0 &         0 &     0 &        0 &       0 &        0 &       0 &      0 &       2 &        1 &         0 &      3 &       0 &       2 &     0 &        2 &     2 &      3 &         0 &        0 &       0 &         0 &         0 &         0 &        0 &       3 &       3 &       3 &        3 &       0 &      0 &      0 &         2 &        0 &         4 &        0 &        0 &         0 &     0 &       0 &       0 &     0 &      0 &         0 &  18951.0 &    1949 &         0 &       0 &   0.4446 &       1 &        0 &         0 &     1.0 &       0 &       1 &       0 &        0 &       0 &       0 &       5 &       2 &       0 &       0 &        0 &        0 &         0 &        0 &       0 &        0 &        0 &        0 &        0 &        0 &       0 &        0 &        0 &        0 &       0 &         0 &         0 &         0 &         0 &         0 &         0 &         0 &         0 &         0 &        0 &         0 &         0 &       0 &         0 &         0 &      0 &       0 &         1 &         1 &       1 &       1 &       1 &         1 &    0 &       0 &         0 &         0 &         0 &       0 &         0 &       0 &         0 &      0 &         0 &         0 &         0 &       0 &         0 &         0 &       0 &        0 &       0.0 &     -1 \\
@@ -142,7 +142,7 @@ gss.head()
 2 &  1972 &    3 &      20 &        2 &     5 &       4 &   48 &    12 &       8 &       8 &      11 &       1 &      0 &      0 &      9 &    2 &     1 &      6 &      3 &        3 &        3 &       0 &       0 &       0 &         0 &        0 &         0 &        0 &        0 &         0 &        0 &        0 &        0 &        0 &       0 &        0 &       1 &       5 &       2 &        0 &        0 &        0 &       0 &       1 &      0 &      1 &     2 &       4 &        0 &         0 &     0 &        0 &       0 &        0 &       0 &      0 &       1 &        1 &         0 &      2 &       0 &       1 &     0 &        2 &     1 &      2 &         0 &        0 &       0 &         0 &         0 &         0 &        0 &       2 &       2 &       1 &        3 &       0 &      0 &      0 &         2 &        0 &         1 &        0 &        0 &         0 &     0 &       0 &       0 &     0 &      0 &         0 &  24366.0 &    1924 &      1944 &       0 &   0.8893 &       2 &        0 &         0 &     1.0 &       0 &       2 &       0 &        0 &       0 &       0 &       4 &       1 &       0 &       0 &        0 &        0 &         0 &        0 &       0 &        0 &        0 &        0 &        0 &        0 &       0 &        0 &        0 &        0 &       0 &         0 &         0 &         0 &         0 &         0 &         0 &         0 &         0 &         0 &        0 &         0 &         0 &       0 &         0 &         0 &      0 &       0 &         1 &         1 &       1 &       1 &       1 &         1 &    0 &       0 &         0 &         0 &         0 &       0 &         0 &       0 &         0 &      0 &         0 &         0 &         0 &       0 &         0 &         0 &       0 &        0 &       0.0 &     -1 \\
 3 &  1972 &    4 &      24 &        2 &     5 &       0 &   27 &    17 &      16 &      12 &      20 &       3 &      3 &      1 &      4 &    2 &     1 &      6 &      0 &        3 &        1 &       0 &       0 &       0 &         0 &        0 &         0 &        0 &        0 &         0 &        0 &        0 &        0 &        0 &       0 &        0 &       1 &       5 &       2 &        0 &        0 &        0 &       0 &       1 &      0 &      5 &     9 &       0 &        0 &         0 &     0 &        0 &       0 &        0 &       0 &      0 &       1 &        1 &         0 &      3 &       0 &       2 &     0 &        2 &     2 &      2 &         0 &        0 &       0 &         0 &         0 &         0 &        0 &       1 &       3 &       3 &        3 &       0 &      0 &      0 &         2 &        0 &         1 &        0 &        0 &         0 &     0 &       0 &       0 &     0 &      0 &         0 &  30458.0 &    1945 &      1969 &       0 &   0.8893 &       2 &        0 &         0 &     1.0 &       0 &       1 &       0 &        0 &       0 &       0 &       4 &       1 &       0 &       0 &        0 &        0 &         0 &        0 &       0 &        0 &        0 &        0 &        0 &        0 &       0 &        0 &        0 &        0 &       0 &         0 &         0 &         0 &         0 &         0 &         0 &         0 &         0 &         0 &        0 &         0 &         0 &       0 &         0 &         0 &      0 &       0 &         2 &         2 &       1 &       1 &       1 &         1 &    0 &       0 &         0 &         0 &         0 &       0 &         0 &       0 &         0 &      0 &         0 &         0 &         0 &       0 &         0 &         0 &       0 &        0 &       0.0 &     -1 \\
 4 &  1972 &    5 &      22 &        2 &     2 &       2 &   61 &    12 &       8 &       8 &      12 &       1 &      0 &      0 &      1 &    2 &     1 &      3 &      3 &        3 &        0 &       0 &       0 &       0 &         0 &        0 &         0 &        0 &        0 &         0 &        0 &        0 &        0 &        0 &       0 &        0 &       1 &       4 &       2 &        0 &        0 &        0 &       0 &       1 &      0 &      1 &     2 &       0 &        0 &         0 &     0 &        0 &       0 &        0 &       0 &      0 &       2 &        1 &         0 &      2 &       0 &       2 &     0 &        2 &     2 &      2 &         0 &        0 &       0 &         0 &         0 &         0 &        0 &       0 &       2 &       1 &        4 &       0 &      0 &      0 &         2 &        0 &         3 &        0 &        0 &         0 &     0 &       0 &       0 &     0 &      0 &         0 &  50763.0 &    1911 &      1933 &       0 &   0.8893 &       2 &        0 &         0 &     1.0 &       0 &       1 &       0 &        0 &       0 &       0 &       5 &       2 &       0 &       0 &        0 &        0 &         0 &        0 &       0 &        0 &        0 &        0 &        0 &        0 &       0 &        0 &        0 &        0 &       0 &         0 &         0 &         0 &         0 &         0 &         0 &         0 &         0 &         0 &        0 &         0 &         0 &       0 &         0 &         0 &      0 &       0 &         1 &         1 &       1 &       1 &       1 &         1 &    0 &       0 &         0 &         0 &         0 &       0 &         0 &       0 &         0 &      0 &         0 &         0 &         0 &       0 &         0 &         0 &       0 &        0 &       0.0 &     -1 \\
-\bottomrule
+\midrule
 \end{tabular}
 
 This dataset has 64814 rows, one for each respondent, and 166 columns,
@@ -228,7 +228,7 @@ The following function, \passthrough{\lstinline!values!}, takes a Series
 that represents a single variable and returns the values in the series
 and their frequencies.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[,style=source]
 def values(series):
     """Count the values and sort.
     
@@ -241,16 +241,16 @@ def values(series):
 
 Here are the values for the variable \passthrough{\lstinline!polviews!}.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[,style=source]
 column = gss['polviews']
 \end{lstlisting}
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[,style=source]
 values(column)
 \end{lstlisting}
 
 \begin{tabular}{lr}
-\toprule
+\midrule
 {} &  polviews \\
 \midrule
 0 &      6777 \\
@@ -263,7 +263,7 @@ values(column)
 7 &      1832 \\
 8 &      2326 \\
 9 &       383 \\
-\bottomrule
+\midrule
 \end{tabular}
 
 To check the integrity of the data and confirm that we have loaded it
@@ -273,18 +273,18 @@ codebook.
 
 We can select values from a single year like this:
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[,style=source]
 one_year = (gss['year'] == 1974)
 \end{lstlisting}
 
 And look at the values and their frequencies:
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[,style=source]
 values(column[one_year])
 \end{lstlisting}
 
 \begin{tabular}{lr}
-\toprule
+\midrule
 {} &  polviews \\
 \midrule
 1 &        22 \\
@@ -296,7 +296,7 @@ values(column[one_year])
 7 &        35 \\
 8 &        70 \\
 9 &         4 \\
-\bottomrule
+\midrule
 \end{tabular}
 
 If you
@@ -332,14 +332,14 @@ I'll replace the numeric codes 8, 9, and 0 with
 \passthrough{\lstinline!NaN!}, which is a special value used to indicate
 missing data.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[,style=source]
 clean = column.replace([0, 8, 9], np.nan)
 \end{lstlisting}
 
 We can use \passthrough{\lstinline!notna!} and
 \passthrough{\lstinline!sum!} to count the valid responses:
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[,style=source]
 clean.notna().sum()
 \end{lstlisting}
 
@@ -350,7 +350,7 @@ clean.notna().sum()
 And we use \passthrough{\lstinline!isna!} to count the missing
 responses:
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[,style=source]
 clean.isna().sum()
 \end{lstlisting}
 
@@ -369,7 +369,7 @@ However, in this example, the results don't match. The codebook reports
 To figure out what was wrong, I looked at the difference between the
 values in the codebook and the values I computed from the dataset.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[,style=source]
 clean.notna().sum() - 53081
 \end{lstlisting}
 
@@ -377,7 +377,7 @@ clean.notna().sum() - 53081
 2247
 \end{lstlisting}
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[,style=source]
 clean.isna().sum() - 9385
 \end{lstlisting}
 
@@ -390,7 +390,7 @@ the code book might not include the most recent data, from 2018.
 
 Here are the numbers from 2018.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[,style=source]
 one_year = (gss['year'] == 2018)
 one_year.sum()
 \end{lstlisting}
@@ -399,7 +399,7 @@ one_year.sum()
 2348
 \end{lstlisting}
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[,style=source]
 clean[one_year].notna().sum()
 \end{lstlisting}
 
@@ -407,7 +407,7 @@ clean[one_year].notna().sum()
 2247
 \end{lstlisting}
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[,style=source]
 clean[one_year].isna().sum()
 \end{lstlisting}
 
@@ -430,7 +430,7 @@ and identified the special values that indicate missing data.
 I recorded that information in the following function, which is intended
 to replace special values with \passthrough{\lstinline!NaN!}.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[,style=source]
 def replace_invalid(df, columns, bad):
     for column in columns:
         df[column].replace(bad, np.nan, inplace=True)
@@ -502,11 +502,11 @@ def gss_replace_invalid(df):
     df.rincome.replace([0, 13, 98, 99], np.nan, inplace=True)    
 \end{lstlisting}
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[,style=source]
 gss_replace_invalid(gss)
 \end{lstlisting}
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[,style=source]
 # try to make the dataset smaller by replacing
 # 64-bit FP numbers with 32-bit.
 
@@ -531,7 +531,7 @@ If you get \passthrough{\lstinline!year!} or
 \passthrough{\lstinline!id\_!}, run the cell again to get a different
 variable name.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[,style=source]
 np.random.seed(None)
 np.random.choice(gss.columns)
 \end{lstlisting}
@@ -564,7 +564,7 @@ by ``resampling'', that is, by drawing a random sample from the dataset,
 where each respondent's chance of appearing in the sample is
 proportional to their sampling weight.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[,style=source]
 def resample_rows_weighted(df, column):
     """Resamples a DataFrame using probabilities proportional to given column.
 
@@ -578,7 +578,7 @@ def resample_rows_weighted(df, column):
     return sample
 \end{lstlisting}
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[,style=source]
 def resample_by_year(df, column):
     """Resample rows within each year.
 
@@ -594,7 +594,7 @@ def resample_by_year(df, column):
     return sample
 \end{lstlisting}
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[,style=source]
 np.random.seed(19)
 sample = resample_by_year(gss, 'wtssall')
 \end{lstlisting}
@@ -631,13 +631,13 @@ exists, we should overwrite it.
 With compression level \passthrough{\lstinline!3!}, it reduces the size
 of the file by a factor of 10.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[,style=source]
 # save the original
 
 gss.to_hdf('gss_eda.hdf5', 'gss', 'w', complevel=3)
 \end{lstlisting}
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[,style=source]
 !ls -l gss_eda.hdf5
 \end{lstlisting}
 
@@ -648,7 +648,7 @@ gss.to_hdf('gss_eda.hdf5', 'gss', 'w', complevel=3)
 And I'll create a second file with three random resamplings of the
 original dataset.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[,style=source]
 # if the file already exists, remove it
 import os
 
@@ -660,7 +660,7 @@ This file contains three keys, \passthrough{\lstinline!gss0!},
 \passthrough{\lstinline!gss1!}, and \passthrough{\lstinline!gss2!},
 which map to three DataFrames.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[,style=source]
 # generate and store three resamplings
 keys = ['gss0', 'gss1', 'gss2']
 
@@ -671,7 +671,7 @@ for i in range(3):
     sample.to_hdf('gss_eda.3.hdf5', keys[i], complevel=3)
 \end{lstlisting}
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[,style=source]
 !ls -l gss_eda.3.hdf5
 \end{lstlisting}
 
@@ -681,4 +681,5 @@ for i in range(3):
 
 For the other notebooks in this case study, we'll load this resampled
 data rather than reading and cleaning the data every time.
+
 

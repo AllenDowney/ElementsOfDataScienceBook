@@ -261,7 +261,7 @@ date_of_birth.day_name(), date_of_birth.month_name()
 now = pd.Timestamp.now()
 now
 (@\dashfill@)
-@@@Timestamp('2022-01-18 14:27:32.241819')@@@
+@@@Timestamp('2022-01-18 14:33:47.039841')@@@
 \end{lstlisting}
 
 \textbf{Exercise:} Use the value of \passthrough{\lstinline!now!} to
@@ -278,7 +278,7 @@ operations. For example, you can compute the difference between two
 age = now - date_of_birth
 age
 (@\dashfill@)
-@@@Timedelta('11916 days 14:27:32.241819')@@@
+@@@Timedelta('11916 days 14:33:47.039841')@@@
 \end{lstlisting}
 
 The result is a \passthrough{\lstinline!Timedelta!} that represents the
@@ -291,7 +291,7 @@ hours, etc. between the two \passthrough{\lstinline!Timestamp!} values.
 \begin{lstlisting}[]
 age.components
 (@\dashfill@)
-@@@Components(days=11916, hours=14, minutes=27, seconds=32, milliseconds=241, microseconds=819, nanoseconds=0)@@@
+@@@Components(days=11916, hours=14, minutes=33, seconds=47, milliseconds=39, microseconds=841, nanoseconds=0)@@@
 \end{lstlisting}
 
 You can get one of the components like this:

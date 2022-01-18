@@ -96,7 +96,7 @@ sampling distribution of the mean.
 \begin{lstlisting}[]
 simulate_sample_mean(n_realinc, mean_realinc, std_income)
 (@\dashfill@)
-@@@31791.715011882538@@@
+@@@31844.356624616907@@@
 \end{lstlisting}
 
 If we call it many times, we get a random sample from the sampling
@@ -128,7 +128,7 @@ summary1
 \midrule
 {} &  Estimate &     SE &                CI90 \\
 \midrule
-{} &   31733.4 &  126.5 &  [31526.3, 31937.7] \\
+{} &   31739.3 &  115.8 &  [31549.9, 31927.7] \\
 \midrule
 \end{tabular}
 
@@ -175,7 +175,7 @@ plt.legend();
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{12_bootstrap_files/12_bootstrap_29_0.png}
+\includegraphics[width=4in]{chapters/12_bootstrap_files/12_bootstrap_29_0.png}
 \end{center}
 
 The normal distribution is not a good model for the data. As we saw in
@@ -207,9 +207,9 @@ summary2
 
 \begin{tabular}{lrrl}
 \midrule
-{} &  Estimate &      SE &                 CI90 \\
+{} &  Estimate &      SE &                  CI90 \\
 \midrule
-{} &  -6099.36 &  212.86 &  [-6445.8, -5742.18] \\
+{} &  -6093.99 &  209.89 &  [-6451.86, -5758.44] \\
 \midrule
 \end{tabular}
 
@@ -260,11 +260,11 @@ repeats.head()
 \midrule
 {} &  ID\_ \\
 \midrule
-1158 &   50 \\
-1427 &   44 \\
-1367 &   44 \\
-1029 &   44 \\
-1119 &   44 \\
+298 &   47 \\
+413 &   44 \\
+201 &   44 \\
+551 &   43 \\
+508 &   43 \\
 \midrule
 \end{tabular}
 
@@ -277,7 +277,7 @@ original dataset but not the bootstrapped sample.
 unused = set(gss['ID_']) - set(bootstrapped['ID_'])
 len(unused)
 (@\dashfill@)
-@@@560@@@
+@@@575@@@
 \end{lstlisting}
 
 Now we can use bootstrapping to generate a sampling distribution. For
@@ -311,10 +311,10 @@ table
 
 \begin{tabular}{lrrl}
 \midrule
-{} &  Estimate &      SE &                 CI90 \\
+{} &  Estimate &      SE &                  CI90 \\
 \midrule
-normal model  &  31733.40 &  126.50 &   [31526.3, 31937.7] \\
-bootstrapping &  31742.15 &  121.81 &  [31543.9, 31946.88] \\
+normal model  &  31739.30 &  115.80 &    [31549.9, 31927.7] \\
+bootstrapping &  31750.28 &  124.21 &  [31550.01, 31964.49] \\
 \midrule
 \end{tabular}
 
@@ -354,10 +354,10 @@ table
 
 \begin{tabular}{lrrl}
 \midrule
-{} &  Estimate &      SE &                 CI90 \\
+{} &  Estimate &      SE &                  CI90 \\
 \midrule
-normal model  &  -6099.36 &  212.86 &  [-6445.8, -5742.18] \\
-bootstrapping &   5646.45 &   85.93 &     [5512.5, 5806.0] \\
+normal model  &  -6093.99 &  209.89 &  [-6451.86, -5758.44] \\
+bootstrapping &   5647.24 &   86.18 &      [5512.5, 5806.0] \\
 \midrule
 \end{tabular}
 
@@ -465,9 +465,9 @@ summarize(t5, digits=3)
 
 \begin{tabular}{lrrl}
 \midrule
-{} &  Estimate &    SE &                CI90 \\
+{} &  Estimate &     SE &                CI90 \\
 \midrule
-{} &   178.078 &  0.02 &  [178.038, 178.109] \\
+{} &   178.077 &  0.018 &  [178.046, 178.108] \\
 \midrule
 \end{tabular}
 
@@ -566,11 +566,11 @@ repeats.head()
 \midrule
 {} &  SEQNO \\
 \midrule
-2019000108 &    134 \\
-2019000851 &    130 \\
-2019006167 &    123 \\
-2019000096 &    122 \\
+2019000108 &    121 \\
+2019000096 &    121 \\
 2019000047 &    119 \\
+2019007402 &    115 \\
+2019000851 &    111 \\
 \midrule
 \end{tabular}
 
@@ -587,7 +587,7 @@ not the sample.
 unused = set(brfss['SEQNO']) - set(bootstrapped['SEQNO'])
 len(unused)
 (@\dashfill@)
-@@@817@@@
+@@@806@@@
 \end{lstlisting}
 
 There are several hundred rows that don't appear in this sample, but
@@ -615,7 +615,7 @@ from the sampling distribution of the weighted mean.
 male_df = brfss[male]
 weighted_bootstrap_mean(male_df)
 (@\dashfill@)
-@@@177.6096682823134@@@
+@@@177.61318049983888@@@
 \end{lstlisting}
 
 If we run it many times, we get a random sample from the sampling
@@ -632,7 +632,7 @@ summarize(t6, digits=3)
 \midrule
 {} &  Estimate &     SE &                CI90 \\
 \midrule
-{} &   177.641 &  0.021 &  [177.605, 177.678] \\
+{} &   177.643 &  0.019 &  [177.611, 177.672] \\
 \midrule
 \end{tabular}
 
@@ -643,7 +643,7 @@ unweighted mean we computed, it is a little lower.
 \begin{lstlisting}[]
 print(np.mean(t6), mean_height)
 (@\dashfill@)
-@@@177.6410065054404 178.0768644146838@@@
+@@@177.64308641669376 178.0768644146838@@@
 \end{lstlisting}
 
 So it seems like people in the oversampled groups are taller than
@@ -756,9 +756,9 @@ summary9
 
 \begin{tabular}{lrrl}
 \midrule
-{} &  Estimate &      SE &              CI90 \\
+{} &  Estimate &     SE &              CI90 \\
 \midrule
-{} &   5160.22 &  237.99 &  [5107.5, 5107.5] \\
+{} &   5171.56 &  257.8 &  [5107.5, 6242.5] \\
 \midrule
 \end{tabular}
 
@@ -801,10 +801,15 @@ pd.Series(t9).value_counts().sort_index()
 \midrule
 {} &    0 \\
 \midrule
-5107.5 &  953 \\
+5107.5 &  940 \\
 5221.0 &    1 \\
-5561.5 &    1 \\
-6242.5 &   46 \\
+5334.5 &    1 \\
+5448.0 &    2 \\
+5788.5 &    1 \\
+5902.0 &    2 \\
+6015.5 &    1 \\
+6129.0 &    2 \\
+6242.5 &   51 \\
 \midrule
 \end{tabular}
 
@@ -848,7 +853,7 @@ plt.title('Estimated distribution of income');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{12_bootstrap_files/12_bootstrap_115_0.png}
+\includegraphics[width=4in]{chapters/12_bootstrap_files/12_bootstrap_115_0.png}
 \end{center}
 
 To draw samples from this distribution, we'll use a Scipy function
@@ -880,7 +885,7 @@ a logarithm to a dollar value.
 sample = kde.resample(n)
 10 ** np.percentile(sample, 10)
 (@\dashfill@)
-@@@4961.50992778821@@@
+@@@5075.062147497547@@@
 \end{lstlisting}
 
 The result is a random value from the sampling distribution of the 10th
@@ -912,10 +917,10 @@ table
 
 \begin{tabular}{lrrl}
 \midrule
-{} &  Estimate &      SE &               CI90 \\
+{} &  Estimate &      SE &                CI90 \\
 \midrule
-bootstrapping  &   5160.22 &  237.99 &   [5107.5, 5107.5] \\
-KDE resampling &   5097.27 &  247.90 &  [4682.64, 5508.9] \\
+bootstrapping  &   5171.56 &  257.80 &    [5107.5, 6242.5] \\
+KDE resampling &   5095.52 &  256.48 &  [4692.83, 5509.86] \\
 \midrule
 \end{tabular}
 
@@ -1055,7 +1060,7 @@ plot_data()
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{12_bootstrap_files/12_bootstrap_144_0.png}
+\includegraphics[width=4in]{chapters/12_bootstrap_files/12_bootstrap_144_0.png}
 \end{center}
 
 The model fits past data reasonably well and makes plausible predictions
