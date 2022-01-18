@@ -33,14 +33,12 @@ I've created an HDF file that contains three
 We'll work with the first resampling, \passthrough{\lstinline!gss0!}, to
 get started.
 
-\begin{lstlisting}[language=Python,style=source]
-datafile = 'gss_eda.3.hdf5'
+\begin{lstlisting}[]
+datafile = 'gss_eds.3.hdf5'
 gss = pd.read_hdf(datafile, 'gss0')
 gss.shape
-\end{lstlisting}
-
-\begin{lstlisting}[style=output]
-(64814, 169)
+(@\dashfill@)
+@@@(68846, 204)@@@
 \end{lstlisting}
 
 \hypertarget{political-alignment}{%
@@ -64,7 +62,7 @@ scale?
 
 Here are the valid responses:
 
-\begin{lstlisting}[style=output]
+\begin{lstlisting}
 1   Extremely liberal
 2   Liberal
 3   Slightly liberal
@@ -78,27 +76,27 @@ To see how the responses have changed over time, we'll inspect them at
 the beginning and end of the observation period. First I'll select the
 column.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[]
 polviews = gss['polviews']
 \end{lstlisting}
 
 Then compute a Boolean Series that's \passthrough{\lstinline!True!} for
 responses from 1974.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[]
 year74 = (gss['year'] == 1974)
 \end{lstlisting}
 
 Now we can select the responses from 1974.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[]
 polviews74 = polviews[year74]
 \end{lstlisting}
 
 We'll use the following function to count the number of times each
 response occurs.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[]
 def values(series):
     """Count the values and sort.
     
@@ -111,12 +109,12 @@ def values(series):
 
 Here are the responses from 1974.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[]
 values(polviews74)
 \end{lstlisting}
 
 \begin{tabular}{lr}
-\toprule
+\midrule
 {} &  polviews \\
 \midrule
 1.0 &        31 \\
@@ -126,29 +124,29 @@ values(polviews74)
 5.0 &       223 \\
 6.0 &       181 \\
 7.0 &        30 \\
-\bottomrule
+\midrule
 \end{tabular}
 
-And here are the responses from 2018.
+And here are the responses from 2021.
 
-\begin{lstlisting}[language=Python,style=source]
-year18 = (gss['year'] == 2018)
-polviews18 = polviews[year18]
-values(polviews18)
+\begin{lstlisting}[]
+year21 = (gss['year'] == 2021)
+polviews21 = polviews[year21]
+values(polviews21)
 \end{lstlisting}
 
 \begin{tabular}{lr}
-\toprule
+\midrule
 {} &  polviews \\
 \midrule
-1.0 &        89 \\
-2.0 &       269 \\
-3.0 &       265 \\
-4.0 &       891 \\
-5.0 &       310 \\
-6.0 &       342 \\
-7.0 &        92 \\
-\bottomrule
+1.0 &       212 \\
+2.0 &       577 \\
+3.0 &       427 \\
+4.0 &      1506 \\
+5.0 &       480 \\
+6.0 &       569 \\
+7.0 &       181 \\
+\midrule
 \end{tabular}
 
 \hypertarget{pmfs}{%
@@ -162,13 +160,13 @@ each response, rather than the number.
 I'll use the \passthrough{\lstinline!Pmf!} class from
 \passthrough{\lstinline!empiricaldist!} to compute it.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[]
 from empiricaldist import Pmf
 \end{lstlisting}
 
 Here's the distribution from 1974:
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[]
 pmf74 = Pmf.from_seq(polviews74)
 pmf74.bar(label='1974', color='C0', alpha=0.7)
 
@@ -178,14 +176,14 @@ decorate(xlabel='Political view on a 7-point scale',
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[scale=0.75]{02_polviews_soln_files/02_polviews_soln_32_0.png}
+\includegraphics[width=4in]{chapters/02_polviews_soln_files/02_polviews_soln_32_0.png}
 \end{center}
 
 And from 2018:
 
-\begin{lstlisting}[language=Python,style=source]
-pmf18 = Pmf.from_seq(polviews18)
-pmf18.bar(label='2018', color='C1', alpha=0.7)
+\begin{lstlisting}[]
+pmf21 = Pmf.from_seq(polviews21)
+pmf21.bar(label='2021', color='C1', alpha=0.7)
 
 decorate(xlabel='Political view on a 7-point scale',
          ylabel='Fraction of population',
@@ -193,7 +191,7 @@ decorate(xlabel='Political view on a 7-point scale',
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[scale=0.75]{02_polviews_soln_files/02_polviews_soln_34_0.png}
+\includegraphics[width=4in]{chapters/02_polviews_soln_files/02_polviews_soln_34_0.png}
 \end{center}
 
 In both cases, the most common response is \passthrough{\lstinline!4!},
@@ -216,7 +214,7 @@ in polarization.
 
 Compute the mean and standard deviation of
 \passthrough{\lstinline!polviews74!} and
-\passthrough{\lstinline!polviews18!}.
+\passthrough{\lstinline!polviews21!}.
 
 What do they indicate about changes over this interval?
 
@@ -229,13 +227,11 @@ over time, we can group by year and compute the mean of
 \passthrough{\lstinline!polviews!} during each year. First I'll use
 \passthrough{\lstinline!groupby!} to group the respondents by year.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[]
 gss_by_year = gss.groupby('year')
 gss_by_year
-\end{lstlisting}
-
-\begin{lstlisting}[style=output]
-<pandas.core.groupby.generic.DataFrameGroupBy object at 0x7f31637a7fd0>
+(@\dashfill@)
+@@@<pandas.core.groupby.generic.DataFrameGroupBy object at 0x7f7fabd1afd0>@@@
 \end{lstlisting}
 
 The result is a \passthrough{\lstinline!DataFrameGroupBy!} object that
@@ -245,13 +241,11 @@ In many ways the \passthrough{\lstinline!DataFrameGroupBy!} behaves like
 a \passthrough{\lstinline!DataFrame!}. We can use the bracket operator
 to select a column:
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[]
 polviews_by_year = gss_by_year['polviews']
 polviews_by_year
-\end{lstlisting}
-
-\begin{lstlisting}[style=output]
-<pandas.core.groupby.generic.SeriesGroupBy object at 0x7f31636aa710>
+(@\dashfill@)
+@@@<pandas.core.groupby.generic.SeriesGroupBy object at 0x7f7fabcadfd0>@@@
 \end{lstlisting}
 
 A column from a \passthrough{\lstinline!DataFrameGroupBy!} is a
@@ -260,13 +254,13 @@ A column from a \passthrough{\lstinline!DataFrameGroupBy!} is a
 contains the mean of \passthrough{\lstinline!polviews!} for each year of
 the survey.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[]
 mean_series = polviews_by_year.mean()
 \end{lstlisting}
 
 And here's what it looks like.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[]
 mean_series.plot(color='C2', label='polviews')
 decorate(xlabel='Year', 
          ylabel='Mean (7 point scale)',
@@ -274,7 +268,7 @@ decorate(xlabel='Year',
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[scale=0.75]{02_polviews_soln_files/02_polviews_soln_50_0.png}
+\includegraphics[width=4in]{chapters/02_polviews_soln_files/02_polviews_soln_50_0.png}
 \end{center}
 
 \textbf{Exercise:} The standard deviation quantifies the spread of the
@@ -296,7 +290,7 @@ The following function takes a Pandas Series and uses an algorithm
 called LOWESS to compute a smooth line. LOWESS stands for ``locally
 weighted scatterplot smoothing''.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[]
 from statsmodels.nonparametric.smoothers_lowess import lowess
 
 def make_lowess(series):
@@ -318,7 +312,7 @@ def make_lowess(series):
 We'll use the following function to plot data points and the smoothed
 line.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[]
 def plot_series_lowess(series, color):
     """Plots a series of data points and a smooth line.
     
@@ -333,17 +327,16 @@ def plot_series_lowess(series, color):
 The following figure shows the mean of
 \passthrough{\lstinline!polviews!} and a smooth line.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[]
 mean_series = gss_by_year['polviews'].mean()
 plot_series_lowess(mean_series, 'C2')
 decorate(ylabel='Mean (7 point scale)',
          title='Mean of polviews',
-         xlabel='Year',
-         xlim=[1972, 2020])
+         xlabel='Year')
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[scale=0.75]{02_polviews_soln_files/02_polviews_soln_57_0.png}
+\includegraphics[width=4in]{chapters/02_polviews_soln_files/02_polviews_soln_57_0.png}
 \end{center}
 
 One reason the PMFs for 1974 and 2018 did not look very different is
@@ -374,7 +367,7 @@ that computes a \textbf{cross tabulation} (see
 \passthrough{\lstinline!Series!} objects as arguments and returns a
 \passthrough{\lstinline!DataFrame!}.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[]
 year = gss['year']
 column = gss['polviews']
 
@@ -383,12 +376,12 @@ xtab = pd.crosstab(year, column)
 
 Here are the first few lines from the result.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[]
 xtab.head()
 \end{lstlisting}
 
 \begin{tabular}{lrrrrrrr}
-\toprule
+\midrule
 polviews &  1.0 &  2.0 &  3.0 &  4.0 &  5.0 &  6.0 &  7.0 \\
 year &      &      &      &      &      &      &      \\
 \midrule
@@ -397,7 +390,7 @@ year &      &      &      &      &      &      &      \\
 1976 &   31 &  198 &  175 &  564 &  209 &  206 &   34 \\
 1977 &   37 &  181 &  214 &  594 &  243 &  164 &   42 \\
 1978 &   21 &  140 &  255 &  559 &  265 &  187 &   25 \\
-\bottomrule
+\midrule
 \end{tabular}
 
 It contains one row for each value of \passthrough{\lstinline!year!} and
@@ -413,18 +406,18 @@ normalize the results, which means computing for each year the
 \passthrough{\lstinline!crosstab!} takes an optional argument that
 normalizes each row.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[]
 xtab_norm = pd.crosstab(year, column, normalize='index')
 \end{lstlisting}
 
 Here's what that looks like for the 7-point scale.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[]
 xtab_norm.head()
 \end{lstlisting}
 
 \begin{tabular}{lrrrrrrr}
-\toprule
+\midrule
 polviews &       1.0 &       2.0 &       3.0 &       4.0 &       5.0 &       6.0 &       7.0 \\
 year &           &           &           &           &           &           &           \\
 \midrule
@@ -433,7 +426,7 @@ year &           &           &           &           &           &           &  
 1976 &  0.021877 &  0.139732 &  0.123500 &  0.398024 &  0.147495 &  0.145378 &  0.023994 \\
 1977 &  0.025085 &  0.122712 &  0.145085 &  0.402712 &  0.164746 &  0.111186 &  0.028475 \\
 1978 &  0.014463 &  0.096419 &  0.175620 &  0.384986 &  0.182507 &  0.128788 &  0.017218 \\
-\bottomrule
+\midrule
 \end{tabular}
 
 \hypertarget{plotting}{%
@@ -443,7 +436,7 @@ To plot the results, I use the following function, which takes a
 \passthrough{\lstinline!DataFrame!} and plots each column using
 \passthrough{\lstinline!plot\_series\_lowess!}.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[]
 def plot_columns_lowess(table, columns, colors):
     """Plot the columns in a DataFrame.
     
@@ -458,18 +451,17 @@ def plot_columns_lowess(table, columns, colors):
 
 Here are the 7 categories plotted as a function of time.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[]
 plot_columns_lowess(xtab_norm, columns, color_map)
 decorate(xlabel='Year',
          ylabel='Proportion',
-         title='Fraction of people with each political view',
-         xlim=[1972, 2020])
+         title='Fraction of people with each political view')
 
 anchor_legend(1.02, 1.02)
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[scale=0.75]{02_polviews_soln_files/02_polviews_soln_91_0.png}
+\includegraphics[width=4in]{chapters/02_polviews_soln_files/02_polviews_soln_91_0.png}
 \end{center}
 
 This way of looking at the results suggests that changes in political
@@ -482,20 +474,19 @@ The fraction of people at the extremes has increased, but it is hard to
 see clearly in this figure. We can get a better view by plotting just
 the extremes.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[]
 columns2 = ['Extremely liberal', 'Extremely conservative']
 
 plot_columns_lowess(xtab_norm, columns2, color_map)
 decorate(xlabel='Year',
          ylabel='Proportion',
-         title='Fraction of people with extreme political views',
-         xlim=[1970, 2020])
+         title='Fraction of people with extreme political views')
 
 anchor_legend(1.02, 1.02)
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[scale=0.75]{02_polviews_soln_files/02_polviews_soln_93_0.png}
+\includegraphics[width=4in]{chapters/02_polviews_soln_files/02_polviews_soln_93_0.png}
 \end{center}
 
 This figure shows that the fraction of people who describe themselves as
@@ -514,7 +505,7 @@ Democrat, Independent, or what?
 
 The valid responses are:
 
-\begin{lstlisting}[style=output]
+\begin{lstlisting}
 0   Strong democrat
 1   Not str democrat
 2   Ind,near dem
