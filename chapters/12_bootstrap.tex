@@ -96,7 +96,7 @@ sampling distribution of the mean.
 \begin{lstlisting}[]
 simulate_sample_mean(n_realinc, mean_realinc, std_income)
 (@\dashfill@)
-@@@31844.356624616907@@@
+@@@31723.177424603706@@@
 \end{lstlisting}
 
 If we call it many times, we get a random sample from the sampling
@@ -128,7 +128,7 @@ summary1
 \midrule
 {} &  Estimate &     SE &                CI90 \\
 \midrule
-{} &   31739.3 &  115.8 &  [31549.9, 31927.7] \\
+{} &   31739.3 &  116.7 &  [31546.9, 31926.7] \\
 \midrule
 \end{tabular}
 
@@ -209,7 +209,7 @@ summary2
 \midrule
 {} &  Estimate &      SE &                  CI90 \\
 \midrule
-{} &  -6093.99 &  209.89 &  [-6451.86, -5758.44] \\
+{} &  -6089.45 &  210.36 &  [-6430.69, -5750.78] \\
 \midrule
 \end{tabular}
 
@@ -226,7 +226,7 @@ robust: bootstrapping.
 Bootstrapping is a kind of resampling, based on the framework we saw in
 the previous chapter:
 
-\includegraphics{figs/resampling.png}
+\includegraphics{chapters/figs/resampling.png}
 
 The idea is that we treat the sample as if it were the entire
 population, and simulate the sampling process by choosing random rows
@@ -260,11 +260,11 @@ repeats.head()
 \midrule
 {} &  ID\_ \\
 \midrule
-298 &   47 \\
-413 &   44 \\
-201 &   44 \\
-551 &   43 \\
-508 &   43 \\
+1320 &   52 \\
+27   &   45 \\
+1337 &   44 \\
+532  &   44 \\
+1388 &   43 \\
 \midrule
 \end{tabular}
 
@@ -277,7 +277,7 @@ original dataset but not the bootstrapped sample.
 unused = set(gss['ID_']) - set(bootstrapped['ID_'])
 len(unused)
 (@\dashfill@)
-@@@575@@@
+@@@551@@@
 \end{lstlisting}
 
 Now we can use bootstrapping to generate a sampling distribution. For
@@ -313,8 +313,8 @@ table
 \midrule
 {} &  Estimate &      SE &                  CI90 \\
 \midrule
-normal model  &  31739.30 &  115.80 &    [31549.9, 31927.7] \\
-bootstrapping &  31750.28 &  124.21 &  [31550.01, 31964.49] \\
+normal model  &  31739.30 &  116.70 &    [31546.9, 31926.7] \\
+bootstrapping &  31738.71 &  118.19 &  [31546.09, 31928.57] \\
 \midrule
 \end{tabular}
 
@@ -356,8 +356,8 @@ table
 \midrule
 {} &  Estimate &      SE &                  CI90 \\
 \midrule
-normal model  &  -6093.99 &  209.89 &  [-6451.86, -5758.44] \\
-bootstrapping &   5647.24 &   86.18 &      [5512.5, 5806.0] \\
+normal model  &  -6089.45 &  210.36 &  [-6430.69, -5750.78] \\
+bootstrapping &   5643.41 &   85.42 &      [5512.5, 5806.0] \\
 \midrule
 \end{tabular}
 
@@ -467,7 +467,7 @@ summarize(t5, digits=3)
 \midrule
 {} &  Estimate &     SE &                CI90 \\
 \midrule
-{} &   178.077 &  0.018 &  [178.046, 178.108] \\
+{} &   178.075 &  0.019 &  [178.045, 178.105] \\
 \midrule
 \end{tabular}
 
@@ -566,11 +566,11 @@ repeats.head()
 \midrule
 {} &  SEQNO \\
 \midrule
-2019000108 &    121 \\
-2019000096 &    121 \\
-2019000047 &    119 \\
-2019007402 &    115 \\
-2019000851 &    111 \\
+2019000108 &    145 \\
+2019000096 &    141 \\
+2019000047 &    132 \\
+2019006167 &    125 \\
+2019000851 &    115 \\
 \midrule
 \end{tabular}
 
@@ -587,7 +587,7 @@ not the sample.
 unused = set(brfss['SEQNO']) - set(bootstrapped['SEQNO'])
 len(unused)
 (@\dashfill@)
-@@@806@@@
+@@@840@@@
 \end{lstlisting}
 
 There are several hundred rows that don't appear in this sample, but
@@ -615,7 +615,7 @@ from the sampling distribution of the weighted mean.
 male_df = brfss[male]
 weighted_bootstrap_mean(male_df)
 (@\dashfill@)
-@@@177.61318049983888@@@
+@@@177.6366718164742@@@
 \end{lstlisting}
 
 If we run it many times, we get a random sample from the sampling
@@ -630,9 +630,9 @@ summarize(t6, digits=3)
 
 \begin{tabular}{lrrl}
 \midrule
-{} &  Estimate &     SE &                CI90 \\
+{} &  Estimate &    SE &                CI90 \\
 \midrule
-{} &   177.643 &  0.019 &  [177.611, 177.672] \\
+{} &   177.641 &  0.02 &  [177.609, 177.677] \\
 \midrule
 \end{tabular}
 
@@ -643,7 +643,7 @@ unweighted mean we computed, it is a little lower.
 \begin{lstlisting}[]
 print(np.mean(t6), mean_height)
 (@\dashfill@)
-@@@177.64308641669376 178.0768644146838@@@
+@@@177.64053128299614 178.0768644146838@@@
 \end{lstlisting}
 
 So it seems like people in the oversampled groups are taller than
@@ -756,9 +756,9 @@ summary9
 
 \begin{tabular}{lrrl}
 \midrule
-{} &  Estimate &     SE &              CI90 \\
+{} &  Estimate &      SE &              CI90 \\
 \midrule
-{} &   5171.56 &  257.8 &  [5107.5, 6242.5] \\
+{} &   5156.14 &  233.35 &  [5107.5, 5107.5] \\
 \midrule
 \end{tabular}
 
@@ -801,15 +801,12 @@ pd.Series(t9).value_counts().sort_index()
 \midrule
 {} &    0 \\
 \midrule
-5107.5 &  940 \\
-5221.0 &    1 \\
+4086.0 &    1 \\
+5107.5 &  955 \\
 5334.5 &    1 \\
-5448.0 &    2 \\
-5788.5 &    1 \\
-5902.0 &    2 \\
-6015.5 &    1 \\
-6129.0 &    2 \\
-6242.5 &   51 \\
+5902.0 &    1 \\
+6129.0 &    1 \\
+6242.5 &   42 \\
 \midrule
 \end{tabular}
 
@@ -885,7 +882,7 @@ a logarithm to a dollar value.
 sample = kde.resample(n)
 10 ** np.percentile(sample, 10)
 (@\dashfill@)
-@@@5075.062147497547@@@
+@@@5302.406099648378@@@
 \end{lstlisting}
 
 The result is a random value from the sampling distribution of the 10th
@@ -919,8 +916,8 @@ table
 \midrule
 {} &  Estimate &      SE &                CI90 \\
 \midrule
-bootstrapping  &   5171.56 &  257.80 &    [5107.5, 6242.5] \\
-KDE resampling &   5095.52 &  256.48 &  [4692.83, 5509.86] \\
+bootstrapping  &   5156.14 &  233.35 &    [5107.5, 5107.5] \\
+KDE resampling &   5106.84 &  252.58 &  [4712.87, 5520.38] \\
 \midrule
 \end{tabular}
 
