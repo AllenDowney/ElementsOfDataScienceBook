@@ -1,5 +1,5 @@
 \hypertarget{times-and-places}{%
-\chapter{Times and places}\label{times-and-places}}
+\chapter{Times and Places}\label{times-and-places}}
 
 In the previous chapter, you learned about variables and two kinds of
 values: integers and floating-point numbers.
@@ -25,29 +25,25 @@ A \textbf{string} is a sequence of letters, numbers, and punctuation
 marks. In Python you can create a string by typing letters between
 single or double quotation marks.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[]
 'Elements'
+(@\dashfill@)
+@@@'Elements'@@@
 \end{lstlisting}
 
 \begin{lstlisting}[]
-'Elements'
-\end{lstlisting}
-
-\begin{lstlisting}[language=Python]
 "of"
-\end{lstlisting}
-
-\begin{lstlisting}[]
-'of'
+(@\dashfill@)
+@@@'of'@@@
 \end{lstlisting}
 
 And you can assign string values to variables.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[]
 first = 'Data'
 \end{lstlisting}
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[]
 last = "Science"
 \end{lstlisting}
 
@@ -56,23 +52,19 @@ you expect. For example, the \passthrough{\lstinline!+!} operator
 ``concatenates'' two strings; that is, it creates a new string that
 contains the first string followed by the second string:
 
-\begin{lstlisting}[language=Python]
-first + last
-\end{lstlisting}
-
 \begin{lstlisting}[]
-'DataScience'
+first + last
+(@\dashfill@)
+@@@'DataScience'@@@
 \end{lstlisting}
 
 If you want to put a space between the words, you can use a string that
 contains a space:
 
-\begin{lstlisting}[language=Python]
-first + ' ' + last
-\end{lstlisting}
-
 \begin{lstlisting}[]
-'Data Science'
+first + ' ' + last
+(@\dashfill@)
+@@@'Data Science'@@@
 \end{lstlisting}
 
 Strings are used to store text data like names, addresses, titles, etc.
@@ -80,7 +72,7 @@ Strings are used to store text data like names, addresses, titles, etc.
 When you read data from a file, you might see values that look like
 numbers, but they are actually strings, like this:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[]
 not_actually_a_number = '123'
 \end{lstlisting}
 
@@ -90,19 +82,17 @@ For example, the following expression causes a
 concatenate \passthrough{\lstinline!str!} (not
 \passthrough{\lstinline!int!}) to \passthrough{\lstinline!str!}''.
 
-\begin{lstlisting}[]
+\begin{lstlisting}
 not_actually_a_number + 1
 \end{lstlisting}
 
 But you don't always get an error; instead, you might get a surprising
 result. For example:
 
-\begin{lstlisting}[language=Python]
-not_actually_a_number * 3
-\end{lstlisting}
-
 \begin{lstlisting}[]
-'123123123'
+not_actually_a_number * 3
+(@\dashfill@)
+@@@'123123123'@@@
 \end{lstlisting}
 
 If you multiply a string by an integer, Python repeats the string the
@@ -111,23 +101,19 @@ given number of times.
 If you have a string that contains only digits, you can convert it to an
 integer using the \passthrough{\lstinline!int!} function:
 
-\begin{lstlisting}[language=Python]
-int('123')
-\end{lstlisting}
-
 \begin{lstlisting}[]
-123
+int('123')
+(@\dashfill@)
+@@@123@@@
 \end{lstlisting}
 
 Or you can convert it to a floating-point number using
 \passthrough{\lstinline!float!}:
 
-\begin{lstlisting}[language=Python]
-float('123')
-\end{lstlisting}
-
 \begin{lstlisting}[]
-123.0
+float('123')
+(@\dashfill@)
+@@@123.0@@@
 \end{lstlisting}
 
 But if the string contains a decimal point, you can't convert it to an
@@ -136,20 +122,16 @@ But if the string contains a decimal point, you can't convert it to an
 Going in the other direction, you can convert any type of value to a
 string using \passthrough{\lstinline!str!}:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[]
 str(123)
+(@\dashfill@)
+@@@'123'@@@
 \end{lstlisting}
 
 \begin{lstlisting}[]
-'123'
-\end{lstlisting}
-
-\begin{lstlisting}[language=Python]
 str(12.3)
-\end{lstlisting}
-
-\begin{lstlisting}[]
-'12.3'
+(@\dashfill@)
+@@@'12.3'@@@
 \end{lstlisting}
 
 \textbf{Exercise}: When personal names are stored in a database, they
@@ -157,7 +139,7 @@ are often stored in three variables: a given name, a family name, and
 sometimes a middle name. For example, a list of great rock drummers
 might include:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[]
 given = 'Neil'
 middle = 'Ellwood'
 family = 'Peart'
@@ -174,12 +156,12 @@ Write Python expressions that use the variables
 two formats.
 
 \hypertarget{dates-and-times}{%
-\section{Dates and times}\label{dates-and-times}}
+\section{Dates and Times}\label{dates-and-times}}
 
 If you read data from a file, you might also find that dates and times
 are represented with strings.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[]
 not_really_a_date = 'June 4, 1989'
 \end{lstlisting}
 
@@ -187,12 +169,10 @@ To confirm that this value is a string, we can use the
 \passthrough{\lstinline!type!} function, which takes a value and reports
 its type.
 
-\begin{lstlisting}[language=Python]
-type(not_really_a_date)
-\end{lstlisting}
-
 \begin{lstlisting}[]
-str
+type(not_really_a_date)
+(@\dashfill@)
+@@@str@@@
 \end{lstlisting}
 
 \passthrough{\lstinline!str!} indicates that the value of
@@ -201,13 +181,11 @@ str
 We get the same result with
 \passthrough{\lstinline!not\_really\_a\_time!}, below:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[]
 not_really_a_time = '6:30:00'
 type(not_really_a_time)
-\end{lstlisting}
-
-\begin{lstlisting}[]
-str
+(@\dashfill@)
+@@@str@@@
 \end{lstlisting}
 
 Strings that represent dates and times a readable for people, but they
@@ -218,7 +196,7 @@ data; the one we'll use is called Pandas. As always, we have to import a
 library before we use it; it is conventional to import Pandas with the
 abbreviated name \passthrough{\lstinline!pd!}:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[]
 import pandas as pd
 \end{lstlisting}
 
@@ -229,22 +207,18 @@ It also provides a function called \passthrough{\lstinline!Timestamp!},
 which we can use to convert a string to a
 \passthrough{\lstinline!Timestamp!}:
 
-\begin{lstlisting}[language=Python]
-pd.Timestamp('6:30:00')
-\end{lstlisting}
-
 \begin{lstlisting}[]
-Timestamp('2021-05-11 06:30:00')
+pd.Timestamp('6:30:00')
+(@\dashfill@)
+@@@Timestamp('2022-01-17 06:30:00')@@@
 \end{lstlisting}
 
 Or we can do the same thing using the variable defined above.
 
-\begin{lstlisting}[language=Python]
-pd.Timestamp(not_really_a_time)
-\end{lstlisting}
-
 \begin{lstlisting}[]
-Timestamp('2021-05-11 06:30:00')
+pd.Timestamp(not_really_a_time)
+(@\dashfill@)
+@@@Timestamp('2022-01-17 06:30:00')@@@
 \end{lstlisting}
 
 In this example, the string specifies a time but no date, so Pandas
@@ -253,13 +227,11 @@ fills in today's date.
 A \passthrough{\lstinline!Timestamp!} is a value, so you can assign it
 to a variable.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[]
 date_of_birth = pd.Timestamp('June 4, 1989')
 date_of_birth
-\end{lstlisting}
-
-\begin{lstlisting}[]
-Timestamp('1989-06-04 00:00:00')
+(@\dashfill@)
+@@@Timestamp('1989-06-04 00:00:00')@@@
 \end{lstlisting}
 
 If the string specifies a date but no time, Pandas fills in midnight as
@@ -268,34 +240,28 @@ the default time.
 If you assign the \passthrough{\lstinline!Timestamp!} to a variable, you
 can use the variable name to get the year, month, and day, like this:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[]
 date_of_birth.year, date_of_birth.month, date_of_birth.day
+(@\dashfill@)
+@@@(1989, 6, 4)@@@
 \end{lstlisting}
+
+You can also get the name of the month and the day of the week.
 
 \begin{lstlisting}[]
-(1989, 6, 4)
-\end{lstlisting}
-
-You can also gets the name of the month and the day of the week.
-
-\begin{lstlisting}[language=Python]
 date_of_birth.day_name(), date_of_birth.month_name()
-\end{lstlisting}
-
-\begin{lstlisting}[]
-('Sunday', 'June')
+(@\dashfill@)
+@@@('Sunday', 'June')@@@
 \end{lstlisting}
 
 \passthrough{\lstinline!Timestamp!} provides a function called
 \passthrough{\lstinline!now!} that returns the current date and time.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[]
 now = pd.Timestamp.now()
 now
-\end{lstlisting}
-
-\begin{lstlisting}[]
-Timestamp('2021-05-11 10:46:54.137321')
+(@\dashfill@)
+@@@Timestamp('2022-01-17 19:35:37.659563')@@@
 \end{lstlisting}
 
 \textbf{Exercise:} Use the value of \passthrough{\lstinline!now!} to
@@ -306,15 +272,13 @@ display the name of the current month and day of the week.
 
 \passthrough{\lstinline!Timestamp!} values support some arithmetic
 operations. For example, you can compute the difference between two
-\passthrough{\lstinline!Timestamps!}:
-
-\begin{lstlisting}[language=Python]
-age = now - date_of_birth
-age
-\end{lstlisting}
+\passthrough{\lstinline!Timestamp!} objects:
 
 \begin{lstlisting}[]
-Timedelta('11664 days 10:46:54.137321')
+age = now - date_of_birth
+age
+(@\dashfill@)
+@@@Timedelta('11915 days 19:35:37.659563')@@@
 \end{lstlisting}
 
 The result is a \passthrough{\lstinline!Timedelta!} that represents the
@@ -324,64 +288,54 @@ current age of someone born on
 \passthrough{\lstinline!components!} that store the number of days,
 hours, etc. between the two \passthrough{\lstinline!Timestamp!} values.
 
-\begin{lstlisting}[language=Python]
-age.components
-\end{lstlisting}
-
 \begin{lstlisting}[]
-Components(days=11664, hours=10, minutes=46, seconds=54, milliseconds=137, microseconds=321, nanoseconds=0)
+age.components
+(@\dashfill@)
+@@@Components(days=11915, hours=19, minutes=35, seconds=37, milliseconds=659, microseconds=563, nanoseconds=0)@@@
 \end{lstlisting}
 
 You can get one of the components like this:
 
-\begin{lstlisting}[language=Python]
-age.days
-\end{lstlisting}
-
 \begin{lstlisting}[]
-11664
+age.days
+(@\dashfill@)
+@@@11915@@@
 \end{lstlisting}
 
 The biggest component of \passthrough{\lstinline!Timedelta!} is days,
 not years, because days are well defined and years are problematic.
 
 Most years are 365 days, but some are 366. The average calendar year is
-365.24 days, which is a very good approximation of a solar year,
-\href{https://pumas.jpl.nasa.gov/files/04_21_97_1.pdf}{but it is not
-exact}.
+365.24 days, which is a very good approximation of a solar year, but it
+is not exact (see
+\url{https://pumas.jpl.nasa.gov/files/04_21_97_1.pdf}).
 
 One way to compute age in years is to divide age in days by 365.24:
 
-\begin{lstlisting}[language=Python]
-age.days / 365.24
-\end{lstlisting}
-
 \begin{lstlisting}[]
-31.935165918300296
+age.days / 365.24
+(@\dashfill@)
+@@@32.62238528091118@@@
 \end{lstlisting}
 
 But people usually report their ages in integer years. We can use the
 Numpy \passthrough{\lstinline!floor!} function to round down:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[]
 import numpy as np
 
 np.floor(age.days / 365.24)
-\end{lstlisting}
-
-\begin{lstlisting}[]
-31.0
+(@\dashfill@)
+@@@32.0@@@
 \end{lstlisting}
 
 Or the \passthrough{\lstinline!ceil!} function (which stands for
 ``ceiling'') to round up:
 
-\begin{lstlisting}[language=Python]
-np.ceil(age.days / 365.24)
-\end{lstlisting}
-
 \begin{lstlisting}[]
-32.0
+np.ceil(age.days / 365.24)
+(@\dashfill@)
+@@@33.0@@@
 \end{lstlisting}
 
 We can also compare \passthrough{\lstinline!Timestamp!} values to see
@@ -391,27 +345,23 @@ birthdate has already had a birthday this year. Here's a new
 \passthrough{\lstinline!now!} and the month and day from
 \passthrough{\lstinline!date\_of\_birth!}.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[]
 bday_this_year = pd.Timestamp(now.year, 
                               date_of_birth.month, 
                               date_of_birth.day)
 bday_this_year
-\end{lstlisting}
-
-\begin{lstlisting}[]
-Timestamp('2021-06-04 00:00:00')
+(@\dashfill@)
+@@@Timestamp('2022-06-04 00:00:00')@@@
 \end{lstlisting}
 
 The result represents the person's birthday this year. Now we can use
 the \passthrough{\lstinline!>!} operator to check whether
 \passthrough{\lstinline!now!} is later than the birthday:
 
-\begin{lstlisting}[language=Python]
-now > bday_this_year
-\end{lstlisting}
-
 \begin{lstlisting}[]
-False
+now > bday_this_year
+(@\dashfill@)
+@@@False@@@
 \end{lstlisting}
 
 The result is either \passthrough{\lstinline!True!} or
@@ -419,20 +369,16 @@ The result is either \passthrough{\lstinline!True!} or
 \passthrough{\lstinline!bool!}, short for ``Boolean algebra'', which is
 a branch of algebra where all values are either true or false.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[]
 type(True)
+(@\dashfill@)
+@@@bool@@@
 \end{lstlisting}
 
 \begin{lstlisting}[]
-bool
-\end{lstlisting}
-
-\begin{lstlisting}[language=Python]
 type(False)
-\end{lstlisting}
-
-\begin{lstlisting}[]
-bool
+(@\dashfill@)
+@@@bool@@@
 \end{lstlisting}
 
 \textbf{Exercise:} Any two people with different birthdays have a
@@ -443,7 +389,7 @@ represent birthdays for two people. Use
 \passthrough{\lstinline!Timestamp!} arithmetic to compute their double
 day. With the following dates, the result should be December 19, 2009.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[]
 d1 = pd.Timestamp('2003-07-12')
 d2 = pd.Timestamp('2006-09-30')
 \end{lstlisting}
@@ -458,7 +404,7 @@ When stored as strings, latitude and longitude are expressed in degrees
 with compass directions N, S, E, and W. For example, this string
 represents the location of Boston, MA, USA:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[]
 lat_lon_string = '42.3601° N, 71.0589° W'
 \end{lstlisting}
 
@@ -470,7 +416,7 @@ numbers, with
   Positive latitude for the northern hemisphere, negative latitude for
   the southern hemisphere, and
 \item
-  Positive longitude for the eastern hemisphere and negative latitude
+  Positive longitude for the eastern hemisphere and negative longitude
   for the western hemisphere.
 \end{itemize}
 
@@ -481,7 +427,7 @@ aware that they are conventions.
 
 Here's how we might represent the location of Boston with two variables.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[]
 lat = 42.3601
 lon = -71.0589
 \end{lstlisting}
@@ -489,13 +435,11 @@ lon = -71.0589
 It is also possible to combine two numbers into a composite value and
 assign it to a single variable:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[]
 boston = lat, lon
 boston
-\end{lstlisting}
-
-\begin{lstlisting}[]
-(42.3601, -71.0589)
+(@\dashfill@)
+@@@(42.3601, -71.0589)@@@
 \end{lstlisting}
 
 The type of this variable is \passthrough{\lstinline!tuple!}, which is a
@@ -503,32 +447,26 @@ mathematical term for a value that contains a sequence of elements. Math
 people pronounce it ``tuh' ple'', but computational people usually say
 ``too' ple''. Take your pick.
 
-\begin{lstlisting}[language=Python]
-type(boston)
-\end{lstlisting}
-
 \begin{lstlisting}[]
-tuple
+type(boston)
+(@\dashfill@)
+@@@tuple@@@
 \end{lstlisting}
 
 If you have a tuple with two elements, you can assign them to two
 variables, like this:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[]
 y, x = boston
 y
+(@\dashfill@)
+@@@42.3601@@@
 \end{lstlisting}
 
 \begin{lstlisting}[]
-42.3601
-\end{lstlisting}
-
-\begin{lstlisting}[language=Python]
 x
-\end{lstlisting}
-
-\begin{lstlisting}[]
--71.0589
+(@\dashfill@)
+@@@-71.0589@@@
 \end{lstlisting}
 
 Notice that I assigned latitude to \passthrough{\lstinline!y!} and
@@ -558,15 +496,13 @@ we have to compute the haversine function, which is defined:
 Where \(\theta\) is an angle in radians. We can compute this function in
 Python like this:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[]
 import numpy as np
 
 θ = 1
 np.sin(θ/2)**2
-\end{lstlisting}
-
-\begin{lstlisting}[]
-0.22984884706593015
+(@\dashfill@)
+@@@0.22984884706593015@@@
 \end{lstlisting}
 
 You can use Greek letters in variable names, but there is currently no
@@ -576,13 +512,11 @@ page and paste them in.
 To avoid the inconvenience, it is more common to write out letter names,
 like this:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[]
 theta = 1
 np.sin(theta/2)**2
-\end{lstlisting}
-
-\begin{lstlisting}[]
-0.22984884706593015
+(@\dashfill@)
+@@@0.22984884706593015@@@
 \end{lstlisting}
 
 Remember that the operator for exponentiation is
@@ -591,7 +525,7 @@ In some other languages it's \passthrough{\lstinline!\^!}, which is also
 an operator in Python, but it performs another operation altogether.
 
 \hypertarget{defining-functions}{%
-\section{Defining functions}\label{defining-functions}}
+\section{Defining Functions}\label{defining-functions}}
 
 At this point you don't have to know how to define a new function. But
 you will see function definitions, so I want to explain the basics now.
@@ -600,7 +534,7 @@ If we are planning to use an expression like
 \passthrough{\lstinline!np.sin(theta/2)**2!} more than a few times, we
 can define a new function that computes it, like this:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[]
 def haversine(theta):
     """Compute the haversine function of theta."""
     return np.sin(theta/2)**2
@@ -619,48 +553,42 @@ When you run the previous cell, it creates a new variable called
 \passthrough{\lstinline!haversine!}. You can display its value like
 this:
 
-\begin{lstlisting}[language=Python]
-haversine
-\end{lstlisting}
-
 \begin{lstlisting}[]
-<function __main__.haversine(theta)>
+haversine
+(@\dashfill@)
+@@@<function __main__.haversine(theta)>@@@
 \end{lstlisting}
 
 And you can display its type like this:
 
-\begin{lstlisting}[language=Python]
-type(haversine)
-\end{lstlisting}
-
 \begin{lstlisting}[]
-function
+type(haversine)
+(@\dashfill@)
+@@@function@@@
 \end{lstlisting}
 
 So \passthrough{\lstinline!haversine!} is a variable that refers to a
 function. To run the function and compute a result, we have to ``call''
 the function and provide a value for \passthrough{\lstinline!theta!}:
 
-\begin{lstlisting}[language=Python]
-haversine(1)
-\end{lstlisting}
-
 \begin{lstlisting}[]
-0.22984884706593015
+haversine(1)
+(@\dashfill@)
+@@@0.22984884706593015@@@
 \end{lstlisting}
 
 When you define a function, you create a new variable. But the function
 doesn't actually run until you call it.
 
 \hypertarget{haversine-distance}{%
-\section{Haversine distance}\label{haversine-distance}}
+\section{Haversine Distance}\label{haversine-distance}}
 
 Now we can use \passthrough{\lstinline!haversine!} as part of a function
 that computes haversine distances. I won't explain this function in as
 much detail, but if you read through it, you might get a sense of how it
 works.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[]
 def haversine_distance(coord1, coord2):
     """Haversine distance between two locations.
     
@@ -689,18 +617,16 @@ latitude and a longitude. We already have a tuple that represents the
 location of Boston. Now here's a tuple that represents the location of
 London, England, UK:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[]
 london = 51.5074, -0.1278
 \end{lstlisting}
 
 And here's the haversine distance between Boston and London.
 
-\begin{lstlisting}[language=Python]
-haversine_distance(boston, london)
-\end{lstlisting}
-
 \begin{lstlisting}[]
-5265.656325981015
+haversine_distance(boston, london)
+(@\dashfill@)
+@@@5265.656325981015@@@
 \end{lstlisting}
 
 The actual geographic distance is slightly different because Earth is
@@ -721,7 +647,7 @@ Shapely. Shapely provides \passthrough{\lstinline!Point!} and
 \passthrough{\lstinline!LineString!} values, which we'll use to
 represent geographic locations and lines between them.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[]
 from shapely.geometry import Point, LineString
 \end{lstlisting}
 
@@ -732,12 +658,12 @@ than \passthrough{\lstinline!lat!}-\passthrough{\lstinline!lon!} order,
 because that's the order the \passthrough{\lstinline!Point!} function
 expects.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[]
 lat, lon = boston
 p1 = Point(lon, lat)
 \end{lstlisting}
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[]
 lat, lon = london
 p2 = Point(lon, lat)
 \end{lstlisting}
@@ -745,14 +671,14 @@ p2 = Point(lon, lat)
 We can use the points we just defined to create a
 \passthrough{\lstinline!LineString!}:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[]
 line = LineString([p1, p2])
 \end{lstlisting}
 
 Now we can use Geopandas to show these points and lines on a map. The
 following code loads a map of the world and plots it.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[]
 import geopandas as gpd
 
 path = gpd.datasets.get_path('naturalearth_lowres')
@@ -761,7 +687,7 @@ world.plot(color='white', edgecolor='gray');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[scale=0.75]{chapters/02_times_files/02_times_123_0.pdf}
+\includegraphics[width=4in]{02_times_files/02_times_122_0.png}
 \end{center}
 
 By default, Geopandas uses an equirectangular projection, which provides
@@ -774,14 +700,14 @@ Now let's put dots on the map for Boston and London. We have to put the
 \passthrough{\lstinline!LineString!} into a
 \passthrough{\lstinline!GeoSeries!}.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[]
 t = [p1, p2, line]
 series = gpd.GeoSeries(t)
 \end{lstlisting}
 
 Here's a first attempt to plot the maps and the lines together:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[]
 # plot the map
 world.plot(color='white', edgecolor='gray')
 
@@ -790,11 +716,11 @@ series.plot();
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[scale=0.75]{chapters/02_times_files/02_times_127_0.pdf}
+\includegraphics[width=4in]{02_times_files/02_times_126_0.png}
 \end{center}
 
 \begin{center}
-\includegraphics[scale=0.75]{chapters/02_times_files/02_times_127_1.png}
+\includegraphics[width=4in]{02_times_files/02_times_126_1.png}
 \end{center}
 
 The two plots are on different axes, which is not what we want in this
@@ -804,7 +730,7 @@ To get the points and the map on the same axes, we have to use a
 function from Matplotlib, which is a visualization library we will use
 extensively. We'll import it like this.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[]
 import matplotlib.pyplot as plt
 \end{lstlisting}
 
@@ -813,14 +739,14 @@ current axes''. We can use the result to tell
 \passthrough{\lstinline!plot!} to put the points and lines on the
 current axes, rather than create a new one.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[]
 ax = plt.gca()
 world.plot(color='white', edgecolor='gray', ax=ax)
 series.plot(ax=ax);
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[scale=0.75]{chapters/02_times_files/02_times_131_0.pdf}
+\includegraphics[width=4in]{02_times_files/02_times_130_0.png}
 \end{center}
 
 There are a few features in this example I have not explained
@@ -829,4 +755,16 @@ completely, but hopefully you get the idea.
 \textbf{Exercise:} Modify the code in this section to plot a point that
 shows the home town you chose in a previous exercise and a line from
 there to Boston.
+
+\hypertarget{summary}{%
+\section{Summary}\label{summary}}
+
+This chapter presents three new data types: strings to represent letters
+and words, \passthrough{\lstinline!Timestamp!} objects to represent
+dates and times, and tuples to represent latitude, longitude pairs.
+
+It also introduces Geopandas, a library for working with location data.
+
+In the next chapter we'll see two ways to represent a collection of
+data, a Python list and a Numpy array.
 
