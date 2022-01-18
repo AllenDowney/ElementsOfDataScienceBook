@@ -106,28 +106,13 @@ Most often, we use \passthrough{\lstinline!int!} to represent counts and
 example of an \passthrough{\lstinline!int!} and a
 \passthrough{\lstinline!float!}:
 
-<<<<<<< HEAD:book/01_variables.tex
 \begin{lstlisting}[]
-=======
-\begin{lstlisting}[language=Python]
->>>>>>> origin/overleaf-2022-01-17-1746:chapters/01_variables.tex
 3
 (@\dashfill@)
 @@@3@@@
 \end{lstlisting}
 
 \begin{lstlisting}[]
-<<<<<<< HEAD:book/01_variables.tex
-=======
-3
-\end{lstlisting}
-
-\begin{lstlisting}[language=Python]
-3.14159
-\end{lstlisting}
-
-\begin{lstlisting}[]
->>>>>>> origin/overleaf-2022-01-17-1746:chapters/01_variables.tex
 3.14159
 (@\dashfill@)
 @@@3.14159@@@
@@ -143,65 +128,30 @@ Python provides operators that perform arithmetic. The operators that
 perform addition and subtraction are \passthrough{\lstinline!+!} and
 \passthrough{\lstinline!-!}:
 
-<<<<<<< HEAD:book/01_variables.tex
 \begin{lstlisting}[]
 3 + 2 - 1
 (@\dashfill@)
 @@@4@@@
-=======
-\begin{lstlisting}[language=Python]
-3 + 2 - 1
-\end{lstlisting}
-
-\begin{lstlisting}[]
-4
->>>>>>> origin/overleaf-2022-01-17-1746:chapters/01_variables.tex
 \end{lstlisting}
 
 The operators that perform multiplication and division are
 \passthrough{\lstinline!*!} and \passthrough{\lstinline!/!}:
 
-<<<<<<< HEAD:book/01_variables.tex
 \begin{lstlisting}[]
-=======
-\begin{lstlisting}[language=Python]
->>>>>>> origin/overleaf-2022-01-17-1746:chapters/01_variables.tex
 2 * 3
 (@\dashfill@)
 @@@6@@@
 \end{lstlisting}
 
 \begin{lstlisting}[]
-<<<<<<< HEAD:book/01_variables.tex
 2 / 3
 (@\dashfill@)
 @@@0.6666666666666666@@@
-=======
-6
-\end{lstlisting}
-
-\begin{lstlisting}[language=Python]
-2 / 3
-\end{lstlisting}
-
-\begin{lstlisting}[]
-0.6666666666666666
->>>>>>> origin/overleaf-2022-01-17-1746:chapters/01_variables.tex
 \end{lstlisting}
 
 And the operator for exponentiation is \passthrough{\lstinline!**!}:
 
-<<<<<<< HEAD:book/01_variables.tex
 2**3
-=======
-\begin{lstlisting}[language=Python]
-2**3
-\end{lstlisting}
-
-\begin{lstlisting}[]
-8
-\end{lstlisting}
->>>>>>> origin/overleaf-2022-01-17-1746:chapters/01_variables.tex
 
 Unlike math notation, Python does not allow ``implicit multiplication''.
 For example, in math notation, if you write \(3 (2 + 1)\), that's
@@ -213,10 +163,7 @@ The arithmetic operators follow the rules of precedence you might have
 learned as ``PEMDAS'':
 
 \begin{itemize}
-<<<<<<< HEAD:book/01_variables.tex
 
-=======
->>>>>>> origin/overleaf-2022-01-17-1746:chapters/01_variables.tex
 \item
   Parentheses before
 \item
@@ -229,37 +176,19 @@ learned as ``PEMDAS'':
 
 So in this expression:
 
-<<<<<<< HEAD:book/01_variables.tex
 \begin{lstlisting}[]
 1 + 2 * 3
 (@\dashfill@)
 @@@7@@@
-=======
-\begin{lstlisting}[language=Python]
-1 + 2 * 3
-\end{lstlisting}
-
-\begin{lstlisting}[]
-7
->>>>>>> origin/overleaf-2022-01-17-1746:chapters/01_variables.tex
 \end{lstlisting}
 
 The multiplication happens first. If that's not what you want, you can
 use parentheses to make the order of operations explicit:
 
-<<<<<<< HEAD:book/01_variables.tex
 \begin{lstlisting}[]
 (1 + 2) * 3
 (@\dashfill@)
 @@@9@@@
-=======
-\begin{lstlisting}[language=Python]
-(1 + 2) * 3
-\end{lstlisting}
-
-\begin{lstlisting}[]
-9
->>>>>>> origin/overleaf-2022-01-17-1746:chapters/01_variables.tex
 \end{lstlisting}
 
 \textbf{Exercise:} Write a Python expression that raises
@@ -282,11 +211,7 @@ one we'll use is called NumPy, which stands for ``Numerical Python'',
 and is pronounced ``num pie''. Before you can use a library, you have to
 \textbf{import} it. Here's how we import NumPy:
 
-<<<<<<< HEAD:book/01_variables.tex
 \begin{lstlisting}[]
-=======
-\begin{lstlisting}[language=Python]
->>>>>>> origin/overleaf-2022-01-17-1746:chapters/01_variables.tex
 import numpy as np
 \end{lstlisting}
 
@@ -303,19 +228,10 @@ But assuming we import \passthrough{\lstinline!np!} correctly, we can
 use it to read the value \passthrough{\lstinline!pi!}, which is an
 approximation of the mathematical constant \(\pi\).
 
-<<<<<<< HEAD:book/01_variables.tex
 \begin{lstlisting}[]
 np.pi
 (@\dashfill@)
 @@@3.141592653589793@@@
-=======
-\begin{lstlisting}[language=Python]
-np.pi
-\end{lstlisting}
-
-\begin{lstlisting}[]
-3.141592653589793
->>>>>>> origin/overleaf-2022-01-17-1746:chapters/01_variables.tex
 \end{lstlisting}
 
 The result is a \passthrough{\lstinline!float!} with 16 digits. As you
@@ -325,37 +241,19 @@ so this result is only approximate.
 \passthrough{\lstinline!numpy!} provides \passthrough{\lstinline!log!},
 which computes the natural logarithm
 
-<<<<<<< HEAD:book/01_variables.tex
 \begin{lstlisting}[]
 np.log(100)
 (@\dashfill@)
 @@@4.605170185988092@@@
-=======
-\begin{lstlisting}[language=Python]
-np.log(100)
-\end{lstlisting}
-
-\begin{lstlisting}[]
-4.605170185988092
->>>>>>> origin/overleaf-2022-01-17-1746:chapters/01_variables.tex
 \end{lstlisting}
 
 And \passthrough{\lstinline!exp!}, which raises the constant
 \passthrough{\lstinline!e!} to a power.
 
-<<<<<<< HEAD:book/01_variables.tex
 \begin{lstlisting}[]
 np.exp(1)
 (@\dashfill@)
 @@@2.718281828459045@@@
-=======
-\begin{lstlisting}[language=Python]
-np.exp(1)
-\end{lstlisting}
-
-\begin{lstlisting}[]
-2.718281828459045
->>>>>>> origin/overleaf-2022-01-17-1746:chapters/01_variables.tex
 \end{lstlisting}
 
 \textbf{Exercise:} Use these functions to confirm the mathematical
@@ -371,25 +269,13 @@ which means they don't always behave like math.
 As another example, let's see what happens when you add up
 \passthrough{\lstinline!0.1!} three times:
 
-<<<<<<< HEAD:book/01_variables.tex
 \begin{lstlisting}[]
-=======
-\begin{lstlisting}[language=Python]
->>>>>>> origin/overleaf-2022-01-17-1746:chapters/01_variables.tex
 0.1 + 0.1 + 0.1
 (@\dashfill@)
 @@@0.30000000000000004@@@
 \end{lstlisting}
 
-<<<<<<< HEAD:book/01_variables.tex
 The result is close to \passthrough{\lstinline!0.3!}, but not exact.
-=======
-\begin{lstlisting}[]
-0.30000000000000004
-\end{lstlisting}
-
-The result is close to \passthrough{\lstinline!0.3!}, but not exact.\\
->>>>>>> origin/overleaf-2022-01-17-1746:chapters/01_variables.tex
 We'll see other examples of floating-point approximation later, and
 learn some ways to deal with it.
 
@@ -400,11 +286,7 @@ A \textbf{variable} is a name that refers to a value. The following
 statement assigns the value \passthrough{\lstinline!5!} to a variable
 named \passthrough{\lstinline!x!}:
 
-<<<<<<< HEAD:book/01_variables.tex
 \begin{lstlisting}[]
-=======
-\begin{lstlisting}[language=Python]
->>>>>>> origin/overleaf-2022-01-17-1746:chapters/01_variables.tex
 x = 5
 \end{lstlisting}
 
@@ -414,50 +296,25 @@ and the value \passthrough{\lstinline!5!}.
 If we use \passthrough{\lstinline!x!} as part of an arithmetic
 operation, it represents the value \passthrough{\lstinline!5!}:
 
-<<<<<<< HEAD:book/01_variables.tex
 \begin{lstlisting}[]
-=======
-\begin{lstlisting}[language=Python]
->>>>>>> origin/overleaf-2022-01-17-1746:chapters/01_variables.tex
 x + 1
 (@\dashfill@)
 @@@6@@@
 \end{lstlisting}
 
 \begin{lstlisting}[]
-<<<<<<< HEAD:book/01_variables.tex
 x**2
 (@\dashfill@)
 @@@25@@@
-=======
-6
-\end{lstlisting}
-
-\begin{lstlisting}[language=Python]
-x**2
-\end{lstlisting}
-
-\begin{lstlisting}[]
-25
->>>>>>> origin/overleaf-2022-01-17-1746:chapters/01_variables.tex
 \end{lstlisting}
 
 We can also use \passthrough{\lstinline!x!} with
 \passthrough{\lstinline!numpy!} functions:
 
-<<<<<<< HEAD:book/01_variables.tex
 \begin{lstlisting}[]
 np.exp(x)
 (@\dashfill@)
 @@@148.4131591025766@@@
-=======
-\begin{lstlisting}[language=Python]
-np.exp(x)
-\end{lstlisting}
-
-\begin{lstlisting}[]
-148.4131591025766
->>>>>>> origin/overleaf-2022-01-17-1746:chapters/01_variables.tex
 \end{lstlisting}
 
 Notice that the result from \passthrough{\lstinline!exp!} is a
@@ -486,11 +343,7 @@ long as the meaning is clear:
 In Python, every character counts. For example, the following are all
 different:
 
-<<<<<<< HEAD:book/01_variables.tex
 \begin{lstlisting}
-=======
-\begin{lstlisting}[]
->>>>>>> origin/overleaf-2022-01-17-1746:chapters/01_variables.tex
 np.exp(x)
 np.Exp(x)
 np.exp[x]
@@ -524,75 +377,33 @@ the total accumulated value, \(V\), at the end of time \(t\) is:
 
 \(V=P\left(1+{\frac {r}{n}}\right)^{nt}\)
 
-<<<<<<< HEAD:book/01_variables.tex
 where \(r\) is the annual interest rate and \(n\) is the compounding
 frequency.
-=======
-where:
-
-\begin{itemize}
-\item
-  \(P\) is the original principal sum
-\item
-  \(V\) is the total accumulated value
-\item
-  \(r\) is the nominal annual interest rate
-\item
-  \(n\) is the compounding frequency
-\item
-  \(t\) is the overall length of time the interest is applied (expressed
-  using the same time units as \(r\), usually years).
-\end{itemize}
->>>>>>> origin/overleaf-2022-01-17-1746:chapters/01_variables.tex
 
 For example, if you deposit \$2,100 in a bank paying an annual interest
 rate of 3.4\% compounded quarterly, we can compute the balance after 7
 years by defining these variables:
 
-<<<<<<< HEAD:book/01_variables.tex
 \begin{lstlisting}[]
 P = 2100
 r = 0.034
-=======
-\begin{lstlisting}[language=Python]
-P = 1500
-r = 0.043
->>>>>>> origin/overleaf-2022-01-17-1746:chapters/01_variables.tex
 n = 4
 t = 7
 \end{lstlisting}
 
 And computing the total accumulated value like this.
 
-<<<<<<< HEAD:book/01_variables.tex
 \begin{lstlisting}[]
-=======
-\begin{lstlisting}[language=Python]
->>>>>>> origin/overleaf-2022-01-17-1746:chapters/01_variables.tex
 P * (1 + r/n)**(n*t)
 (@\dashfill@)
 @@@2661.6108980682593@@@
 \end{lstlisting}
 
-<<<<<<< HEAD:book/01_variables.tex
 \textbf{Exercise:} Continuing the previous example, suppose you start
 with the same principle and the same interest rate, but interest is
 compounded twice per year, so \passthrough{\lstinline!n = 2!}. What
 would the total value be after 7 years? Hint: we expect the answer to be
 a bit less than the previous answer.
-=======
-\begin{lstlisting}[]
-1938.8368221341054
-\end{lstlisting}
-
-\textbf{Exercise:} Continuing the example from Wikipedia:
-
-``Suppose the same amount of \$1,500 is compounded biennially'', so
-\passthrough{\lstinline!n = 1/2!}.
-
-What would the total value be after 6 years? Hint: we expect the answer
-to be a bit less than the previous answer.
->>>>>>> origin/overleaf-2022-01-17-1746:chapters/01_variables.tex
 
 \textbf{Exercise:} If interest is compounded continuously, the value
 after time \(t\) is given by the formula:
