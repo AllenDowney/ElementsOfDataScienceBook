@@ -35,7 +35,7 @@ outcomes, the numbers \passthrough{\lstinline!1!} through
 We can represent this distribution of outcomes with a table, like this:
 
 \begin{longtable}[]{@{}ll@{}}
-\toprule
+\midrule
 Value & Probability\tabularnewline
 \midrule
 \endhead
@@ -45,7 +45,7 @@ Value & Probability\tabularnewline
 4 & 1/6\tabularnewline
 5 & 1/6\tabularnewline
 6 & 1/6\tabularnewline
-\bottomrule
+\midrule
 \end{longtable}
 
 More generally, there can be any number of values, the values can be any
@@ -63,7 +63,7 @@ possible outcomes and their probabilities.
 For example, here's a \passthrough{\lstinline!Pmf!} that represents the
 outcome of rolling a six-sided die:
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[]
 from empiricaldist import Pmf
 
 outcomes = [1,2,3,4,5,6]
@@ -73,12 +73,12 @@ die = Pmf(1/6, outcomes)
 The first argument is the probability of each outcome; the second
 argument is the list of outcomes. We can display the result like this.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[]
 die
 \end{lstlisting}
 
 \begin{tabular}{lr}
-\toprule
+\midrule
 {} &     probs \\
 \midrule
 1 &  0.166667 \\
@@ -87,7 +87,7 @@ die
 4 &  0.166667 \\
 5 &  0.166667 \\
 6 &  0.166667 \\
-\bottomrule
+\midrule
 \end{tabular}
 
 A \passthrough{\lstinline!Pmf!} object is a specialized version of a
@@ -112,7 +112,7 @@ I've selected just a few and created a data extract.
 Like the NSFG data we used in the previous chapter, the GSS data is
 stored in a fixed-width format, described by a Stata data dictionary.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[]
 dict_file = 'GSS.dct'
 data_file = 'GSS.dat.gz'
 \end{lstlisting}
@@ -120,7 +120,7 @@ data_file = 'GSS.dat.gz'
 We will use the \passthrough{\lstinline!statadict!} library to read the
 data dictionary.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[]
 from statadict import parse_stata_dict
 
 stata_dict = parse_stata_dict(dict_file)
@@ -129,7 +129,7 @@ stata_dict = parse_stata_dict(dict_file)
 The data file is compressed, but we can use the
 \passthrough{\lstinline!gzip!} library to open it.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[]
 import gzip
 
 fp = gzip.open(data_file)
@@ -138,37 +138,35 @@ fp = gzip.open(data_file)
 The result is an object that behaves like a file, so we can pass it as
 an argument to \passthrough{\lstinline!read\_fwf!}:
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[]
 import pandas as pd
 
 gss = pd.read_fwf(fp, 
                   names=stata_dict.names, 
                   colspecs=stata_dict.colspecs)
 gss.shape
+(@\dashfill@)
+@@@(64814, 8)@@@
 \end{lstlisting}
 
-\begin{lstlisting}[style=output]
-(64814, 169)
-\end{lstlisting}
+The result is a \passthrough{\lstinline!DataFrame!} with one row for
+each respondent, and one column for each variable. Here are the first
+few rows.
 
-The result is a \passthrough{\lstinline!DataFrame!} with 64818 rows, one
-for each respondent, and 6 columns, one for each variable. Here are the
-first few rows.
-
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[]
 gss.head()
 \end{lstlisting}
 
-\begin{tabular}{lrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr}
-\toprule
-{} &  YEAR &  ID\_ &  AGEWED &  DIVORCE &  SIBS &  CHILDS &  AGE &     EDUC &  PAEDUC &  MAEDUC &  SPEDUC &  DEGREE &  PADEG &  MADEG &  SPDEG &  SEX &  RACE &  RES16 &  REG16 &  SRCBELT &  PARTYID &  PRES04 &  PRES08 &  PRES12 &  POLVIEWS &  NATSPAC &  NATENVIR &  NATHEAL &  NATCITY &  NATCRIME &  NATDRUG &  NATEDUC &  NATRACE &  NATARMS &  NATAID &  NATFARE &  SPKATH &  COLATH &  LIBATH &  SPKHOMO &  COLHOMO &  LIBHOMO &  CAPPUN &  GUNLAW &  GRASS &  RELIG &  FUND &  ATTEND &  RELITEN &  POSTLIFE &  PRAY &  RELIG16 &  FUND16 &  SPREL16 &  PRAYER &  BIBLE &  RACMAR &  RACPRES &  AFFRMACT &  HAPPY &  HAPMAR &  HEALTH &  LIFE &  HELPFUL &  FAIR &  TRUST &  CONCLERG &  CONEDUC &  CONFED &  CONPRESS &  CONJUDGE &  CONLEGIS &  CONARMY &  SATJOB &  CLASS\_ &  SATFIN &  FINRELA &  UNION\_ &  FEPOL &  ABANY &  CHLDIDEL &  SEXEDUC &  PREMARSX &  XMARSEX &  HOMOSEX &  SPANKING &  FEAR &  OWNGUN &  PISTOL &  HUNT &  PHONE &  MEMCHURH &  REALINC &  COHORT &  MARCOHRT &  BALLOT &  WTSSALL &  ADULTS &  COMPUSE &  DATABANK &  WTSSNR &  SPKRAC &  SPKCOM &  SPKMIL &  SPKMSLM &  COLRAC &  LIBRAC &  COLCOM &  LIBCOM &  COLMIL &  LIBMIL &  COLMSLM &  LIBMSLM &  NATCRIMY &  RACOPEN &  DIVLAW &  TEENSEX &  PORNLAW &  LETDIE1 &  POLOPTS &  NATROAD &  NATSOC &  NATMASS &  NATPARK &  NATCHLD &  NATSCI &  NATENRGY &  NATSPACY &  NATENVIY &  NATHEALY &  NATCITYY &  NATDRUGY &  NATEDUCY &  NATRACEY &  NATARMSY &  NATAIDY &  NATFAREY &  CONFINAN &  CONBUS &  CONLABOR &  CONMEDIC &  CONTV &  CONSCI &  ABDEFECT &  ABNOMORE &  ABHLTH &  ABPOOR &  ABRAPE &  ABSINGLE &  GOD &  REBORN &  SAVESOUL &  RELPERSN &  SPRTPRSN &  RELEXP &  RELACTIV &  FECHLD &  FEPRESCH &  FEFAM &  FEJOBAFF &  DISCAFFM &  DISCAFFW &  FEHIRE &  MEOVRWRK &  AVOIDBUY &  INCOME &  RINCOME &  REALRINC &  CHINA \\
+\begin{tabular}{lrrrrrrrr}
 \midrule
-0 &  1972 &    1 &      23 &       16 &     2 &       1 &    0 &  18951.0 &     NaN &     NaN &     NaN &     NaN &    NaN &    NaN &    NaN &  NaN &   NaN &    NaN &    NaN &      NaN &      NaN &     NaN &     NaN &     NaN &       NaN &      NaN &       NaN &      NaN &      NaN &       NaN &      NaN &      NaN &      NaN &      NaN &     NaN &      NaN &     NaN &     NaN &     NaN &      NaN &      NaN &      NaN &     NaN &     NaN &    NaN &    NaN &   NaN &     NaN &      NaN &       NaN &   NaN &      NaN &     NaN &      NaN &     NaN &    NaN &     NaN &      NaN &       NaN &    NaN &     NaN &     NaN &   NaN &      NaN &   NaN &    NaN &       NaN &      NaN &     NaN &       NaN &       NaN &       NaN &      NaN &     NaN &     NaN &     NaN &      NaN &     NaN &    NaN &    NaN &       NaN &      NaN &       NaN &      NaN &      NaN &       NaN &   NaN &     NaN &     NaN &   NaN &    NaN &       NaN &      NaN &     NaN &       NaN &     NaN &      NaN &     NaN &      NaN &       NaN &     NaN &     NaN &     NaN &     NaN &      NaN &     NaN &     NaN &     NaN &     NaN &     NaN &     NaN &      NaN &      NaN &       NaN &      NaN &     NaN &      NaN &      NaN &      NaN &      NaN &      NaN &     NaN &      NaN &      NaN &      NaN &     NaN &       NaN &       NaN &       NaN &       NaN &       NaN &       NaN &       NaN &       NaN &       NaN &      NaN &       NaN &       NaN &     NaN &       NaN &       NaN &    NaN &     NaN &       NaN &       NaN &     NaN &     NaN &     NaN &       NaN &  NaN &     NaN &       NaN &       NaN &       NaN &     NaN &       NaN &     NaN &       NaN &    NaN &       NaN &       NaN &       NaN &     NaN &       NaN &       NaN &     NaN &      NaN &       NaN &    NaN \\
-1 &  1972 &    2 &      70 &       10 &     1 &       1 &    0 &  24366.0 &     NaN &     NaN &     NaN &     NaN &    NaN &    NaN &    NaN &  NaN &   NaN &    NaN &    NaN &      NaN &      NaN &     NaN &     NaN &     NaN &       NaN &      NaN &       NaN &      NaN &      NaN &       NaN &      NaN &      NaN &      NaN &      NaN &     NaN &      NaN &     NaN &     NaN &     NaN &      NaN &      NaN &      NaN &     NaN &     NaN &    NaN &    NaN &   NaN &     NaN &      NaN &       NaN &   NaN &      NaN &     NaN &      NaN &     NaN &    NaN &     NaN &      NaN &       NaN &    NaN &     NaN &     NaN &   NaN &      NaN &   NaN &    NaN &       NaN &      NaN &     NaN &       NaN &       NaN &       NaN &      NaN &     NaN &     NaN &     NaN &      NaN &     NaN &    NaN &    NaN &       NaN &      NaN &       NaN &      NaN &      NaN &       NaN &   NaN &     NaN &     NaN &   NaN &    NaN &       NaN &      NaN &     NaN &       NaN &     NaN &      NaN &     NaN &      NaN &       NaN &     NaN &     NaN &     NaN &     NaN &      NaN &     NaN &     NaN &     NaN &     NaN &     NaN &     NaN &      NaN &      NaN &       NaN &      NaN &     NaN &      NaN &      NaN &      NaN &      NaN &      NaN &     NaN &      NaN &      NaN &      NaN &     NaN &       NaN &       NaN &       NaN &       NaN &       NaN &       NaN &       NaN &       NaN &       NaN &      NaN &       NaN &       NaN &     NaN &       NaN &       NaN &    NaN &     NaN &       NaN &       NaN &     NaN &     NaN &     NaN &       NaN &  NaN &     NaN &       NaN &       NaN &       NaN &     NaN &       NaN &     NaN &       NaN &    NaN &       NaN &       NaN &       NaN &     NaN &       NaN &       NaN &     NaN &      NaN &       NaN &    NaN \\
-2 &  1972 &    3 &      48 &       12 &     2 &       1 &    0 &  24366.0 &     NaN &     NaN &     NaN &     NaN &    NaN &    NaN &    NaN &  NaN &   NaN &    NaN &    NaN &      NaN &      NaN &     NaN &     NaN &     NaN &       NaN &      NaN &       NaN &      NaN &      NaN &       NaN &      NaN &      NaN &      NaN &      NaN &     NaN &      NaN &     NaN &     NaN &     NaN &      NaN &      NaN &      NaN &     NaN &     NaN &    NaN &    NaN &   NaN &     NaN &      NaN &       NaN &   NaN &      NaN &     NaN &      NaN &     NaN &    NaN &     NaN &      NaN &       NaN &    NaN &     NaN &     NaN &   NaN &      NaN &   NaN &    NaN &       NaN &      NaN &     NaN &       NaN &       NaN &       NaN &      NaN &     NaN &     NaN &     NaN &      NaN &     NaN &    NaN &    NaN &       NaN &      NaN &       NaN &      NaN &      NaN &       NaN &   NaN &     NaN &     NaN &   NaN &    NaN &       NaN &      NaN &     NaN &       NaN &     NaN &      NaN &     NaN &      NaN &       NaN &     NaN &     NaN &     NaN &     NaN &      NaN &     NaN &     NaN &     NaN &     NaN &     NaN &     NaN &      NaN &      NaN &       NaN &      NaN &     NaN &      NaN &      NaN &      NaN &      NaN &      NaN &     NaN &      NaN &      NaN &      NaN &     NaN &       NaN &       NaN &       NaN &       NaN &       NaN &       NaN &       NaN &       NaN &       NaN &      NaN &       NaN &       NaN &     NaN &       NaN &       NaN &    NaN &     NaN &       NaN &       NaN &     NaN &     NaN &     NaN &       NaN &  NaN &     NaN &       NaN &       NaN &       NaN &     NaN &       NaN &     NaN &       NaN &    NaN &       NaN &       NaN &       NaN &     NaN &       NaN &       NaN &     NaN &      NaN &       NaN &    NaN \\
-3 &  1972 &    4 &      27 &       17 &     2 &       1 &    0 &  30458.0 &     NaN &     NaN &     NaN &     NaN &    NaN &    NaN &    NaN &  NaN &   NaN &    NaN &    NaN &      NaN &      NaN &     NaN &     NaN &     NaN &       NaN &      NaN &       NaN &      NaN &      NaN &       NaN &      NaN &      NaN &      NaN &      NaN &     NaN &      NaN &     NaN &     NaN &     NaN &      NaN &      NaN &      NaN &     NaN &     NaN &    NaN &    NaN &   NaN &     NaN &      NaN &       NaN &   NaN &      NaN &     NaN &      NaN &     NaN &    NaN &     NaN &      NaN &       NaN &    NaN &     NaN &     NaN &   NaN &      NaN &   NaN &    NaN &       NaN &      NaN &     NaN &       NaN &       NaN &       NaN &      NaN &     NaN &     NaN &     NaN &      NaN &     NaN &    NaN &    NaN &       NaN &      NaN &       NaN &      NaN &      NaN &       NaN &   NaN &     NaN &     NaN &   NaN &    NaN &       NaN &      NaN &     NaN &       NaN &     NaN &      NaN &     NaN &      NaN &       NaN &     NaN &     NaN &     NaN &     NaN &      NaN &     NaN &     NaN &     NaN &     NaN &     NaN &     NaN &      NaN &      NaN &       NaN &      NaN &     NaN &      NaN &      NaN &      NaN &      NaN &      NaN &     NaN &      NaN &      NaN &      NaN &     NaN &       NaN &       NaN &       NaN &       NaN &       NaN &       NaN &       NaN &       NaN &       NaN &      NaN &       NaN &       NaN &     NaN &       NaN &       NaN &    NaN &     NaN &       NaN &       NaN &     NaN &     NaN &     NaN &       NaN &  NaN &     NaN &       NaN &       NaN &       NaN &     NaN &       NaN &     NaN &       NaN &    NaN &       NaN &       NaN &       NaN &     NaN &       NaN &       NaN &     NaN &      NaN &       NaN &    NaN \\
-4 &  1972 &    5 &      61 &       12 &     2 &       1 &    0 &  50763.0 &     NaN &     NaN &     NaN &     NaN &    NaN &    NaN &    NaN &  NaN &   NaN &    NaN &    NaN &      NaN &      NaN &     NaN &     NaN &     NaN &       NaN &      NaN &       NaN &      NaN &      NaN &       NaN &      NaN &      NaN &      NaN &      NaN &     NaN &      NaN &     NaN &     NaN &     NaN &      NaN &      NaN &      NaN &     NaN &     NaN &    NaN &    NaN &   NaN &     NaN &      NaN &       NaN &   NaN &      NaN &     NaN &      NaN &     NaN &    NaN &     NaN &      NaN &       NaN &    NaN &     NaN &     NaN &   NaN &      NaN &   NaN &    NaN &       NaN &      NaN &     NaN &       NaN &       NaN &       NaN &      NaN &     NaN &     NaN &     NaN &      NaN &     NaN &    NaN &    NaN &       NaN &      NaN &       NaN &      NaN &      NaN &       NaN &   NaN &     NaN &     NaN &   NaN &    NaN &       NaN &      NaN &     NaN &       NaN &     NaN &      NaN &     NaN &      NaN &       NaN &     NaN &     NaN &     NaN &     NaN &      NaN &     NaN &     NaN &     NaN &     NaN &     NaN &     NaN &      NaN &      NaN &       NaN &      NaN &     NaN &      NaN &      NaN &      NaN &      NaN &      NaN &     NaN &      NaN &      NaN &      NaN &     NaN &       NaN &       NaN &       NaN &       NaN &       NaN &       NaN &       NaN &       NaN &       NaN &      NaN &       NaN &       NaN &     NaN &       NaN &       NaN &    NaN &     NaN &       NaN &       NaN &     NaN &     NaN &     NaN &       NaN &  NaN &     NaN &       NaN &       NaN &       NaN &     NaN &       NaN &     NaN &       NaN &    NaN &       NaN &       NaN &       NaN &     NaN &       NaN &       NaN &     NaN &      NaN &       NaN &    NaN \\
-\bottomrule
+{} &  YEAR &  ID\_ &  AGE &  EDUC &  SEX &  GUNLAW &  GRASS &  REALINC \\
+\midrule
+0 &  1972 &    1 &   23 &    16 &    2 &       1 &      0 &  18951.0 \\
+1 &  1972 &    2 &   70 &    10 &    1 &       1 &      0 &  24366.0 \\
+2 &  1972 &    3 &   48 &    12 &    2 &       1 &      0 &  24366.0 \\
+3 &  1972 &    4 &   27 &    17 &    2 &       1 &      0 &  30458.0 \\
+4 &  1972 &    5 &   61 &    12 &    2 &       1 &      0 &  50763.0 \\
+\midrule
 \end{tabular}
 
 You can probably guess what the variables are, and I'll explain them as
@@ -185,639 +183,38 @@ education for each respondent. First I'll select a column from the
 \passthrough{\lstinline!DataFrame!} and use
 \passthrough{\lstinline!value\_counts!} to see what values are in it.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[]
 gss['EDUC'].value_counts().sort_index()
 \end{lstlisting}
 
 \begin{tabular}{lr}
-\toprule
-{} &  EDUC \\
 \midrule
-0.000000      &  6521 \\
-227.000000    &    33 \\
-234.000000    &    36 \\
-236.500000    &    38 \\
-245.000000    &    24 \\
-259.000000    &    43 \\
-267.750000    &    19 \\
-284.250000    &    43 \\
-301.900000    &    42 \\
-312.850000    &    39 \\
-333.000000    &    30 \\
-345.000000    &    36 \\
-363.000000    &    26 \\
-382.000000    &    23 \\
-393.000000    &    17 \\
-418.000000    &    11 \\
-444.000000    &     6 \\
-464.000000    &    14 \\
-483.000000    &    20 \\
-500.000000    &    16 \\
-510.000000    &    15 \\
-528.000000    &    10 \\
-550.000000    &    20 \\
-568.000000    &    12 \\
-603.000000    &    31 \\
-755.000000    &    18 \\
-905.000000    &    18 \\
-908.000000    &    27 \\
-936.000000    &    35 \\
-946.000000    &    29 \\
-963.000000    &    16 \\
-980.000000    &    25 \\
-1019.000000   &    19 \\
-1036.000000   &    24 \\
-1071.000000   &    25 \\
-1112.000000   &    34 \\
-1137.000000   &    38 \\
-1207.600000   &    27 \\
-1234.000000   &    35 \\
-1251.400000   &    26 \\
-1310.000000   &    36 \\
-1330.000000   &    32 \\
-1378.000000   &    32 \\
-1450.000000   &    35 \\
-1528.000000   &    32 \\
-1572.000000   &    20 \\
-1589.000000   &    19 \\
-1638.000000   &    24 \\
-1655.500000   &    20 \\
-1671.000000   &    26 \\
-1715.000000   &    18 \\
-1774.000000   &    13 \\
-1813.000000   &    17 \\
-1855.000000   &    18 \\
-1874.250000   &    23 \\
-1930.000000   &    25 \\
-1989.750000   &    29 \\
-2000.000000   &    51 \\
-2038.000000   &    22 \\
-2043.000000   &    14 \\
-2106.000000   &    13 \\
-2111.000000   &    31 \\
-2113.300000   &    23 \\
-2128.500000   &    12 \\
-2189.950000   &    30 \\
-2201.000000   &    32 \\
-2205.000000   &    10 \\
-2272.000000   &    38 \\
-2327.000000   &    25 \\
-2331.000000   &     8 \\
-2409.750000   &     9 \\
-2411.000000   &    83 \\
-2497.000000   &    15 \\
-2538.000000   &    18 \\
-2558.250000   &    27 \\
-2574.000000   &    19 \\
-2601.500000   &    22 \\
-2674.000000   &    36 \\
-2695.000000   &     8 \\
-2707.000000   &   123 \\
-2717.100000   &    22 \\
-2751.000000   &    25 \\
-2815.650000   &    18 \\
-2849.000000   &    19 \\
-2925.000000   &    31 \\
-2945.250000   &    16 \\
-2951.000000   &     9 \\
-2992.000000   &    20 \\
-3021.000000   &    50 \\
-3042.000000   &    15 \\
-3074.500000   &    18 \\
-3100.000000   &    32 \\
-3105.000000   &    23 \\
-3126.750000   &    40 \\
-3185.000000   &    22 \\
-3247.000000   &    17 \\
-3263.000000   &    31 \\
-3320.900000   &    24 \\
-3367.000000   &    19 \\
-3378.000000   &    23 \\
-3405.000000   &    13 \\
-3438.000000   &    40 \\
-3441.350000   &    27 \\
-3480.750000   &    19 \\
-3500.000000   &    41 \\
-3510.000000   &    23 \\
-3537.000000   &    34 \\
-3547.500000   &    16 \\
-3567.000000   &    48 \\
-3619.000000   &    72 \\
-3657.000000   &    29 \\
-3675.000000   &    24 \\
-3695.000000   &    46 \\
-3695.250000   &    45 \\
-3760.000000   &    35 \\
-3789.000000   &    35 \\
-3852.000000   &    97 \\
-3885.000000   &    27 \\
-3924.700000   &    38 \\
-3976.000000   &    44 \\
-3988.000000   &    43 \\
-3992.000000   &    30 \\
-4016.250000   &    29 \\
-4067.050000   &    30 \\
-4074.000000   &   101 \\
-4086.000000   &    41 \\
-4175.000000   &    32 \\
-4202.000000   &    49 \\
-4212.000000   &    48 \\
-4220.000000   &    83 \\
-4257.000000   &    51 \\
-4263.750000   &    48 \\
-4322.000000   &    35 \\
-4323.000000   &    34 \\
-4343.000000   &    40 \\
-4410.000000   &    38 \\
-4447.000000   &    97 \\
-4478.000000   &    33 \\
-4500.000000   &    57 \\
-4528.500000   &    25 \\
-4587.000000   &    52 \\
-4596.000000   &    39 \\
-4662.000000   &    37 \\
-4692.750000   &    29 \\
-4713.000000   &    42 \\
-4750.000000   &    48 \\
-4819.500000   &    34 \\
-4879.000000   &    29 \\
-4935.000000   &   109 \\
-4952.000000   &    31 \\
-4966.000000   &    39 \\
-4987.000000   &    38 \\
-5102.000000   &    33 \\
-5107.500000   &    70 \\
-5109.000000   &    24 \\
-5112.000000   &    45 \\
-5116.500000   &    83 \\
-5167.000000   &    47 \\
-5242.000000   &   107 \\
-5265.000000   &    88 \\
-5287.000000   &    59 \\
-5308.000000   &    42 \\
-5321.250000   &    84 \\
-5425.000000   &    71 \\
-5432.000000   &    29 \\
-5434.200000   &    35 \\
-5438.000000   &    31 \\
-5500.000000   &    45 \\
-5512.500000   &    77 \\
-5606.000000   &    39 \\
-5631.300000   &    71 \\
-5730.000000   &    42 \\
-5766.000000   &    30 \\
-5806.000000   &    44 \\
-5827.500000   &    82 \\
-5895.000000   &    29 \\
-5985.000000   &    74 \\
-6024.375000   &    61 \\
-6030.000000   &    31 \\
-6053.000000   &    47 \\
-6201.000000   &    59 \\
-6242.500000   &    70 \\
-6248.000000   &    53 \\
-6267.000000   &    23 \\
-6273.000000   &    35 \\
-6333.000000   &    83 \\
-6395.625000   &   142 \\
-6435.000000   &    71 \\
-6500.000000   &    47 \\
-6503.750000   &    64 \\
-6525.000000   &    77 \\
-6625.000000   &    31 \\
-6631.000000   &    64 \\
-6653.000000   &    27 \\
-6737.500000   &    63 \\
-6741.000000   &    79 \\
-6792.750000   &    70 \\
-6798.000000   &    46 \\
-6861.000000   &    60 \\
-6876.000000   &    80 \\
-6958.000000   &    26 \\
-7039.125000   &    99 \\
-7074.000000   &    39 \\
-7122.500000   &    65 \\
-7130.000000   &    85 \\
-7153.000000   &    30 \\
-7238.000000   &    42 \\
-7363.125000   &    44 \\
-7377.500000   &    44 \\
-7384.000000   &    31 \\
-7481.000000   &   103 \\
-7500.000000   &    55 \\
-7521.000000   &    38 \\
-7605.000000   &    65 \\
-7644.000000   &    39 \\
-7686.250000   &    66 \\
-7751.000000   &    94 \\
-7782.000000   &    85 \\
-7816.875000   &   145 \\
-7836.000000   &    63 \\
-7917.000000   &    33 \\
-7962.500000   &    58 \\
-7984.000000   &    43 \\
-8122.000000   &   165 \\
-8142.000000   &    54 \\
-8156.000000   &   119 \\
-8254.000000   &    41 \\
-8302.250000   &    91 \\
-8308.000000   &    54 \\
-8349.000000   &    49 \\
-8417.500000   &    72 \\
-8512.500000   &    37 \\
-8520.000000   &    40 \\
-8595.000000   &   131 \\
-8603.375000   &    85 \\
-8636.000000   &    72 \\
-8667.000000   &    53 \\
-8685.000000   &    54 \\
-8701.875000   &    52 \\
-8775.000000   &    65 \\
-8843.000000   &    69 \\
-8868.750000   &    50 \\
-9000.000000   &    78 \\
-9042.000000   &    54 \\
-9143.000000   &   104 \\
-9167.000000   &    60 \\
-9173.000000   &   138 \\
-9187.500000   &    48 \\
-9238.125000   &   126 \\
-9401.000000   &    76 \\
-9473.000000   &    98 \\
-9500.000000   &    61 \\
-9647.500000   &    65 \\
-9712.500000   &    34 \\
-9811.750000   &    93 \\
-9819.000000   &    50 \\
-9905.000000   &    55 \\
-9945.000000   &    95 \\
-9952.000000   &    63 \\
-9969.000000   &   124 \\
-9980.000000   &    73 \\
-10005.000000  &    72 \\
-10040.625000  &    47 \\
-10051.250000  &    69 \\
-10167.625000  &    86 \\
-10223.000000  &    87 \\
-10412.500000  &    66 \\
-10436.000000  &    87 \\
-10505.000000  &   108 \\
-10594.000000  &    60 \\
-10659.375000  &   102 \\
-10782.500000  &    77 \\
-10806.000000  &   108 \\
-10808.000000  &    77 \\
-10850.000000  &    95 \\
-10857.000000  &    83 \\
-11007.500000  &    66 \\
-11103.000000  &    66 \\
-11115.000000  &   101 \\
-11196.000000  &   103 \\
-11205.000000  &    90 \\
-11233.750000  &    86 \\
-11250.000000  &   107 \\
-11321.250000  &    61 \\
-11329.000000  &    54 \\
-11379.375000  &    59 \\
-11466.000000  &    81 \\
-11490.000000  &    82 \\
-11637.500000  &    60 \\
-11731.875000  &    82 \\
-11761.000000  &    68 \\
-11781.000000  &   104 \\
-11794.000000  &    83 \\
-11876.000000  &    87 \\
-12080.625000  &   157 \\
-12197.000000  &    52 \\
-12229.000000  &    72 \\
-12302.500000  &    78 \\
-12381.000000  &   104 \\
-12415.000000  &   120 \\
-12468.000000  &    94 \\
-12485.000000  &    80 \\
-12520.000000  &    67 \\
-12718.125000  &    70 \\
-12756.000000  &    79 \\
-12773.000000  &    63 \\
-12779.000000  &   127 \\
-12830.750000  &    85 \\
-12870.000000  &   115 \\
-12918.000000  &    76 \\
-13007.500000  &   123 \\
-13242.000000  &    66 \\
-13269.000000  &    81 \\
-13296.125000  &    93 \\
-13475.000000  &    93 \\
-13501.875000  &   125 \\
-13537.000000  &   160 \\
-13563.000000  &   150 \\
-13570.000000  &   121 \\
-13579.000000  &    97 \\
-13594.000000  &    82 \\
-13595.000000  &    78 \\
-13750.000000  &   102 \\
-14015.000000  &    88 \\
-14131.000000  &    84 \\
-14245.000000  &    81 \\
-14325.000000  &   113 \\
-14340.250000  &    81 \\
-14415.000000  &   132 \\
-14446.000000  &    70 \\
-14452.000000  &    73 \\
-14515.000000  &    92 \\
-14641.000000  &   126 \\
-14726.250000  &    95 \\
-14738.000000  &    59 \\
-14755.000000  &   116 \\
-14860.375000  &    91 \\
-15075.000000  &    86 \\
-15132.000000  &    97 \\
-15210.000000  &   131 \\
-15279.000000  &    67 \\
-15372.500000  &   141 \\
-15406.000000  &   100 \\
-15619.000000  &    94 \\
-15633.750000  &   212 \\
-15668.000000  &    60 \\
-15682.000000  &    68 \\
-15793.000000  &   116 \\
-15925.000000  &    89 \\
-16038.000000  &    67 \\
-16235.000000  &   125 \\
-16250.000000  &    77 \\
-16284.000000  &   103 \\
-16363.000000  &   121 \\
-16563.000000  &    73 \\
-16577.000000  &   146 \\
-16604.500000  &   137 \\
-16633.000000  &    71 \\
-16676.000000  &    58 \\
-16703.000000  &    63 \\
-16835.000000  &    99 \\
-16994.000000  &   114 \\
-17025.000000  &   101 \\
-17036.000000  &    54 \\
-17038.000000  &   120 \\
-17154.000000  &    80 \\
-17206.750000  &   141 \\
-17335.000000  &   114 \\
-17394.000000  &    65 \\
-17403.750000  &    99 \\
-17550.000000  &   126 \\
-17737.500000  &   104 \\
-17757.000000  &    60 \\
-17884.000000  &    89 \\
-17954.000000  &   137 \\
-18094.000000  &    56 \\
-18287.000000  &   156 \\
-18335.000000  &   115 \\
-18375.000000  &   101 \\
-18459.000000  &    89 \\
-18471.000000  &    76 \\
-18476.250000  &   231 \\
-18505.000000  &    82 \\
-18750.000000  &    70 \\
-18851.000000  &    64 \\
-18947.000000  &   179 \\
-18951.000000  &   160 \\
-19111.000000  &    72 \\
-19425.000000  &    89 \\
-19591.000000  &   106 \\
-19623.500000  &   167 \\
-19657.000000  &    90 \\
-19713.000000  &    70 \\
-19793.000000  &    61 \\
-19846.000000  &    68 \\
-19938.000000  &   187 \\
-20011.000000  &   133 \\
-20081.250000  &    86 \\
-20335.250000  &   173 \\
-20355.000000  &   143 \\
-20430.000000  &   159 \\
-20507.000000  &    66 \\
-20635.000000  &    65 \\
-20770.000000  &    97 \\
-21010.000000  &   195 \\
-21060.000000  &   218 \\
-21068.000000  &    52 \\
-21250.000000  &    94 \\
-21285.000000  &   173 \\
-21299.000000  &    69 \\
-21318.750000  &   217 \\
-21612.000000  &   179 \\
-21615.000000  &    98 \\
-21659.000000  &    80 \\
-21669.000000  &   158 \\
-22032.000000  &    65 \\
-22050.000000  &   151 \\
-22206.000000  &   112 \\
-22392.000000  &   200 \\
-22432.000000  &    90 \\
-22605.000000  &    84 \\
-22642.500000  &   143 \\
-22919.000000  &    73 \\
-22980.000000  &   112 \\
-23310.000000  &   147 \\
-23386.000000  &   108 \\
-23463.750000  &   150 \\
-23563.000000  &   218 \\
-23588.000000  &   153 \\
-23750.000000  &    86 \\
-24097.500000  &   144 \\
-24139.000000  &    94 \\
-24207.000000  &    67 \\
-24366.000000  &   192 \\
-24395.000000  &    95 \\
-24543.000000  &    78 \\
-24547.000000  &   107 \\
-24830.000000  &   214 \\
-24879.000000  &   136 \\
-24937.000000  &   167 \\
-24970.000000  &   187 \\
-25465.000000  &   310 \\
-25511.000000  &   118 \\
-25545.000000  &   118 \\
-25582.500000  &   394 \\
-25587.000000  &    85 \\
-25619.000000  &    94 \\
-25740.000000  &   207 \\
-25837.000000  &   175 \\
-26015.000000  &   208 \\
-26411.000000  &    93 \\
-26484.000000  &   130 \\
-26538.000000  &   116 \\
-26950.000000  &   118 \\
-27158.000000  &    94 \\
-27171.000000  &   220 \\
-27188.000000  &   185 \\
-27500.000000  &   133 \\
-27793.000000  &   345 \\
-28029.000000  &   118 \\
-28030.000000  &   105 \\
-28156.500000  &   245 \\
-28323.000000  &   109 \\
-28490.000000  &   143 \\
-28650.000000  &   163 \\
-28830.000000  &   110 \\
-29402.000000  &   133 \\
-29452.500000  &   141 \\
-29475.000000  &   107 \\
-29925.000000  &   221 \\
-30150.000000  &   100 \\
-30458.000000  &   217 \\
-30645.000000  &   215 \\
-30841.000000  &   326 \\
-31005.000000  &   264 \\
-31267.500000  &   332 \\
-31299.000000  &   123 \\
-31336.000000  &    86 \\
-31364.000000  &   120 \\
-31590.000000  &   258 \\
-31668.000000  &   251 \\
-31927.500000  &   227 \\
-32100.000000  &   104 \\
-32500.000000  &   120 \\
-32625.000000  &   259 \\
-32761.000000  &   348 \\
-33016.000000  &   206 \\
-33075.000000  &   153 \\
-33125.000000  &   123 \\
-33209.000000  &   229 \\
-33266.000000  &    85 \\
-33926.000000  &    89 \\
-34078.000000  &   242 \\
-34380.000000  &   308 \\
-34413.500000  &   219 \\
-34788.000000  &    94 \\
-34965.000000  &   174 \\
-35121.000000  &    88 \\
-35370.000000  &   133 \\
-35651.000000  &   205 \\
-36114.000000  &    94 \\
-36146.250000  &   204 \\
-36167.000000  &   230 \\
-36189.000000  &    92 \\
-36575.000000  &   222 \\
-37226.000000  &   159 \\
-37455.000000  &   167 \\
-37500.000000  &   117 \\
-37603.000000  &   149 \\
-37895.000000  &   192 \\
-38222.000000  &    93 \\
-38373.750000  &   360 \\
-38449.000000  &   106 \\
-38610.000000  &   214 \\
-38910.000000  &   199 \\
-39022.500000  &   172 \\
-39875.000000  &   231 \\
-39919.000000  &   109 \\
-40425.000000  &   151 \\
-40756.500000  &   244 \\
-40930.000000  &    93 \\
-41746.000000  &   127 \\
-42020.000000  &   227 \\
-42068.000000  &    88 \\
-42234.750000  &   218 \\
-42735.000000  &   129 \\
-43178.000000  &   211 \\
-43230.000000  &   114 \\
-43426.000000  &   124 \\
-43994.000000  &   103 \\
-44178.750000  &   129 \\
-44782.000000  &    80 \\
-44863.000000  &   185 \\
-44887.000000  &   216 \\
-45000.000000  &   141 \\
-45400.000000  &   145 \\
-45837.000000  &   128 \\
-45866.000000  &   272 \\
-45959.000000  &    86 \\
-46507.000000  &   210 \\
-46773.000000  &   168 \\
-46800.000000  &   179 \\
-46901.250000  &   284 \\
-47300.000000  &   167 \\
-48277.000000  &   153 \\
-48790.000000  &    82 \\
-48938.000000  &   200 \\
-49000.000000  &   104 \\
-49813.500000  &   178 \\
-50027.000000  &   111 \\
-50763.000000  &    63 \\
-51023.000000  &   105 \\
-51237.000000  &   161 \\
-51570.000000  &   183 \\
-51620.250000  &   167 \\
-51800.000000  &   111 \\
-53055.000000  &   108 \\
-53077.000000  &    77 \\
-53550.000000  &   120 \\
-54480.000000  &   128 \\
-54862.000000  &   139 \\
-55000.000000  &    98 \\
-55515.000000  &   103 \\
-56058.000000  &    57 \\
-56160.000000  &   126 \\
-56405.000000  &    86 \\
-56647.000000  &   269 \\
-56760.000000  &    94 \\
-56842.000000  &   123 \\
-56850.000000  &   229 \\
-58800.000000  &    68 \\
-58970.000000  &   103 \\
-60380.000000  &   152 \\
-60915.000000  &    67 \\
-62160.000000  &    69 \\
-62570.000000  &   114 \\
-63560.000000  &    77 \\
-64260.000000  &    80 \\
-65520.000000  &    99 \\
-66220.000000  &    73 \\
-66500.000000  &    90 \\
-67851.000000  &   181 \\
-68220.000000  &   162 \\
-68600.000000  &    45 \\
-68900.000000  &   107 \\
-72229.000000  &   170 \\
-72520.000000  &    57 \\
-72640.000000  &    72 \\
-74452.000000  &    33 \\
-74880.000000  &    61 \\
-74970.000000  &    46 \\
-79340.000000  &   148 \\
-79590.000000  &    89 \\
-86496.000000  &   128 \\
-88133.000000  &   164 \\
-90265.000000  &    80 \\
-90278.000000  &   130 \\
-90722.000000  &    83 \\
-91587.000000  &   120 \\
-92858.000000  &   120 \\
-93210.000000  &    92 \\
-94738.000000  &   115 \\
-99257.000000  &   162 \\
-99956.000000  &   271 \\
-99988.000000  &   172 \\
-102084.000000 &    99 \\
-102565.000000 &   329 \\
-103880.000000 &   160 \\
-109355.000000 &    32 \\
-110895.000000 &   142 \\
-115841.000000 &   136 \\
-119606.065320 &   115 \\
-119879.417320 &   171 \\
-128141.000000 &    61 \\
-128434.605938 &   295 \\
-131676.690600 &   164 \\
-134817.439900 &   207 \\
-137237.765589 &   230 \\
-141038.000000 &   174 \\
-143778.000000 &    33 \\
-144502.717140 &   213 \\
-146153.668585 &   123 \\
-155139.973100 &   144 \\
-162607.000000 &    38 \\
-\bottomrule
+{} &   EDUC \\
+\midrule
+0  &    165 \\
+1  &     47 \\
+2  &    152 \\
+3  &    257 \\
+4  &    319 \\
+5  &    402 \\
+6  &    828 \\
+7  &    879 \\
+8  &   2724 \\
+9  &   2083 \\
+10 &   2880 \\
+11 &   3743 \\
+12 &  19663 \\
+13 &   5360 \\
+14 &   7160 \\
+15 &   2910 \\
+16 &   8355 \\
+17 &   1967 \\
+18 &   2384 \\
+19 &    920 \\
+20 &   1439 \\
+98 &     73 \\
+99 &    104 \\
+\midrule
 \end{tabular}
 
 The result from \passthrough{\lstinline!value\_counts!} is a set of
@@ -829,7 +226,7 @@ are special codes for ``Don't know'' and ``No answer''. We'll use
 \passthrough{\lstinline!replace!} to replace these codes with
 \passthrough{\lstinline!NaN!}.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[]
 import numpy as np
 
 educ = gss['EDUC'].replace([98, 99], np.nan)
@@ -838,7 +235,7 @@ educ = gss['EDUC'].replace([98, 99], np.nan)
 We've already seen one way to visualize a distribution, a histogram.
 Here's the histogram of education level.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[]
 import matplotlib.pyplot as plt
 
 educ.hist(grid=False)
@@ -848,7 +245,7 @@ plt.title('Histogram of education level');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[scale=0.75]{08_distributions_files/08_distributions_36_0.png}
+\includegraphics[width=4in]{08_distributions_files/08_distributions_35_0.png}
 \end{center}
 
 Based on the histogram, we can see the general shape of the distribution
@@ -862,13 +259,11 @@ An alternative is a \passthrough{\lstinline!Pmf!}.
 like a list, tuple, or Pandas \passthrough{\lstinline!Series!} -- and
 computes the distribution of the values in the sequence.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[]
 pmf_educ = Pmf.from_seq(educ, normalize=False)
 type(pmf_educ)
-\end{lstlisting}
-
-\begin{lstlisting}[style=output]
-empiricaldist.empiricaldist.Pmf
+(@\dashfill@)
+@@@empiricaldist.empiricaldist.Pmf@@@
 \end{lstlisting}
 
 The keyword argument \passthrough{\lstinline!normalize=False!} indicates
@@ -877,18 +272,18 @@ soon.
 
 Here's what the first few rows look like.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[]
 pmf_educ.head()
 \end{lstlisting}
 
 \begin{tabular}{lr}
-\toprule
+\midrule
 {} &  probs \\
 \midrule
-0.0   &   6521 \\
-227.0 &     33 \\
-234.0 &     36 \\
-\bottomrule
+0.0 &    165 \\
+1.0 &     47 \\
+2.0 &    152 \\
+\midrule
 \end{tabular}
 
 In this dataset, there are \passthrough{\lstinline!165!} respondents who
@@ -896,18 +291,18 @@ report that they have had no formal education, and
 \passthrough{\lstinline!47!} who have only one year. Here the last few
 rows.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[]
 pmf_educ.tail()
 \end{lstlisting}
 
 \begin{tabular}{lr}
-\toprule
+\midrule
 {} &  probs \\
 \midrule
-146153.668585 &    123 \\
-155139.973100 &    144 \\
-162607.000000 &     38 \\
-\bottomrule
+18.0 &   2384 \\
+19.0 &    920 \\
+20.0 &   1439 \\
+\midrule
 \end{tabular}
 
 There are \passthrough{\lstinline!1439!} respondents who report that
@@ -917,78 +312,10 @@ they attended college and graduate school.
 You can use the bracket operator to look up a value in a Pmf and get the
 corresponding count:
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[]
 pmf_educ[20]
-\end{lstlisting}
-
-\begin{lstlisting}[style=output]
----------------------------------------------------------------------------
-
-KeyError                                  Traceback (most recent call last)
-
-~/anaconda3/envs/ElementsOfDataScience/lib/python3.7/site-packages/pandas/core/indexes/base.py in get_loc(self, key, method, tolerance)
-   3079             try:
--> 3080                 return self._engine.get_loc(casted_key)
-   3081             except KeyError as err:
-
-
-pandas/_libs/index.pyx in pandas._libs.index.IndexEngine.get_loc()
-
-
-pandas/_libs/index.pyx in pandas._libs.index.IndexEngine.get_loc()
-
-
-pandas/_libs/hashtable_class_helper.pxi in pandas._libs.hashtable.Float64HashTable.get_item()
-
-
-pandas/_libs/hashtable_class_helper.pxi in pandas._libs.hashtable.Float64HashTable.get_item()
-
-
-KeyError: 20.0
-
-
-The above exception was the direct cause of the following exception:
-
-
-KeyError                                  Traceback (most recent call last)
-
-<ipython-input-20-dcf96f9a9b29> in <module>
-----> 1 pmf_educ[20]
-
-
-~/anaconda3/envs/ElementsOfDataScience/lib/python3.7/site-packages/pandas/core/series.py in __getitem__(self, key)
-    849 
-    850         elif key_is_scalar:
---> 851             return self._get_value(key)
-    852 
-    853         if is_hashable(key):
-
-
-~/anaconda3/envs/ElementsOfDataScience/lib/python3.7/site-packages/pandas/core/series.py in _get_value(self, label, takeable)
-    957 
-    958         # Similar to Index.get_value, but we do not fall back to positional
---> 959         loc = self.index.get_loc(label)
-    960         return self.index._get_values_for_loc(self, loc, label)
-    961 
-
-
-~/anaconda3/envs/ElementsOfDataScience/lib/python3.7/site-packages/pandas/core/indexes/numeric.py in get_loc(self, key, method, tolerance)
-    393             return nan_idxs
-    394 
---> 395         return super().get_loc(key, method=method, tolerance=tolerance)
-    396 
-    397     # ----------------------------------------------------------------
-
-
-~/anaconda3/envs/ElementsOfDataScience/lib/python3.7/site-packages/pandas/core/indexes/base.py in get_loc(self, key, method, tolerance)
-   3080                 return self._engine.get_loc(casted_key)
-   3081             except KeyError as err:
--> 3082                 raise KeyError(key) from err
-   3083 
-   3084         if tolerance is not None:
-
-
-KeyError: 20
+(@\dashfill@)
+@@@1439@@@
 \end{lstlisting}
 
 Usually when we make a PMF, we want to know the \emph{fraction} of
@@ -997,23 +324,35 @@ setting \passthrough{\lstinline!normalize=True!}; then we get a
 normalized PMF, that is, a PMF where the values in the second column add
 up to 1.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[]
 pmf_educ_norm = Pmf.from_seq(educ, normalize=True)
 pmf_educ_norm.head()
 \end{lstlisting}
+
+\begin{tabular}{lr}
+\midrule
+{} &     probs \\
+\midrule
+0.0 &  0.002553 \\
+1.0 &  0.000727 \\
+2.0 &  0.002352 \\
+\midrule
+\end{tabular}
 
 Now if we use the bracket operator, the result is a fraction. For
 example, the fraction of people with 12 years of education is about
 30\%:
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[]
 pmf_educ_norm[16]
+(@\dashfill@)
+@@@0.12926033077030183@@@
 \end{lstlisting}
 
 \passthrough{\lstinline!Pmf!} provides a \passthrough{\lstinline!bar!}
 method that plots the values and their probabilities as a bar chart.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[]
 pmf_educ_norm.bar(label='EDUC')
 
 plt.xlabel('Years of education')
@@ -1022,6 +361,10 @@ plt.ylabel('PMF')
 plt.title('Distribution of years of education')
 plt.legend();
 \end{lstlisting}
+
+\begin{center}
+\includegraphics[width=4in]{08_distributions_files/08_distributions_49_0.png}
+\end{center}
 
 In this figure, we can see that the most common value is 12 years, but
 there are also peaks at 14 and 16, which correspond to two and four
@@ -1044,29 +387,40 @@ Make an unnormalized PMF for \passthrough{\lstinline!YEAR!} and display
 the result. How many respondents were interviewed in 2018?
 
 \hypertarget{cumulative-distribution-functions}{%
-\section{Cumulative distribution
-functions}\label{cumulative-distribution-functions}}
+\section{Cumulative Distribution
+Functions}\label{cumulative-distribution-functions}}
 
 Now we'll see another way to represent a distribution, the cumulative
 distribution function (CDF). \passthrough{\lstinline!empiricaldist!}
 provides a \passthrough{\lstinline!Cdf!} object that represents a CDF.
 We can import it like this:
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[]
 from empiricaldist import Cdf
 \end{lstlisting}
 
 As an example, suppose we have a sequence of five values:
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[]
 values = 1, 2, 2, 3, 5  
 \end{lstlisting}
 
 Here's the \passthrough{\lstinline!Pmf!} of these values.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[]
 Pmf.from_seq(values)
 \end{lstlisting}
+
+\begin{tabular}{lr}
+\midrule
+{} &  probs \\
+\midrule
+1 &    0.2 \\
+2 &    0.4 \\
+3 &    0.2 \\
+5 &    0.2 \\
+\midrule
+\end{tabular}
 
 If you draw a random value from \passthrough{\lstinline!values!}, the
 PMF tells you the chance of getting \passthrough{\lstinline!x!}, for any
@@ -1083,9 +437,20 @@ the the cumulative sum of the probabilities in the PMF.
 
 Here's the \passthrough{\lstinline!Cdf!} for the same five values.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[]
 Cdf.from_seq(values)
 \end{lstlisting}
+
+\begin{tabular}{lr}
+\midrule
+{} &  probs \\
+\midrule
+1 &    0.2 \\
+2 &    0.6 \\
+3 &    0.8 \\
+5 &    1.0 \\
+\midrule
+\end{tabular}
 
 If you draw a random value from \passthrough{\lstinline!values!},
 \passthrough{\lstinline!Cdf!} tells you the chance of getting a value
@@ -1120,14 +485,14 @@ the codebook, the range of the values is from
 I'll use \passthrough{\lstinline!replace!} to replace the special codes
 with \passthrough{\lstinline!NaN!}.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[]
 age = gss['AGE'].replace([98, 99], np.nan)
 \end{lstlisting}
 
 We can compute the \passthrough{\lstinline!Cdf!} of these values like
 this:
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[]
 cdf_age = Cdf.from_seq(age)
 \end{lstlisting}
 
@@ -1135,13 +500,17 @@ cdf_age = Cdf.from_seq(age)
 \passthrough{\lstinline!plot!} that plots the CDF as a line. Here's what
 it looks like.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[]
 cdf_age.plot()
 
 plt.xlabel('Age (years)')
 plt.ylabel('CDF')
 plt.title('Distribution of age');
 \end{lstlisting}
+
+\begin{center}
+\includegraphics[width=4in]{08_distributions_files/08_distributions_67_0.png}
+\end{center}
 
 The \(x\)-axis is the ages, from 18 to 89. The \(y\)-axis is the
 cumulative probabilities, from 0 to 1.
@@ -1150,10 +519,12 @@ cumulative probabilities, from 0 to 1.
 give it an age, it returns the corresponding probability (in a NumPy
 array).
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[]
 q = 51
 p = cdf_age(q)
 p
+(@\dashfill@)
+@@@array(0.63318676)@@@
 \end{lstlisting}
 
 \passthrough{\lstinline!q!} stands for ``quantity'', which is what we
@@ -1165,7 +536,7 @@ means that about 63\% of the respondents are 51 years old or younger.
 The arrow in the following figure shows how you could read this value
 from the CDF, at least approximately.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[]
 cdf_age.plot()
 
 x = 17
@@ -1178,6 +549,10 @@ plt.ylabel('CDF')
 plt.title('Distribution of age');
 \end{lstlisting}
 
+\begin{center}
+\includegraphics[width=4in]{08_distributions_files/08_distributions_72_0.png}
+\end{center}
+
 The CDF is an invertible function, which means that if you have a
 probability, \passthrough{\lstinline!p!}, you can look up the
 corresponding quantity, \passthrough{\lstinline!q!}.
@@ -1185,10 +560,12 @@ corresponding quantity, \passthrough{\lstinline!q!}.
 \passthrough{\lstinline!inverse!} that computes the inverse of the
 cumulative distribution function.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[]
 p1 = 0.25
 q1 = cdf_age.inverse(p1)
 q1
+(@\dashfill@)
+@@@array(31.)@@@
 \end{lstlisting}
 
 In this example, we look up the probability
@@ -1202,16 +579,18 @@ If we look up probability \passthrough{\lstinline!0.75!}, it returns
 \passthrough{\lstinline!59!}, so 75\% of the respondents are 59 or
 younger.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[]
 p2 = 0.75
 q2 = cdf_age.inverse(p2)
 q2
+(@\dashfill@)
+@@@array(59.)@@@
 \end{lstlisting}
 
 In the following figure, the arrows show how you could read these values
 from the CDF.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[]
 cdf_age.plot()
 
 x = 17
@@ -1226,6 +605,10 @@ plt.xlim(x-1, 91)
 plt.ylabel('CDF')
 plt.title('Distribution of age');
 \end{lstlisting}
+
+\begin{center}
+\includegraphics[width=4in]{08_distributions_files/08_distributions_78_0.png}
+\end{center}
 
 The distance from the 25th to the 75th percentile is called the
 \textbf{interquartile range}, or IQR. It measures the spread of the
@@ -1254,7 +637,7 @@ Select \passthrough{\lstinline!REALINC!} from the
 the axes!
 
 \hypertarget{comparing-distributions}{%
-\section{Comparing distributions}\label{comparing-distributions}}
+\section{Comparing Distributions}\label{comparing-distributions}}
 
 So far we've seen two ways to represent distributions, PMFs and CDFs.
 Now we'll use PMFs and CDFs to compare distributions, and we'll see the
@@ -1266,26 +649,26 @@ for male and female respondents.
 
 First I'll create a Boolean Series that's true for male respondents.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[]
 male = (gss['SEX'] == 1)
 \end{lstlisting}
 
 And another that's true for female respondents.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[]
 female = (gss['SEX'] == 2)
 \end{lstlisting}
 
 Now I can select ages for the male and female respondents.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[]
 male_age = age[male]
 female_age = age[female]
 \end{lstlisting}
 
 And plot a Pmf for each.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[]
 pmf_male_age = Pmf.from_seq(male_age)
 pmf_male_age.plot(label='Male')
 
@@ -1298,6 +681,10 @@ plt.title('Distribution of age by sex')
 plt.legend();
 \end{lstlisting}
 
+\begin{center}
+\includegraphics[width=4in]{08_distributions_files/08_distributions_89_0.png}
+\end{center}
+
 The plot is pretty noisy. In the range from 40 to 50, it looks like the
 PMF is higher for men. And from 70 to 80, it is higher for women. But
 both of those differences might be due to random variation.
@@ -1306,7 +693,7 @@ Now let's do the same thing with CDFs; everything is the same except we
 replace \passthrough{\lstinline!Pmf!} with
 \passthrough{\lstinline!Cdf!}.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[]
 cdf_male_age = Cdf.from_seq(male_age)
 cdf_male_age.plot(label='Male')
 
@@ -1319,6 +706,10 @@ plt.title('Distribution of age by sex')
 plt.legend();
 \end{lstlisting}
 
+\begin{center}
+\includegraphics[width=4in]{08_distributions_files/08_distributions_91_0.png}
+\end{center}
+
 In general, CDFs are smoother than PMFs. Because they smooth out
 randomness, we can often get a better view of real differences between
 distributions. In this case, the lines are close together until age 40;
@@ -1330,22 +721,28 @@ given age is generally more than the fraction of women below the same
 age. For example, about 79\% of men are 60 or less, compared to 76\% of
 women.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[]
 cdf_male_age(60), cdf_female_age(60)
+(@\dashfill@)
+@@@(array(0.78599958), array(0.75529908))@@@
 \end{lstlisting}
 
 Going the other way, we could also compare percentiles. For example, the
 median age woman is older than the median age man, by about one year.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[]
 cdf_male_age.inverse(0.5), cdf_female_age.inverse(0.5)
+(@\dashfill@)
+@@@(array(43.), array(44.))@@@
 \end{lstlisting}
 
 \textbf{Exercise:} What fraction of men are over 80? What fraction of
 women?
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[]
 1-cdf_male_age(80), 1-cdf_female_age(80)
+(@\dashfill@)
+@@@(0.0258566323313012, 0.03806458772611254)@@@
 \end{lstlisting}
 
 \hypertarget{income}{%
@@ -1360,14 +757,14 @@ dollars.
 I'll make a Boolean \passthrough{\lstinline!Series!} to select
 respondents interviewed before and after 1995.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[]
 pre95 = (gss['YEAR'] < 1995)
 post95 = (gss['YEAR'] >= 1995)
 \end{lstlisting}
 
 Now we can plot the PMFs.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[]
 income = gss['REALINC'].replace(0, np.nan)
 
 Pmf.from_seq(income[pre95]).plot(label='Before 1995')
@@ -1379,6 +776,10 @@ plt.title('Distribution of income')
 plt.legend();
 \end{lstlisting}
 
+\begin{center}
+\includegraphics[width=4in]{08_distributions_files/08_distributions_101_0.png}
+\end{center}
+
 There are a lot of unique values in this distribution, and none of them
 appear very often. As a result, the PMF is so noisy and we can't really
 see the shape of the distribution.
@@ -1387,7 +788,7 @@ It's also hard to compare the distributions. It looks like there are
 more people with high incomes after 1995, but it's hard to tell. We can
 get a clearer picture with a CDF.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[]
 Cdf.from_seq(income[pre95]).plot(label='Before 1995')
 Cdf.from_seq(income[post95]).plot(label='After 1995')
 
@@ -1396,6 +797,10 @@ plt.ylabel('CDF')
 plt.title('Distribution of income')
 plt.legend();
 \end{lstlisting}
+
+\begin{center}
+\includegraphics[width=4in]{08_distributions_files/08_distributions_103_0.png}
+\end{center}
 
 Below \$30,000 the CDFs are almost identical; above that, we can see
 that the post-1995 distribution is shifted to the right. In other words,
@@ -1447,7 +852,7 @@ label the CDFs, display a legend, and label the axes. Write a few
 sentences that describe and interpret the results.
 
 \hypertarget{modeling-distributions}{%
-\section{Modeling distributions}\label{modeling-distributions}}
+\section{Modeling Distributions}\label{modeling-distributions}}
 
 Some distributions have names. For example, you might be familiar with
 the normal distribution, also called the Gaussian distribution or the
@@ -1473,17 +878,17 @@ library to generate 1000 values from a normal distribution with mean
 \passthrough{\lstinline!0!} and standard deviation
 \passthrough{\lstinline!1!}.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[]
 np.random.seed(17)
 \end{lstlisting}
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[]
 sample = np.random.normal(size=1000)
 \end{lstlisting}
 
 Here's what the empirical distribution of the sample looks like.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[]
 cdf_sample = Cdf.from_seq(sample)
 cdf_sample.plot(label='Random sample')
 
@@ -1492,12 +897,16 @@ plt.ylabel('CDF')
 plt.legend();
 \end{lstlisting}
 
+\begin{center}
+\includegraphics[width=4in]{08_distributions_files/08_distributions_111_0.png}
+\end{center}
+
 If we did not know that this sample was drawn from a normal
 distribution, and we wanted to check, we could compare the CDF of the
 data to the CDF of an ideal normal distribution, which we can use the
 SciPy library to compute.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[]
 from scipy.stats import norm
 
 xs = np.linspace(-3, 3)
@@ -1523,7 +932,7 @@ distribution, evaluated at each of the \passthrough{\lstinline!xs!}.
 I'll plot the normal CDF with a gray line and then plot the CDF of the
 data again.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[]
 plt.plot(xs, ys, color='gray', label='Normal CDF')
 cdf_sample.plot(label='Random sample')
 
@@ -1531,6 +940,10 @@ plt.xlabel('x')
 plt.ylabel('CDF')
 plt.legend();
 \end{lstlisting}
+
+\begin{center}
+\includegraphics[width=4in]{08_distributions_files/08_distributions_115_0.png}
+\end{center}
 
 The CDF of the random sample agrees with the normal model. And that's
 not surprising because the data were actually sampled from a normal
@@ -1597,7 +1010,7 @@ we'll learn another way: a probability density function, or PDF. The
 \passthrough{\lstinline!norm!} function, which we used to compute the
 normal CDF, can also compute the normal PDF:
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[]
 xs = np.linspace(-3, 3)
 ys = norm(0,1).pdf(xs)
 plt.plot(xs, ys, color='gray', label='Normal PDF')
@@ -1608,12 +1021,16 @@ plt.title('Normal density function')
 plt.legend();
 \end{lstlisting}
 
+\begin{center}
+\includegraphics[width=4in]{08_distributions_files/08_distributions_120_0.png}
+\end{center}
+
 The normal PDF is the classic ``bell curve''.
 
 It is tempting to compare the PMF of the data to the PDF of the normal
 distribution, but that doesn't work. Let's see what happens if we try:
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[]
 plt.plot(xs, ys, color='gray', label='Normal PDF')
 
 pmf_sample = Pmf.from_seq(sample)
@@ -1624,6 +1041,10 @@ plt.ylabel('PDF')
 plt.title('Normal density function')
 plt.legend();
 \end{lstlisting}
+
+\begin{center}
+\includegraphics[width=4in]{08_distributions_files/08_distributions_122_0.png}
+\end{center}
 
 The PMF of the sample is a flat line across the bottom. In the random
 sample, every value is unique, so they all have the same probability,
@@ -1639,7 +1060,7 @@ as \passthrough{\lstinline!sns!}. Seaborn provides
 \passthrough{\lstinline!kdeplot!}, which takes the sample, estimates the
 PDF, and plots it.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[]
 import seaborn as sns
 
 sns.kdeplot(sample, label='Estimated sample PDF')
@@ -1650,9 +1071,13 @@ plt.title('Normal density function')
 plt.legend();
 \end{lstlisting}
 
+\begin{center}
+\includegraphics[width=4in]{08_distributions_files/08_distributions_124_0.png}
+\end{center}
+
 Now we can compare the KDE plot and the normal PDF.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[]
 plt.plot(xs, ys, color='gray', label='Normal PDF')
 sns.kdeplot(sample, label='Estimated sample PDF')
 
@@ -1661,6 +1086,10 @@ plt.ylabel('PDF')
 plt.title('Normal density function')
 plt.legend();
 \end{lstlisting}
+
+\begin{center}
+\includegraphics[width=4in]{08_distributions_files/08_distributions_126_0.png}
+\end{center}
 
 The KDE plot matches the normal PDF pretty well, although the
 differences look bigger when we compare PDFs than they did with the
