@@ -7,7 +7,7 @@ to represent a sequence of values. And we'll see two more ways to
 represent sequences: lists and arrays.
 
 You might wonder why we need three ways to represent the same thing.
-Most of the time you don't, but each of them has different capabilities.
+Most of the time we don't, but each of them has different capabilities.
 For work with data, we will use arrays most of the time.
 
 As an example, we will use a small dataset from an article in \emph{The
@@ -88,7 +88,8 @@ That might look funny, but it does the job.
 \hypertarget{lists}{%
 \section{Lists}\label{lists}}
 
-Python provides another way to store a sequence of elements: a list.
+Python provides another way to store a sequence of elements: a
+\textbf{list}.
 
 To create a list, you put a sequence of elements in square brackets.
 
@@ -101,8 +102,8 @@ To create a list, you put a sequence of elements in square brackets.
 Lists and tuples are very similar. They can contain any number of
 elements, the elements can be any type, and the elements don't have to
 be the same type. The difference is that you can modify a list; tuples
-are immutable (cannot be modified). This difference will matter later,
-but for now we can ignore it.
+are \textbf{immutable} (cannot be modified). This difference will matter
+later, but for now we can ignore it.
 
 When you make a list, the brackets are required, but if there is a
 single element, you don't need a comma. So you can make a list like
@@ -135,8 +136,8 @@ There's a lot more we could do with lists, but that's enough to get
 started. In the next section, we'll use lists to store data about
 sandwich prices.
 
-\hypertarget{sandwiches}{%
-\section{Sandwiches}\label{sandwiches}}
+\hypertarget{sandwich-prices}{%
+\section{Sandwich Prices}\label{sandwich-prices}}
 
 In September 2019, \emph{The Economist} published an article comparing
 sandwich prices in Boston and London:
@@ -185,15 +186,15 @@ boston_price_list + london_price_list
 But it concatenates the two lists, which is not very useful in this
 example. To compute differences between prices, you might try
 subtracting lists, but you would get an error.\\
-We can solve this problem with a NumPy array.
+We can solve this problem with NumPy.
 
 \hypertarget{numpy-arrays}{%
 \section{NumPy Arrays}\label{numpy-arrays}}
 
 We've already seen that the NumPy library provides math functions. It
-also provides a type of sequence called an array. You can create a new
-array with the \passthrough{\lstinline!np.array!} function, starting
-with a list or tuple.
+also provides a type of sequence called an \textbf{array}. You can
+create a new array with the \passthrough{\lstinline!np.array!} function,
+starting with a list or tuple.
 
 \begin{lstlisting}[]
 import numpy as np
@@ -221,8 +222,8 @@ boston_price_array
 @@@array([9.99, 7.99, 7.49, 7.  , 6.29, 4.99])@@@
 \end{lstlisting}
 
-You can also display the ``data type'' of the array, which is the type
-of the elements:
+You can also display the \textbf{data type} of the array, which is the
+type of the elements:
 
 \begin{lstlisting}[]
 boston_price_array.dtype
@@ -251,7 +252,9 @@ name_array
 In this example, the \passthrough{\lstinline!dtype!} is
 \passthrough{\lstinline!<U17!}. The \passthrough{\lstinline!U!}
 indicates that the elements are Unicode strings; Unicode is the standard
-Python uses to represent strings.
+Python uses to represent strings. The number
+\passthrough{\lstinline!17!} is the length of the longest string in the
+array.
 
 Now, here's why NumPy arrays are useful: they can do arithmetic. For
 example, to compute the differences between Boston and London prices, we
@@ -264,12 +267,12 @@ differences
 @@@array([2.49, 2.99, 3.09, 2.  , 2.54, 2.74])@@@
 \end{lstlisting}
 
-Subtraction is done ``elementwise''; that is, NumPy lines up the two
-arrays and subtracts corresponding elements. The result is a new array.
+Subtraction is done \textbf{elementwise}; that is, NumPy lines up the
+two arrays and subtracts corresponding elements. The result is a new
+array.
 
-\hypertarget{mean-and-standard-deviation}{%
-\section{Mean and standard
-deviation}\label{mean-and-standard-deviation}}
+\hypertarget{statistical-summaries}{%
+\section{Statistical Summaries}\label{statistical-summaries}}
 
 NumPy provides functions that compute statistical summaries like the
 mean:
@@ -322,10 +325,10 @@ Compute the standard deviation of
 \passthrough{\lstinline!np.mean!} and \passthrough{\lstinline!np.sqrt!}
 and see if you get the same result as \passthrough{\lstinline!np.std!}.
 
-Note: You can (and should) do this exercise using only features we have
+You can (and should) do this exercise using only features we have
 discussed so far.
 
-Note: This definition of standard deviation is sometimes called the
+This definition of standard deviation is sometimes called the
 ``population standard deviation''. You might have seen another
 definition with \(N-1\) in the denominator; that's the ``sample standard
 deviation''. We'll use the population standard deviation for now and
@@ -336,7 +339,7 @@ come back to this issue later.
 
 In the previous section we computed differences between prices. But
 often when we make this kind of comparison, we are interested in
-\textbf{relative difference}, which are differences expressed as a
+\textbf{relative differences}, which are differences expressed as a
 fraction or percentage of a quantity.
 
 Taking the lobster roll as an example, the difference in price is:
