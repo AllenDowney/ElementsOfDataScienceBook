@@ -151,7 +151,11 @@ The operators that perform multiplication and division are
 
 And the operator for exponentiation is \passthrough{\lstinline!**!}:
 
+\begin{lstlisting}[]
 2**3
+(@\dashfill@)
+@@@8@@@
+\end{lstlisting}
 
 Unlike math notation, Python does not allow ``implicit multiplication''.
 For example, in math notation, if you write \(3 (2 + 1)\), that's
@@ -197,7 +201,7 @@ use parentheses to make the order of operations explicit:
 \passthrough{\lstinline!531441!}.
 
 \hypertarget{math-functions}{%
-\section{Math functions}\label{math-functions}}
+\section{Math Functions}\label{math-functions}}
 
 Python provides functions that compute all the usual mathematical
 functions, like \passthrough{\lstinline!sin!} and
@@ -238,8 +242,8 @@ The result is a \passthrough{\lstinline!float!} with 16 digits. As you
 might know, we can't represent \(\pi\) with a finite number of digits,
 so this result is only approximate.
 
-\passthrough{\lstinline!numpy!} provides \passthrough{\lstinline!log!},
-which computes the natural logarithm
+NumPy provides \passthrough{\lstinline!log!}, which computes the natural
+logarithm
 
 \begin{lstlisting}[]
 np.log(100)
@@ -247,8 +251,8 @@ np.log(100)
 @@@4.605170185988092@@@
 \end{lstlisting}
 
-And \passthrough{\lstinline!exp!}, which raises the constant
-\passthrough{\lstinline!e!} to a power.
+NumPy also provides \passthrough{\lstinline!exp!}, which raises the
+constant \passthrough{\lstinline!e!} to a power.
 
 \begin{lstlisting}[]
 np.exp(1)
@@ -364,8 +368,8 @@ approximation of the golden ratio:
 
 Hint: The result should be close to \passthrough{\lstinline!1.618!}.
 
-\hypertarget{calculation-with-variables}{%
-\section{Calculation with Variables}\label{calculation-with-variables}}
+\hypertarget{calculating-with-variables}{%
+\section{Calculating with Variables}\label{calculating-with-variables}}
 
 Now we'll use variables to solve a problem involving compound interest.
 It might not be the most exciting example, but it uses everything we
