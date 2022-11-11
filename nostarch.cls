@@ -98,6 +98,22 @@
 
 \newcommand{\bettertilde}{\raisebox{-1ex}{\textasciitilde}}
 
+\newcommand{\slashslash}{%
+  \raisebox{.53ex}{%
+    \scalebox{.5}{%
+      \rotatebox[origin=c]{18}{$\mathbf{/}$}%
+    }%
+  }%
+}
+
+\renewcommand{\neq}{%
+  {%
+   ~%
+   \vphantom{=}%
+   \ooalign{\kern.05em\smash{\slashslash}\hidewidth\cr$=$\cr}%
+   ~%
+  }%
+}
 
 % ===== SPACING =====
 \sodef\sochapter{}{.150em}{.5em}{1em}
