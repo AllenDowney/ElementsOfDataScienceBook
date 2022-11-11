@@ -22,7 +22,7 @@ projects use at least one.
 \section{Strings}\label{strings}}
 
 A \textbf{string} is a sequence of letters, numbers, and punctuation
-marks. In Python you can create a string by typing letters between
+marks. In Python you can create a string by enclosing text between
 single or double quotation marks.
 
 \begin{lstlisting}[]
@@ -47,9 +47,9 @@ first = 'Data'
 last = "Science"
 \end{lstlisting}
 
-Some arithmetic operators work with strings, but they might no do what
+Some arithmetic operators work with strings, but they might not do what
 you expect. For example, the \passthrough{\lstinline!+!} operator
-``concatenates'' two strings; that is, it creates a new string that
+\textbf{concatenates} two strings; that is, it creates a new string that
 contains the first string followed by the second string:
 
 \begin{lstlisting}[]
@@ -86,8 +86,8 @@ concatenate \passthrough{\lstinline!str!} (not
 not_actually_a_number + 1
 \end{lstlisting}
 
-But you don't always get an error; instead, you might get a surprising
-result. For example:
+But you don't always get an error message; instead, you might get a
+surprising result. For example:
 
 \begin{lstlisting}[]
 not_actually_a_number * 3
@@ -155,8 +155,9 @@ Write Python expressions that use the variables
 \passthrough{\lstinline!family!} to display Neil Peart's name in these
 two formats.
 
-\hypertarget{dates-and-times}{%
-\section{Dates and Times}\label{dates-and-times}}
+\hypertarget{representing-dates-and-times}{%
+\section{Representing Dates and
+Times}\label{representing-dates-and-times}}
 
 If you read data from a file, you might also find that dates and times
 are represented with strings.
@@ -210,7 +211,7 @@ which we can use to convert a string to a
 \begin{lstlisting}[]
 pd.Timestamp('6:30:00')
 (@\dashfill@)
-@@@Timestamp('2022-01-18 06:30:00')@@@
+@@@Timestamp('2022-01-25 06:30:00')@@@
 \end{lstlisting}
 
 Or we can do the same thing using the variable defined above.
@@ -218,7 +219,7 @@ Or we can do the same thing using the variable defined above.
 \begin{lstlisting}[]
 pd.Timestamp(not_really_a_time)
 (@\dashfill@)
-@@@Timestamp('2022-01-18 06:30:00')@@@
+@@@Timestamp('2022-01-25 06:30:00')@@@
 \end{lstlisting}
 
 In this example, the string specifies a time but no date, so Pandas
@@ -261,7 +262,7 @@ date_of_birth.day_name(), date_of_birth.month_name()
 now = pd.Timestamp.now()
 now
 (@\dashfill@)
-@@@Timestamp('2022-01-18 14:33:47.039841')@@@
+@@@Timestamp('2022-01-25 14:26:11.312256')@@@
 \end{lstlisting}
 
 \textbf{Exercise:} Use the value of \passthrough{\lstinline!now!} to
@@ -278,7 +279,7 @@ operations. For example, you can compute the difference between two
 age = now - date_of_birth
 age
 (@\dashfill@)
-@@@Timedelta('11916 days 14:33:47.039841')@@@
+@@@Timedelta('11923 days 14:26:11.312256')@@@
 \end{lstlisting}
 
 The result is a \passthrough{\lstinline!Timedelta!} that represents the
@@ -291,7 +292,7 @@ hours, etc. between the two \passthrough{\lstinline!Timestamp!} values.
 \begin{lstlisting}[]
 age.components
 (@\dashfill@)
-@@@Components(days=11916, hours=14, minutes=33, seconds=47, milliseconds=39, microseconds=841, nanoseconds=0)@@@
+@@@Components(days=11923, hours=14, minutes=26, seconds=11, milliseconds=312, microseconds=256, nanoseconds=0)@@@
 \end{lstlisting}
 
 You can get one of the components like this:
@@ -299,7 +300,7 @@ You can get one of the components like this:
 \begin{lstlisting}[]
 age.days
 (@\dashfill@)
-@@@11916@@@
+@@@11923@@@
 \end{lstlisting}
 
 The biggest component of \passthrough{\lstinline!Timedelta!} is days,
@@ -315,7 +316,7 @@ One way to compute age in years is to divide age in days by 365.24:
 \begin{lstlisting}[]
 age.days / 365.24
 (@\dashfill@)
-@@@32.625123206658635@@@
+@@@32.64428868689081@@@
 \end{lstlisting}
 
 But people usually report their ages in integer years. We can use the
@@ -366,8 +367,8 @@ now > bday_this_year
 
 The result is either \passthrough{\lstinline!True!} or
 \passthrough{\lstinline!False!}. These values belong to a type called
-\passthrough{\lstinline!bool!}, short for ``Boolean algebra'', which is
-a branch of algebra where all values are either true or false.
+\passthrough{\lstinline!bool!}; the name comes from ``Boolean algebra'',
+which is a branch of algebra where all values are either true or false.
 
 \begin{lstlisting}[]
 type(True)
@@ -394,15 +395,17 @@ d1 = pd.Timestamp('2003-07-12')
 d2 = pd.Timestamp('2006-09-30')
 \end{lstlisting}
 
-\hypertarget{location}{%
-\section{Location}\label{location}}
+\hypertarget{representing-location}{%
+\section{Representing Location}\label{representing-location}}
 
-There are many ways to represent geographical locations, but the most
-common, at least for global data, is latitude and longitude.
+In addition to times and dates, we might also want to represent
+locations, especially if we are working with geographical data.
 
-When stored as strings, latitude and longitude are expressed in degrees
-with compass directions N, S, E, and W. For example, this string
-represents the location of Boston, MA, USA:
+There are many ways to represent locations, but the most common, at
+least for global data, is latitude and longitude. When stored as
+strings, latitude and longitude are expressed in degrees with compass
+directions N, S, E, and W. For example, this string represents the
+location of Boston, MA, USA:
 
 \begin{lstlisting}[]
 lat_lon_string = '42.3601° N, 71.0589° W'
@@ -481,8 +484,8 @@ born or someplace you think of as your ``home town''.
 up}. Make a tuple of floating-point numbers that represents that
 location.
 
-\hypertarget{distance}{%
-\section{Distance}\label{distance}}
+\hypertarget{calculating-distance}{%
+\section{Calculating Distance}\label{calculating-distance}}
 
 If you are given two tuples that represent locations, you can compute
 the approximate distance between them, along the surface of the globe,
@@ -527,9 +530,6 @@ an operator in Python, but it performs another operation altogether.
 \hypertarget{defining-functions}{%
 \section{Defining Functions}\label{defining-functions}}
 
-At this point you don't have to know how to define a new function. But
-you will see function definitions, so I want to explain the basics now.
-
 If we are planning to use an expression like
 \passthrough{\lstinline!np.sin(theta/2)**2!} more than a few times, we
 can define a new function that computes it, like this:
@@ -543,8 +543,9 @@ def haversine(theta):
 On the first line, \passthrough{\lstinline!def!} indicates that we are
 defining a function.
 
-The second line is a ``triple-quoted string'', which describes what the
-function does, but it has no effect when the program runs.
+The second line is a triple-quoted string, which is a \textbf{comment}:
+it describes what the function does, but has no effect when the program
+runs.
 
 On the third line, \passthrough{\lstinline!return!} indicates the result
 of the function.
@@ -568,8 +569,9 @@ type(haversine)
 \end{lstlisting}
 
 So \passthrough{\lstinline!haversine!} is a variable that refers to a
-function. To run the function and compute a result, we have to ``call''
-the function and provide a value for \passthrough{\lstinline!theta!}:
+function. To run the function and compute a result, we have to
+\textbf{call} the function and provide a value for
+\passthrough{\lstinline!theta!}:
 
 \begin{lstlisting}[]
 haversine(1)
@@ -612,8 +614,8 @@ def haversine_distance(coord1, coord2):
     return distance
 \end{lstlisting}
 
-When we call this function, we provide two tuples, each representing a
-latitude and a longitude. We already have a tuple that represents the
+When we call this function, we provide two tuples; each is a
+latitude-longitude pair. We already have a tuple that represents the
 location of Boston. Now here's a tuple that represents the location of
 London, England, UK:
 
@@ -686,10 +688,6 @@ world = gpd.read_file(path)
 world.plot(color='white', edgecolor='gray');
 \end{lstlisting}
 
-\begin{center}
-\includegraphics[width=4in]{chapters/02_times_files/02_times_122_0.png}
-\end{center}
-
 By default, Geopandas uses an equirectangular projection, which provides
 a misleading picture of relative land areas (see
 \url{https://en.wikipedia.org/wiki/Equirectangular_projection}). You
@@ -748,9 +746,6 @@ series.plot(ax=ax);
 \begin{center}
 \includegraphics[width=4in]{chapters/02_times_files/02_times_130_0.png}
 \end{center}
-
-There are a few features in this example I have not explained
-completely, but hopefully you get the idea.
 
 \textbf{Exercise:} Modify the code in this section to plot a point that
 shows the home town you chose in a previous exercise and a line from
