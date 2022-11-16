@@ -1,23 +1,20 @@
 \hypertarget{loops-and-files}{%
 \chapter{Loops and Files}\label{loops-and-files}}
 
-This chapter presents loops, which are used to express repeated
+This chapter presents loops, which are used to represent repeated
 computation, and files, which are used to store data. As an example, we
 will download the famous book \emph{War and Peace} from Project
 Gutenberg and write a loop that reads the book and counts the words.
-
-In the next chapter, we'll extend this example to count the number of
-unique words and the number of times each word appears. This example
-presents some computational tools you will need; it is also an
+This example presents some new computational tools; it is also an
 introduction to working with textual data.
 
 \hypertarget{loops}{%
 \section{Loops}\label{loops}}
 
 One of the most important elements of computation is repetition, and the
-most common way to express repetition is a \passthrough{\lstinline!for!}
-loop. As a simple example, suppose we want to display the elements of a
-tuple. Here's a tuple of three integers:
+most common way to represent repetition is a
+\passthrough{\lstinline!for!} loop. As a simple example, suppose we want
+to display the elements of a tuple. Here's a tuple of three integers:
 
 \begin{lstlisting}[]
 t = 1, 2, 3
@@ -36,10 +33,10 @@ for x in t:
 \end{lstlisting}
 
 The first line of the loop is a \textbf{header} that specifies the
-tuple, \passthrough{\lstinline!t!}, and a variable name
+tuple, \passthrough{\lstinline!t!}, and a variable name,
 \passthrough{\lstinline!x!}. The tuple already exists, but
-\passthrough{\lstinline!x!} does not; the loop will create it. The
-header has to end with a colon, \passthrough{\lstinline!:!}.
+\passthrough{\lstinline!x!} does not; the loop will create it. Note that
+the header ends with a colon, \passthrough{\lstinline!:!}.
 
 Inside the loop is a \passthrough{\lstinline!print!} statement, which
 displays the value of \passthrough{\lstinline!x!}.
@@ -80,10 +77,10 @@ a@@@
 
 When the loop begins, \passthrough{\lstinline!word!} already exists, but
 \passthrough{\lstinline!letter!} does not. Again, the loop creates
-\passthrough{\lstinline!letter!} and assign values to it.
+\passthrough{\lstinline!letter!} and assigns values to it.
 
-The variable created by the loop is called the ``loop variable''. You
-can give it any name you like; in this example, I chose
+The variable created by the loop is called the \textbf{loop variable}.
+You can give it any name you like; in this example, I chose
 \passthrough{\lstinline!letter!} to remind me what kind of value it
 contains.
 
@@ -115,22 +112,15 @@ list('string')
 If you create a variable named \passthrough{\lstinline!list!}, you can't
 use the function any more.
 
-\hypertarget{looping-and-counting}{%
-\section{Looping and Counting}\label{looping-and-counting}}
+\hypertarget{counting-with-loops}{%
+\section{Counting with Loops}\label{counting-with-loops}}
 
 \emph{War and Peace} is a famously long book; let's see how long it is.
-To count the words in a book, we need to
+To count the words we need two elements: looping through the words in a
+text, and counting. We'll start with counting.
 
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\item
-  Loop through a book and
-\item
-  Count.
-\end{enumerate}
-
-We'll start with counting. We've already seen that you can create a
-variable and give it a value, like this:
+We've already seen that you can create a variable and give it a value,
+like this:
 
 \begin{lstlisting}[]
 count = 0
@@ -160,8 +150,8 @@ count
 @@@2@@@
 \end{lstlisting}
 
-Increasing the value of a variable is called an \textbf{increment};
-decreasing the value is called a \textbf{decrement}. These operations
+Increasing the value of a variable is called \textbf{incrementing};
+decreasing the value is called \textbf{decrementing}. These operations
 are so common that there are special operators for them.
 
 \begin{lstlisting}[]
@@ -196,7 +186,7 @@ Math Games} at
   Finally, have the person add the second number of their age to the
   figure and have them tell you the answer.
 \item
-  Deduct 6 and you will have their age."
+  Deduct 6 and you will have their age.
 \end{itemize}
 \end{quote}
 
@@ -210,7 +200,7 @@ Now that we know how to count, let's see how we can read words from a
 file. We can download \emph{War and Peace} from Project Gutenberg, which
 is a repository of free books at \url{https://www.gutenberg.org}.
 
-In order to read the contents of the file, you have to ``open'' it,
+In order to read the contents of the file, you have to \textbf{open} it,
 which you can do with the \passthrough{\lstinline!open!} function.
 
 \begin{lstlisting}[]
@@ -221,11 +211,11 @@ fp
 \end{lstlisting}
 
 The result is a \passthrough{\lstinline!TextIOWrapper!}, which is a type
-of \textbf{file pointer}. The file pointer contains the name of the
-file, the mode (which is \passthrough{\lstinline!r!} for ``reading'')
-and the encoding (which is \passthrough{\lstinline!UTF!} for ``Unicode
-Transformation Format''). A file pointer is like a bookmark; it keeps
-track of which parts of the file you have read.
+of \textbf{file pointer}. It contains the name of the file, the mode
+(which is \passthrough{\lstinline!r!} for ``reading'') and the encoding
+(which is \passthrough{\lstinline!UTF!} for ``Unicode Transformation
+Format''). A file pointer is like a bookmark; it keeps track of which
+parts of the file you have read.
 
 If you use a file pointer in a \passthrough{\lstinline!for!} loop, it
 loops through the lines in the file. So we can count the number of lines
@@ -286,7 +276,7 @@ statement doesn't run.
 
 \begin{lstlisting}[]
 if count < 1000:
-    print('Novella!')
+    print('Short book!')
 \end{lstlisting}
 
 We can put a \passthrough{\lstinline!print!} statement inside a
@@ -451,9 +441,9 @@ doesn't work.
 The problem is that the \passthrough{\lstinline!split!} function belongs
 to the string \passthrough{\lstinline!line!}; in a sense, the function
 is attached to the string, so we can only refer to it using the string
-and the dot operator (the period between \passthrough{\lstinline!line!}
-and \passthrough{\lstinline!split!}). For historical reasons, functions
-like this are called \textbf{methods}.
+and the \textbf{dot operator} (the period between
+\passthrough{\lstinline!line!} and \passthrough{\lstinline!split!}). For
+historical reasons, functions like this are called \textbf{methods}.
 
 Now that we can split a line into a list of words, we can use
 \passthrough{\lstinline!len!} to get the number of words in each list,
@@ -485,7 +475,7 @@ words in the remaining lines.
 The file pointer, \passthrough{\lstinline!fp!}, keeps track of where it
 is in the file, so the second loop picks up where the first loop leaves
 off. In the second loop, we check for the end of the book and stop, so
-we ignore the ``end matter'' at the end of the file.
+we ignore the ``back matter'' at the end of the file.
 
 \begin{lstlisting}[]
 first_line = "CHAPTER I\n"
@@ -537,11 +527,11 @@ Two things to notice about this program:
   \passthrough{\lstinline!CHAPTER I!}, and see what happens.
 \end{enumerate}
 
-The first error is a ``syntax error'', which means that the program
+The first error is a \textbf{syntax error}, which means that the program
 violates the rules of Python. If your program has a syntax error, the
 Python interpreter prints an error message, and the program never runs.
 
-The second error is a ``logic error'', which means that there is
+The second error is a \textbf{logic error}, which means that there is
 something wrong with the logic of the program. The syntax is legal, and
 the program runs, but it doesn't do what we wanted. Logic errors can be
 hard to find because we don't get any error messages.
