@@ -19,17 +19,16 @@ figures:
 \end{itemize}
 
 With the tools in this chapter, you can generate a variety of simple
-graphs. We will see more visualization tools in later chapters.
-
-But before we get started with plotting, we need a new language feature:
+graphs. We will see more visualization tools in later chapters. But
+before we get started with plotting, we need a new language feature:
 keyword arguments.
 
 \hypertarget{keyword-arguments}{%
-\section{Keyword arguments}\label{keyword-arguments}}
+\section{Keyword Arguments}\label{keyword-arguments}}
 
 When you call most functions, you have to provide values. For example,
-when you call \passthrough{\lstinline!np.exp!}, the value you provide is
-a number:
+when you call \passthrough{\lstinline!np.exp!}, which raises \(e\) to a
+given power, the value you provide is a number:
 
 \begin{lstlisting}[]
 import numpy as np
@@ -55,9 +54,10 @@ position determines how they are used. In the second example,
 the sixth power, not \passthrough{\lstinline!6!} to the 10th power
 because of the order of the arguments.
 
-Many functions also take \textbf{keyword arguments}, which are optional.
-For example, we have previously used \passthrough{\lstinline!int!} to
-convert a string to an integer.
+Many functions also take \textbf{keyword arguments}, which are
+identified by name. For example, we have previously used
+\passthrough{\lstinline!int!} to convert a string to an integer. Here's
+how we use it with a string as a positional argument:
 
 \begin{lstlisting}[]
 int('21')
@@ -78,9 +78,8 @@ int('21', base=8)
 @@@17@@@
 \end{lstlisting}
 
-The string \passthrough{\lstinline!'21'!} is a positional argument. The
-integer value \passthrough{\lstinline!8!} is a keyword argument, with
-the keyword \passthrough{\lstinline!base!}.
+The integer value \passthrough{\lstinline!8!} is a keyword argument,
+with the keyword \passthrough{\lstinline!base!}.
 
 Specifying a keyword argument looks like an assignment statement, but it
 does not create a new variable. And when you specify a keyword argument,
@@ -110,14 +109,14 @@ Modify the previous example so it prints the elements of the list, all
 on one line, with spaces between them. Then modify it to print an open
 bracket at the beginning and a close bracket and newline at the end.
 
-\hypertarget{religious-affiliation}{%
-\section{Religious affiliation}\label{religious-affiliation}}
+\hypertarget{graphing-religious-affiliation}{%
+\section{Graphing Religious
+Affiliation}\label{graphing-religious-affiliation}}
 
-Now we're ready to make some graphs.
-
-In October 2019 the Pew Research Center published ``In U.S., Decline of
-Christianity Continues at Rapid Pace'' at
-\url{https://www.pewforum.org/2019/10/17/in-u-s-decline-of-christianity-continues-at-rapid-pace}.
+Now we're ready to make some graphs. In October 2019 the Pew Research
+Center published ``In U.S., Decline of Christianity Continues at Rapid
+Pace'' at
+\url{https://www.pewresearch.org/religion/2019/10/17/in-u-s-decline-of-christianity-continues-at-rapid-pace/}.
 It includes this figure, which shows changes in religious affiliation
 among adults in the U.S. over the previous 10 years.
 
@@ -133,13 +132,9 @@ from PDF documents, but for now we'll enter the data by hand.
 
 \begin{lstlisting}[]
 year = [2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018]
-\end{lstlisting}
 
-\begin{lstlisting}[]
 christian = [77, 76, 75, 73, 73, 71, 69, 68, 67, 65]
-\end{lstlisting}
 
-\begin{lstlisting}[]
 unaffiliated = [17, 17, 19, 19, 20, 21, 24, 23, 25, 26]
 \end{lstlisting}
 
@@ -161,12 +156,12 @@ plt.plot(year, christian);
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/06_plotting_files/06_plotting_24_0.png}
+\includegraphics[width=4in]{chapters/06_plotting_files/06_plotting_22_0.png}
 \end{center}
 
-The semi-colon at the end of the line cleans up the output; without it,
-the return value from \passthrough{\lstinline!plot!} would be displayed
-above the figure.
+The semi-colon at the end of the line prevents the return value from
+\passthrough{\lstinline!plot!}, which is an object representing the
+line, from being displayed.
 
 If you plot multiple lines in a single cell, they appear on the same
 axes.
@@ -177,7 +172,7 @@ plt.plot(year, unaffiliated);
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/06_plotting_files/06_plotting_26_0.png}
+\includegraphics[width=4in]{chapters/06_plotting_files/06_plotting_24_0.png}
 \end{center}
 
 Plotting them on the same axes makes it possible to compare them
@@ -199,7 +194,7 @@ plt.ylim([0, 80]);
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/06_plotting_files/06_plotting_28_0.png}
+\includegraphics[width=4in]{chapters/06_plotting_files/06_plotting_26_0.png}
 \end{center}
 
 That's better, but this graph is missing some of the most important
@@ -223,7 +218,7 @@ plt.title('Religious affiliation of U.S adults');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/06_plotting_files/06_plotting_31_0.png}
+\includegraphics[width=4in]{chapters/06_plotting_files/06_plotting_29_0.png}
 \end{center}
 
 Now let's add another important element, a legend that indicates which
@@ -243,11 +238,13 @@ plt.legend();
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/06_plotting_files/06_plotting_33_0.png}
+\includegraphics[width=4in]{chapters/06_plotting_files/06_plotting_31_0.png}
 \end{center}
 
-\textbf{Exercise:} The orginal figure plots lines between the data
-points, but it also plots ``markers'' showing the location of each data
+The legend shows the labels we provided when we created the lines.
+
+\textbf{Exercise:} The original figure plots lines between the data
+points, but it also plots markers showing the location of each data
 point. It is generally good practice to include markers, especially if
 data are not available for every year.
 
@@ -256,7 +253,7 @@ Modify the previous example to include a keyword argument
 \passthrough{\lstinline!'o'!}, which indicates that you want to plot
 circles as markers.
 
-\textbf{Exercise:} In the original figure, the line labelled
+\textbf{Exercise:} In the original figure, the line labeled
 \passthrough{\lstinline!'Christian'!} is red and the line labeled
 \passthrough{\lstinline!'Unaffiliated'!} is grey.
 
@@ -265,15 +262,15 @@ figure out how to use keyword arguments to specify colors. Choose colors
 to (roughly) match the original figure.
 
 The \passthrough{\lstinline!legend!} function takes a keyword argument
-that speficies the location of the legend. Read the documentation of
+that specifies the location of the legend. Read the documentation of
 this function and move the legend to the center left of the figure.
 
-\hypertarget{sandwiches}{%
-\section{Sandwiches}\label{sandwiches}}
+\hypertarget{plotting-sandwich-prices}{%
+\section{Plotting Sandwich Prices}\label{plotting-sandwich-prices}}
 
-In a previous chapter we used data from an article in \emph{The
-Economist} comparing sandwich prices in Boston and London: ``Why
-Americans pay more for lunch than Britons do'' at
+In Chapter 3 we used data from an article in \emph{The Economist}
+comparing sandwich prices in Boston and London: ``Why Americans pay more
+for lunch than Britons do'' at
 \url{https://www.economist.com/finance-and-economics/2019/09/07/why-americans-pay-more-for-lunch-than-britons-do}.
 
 The article includes this graph showing prices of several sandwiches in
@@ -309,16 +306,16 @@ plt.xlabel('Price in USD');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/06_plotting_files/06_plotting_39_0.png}
+\includegraphics[width=4in]{chapters/06_plotting_files/06_plotting_38_0.png}
 \end{center}
 
 \passthrough{\lstinline!name\_list!} is a list of strings; Pyplot orders
 them from top to bottom, equally spaced.
 
 By default Pyplot connects the points with lines, but in this example
-the lines don't make sense because the sandwich names are
-\textbf{categorical}, not numerical. You can't interpolate between an
-egg sandwich and a tuna sandwich.
+the lines don't make sense because the sandwich names are discrete;
+there are no intermediate points between an egg sandwich and a tuna
+sandwich.
 
 We can turn on markers and turn off lines with keyword arguments.
 
@@ -329,12 +326,17 @@ plt.xlabel('Price in USD');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/06_plotting_files/06_plotting_41_0.png}
+\includegraphics[width=4in]{chapters/06_plotting_files/06_plotting_40_0.png}
 \end{center}
 
 Or we can do the same thing more concisely by providing a \textbf{format
-string} as a positional argument. You can read the documentation of
-\passthrough{\lstinline!plt.plot!} to learn more about format strings.
+string} as a positional argument. In this example,
+\passthrough{\lstinline!'o'!} indicates a circle marker and
+\passthrough{\lstinline!'s'!} indicates a square. You can read the
+documentation of \passthrough{\lstinline!plt.plot!} to learn more about
+format strings.
+
+And let's add a title while we're at it:
 
 \begin{lstlisting}[]
 plt.plot(boston_price_list, name_list, 'o')
@@ -345,16 +347,14 @@ plt.title('Pret a Manger prices in Boston and London');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/06_plotting_files/06_plotting_43_0.png}
+\includegraphics[width=4in]{chapters/06_plotting_files/06_plotting_42_0.png}
 \end{center}
-
-I added a title at the same time.
 
 Now, to approximate the colors in the original figure, we can use the
 strings \passthrough{\lstinline!'C3'!} and
 \passthrough{\lstinline!'C0'!}, which specify colors from the default
-color sequence. You can read the documentation to learn more about
-specifying colors in Pyplot:
+color sequence. You can read more about specifying colors in the Pyplot
+documentation:
 \url{https://matplotlib.org/3.1.1/tutorials/colors/colors.html}.
 
 \begin{lstlisting}[]
@@ -366,7 +366,7 @@ plt.title('Pret a Manger prices in Boston and London');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/06_plotting_files/06_plotting_45_0.png}
+\includegraphics[width=4in]{chapters/06_plotting_files/06_plotting_44_0.png}
 \end{center}
 
 To connect the dots with lines, we'll use
@@ -377,17 +377,17 @@ example, and two sequences of values on the \passthrough{\lstinline!x!}
 axis, which are the London prices and Boston prices.
 
 \begin{lstlisting}[]
+plt.hlines(name_list, london_price_list, boston_price_list, color='gray')
+
 plt.plot(boston_price_list, name_list, 'o', color='C3')
 plt.plot(london_price_list, name_list, 's', color='C0')
-
-plt.hlines(name_list, london_price_list, boston_price_list)
 
 plt.xlabel('Price in USD')
 plt.title('Pret a Manger prices in Boston and London');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/06_plotting_files/06_plotting_47_0.png}
+\includegraphics[width=4in]{chapters/06_plotting_files/06_plotting_46_0.png}
 \end{center}
 
 \textbf{Exercise:} To finish off this example, add a legend that
@@ -404,13 +404,29 @@ use it to reverse the order of the sandwich list.
 \hypertarget{zipfs-law}{%
 \section{Zipf's Law}\label{zipfs-law}}
 
-In the previous chapter we downloaded \emph{War and Peace} from Project
-Gutenberg and counted the number of lines and words. Then we used a
-dictionary to count the number of unique words and the number of times
-each one appears. Now we'll use those results to generate a ``Zipf
-plot'', which shows the frequency of the words on the
-\passthrough{\lstinline!y!} axis, ordered from the most common word to
-the least.
+In almost any book, in almost any language, if you count the number of
+unique words the the number of times each word appears, you will find a
+remarkable pattern: the most common word appears twice as often as the
+second most common, at least approximately, three times as often as the
+third most common, and so on.
+
+In general, if we sort the words in descending order of frequency, there
+is an inverse relationship between the rank of the words -- first,
+second, third, etc. -- and the number of times they appear. This
+observation was most famously made by George Kingsley Zipf, so it is
+called Zipf's law.
+
+To see if this law holds for the words in \emph{War and Peace}, we'll
+make a Zipf plot, which shows:
+
+\begin{itemize}
+\item
+  The frequency of each word on the \passthrough{\lstinline!y!} axis,
+  and
+\item
+  The rank of each word on the \passthrough{\lstinline!x!} axis,
+  starting from 1.
+\end{itemize}
 
 In the previous chapter, we looped through the book and made a string
 that contains all punctuation characters. Here are the results, which we
@@ -420,14 +436,12 @@ will need again.
 all_punctuation = ',.-:[#]*/“’—‘!?”;()%@'
 \end{lstlisting}
 
-And here's a solution to one of the previous exercises. It loops through
-the book and makes a dictionary that maps from each word to the number
-of times it appears.
+The following code loops through the book and makes a dictionary that
+maps from each word to the number of times it appears.
 
 \begin{lstlisting}[]
 first_line = "CHAPTER I\n"
-last_line = ("End of the Project Gutenberg EBook of " +
-             "War and Peace, by Leo Tolstoy\n")
+last_line = "*** END OF THE PROJECT GUTENBERG EBOOK WAR AND PEACE ***\n"
 
 fp = open('2600-0.txt')
 for line in fp:
@@ -447,33 +461,6 @@ for line in fp:
         else:
             unique_words[word] = 1
 \end{lstlisting}
-
-\hypertarget{frequencies-and-ranks}{%
-\section{Frequencies and Ranks}\label{frequencies-and-ranks}}
-
-In this section we'll test Zipf's law, which states that
-
-\begin{quote}
-given some corpus of natural language utterances, the frequency of any
-word is inversely proportional to its rank in the frequency table. Thus
-the most frequent word will occur approximately twice as often as the
-second most frequent word, three times as often as the third most
-frequent word, etc.
-\end{quote}
-
-See \url{https://en.wikipedia.org/wiki/Zipfs_law}. To see if this law
-holds for the words in \emph{War and Peace}, we'll make a plot that
-shows:
-
-\begin{itemize}
-\item
-  The frequency of each word on the \passthrough{\lstinline!y!} axis,
-  and
-\item
-  The rank of each word on the \passthrough{\lstinline!x!} axis, where
-  the rank of the most frequent word is 1, the rank of the second most
-  common word is 2, etc.
-\end{itemize}
 
 In \passthrough{\lstinline!unique\_words!}, the keys are words and the
 values are their frequencies. We can use the
@@ -553,7 +540,7 @@ n = len(freqs)
 ranks = range(1, n+1)
 ranks
 (@\dashfill@)
-@@@range(1, 20479)@@@
+@@@range(1, 20683)@@@
 \end{lstlisting}
 
 And now we can plot the frequencies versus the ranks:
@@ -567,11 +554,8 @@ plt.title("War and Peace and Zipf's law");
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/06_plotting_files/06_plotting_74_0.png}
+\includegraphics[width=4in]{chapters/06_plotting_files/06_plotting_72_0.png}
 \end{center}
-
-\hypertarget{logarithmic-scales}{%
-\section{Logarithmic scales}\label{logarithmic-scales}}
 
 The few most common words are very common, but the great majority of
 words are rare. So that's consistent with Zipf's law, but Zipf's law is
@@ -582,13 +566,16 @@ proportional to the ranks. If that's true, we can write:
 
 where \(r\) is the rank of a word, \(f\) is its frequency, and \(k\) is
 an unknown constant of proportionality. If we take the log of both
-sides, we get this:
+sides, we get
 
 \(\log f = \log k - \log r\)
 
 This equation implies that if we plot \(f\) versus \(r\) on a log-log
 scale, we expect to see a straight line with intercept at \(\log k\) and
 slope -1.
+
+\hypertarget{logarithmic-scales}{%
+\section{Logarithmic Scales}\label{logarithmic-scales}}
 
 We can use \passthrough{\lstinline!plt.xscale!} to plot the
 \passthrough{\lstinline!x!} axis on a log scale.
@@ -603,7 +590,7 @@ plt.xscale('log')
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/06_plotting_files/06_plotting_76_0.png}
+\includegraphics[width=4in]{chapters/06_plotting_files/06_plotting_75_0.png}
 \end{center}
 
 And \passthrough{\lstinline!plt.yscale!} to plot the
@@ -620,18 +607,18 @@ plt.yscale('log')
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/06_plotting_files/06_plotting_78_0.png}
+\includegraphics[width=4in]{chapters/06_plotting_files/06_plotting_77_0.png}
 \end{center}
 
 The result is not quite a straight line, but it is close. We can get a
-sense of the slope by connecting the end points with a line. I'll select
-the first and last elements from \passthrough{\lstinline!xs!}.
+sense of the slope by connecting the end points with a line. We'll
+select the first and last elements from \passthrough{\lstinline!xs!}.
 
 \begin{lstlisting}[]
 xs = ranks[0], ranks[-1]
 xs
 (@\dashfill@)
-@@@(1, 20478)@@@
+@@@(1, 20682)@@@
 \end{lstlisting}
 
 And the first and last elements from \passthrough{\lstinline!ys!}.
@@ -640,7 +627,7 @@ And the first and last elements from \passthrough{\lstinline!ys!}.
 ys = freqs[0], freqs[-1]
 ys
 (@\dashfill@)
-@@@(34388, 1)@@@
+@@@(34559, 1)@@@
 \end{lstlisting}
 
 And plot a line between them.
@@ -657,7 +644,7 @@ plt.yscale('log')
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/06_plotting_files/06_plotting_84_0.png}
+\includegraphics[width=4in]{chapters/06_plotting_files/06_plotting_83_0.png}
 \end{center}
 
 The slope of this line is the ``rise over run'', that is, the difference
@@ -670,7 +657,7 @@ compute the log base 10 of the first and last values:
 \begin{lstlisting}[]
 np.log10(ys)
 (@\dashfill@)
-@@@array([4.53640692, 0.        ])@@@
+@@@array([4.53856117, 0.        ])@@@
 \end{lstlisting}
 
 Then we can use \passthrough{\lstinline!np.diff!} to compute the
@@ -680,8 +667,11 @@ difference between the elements:
 rise = np.diff(np.log10(ys))
 rise
 (@\dashfill@)
-@@@array([-4.53640692])@@@
+@@@array([-4.53856117])@@@
 \end{lstlisting}
+
+In the following exercise, you'll compute the run and the slope of the
+gray line.
 
 \textbf{Exercise:} Use \passthrough{\lstinline!log10!} and
 \passthrough{\lstinline!diff!} to compute the run, that is, the
@@ -691,4 +681,10 @@ Zipf's law predicts?
 
 \hypertarget{summary}{%
 \section{Summary}\label{summary}}
+
+This chapter introduces the Matplotlib library, which we used to
+replicate two figures a Zipf plot. These examples demonstrate the most
+common elements of data visualization, including lines and markers,
+values and labels on the axes, a legend and a title. The Zipf plot also
+shows the power of plotting data on logarithmic scales.
 
