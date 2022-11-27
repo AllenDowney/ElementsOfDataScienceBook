@@ -1,7 +1,7 @@
 \hypertarget{regression}{%
 \chapter{Regression}\label{regression}}
 
-In the previous chapter we used simple regression to quantify the
+In the previous chapter we used simple linear regression to quantify the
 relationship between two variables. In this chapter we'll get farther
 into regression, including multiple regression and one of my all-time
 favorite tools, logistic regression.
@@ -12,7 +12,8 @@ Survey (GSS) to explore the relationship between income, education, age,
 and sex. But first let's understand the limits of simple regression.
 
 \hypertarget{limits-of-simple-regression}{%
-\section{Limits of Simple Regression}\label{limits-of-simple-regression}}
+\section{Limits of Simple
+Regression}\label{limits-of-simple-regression}}
 
 In a previous exercise, you made a scatter plot of vegetable consumption
 as a function of income, and plotted a line of best fit. Here's what it
@@ -81,8 +82,12 @@ relationship might be that A causes B, or B causes A, or there might be
 other factors that cause both A and B. Regression alone can't tell you
 which way it goes.
 
-However, we have tools for teasing apart relationships among multiple
+However, we have tools for quantifying relationships among multiple
 variables; one of the most important is multiple regression.
+
+\hypertarget{regression-with-statsmodels}{%
+\section{Regression with
+StatsModels}\label{regression-with-statsmodels}}
 
 SciPy doesn't do multiple regression, so we'll to switch to a new
 library, StatsModels. Here's the import statement.
@@ -100,29 +105,33 @@ import pandas as pd
 brfss = pd.read_hdf('brfss.hdf5', 'brfss')
 \end{lstlisting}
 
-Now we can use StatsModels to fit a regression model. The name of the
-function is \passthrough{\lstinline!ols!}, which stands for ``ordinary
-least squares'', another name for regression.
+Now we can use StatsModels to fit a regression model. We'll start with
+one of the examples from the previous chapter, the relationship between
+income and vegetable consumption. We'll check that the results from
+StatsModels are the same as the results from SciPy. Then we'll move on
+to multiple regression.
+
+The function we'll use is \passthrough{\lstinline!ols!}, which stands
+for ``ordinary least squares'', another name for regression.
 
 \begin{lstlisting}[]
 results = smf.ols('INCOME2 ~ _VEGESU1', data=brfss).fit()
 \end{lstlisting}
 
 The first argument is a \textbf{formula string} that specifies that we
-want to regress income as a function of vegetable consumption.
-
-The second argument is the BRFSS \passthrough{\lstinline!DataFrame!}.
-The names in the formula correspond to columns in the
+want to regress income as a function of vegetable consumption. The
+second argument is the BRFSS \passthrough{\lstinline!DataFrame!}. The
+names in the formula string correspond to columns in the
 \passthrough{\lstinline!DataFrame!}.
 
-The result from \passthrough{\lstinline!ols!} represents the model; then
-we run \passthrough{\lstinline!fit!} to get the results.
+The result from \passthrough{\lstinline!ols!} is an object that
+represents the model; it provides a function called
+\passthrough{\lstinline!fit!} that does the actual computation.
 
-Results is a \passthrough{\lstinline!RegressionResultsWrapper!}, which
-contains a lot of information; the first thing we'll look at is the
-attribute \passthrough{\lstinline!params!}, which contains the estimated
-intercept and the slope associated with
-\passthrough{\lstinline!\_VEGESU1!}.
+The result is a \passthrough{\lstinline!RegressionResultsWrapper!},
+which contains several attributes; the first one we'll look at is
+\passthrough{\lstinline!params!}, which contains the estimated intercept
+and the slope associated with \passthrough{\lstinline!\_VEGESU1!}.
 
 \begin{lstlisting}[]
 results.params
@@ -137,10 +146,12 @@ Intercept &  5.450700 \\
 \midrule
 \end{tabular}
 
-And we get the same results we got from SciPy, so that's good!
+The results from Statsmodels are the same as the results we got from
+SciPy, so that's good!
 
-In the next section we'll move on to multiple regression. But first,
-some exercises.
+There are only two variables in this example, so it is still simple
+regression. In the next section we'll move on to multiple regression.
+But first, some exercises.
 
 \textbf{Exercise:} In the BRFSS dataset, there is a strong relationship
 between vegetable consumption and income. The income of people who eat 8
@@ -262,16 +273,15 @@ The estimated slope for \passthrough{\lstinline!EDUC!} is a little less
 than what we saw before, about \$3514 per year.
 
 The estimated slope for \passthrough{\lstinline!AGE!} is only about \$54
-per year, which is surprisingly small. To see what's going on, let's
-look more closely at the relationship between income and age.
+per year, which is surprisingly small.
 
-\hypertarget{groupby}{%
-\section{Groupby}\label{groupby}}
+\hypertarget{grouping-by-age}{%
+\section{Grouping by Age}\label{grouping-by-age}}
 
-I'll use \passthrough{\lstinline!groupby()!}, which is a Pandas feature
-we have not seen before, to divide the DataFrame into age groups. The
-result is a \passthrough{\lstinline!GroupBy!} object that contains one
-group for each value of \passthrough{\lstinline!age!}.
+To see what's going on, let's look more closely at the relationship
+between income and age. We'll use a Pandas method we have not seen
+before, called \passthrough{\lstinline!groupby!}, to divide the
+\passthrough{\lstinline!DataFrame!} into age groups.
 
 \begin{lstlisting}[]
 grouped = gss.groupby('AGE')
@@ -280,17 +290,19 @@ type(grouped)
 @@@pandas.core.groupby.generic.DataFrameGroupBy@@@
 \end{lstlisting}
 
-The \passthrough{\lstinline!GroupBy!} object behaves like a DataFrame in
-many ways. You can use brackets to select a column, like
-\passthrough{\lstinline!REALINC!} in this example, and then invoke a
-method like \passthrough{\lstinline!mean()!}.
+The result is a \passthrough{\lstinline!GroupBy!} object that contains
+one group for each value of \passthrough{\lstinline!age!}. The
+\passthrough{\lstinline!GroupBy!} object behaves like a
+\passthrough{\lstinline!DataFrame!} in many ways. You can use brackets
+to select a column, like \passthrough{\lstinline!REALINC!} in this
+example, and then invoke a method like \passthrough{\lstinline!mean!}.
 
 \begin{lstlisting}[]
 mean_income_by_age = grouped['REALINC'].mean()
 \end{lstlisting}
 
-The result is a Pandas series that contains the mean income for each age
-group, which we can plot like this.
+The result is a Pandas \passthrough{\lstinline!Series!} that contains
+the mean income for each age group, which we can plot like this.
 
 \begin{lstlisting}[]
 import matplotlib.pyplot as plt
@@ -314,7 +326,7 @@ But multiple regression can! To describe a non-linear relationship, one
 option is to add a new variable that is a non-linear combination of
 other variables.
 
-As an example, I'll create a new variable called
+As an example, we'll create a new variable called
 \passthrough{\lstinline!AGE2!} that equals \passthrough{\lstinline!AGE!}
 squared.
 
@@ -342,15 +354,16 @@ AGE2      &    -17.341566 \\
 \midrule
 \end{tabular}
 
-Now the slope associated with \passthrough{\lstinline!AGE!} is
-substantial, about \$1760 per year.
+In this model, the slope associated with \passthrough{\lstinline!AGE!}
+is substantial, about \$1760 per year.
 
 The slope associated with \passthrough{\lstinline!AGE2!} is about -\$17,
 but that's harder to interpret.
 
 In the next section, we'll see methods to interpret multivariate models
-and visualize the results. But first, let's practice multiple
-regression.
+and visualize the results. But first, here are two exercises where you
+can practice using \passthrough{\lstinline!groupby!} and
+\passthrough{\lstinline!ols!}.
 
 \textbf{Exercise:} To get a closer look at the relationship between
 income and education, let's use the variable
@@ -360,9 +373,8 @@ in each group.
 \begin{itemize}
 \item
   Group \passthrough{\lstinline!gss!} by \passthrough{\lstinline!EDUC!}.
-  Store the result in \passthrough{\lstinline!grouped!}.
 \item
-  From \passthrough{\lstinline!grouped!}, extract
+  From the resulting \passthrough{\lstinline!GroupBy!} object, extract
   \passthrough{\lstinline!REALINC!} and compute the mean.
 \item
   Plot mean income in each education group as a scatter plot.
@@ -433,7 +445,7 @@ The regression results provide a method called
 predictions. It takes a \passthrough{\lstinline!DataFrame!} as a
 parameter and returns a \passthrough{\lstinline!Series!} with a
 prediction for each row in the \passthrough{\lstinline!DataFrame!}. To
-use it, I'll create a new \passthrough{\lstinline!DataFrame!} with
+use it, we'll create a new \passthrough{\lstinline!DataFrame!} with
 \passthrough{\lstinline!AGE!} running from 18 to 89, and
 \passthrough{\lstinline!AGE2!} set to \passthrough{\lstinline!AGE!}
 squared.
@@ -446,7 +458,7 @@ df['AGE'] = np.linspace(18, 89)
 df['AGE2'] = df['AGE']**2
 \end{lstlisting}
 
-Next, I'll pick a level for \passthrough{\lstinline!EDUC!}, like 12
+Next, we'll pick a level for \passthrough{\lstinline!EDUC!}, like 12
 years, which is the most common value. When you assign a single value to
 a column in a \passthrough{\lstinline!DataFrame!}, Pandas makes a copy
 for each row.
@@ -569,12 +581,13 @@ How do the predictions compare with the data?
 predictions for a few other age levels.
 
 \hypertarget{categorical-variables}{%
-\section{Categorical variables}\label{categorical-variables}}
+\section{Categorical Variables}\label{categorical-variables}}
 
 Most of the variables we have used so far --- like income, age, and
 education --- are numerical. But variables like sex and race are
-categorical; that is, each respondent belongs to one of a specified set
-of categories.
+\textbf{categorical}; that is, each respondent belongs to one of a
+specified set of categories. If there are only two categories, we would
+say the variable is \textbf{binary}.
 
 With StatsModels, it is easy to include a categorical variable as part
 of a regression model. Here's an example:
@@ -698,11 +711,10 @@ For example, the parameter associated with
 more likely to support this form of gun control. To see how much more
 likely, we can generate predictions, as we did with linear regression.
 
-As an example, I'll generate predictions for different ages and sexes,
-with education held constant.
-
-First we need a \passthrough{\lstinline!DataFrame!} with
-\passthrough{\lstinline!AGE!} and \passthrough{\lstinline!EDUC!}.
+As an example, we'll generate predictions for different ages and sexes,
+with education held constant. First we need a
+\passthrough{\lstinline!DataFrame!} with \passthrough{\lstinline!AGE!}
+and \passthrough{\lstinline!EDUC!}.
 
 \begin{lstlisting}[]
 df = pd.DataFrame()
@@ -732,10 +744,10 @@ df['SEX'] = 2
 pred2 = results.predict(df)
 \end{lstlisting}
 
-Now, to visualize the results, I'll start by plotting the data. As we've
-done before, we'll divide the respondents into age groups and compute
-the mean in each group. The mean of a binary variable is the fraction of
-people in favor.
+Now, to visualize the results, we'll start by plotting the data. As
+we've done before, we'll divide the respondents into age groups and
+compute the mean in each group. The mean of a binary variable is the
+fraction of people in favor.
 
 Then we can plot the predictions, for men and women, as a function of
 age.
@@ -759,7 +771,7 @@ plt.legend();
 \end{center}
 
 According to the model, people near age 50 are least likely to support
-gun control (at least as this questions was posed). And women are more
+gun control (at least as this question was posed). And women are more
 likely to support it than men, by almost 15 percentage points.
 
 Logistic regression is a powerful tool for exploring relationships
@@ -769,7 +781,7 @@ legalizing marijuana.
 
 \textbf{Exercise:} Let's use logistic regression to predict a binary
 variable. Specifically, we'll use age, sex, and education level to
-predict support for legalizing cannabis (marijuana) in the U.S.
+predict support for legalizing marijuana in the U.S.
 
 In the GSS dataset, the variable \passthrough{\lstinline!GRASS!} records
 the answer to the question ``Do you think the use of marijuana should be
@@ -817,11 +829,9 @@ At this point, I'd like to summarize the topics we've covered so far,
 and make some connections that might clarify the big picture.
 
 A central theme of this book is \textbf{exploratory data analysis},
-which is a process and a set of techniques for working with data,
-especially in the early stages of a project, or when you are working
-with a new data set.
-
-The last four chapters demonstrate the steps of this process:
+which a process and set of tools for exploring a dataset, visualizing
+distributions, and discovering relationships between variables. The last
+four chapters demonstrate the steps of this process:
 
 \begin{itemize}
 \item
@@ -873,4 +883,7 @@ regression to explain and predict binary variables.
 We moved through a lot of material quickly, but if you practice and
 apply these methods to other questions and other datasets, you will
 learn more as you go.
+
+In the next chapter, we will move on to a new topic, resampling, which
+is a versatile tool for statistical inference.
 
