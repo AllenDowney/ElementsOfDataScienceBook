@@ -19,14 +19,14 @@ it; otherwise, you are likely to be misled.
 \hypertarget{exploring-relationships}{%
 \section{Exploring relationships}\label{exploring-relationships}}
 
-So far we have only looked at one variable at a time. Now it's time to
-explore relationships between variables. As a first example, we'll look
-at the relationship between height and weight.
+So far we have mostly considered one variable at a time. Now it's time
+to explore relationships between variables. As a first example, we'll
+look at the relationship between height and weight.
 
 We'll use data from the Behavioral Risk Factor Surveillance System
 (BRFSS), which is run by the Centers for Disease Control at
 \url{https://www.cdc.gov/brfss}. The survey includes more than 400,000
-respondents, but to keep things manageable, I've selected a random
+respondents, but to keep things manageable, we'll work with a random
 subsample of 100,000.
 
 \begin{lstlisting}[]
@@ -57,7 +57,7 @@ brfss.head()
 \end{tabular}
 
 The BRFSS includes hundreds of variables. For the examples in this
-chapter, I chose just nine. The ones we'll start with are
+chapter, we'll work with just nine. The ones we'll start with are
 \passthrough{\lstinline!HTM4!}, which records each respondent's height
 in cm, and \passthrough{\lstinline!WTKG3!}, which records weight in kg.
 
@@ -67,8 +67,9 @@ weight = brfss['WTKG3']
 \end{lstlisting}
 
 To visualize the relationship between these variables, we'll make a
-\textbf{scatter plot}. Scatter plots are common and readily understood,
-but they are surprisingly hard to get right.
+\textbf{scatter plot}, which shows one marker for each pair of values.
+Scatter plots are common and readily understood, but they are
+surprisingly hard to get right.
 
 As a first attempt, we'll use \passthrough{\lstinline!plot!} with the
 style string \passthrough{\lstinline!o!}, which plots a circle for each
@@ -85,15 +86,17 @@ plt.title('Scatter plot of weight versus height');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_13_0.png}
+\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_12_0.png}
 \end{center}
 
-In general, it looks like taller people are heavier, but there are a few
-things about this scatter plot that make it hard to interpret. Most
-importantly, it is \textbf{overplotted}, which means that there are data
-points piled on top of each other so you can't tell where there are a
-lot of points and where there is just one. When that happens, the
-results can be seriously misleading.
+Each marker represents the height and weight of one person.
+
+Based on the shape of the result, it looks like taller people are
+heavier, but there are a few things about this plot that make it hard to
+interpret. Most importantly, it is \textbf{overplotted}, which means
+that there are markers piled on top of each other so you can't tell
+where there are a lot of data points and where there is just one. When
+that happens, the results can be seriously misleading.
 
 One way to improve the plot is to use transparency, which we can do with
 the keyword argument \passthrough{\lstinline!alpha!}. The lower the
@@ -110,7 +113,7 @@ plt.title('Scatter plot of weight versus height');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_15_0.png}
+\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_14_0.png}
 \end{center}
 
 This is better, but there are so many data points, the scatter plot is
@@ -127,7 +130,7 @@ plt.title('Scatter plot of weight versus height');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_17_0.png}
+\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_16_0.png}
 \end{center}
 
 Again, this is better, but now we can see that the points fall in
@@ -159,7 +162,7 @@ plt.title('Scatter plot of weight versus height');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_21_0.png}
+\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_20_0.png}
 \end{center}
 
 The columns are gone, but now we can see that there are rows where
@@ -181,7 +184,7 @@ plt.title('Scatter plot of weight versus height');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_24_0.png}
+\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_23_0.png}
 \end{center}
 
 Finally, let's zoom in on the area where most of the data points are.
@@ -205,7 +208,7 @@ plt.title('Scatter plot of weight versus height');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_26_0.png}
+\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_25_0.png}
 \end{center}
 
 Now we have a reliable picture of the relationship between height and
@@ -213,7 +216,7 @@ weight.
 
 Below you can see the misleading plot we started with and the more
 reliable one we ended with. They are clearly different, and they suggest
-different stories about the relationship between these variables.
+different relationships between these variables.
 
 \begin{lstlisting}[]
 # Set the figure size
@@ -245,7 +248,7 @@ plt.tight_layout()
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_28_0.png}
+\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_27_0.png}
 \end{center}
 
 The point of this example is that it takes some effort to make an
@@ -293,7 +296,7 @@ plt.title('Distribution of weight');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_34_0.png}
+\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_33_0.png}
 \end{center}
 
 To get a better view of this distribution, try plotting the CDF.
@@ -333,7 +336,7 @@ between variables, and in the exercises, you explored the relationship
 between age and weight. In this section, we'll see other ways to
 visualize these relationships, including boxplots and violin plots.
 
-I'll start with a scatter plot of weight versus age.
+Let's start with a scatter plot of weight versus age.
 
 \begin{lstlisting}[]
 age = brfss['AGE']
@@ -350,20 +353,20 @@ plt.title('Weight versus age');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_39_0.png}
+\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_38_0.png}
 \end{center}
 
-In this version of the scatter plot, I adjusted the jittering of the
-weights so there's still space between the columns. That makes it
-possible to see the shape of the distribution in each age group, and the
-differences between groups. With this view, it looks like weight
-increases until age 40 or 50, and then starts to decrease.
+In this version of the scatter plot, the weights are jittered, but
+there's still space between the columns. That makes it possible to see
+the shape of the distribution in each age group, and the differences
+between groups. With this view, it looks like weight increases until age
+40 or 50, and then starts to decrease.
 
 If we take this idea one step farther, we can use KDE to estimate the
 density function in each column and plot it. And there's a name for
-that; it's called a violin plot. Seaborn provides a function that makes
-violin plots, but before we can use it, we have to get rid of any rows
-with missing data. Here's how:
+that; it's called a \textbf{violin plot}. Seaborn provides a function
+that makes violin plots, but before we can use it, we have to get rid of
+any rows with missing data. Here's how:
 
 \begin{lstlisting}[]
 data = brfss.dropna(subset=['AGE', 'WTKG3'])
@@ -389,7 +392,7 @@ plt.title('Weight versus age');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_43_0.png}
+\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_42_0.png}
 \end{center}
 
 The \passthrough{\lstinline!x!} and \passthrough{\lstinline!y!}
@@ -401,11 +404,12 @@ contains the variables we're going to plot. The argument
 
 In the figure, each shape represents the distribution of weight in one
 age group. The width of these shapes is proportional to the estimated
-density, so it's like two vertical KDEs plotted back to back (and filled
-in with nice colors).
+density, so it's like two vertical KDEs plotted back to back.
 
 Another, related way to look at data like this is called a \textbf{box
-plot}. The code to generate a box plot is very similar.
+plot}, which represents summary statistics for the values in each
+group.\\
+The code to generate a box plot is very similar.
 
 \begin{lstlisting}[]
 sns.boxplot(x='AGE', y='WTKG3', data=data, whis=10)
@@ -416,11 +420,11 @@ plt.title('Weight versus age');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_45_0.png}
+\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_44_0.png}
 \end{center}
 
-I included the argument \passthrough{\lstinline!whis=10!} to turn off a
-feature we don't need. If you are curious about it, you can
+The argument \passthrough{\lstinline!whis=10!} turns off a feature we
+don't need. If you are curious about it, you can
 \href{https://seaborn.pydata.org/generated/seaborn.boxplot.html}{read
 the documentation}.
 
@@ -446,9 +450,7 @@ between weight and age.
 \end{itemize}
 
 For data that skews toward higher values, it is sometimes useful to look
-at it on a logarithmic scale.
-
-We can do that with the Pyplot function
+at it on a logarithmic scale. We can do that with the Pyplot function
 \passthrough{\lstinline!yscale!}.
 
 \begin{lstlisting}[]
@@ -461,11 +463,12 @@ plt.title('Weight versus age');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_47_0.png}
+\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_46_0.png}
 \end{center}
 
-To show the relationship between age and weight most clearly, this is
-probably the figure I would use.
+On a log scale, the distributions are symmetric, so the spines are the
+same length, the boxes are close to the middle of the figure, and we can
+see the relationship between age and weight more clearly.
 
 In the following exercises, you'll have a chance to generate violin and
 box plots for other variables.
@@ -518,8 +521,8 @@ groups at the high end, but we'll work with what we have.
 height in each income group. Can you see a relationship between these
 variables?
 
-\hypertarget{correlation}{%
-\section{Correlation}\label{correlation}}
+\hypertarget{quantifying-correlation}{%
+\section{Quantifying Correlation}\label{quantifying-correlation}}
 
 In the previous section, we visualized relationships between pairs of
 variables. Now we'll learn about the \textbf{coefficient of
@@ -531,7 +534,7 @@ Pearson's correlation coefficient, which is a number between
 \passthrough{\lstinline!-1!} and \passthrough{\lstinline!1!} that
 quantifies the strength of a linear relationship between variables.
 
-To demonstrate, I'll select three columns from the BRFSS dataset:
+To demonstrate, we'll select three columns from the BRFSS dataset:
 
 \begin{lstlisting}[]
 columns = ['HTM4', 'WTKG3', 'AGE']
@@ -564,8 +567,8 @@ anything with itself is \passthrough{\lstinline!1!}.
 The next entry is more interesting; the correlation of height and weight
 is about \passthrough{\lstinline!0.47!}. It's positive, which means
 taller people are heavier, and it is moderate in strength, which means
-it has some predictive value. If you know someone's height, you can make
-a better guess about their weight, and vice versa.
+it has some predictive value, but not much. If you know someone's
+height, you can make a somewhat better guess about their weight.
 
 The correlation between height and age is about
 \passthrough{\lstinline!-0.09!}. It's negative, which means that older
@@ -588,7 +591,7 @@ plt.title('Weight versus age');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_58_0.png}
+\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_57_0.png}
 \end{center}
 
 People in their forties are the heaviest; younger and older people are
@@ -618,7 +621,7 @@ plt.title('Scatter plot of a fake dataset');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_62_0.png}
+\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_61_0.png}
 \end{center}
 
 It's clear that this is a strong relationship; if you are given
@@ -628,15 +631,15 @@ It's clear that this is a strong relationship; if you are given
 \begin{lstlisting}[]
 np.corrcoef(xs, ys)
 (@\dashfill@)
-@@@array([[ 1.        , -0.01229169],
-       [-0.01229169,  1.        ]])@@@
+@@@array([[ 1.        , -0.00928026],
+       [-0.00928026,  1.        ]])@@@
 \end{lstlisting}
 
 Even though there is a strong non-linear relationship, the computed
 correlation is close to \passthrough{\lstinline!0!}.
 
 In general, if correlation is high -- that is, close to
-\passthrough{\lstinline!1!} or \passthrough{\lstinline!-1!}, you can
+\passthrough{\lstinline!1!} or \passthrough{\lstinline!-1!} -- you can
 conclude that there is a strong linear relationship. But if correlation
 is close to \passthrough{\lstinline!0!}, that doesn't mean there is no
 relationship; there might be a non-linear relationship.
@@ -666,7 +669,7 @@ plt.title('Fake dataset #1');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_67_0.png}
+\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_66_0.png}
 \end{center}
 
 And here's the second dataset:
@@ -683,7 +686,7 @@ plt.title('Fake dataset #2');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_69_0.png}
+\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_68_0.png}
 \end{center}
 
 I constructed these examples so they look similar, but they have
@@ -766,8 +769,8 @@ We didn't do that in the previous example, but it's not too late.
 Generate a visualization of the relationship between age and vegetables.
 How would you describe the relationship, if any?
 
-\hypertarget{simple-regression}{%
-\section{Simple regression}\label{simple-regression}}
+\hypertarget{simple-linear-regression}{%
+\section{Simple Linear Regression}\label{simple-linear-regression}}
 
 In the previous section we saw that correlation does not always measure
 what we really want to know. In this section, we look at an alternative:
@@ -795,7 +798,7 @@ plt.tight_layout()
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_78_0.png}
+\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_77_0.png}
 \end{center}
 
 The one on the left has higher correlation, about 0.75 compared to 0.5.
@@ -821,7 +824,7 @@ res1._asdict()
 The result is a \passthrough{\lstinline!LinregressResult!} object that
 contains five values: \passthrough{\lstinline!slope!} is the slope of
 the line of best fit for the data; \passthrough{\lstinline!intercept!}
-is the intercept.
+is the intercept. We'll interpret some of the other values later.
 
 For Fake Dataset \#1, the estimated slope is about 0.019 kilograms per
 year or about 0.56 kilograms over the 30-year range.
@@ -880,10 +883,10 @@ plt.title('Fake Dataset #1');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_88_0.png}
+\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_87_0.png}
 \end{center}
 
-And the same thing for the second example.
+And here's what it looks like for the second example.
 
 \begin{lstlisting}[]
 plt.plot(xs2, ys2, 'o', alpha=0.5)
@@ -898,18 +901,19 @@ plt.title('Fake Dataset #2');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_90_0.png}
+\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_89_0.png}
 \end{center}
 
 The visualization here might be misleading unless you look closely at
 the vertical scales; the slope in the second figure is almost 10 times
 higher.
 
-\hypertarget{height-and-weight}{%
-\section{Height and weight}\label{height-and-weight}}
+\hypertarget{regression-of-height-and-weight}{%
+\section{Regression of Height and
+Weight}\label{regression-of-height-and-weight}}
 
-Now let's look at an example with real data. Here's the scatter plot of
-height and weight one more time.
+Now let's look at an example of regression with real data. Here's the
+scatter plot of height and weight one more time.
 
 \begin{lstlisting}[]
 plt.plot(height_jitter, weight_jitter, 'o', 
@@ -923,12 +927,12 @@ plt.title('Scatter plot of weight versus height');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_93_0.png}
+\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_92_0.png}
 \end{center}
 
-Now we can compute the regression line.
-\passthrough{\lstinline!linregress!} can't handle
-\passthrough{\lstinline!NaN!}, so we have to use
+To compute the regression line, we'll use
+\passthrough{\lstinline!linregress!} again. But it can't handle
+\passthrough{\lstinline!NaN!} values, so we have to use
 \passthrough{\lstinline!dropna!} to remove rows that are missing the
 data we need.
 
@@ -978,7 +982,7 @@ plt.title('Scatter plot of weight versus height');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_101_0.png}
+\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_100_0.png}
 \end{center}
 
 The slope of this line seems consistent with the scatter plot.
@@ -998,7 +1002,7 @@ plt.title('Weight versus age');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_103_0.png}
+\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_102_0.png}
 \end{center}
 
 People in their 40s are the heaviest; younger and older people are
@@ -1041,7 +1045,7 @@ plt.title('Weight versus age');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_107_0.png}
+\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_106_0.png}
 \end{center}
 
 A straight line does not capture the relationship between these
@@ -1086,4 +1090,23 @@ the context of the question we are exploring?
 
 \textbf{Exercise:} Finally, plot the regression line on top of the
 scatter plot.
+
+\hypertarget{summary}{%
+\section{Summary}\label{summary}}
+
+This chapter presents three ways to visualize the relationship between
+two variables: a scatter plot, violin plot, and box plot. A scatter plot
+is often a good choice when you are exploring a new data set, but it can
+take some attention to avoid overplotting. Violin and box plot are
+particularly useful when one of the variables is categorical; that is,
+when it only takes on a few discrete values.
+
+And we considered two ways to quantify the strength of a relationship:
+the coefficient of correlation and the slope of a regression line. These
+statistics capture different aspect of what we might mean by
+``strength''. The coefficient of correlation indicates how well we can
+predict one variable, given the other. The slope of the regression line
+indicates how much difference we expect in one variable as we vary the
+other. One or the other might be more relevant, depending on the
+context.
 
