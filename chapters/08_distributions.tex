@@ -147,7 +147,7 @@ gss = pd.read_fwf(fp,
                   colspecs=stata_dict.colspecs)
 gss.shape
 (@\dashfill@)
-@@@(64814, 204)@@@
+@@@(64814, 8)@@@
 \end{lstlisting}
 
 The result is a \passthrough{\lstinline!DataFrame!} with one row for
@@ -158,15 +158,15 @@ few rows.
 gss.head()
 \end{lstlisting}
 
-\begin{tabular}{lrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr}
+\begin{tabular}{lrrrrrrrr}
 \midrule
-{} &  YEAR &  ID\_ &  DIVORCE &  SIBS &  CHILDS &  AGE &  EDUC &   DEGREE &  SEX &  RACE &  RES16 &  REG16 &  ADULTS &  INCOME &  RINCOME &  REGION &  SRCBELT &  PARTYID &  PRES96 &  PRES00 &  PRES04 &  PRES08 &  PRES12 &  POLVIEWS &  NATSPAC &  NATENVIR &  NATHEAL &  NATCITY &  NATCRIME &  NATDRUG &  NATEDUC &  NATRACE &  NATARMS &  NATAID &  NATFARE &  NATROAD &  NATSOC &  NATMASS &  NATPARK &  NATCHLD &  NATSCI &  NATENRGY &  SPKATH &  COLATH &  LIBATH &  SPKSOC &  COLSOC &  LIBSOC &  SPKRAC &  COLRAC &  LIBRAC &  SPKCOM &  COLCOM &  LIBCOM &  SPKMIL &  COLMIL &  LIBMIL &  SPKHOMO &  COLHOMO &  LIBHOMO &  SPKMSLM &  COLMSLM &  LIBMSLM &  CAPPUN &  GUNLAW &  GRASS &  RELIG &  FUND &  ATTEND &  RELITEN &  POSTLIFE &  PRAY &  POPESPKS &  RELIG16 &  PRAYER &  BIBLE &  RACMAR &  RACDIN &  RACPUSH &  RACSEG &  RACOPEN &  RACLIVE &  RACCLOS &  RACDIS &  RACINTEG &  RACHOME &  RACSCHOL &  RACFEW &  RACHAF &  RACMOST &  RACPRES &  RACCHURH &  AFFRMACT &  HAPPY &  HAPMAR &  HEALTH &  LIFE &  HELPFUL &  FAIR &  TRUST &  CONFINAN &  CONBUS &  CONCLERG &  CONEDUC &  CONFED &  CONLABOR &  CONPRESS &  CONMEDIC &  CONTV &  CONJUDGE &  CONSCI &  CONLEGIS &  CONARMY &  SATJOB &  CLASS\_ &  SATFIN &  FINRELA &  UNION\_ &  FEHOME &  FEWORK &  FEPRES &  FEPOL &  ABDEFECT &  ABNOMORE &  ABHLTH &  ABPOOR &  ABRAPE &  ABSINGLE &  ABANY &  CHLDIDEL &  SEXEDUC &  DIVLAW &  PREMARSX &  TEENSEX &  XMARSEX &  HOMOSEX &  PORNLAW &  SPANKING &  LETDIE1 &  POLHITOK &  POLABUSE &  POLMURDR &  POLESCAP &  POLATTAK &  FEAR &  OWNGUN &  PISTOL &  ROWNGUN &  HUNT &  PHONE &  FECHLD &  FEHELP &  FEPRESCH &  FEFAM &  RACDIF1 &  RACDIF2 &  RACDIF3 &  RACDIF4 &  GOD &  REBORN &  SAVESOUL &  RACWORK &  FEJOBAFF &  DISCAFFM &  DISCAFFW &  FEHIRE &  RELPERSN &  SPRTPRSN &  RELEXP &  SPKLANG &  COMPUSE &  HRSRELAX &  TRDUNION &  WKRACISM &  WKSEXISM &  WKHARSEX &  DATABANK &  GOODLIFE &  MEOVRWRK &  MIRACLES &  RELEXPER &  RELACTIV &  MATESEX &  FRNDSEX &  ACQNTSEX &  PIKUPSEX &  PAIDSEX &  OTHERSEX &  SEXSEX &  SEXFREQ &  SEXSEX5 &  SEXORNT &  HHRACE &  COHORT &  BALLOT &  WTSSALL &  SEXBIRTH &  SEXNOW &  EQWLTH &  REALINC &  REALRINC &  CONINC &  CONRINC &  COMMUN \\
+{} &  YEAR &  ID\_ &  AGE &  EDUC &  SEX &  GUNLAW &  GRASS &  REALINC \\
 \midrule
-0 &  1972 &    1 &       23 &    16 &       2 &    1 &     0 &  18951.0 &  NaN &   NaN &    NaN &    NaN &     NaN &     NaN &      NaN &     NaN &      NaN &      NaN &     NaN &     NaN &     NaN &     NaN &     NaN &       NaN &      NaN &       NaN &      NaN &      NaN &       NaN &      NaN &      NaN &      NaN &      NaN &     NaN &      NaN &      NaN &     NaN &      NaN &      NaN &      NaN &     NaN &       NaN &     NaN &     NaN &     NaN &     NaN &     NaN &     NaN &     NaN &     NaN &     NaN &     NaN &     NaN &     NaN &     NaN &     NaN &     NaN &      NaN &      NaN &      NaN &      NaN &      NaN &      NaN &     NaN &     NaN &    NaN &    NaN &   NaN &     NaN &      NaN &       NaN &   NaN &       NaN &      NaN &     NaN &    NaN &     NaN &     NaN &      NaN &     NaN &      NaN &      NaN &      NaN &     NaN &       NaN &      NaN &       NaN &     NaN &     NaN &      NaN &      NaN &       NaN &       NaN &    NaN &     NaN &     NaN &   NaN &      NaN &   NaN &    NaN &       NaN &     NaN &       NaN &      NaN &     NaN &       NaN &       NaN &       NaN &    NaN &       NaN &     NaN &       NaN &      NaN &     NaN &     NaN &     NaN &      NaN &     NaN &     NaN &     NaN &     NaN &    NaN &       NaN &       NaN &     NaN &     NaN &     NaN &       NaN &    NaN &       NaN &      NaN &     NaN &       NaN &      NaN &      NaN &      NaN &      NaN &       NaN &      NaN &       NaN &       NaN &       NaN &       NaN &       NaN &   NaN &     NaN &     NaN &      NaN &   NaN &    NaN &     NaN &     NaN &       NaN &    NaN &      NaN &      NaN &      NaN &      NaN &  NaN &     NaN &       NaN &      NaN &       NaN &       NaN &       NaN &     NaN &       NaN &       NaN &     NaN &      NaN &      NaN &       NaN &       NaN &       NaN &       NaN &       NaN &       NaN &       NaN &       NaN &       NaN &       NaN &       NaN &      NaN &      NaN &       NaN &       NaN &      NaN &       NaN &     NaN &      NaN &      NaN &      NaN &     NaN &     NaN &     NaN &      NaN &       NaN &     NaN &     NaN &      NaN &       NaN &     NaN &      NaN &     NaN \\
-1 &  1972 &    2 &       70 &    10 &       1 &    1 &     0 &  24366.0 &  NaN &   NaN &    NaN &    NaN &     NaN &     NaN &      NaN &     NaN &      NaN &      NaN &     NaN &     NaN &     NaN &     NaN &     NaN &       NaN &      NaN &       NaN &      NaN &      NaN &       NaN &      NaN &      NaN &      NaN &      NaN &     NaN &      NaN &      NaN &     NaN &      NaN &      NaN &      NaN &     NaN &       NaN &     NaN &     NaN &     NaN &     NaN &     NaN &     NaN &     NaN &     NaN &     NaN &     NaN &     NaN &     NaN &     NaN &     NaN &     NaN &      NaN &      NaN &      NaN &      NaN &      NaN &      NaN &     NaN &     NaN &    NaN &    NaN &   NaN &     NaN &      NaN &       NaN &   NaN &       NaN &      NaN &     NaN &    NaN &     NaN &     NaN &      NaN &     NaN &      NaN &      NaN &      NaN &     NaN &       NaN &      NaN &       NaN &     NaN &     NaN &      NaN &      NaN &       NaN &       NaN &    NaN &     NaN &     NaN &   NaN &      NaN &   NaN &    NaN &       NaN &     NaN &       NaN &      NaN &     NaN &       NaN &       NaN &       NaN &    NaN &       NaN &     NaN &       NaN &      NaN &     NaN &     NaN &     NaN &      NaN &     NaN &     NaN &     NaN &     NaN &    NaN &       NaN &       NaN &     NaN &     NaN &     NaN &       NaN &    NaN &       NaN &      NaN &     NaN &       NaN &      NaN &      NaN &      NaN &      NaN &       NaN &      NaN &       NaN &       NaN &       NaN &       NaN &       NaN &   NaN &     NaN &     NaN &      NaN &   NaN &    NaN &     NaN &     NaN &       NaN &    NaN &      NaN &      NaN &      NaN &      NaN &  NaN &     NaN &       NaN &      NaN &       NaN &       NaN &       NaN &     NaN &       NaN &       NaN &     NaN &      NaN &      NaN &       NaN &       NaN &       NaN &       NaN &       NaN &       NaN &       NaN &       NaN &       NaN &       NaN &       NaN &      NaN &      NaN &       NaN &       NaN &      NaN &       NaN &     NaN &      NaN &      NaN &      NaN &     NaN &     NaN &     NaN &      NaN &       NaN &     NaN &     NaN &      NaN &       NaN &     NaN &      NaN &     NaN \\
-2 &  1972 &    3 &       48 &    12 &       2 &    1 &     0 &  24366.0 &  NaN &   NaN &    NaN &    NaN &     NaN &     NaN &      NaN &     NaN &      NaN &      NaN &     NaN &     NaN &     NaN &     NaN &     NaN &       NaN &      NaN &       NaN &      NaN &      NaN &       NaN &      NaN &      NaN &      NaN &      NaN &     NaN &      NaN &      NaN &     NaN &      NaN &      NaN &      NaN &     NaN &       NaN &     NaN &     NaN &     NaN &     NaN &     NaN &     NaN &     NaN &     NaN &     NaN &     NaN &     NaN &     NaN &     NaN &     NaN &     NaN &      NaN &      NaN &      NaN &      NaN &      NaN &      NaN &     NaN &     NaN &    NaN &    NaN &   NaN &     NaN &      NaN &       NaN &   NaN &       NaN &      NaN &     NaN &    NaN &     NaN &     NaN &      NaN &     NaN &      NaN &      NaN &      NaN &     NaN &       NaN &      NaN &       NaN &     NaN &     NaN &      NaN &      NaN &       NaN &       NaN &    NaN &     NaN &     NaN &   NaN &      NaN &   NaN &    NaN &       NaN &     NaN &       NaN &      NaN &     NaN &       NaN &       NaN &       NaN &    NaN &       NaN &     NaN &       NaN &      NaN &     NaN &     NaN &     NaN &      NaN &     NaN &     NaN &     NaN &     NaN &    NaN &       NaN &       NaN &     NaN &     NaN &     NaN &       NaN &    NaN &       NaN &      NaN &     NaN &       NaN &      NaN &      NaN &      NaN &      NaN &       NaN &      NaN &       NaN &       NaN &       NaN &       NaN &       NaN &   NaN &     NaN &     NaN &      NaN &   NaN &    NaN &     NaN &     NaN &       NaN &    NaN &      NaN &      NaN &      NaN &      NaN &  NaN &     NaN &       NaN &      NaN &       NaN &       NaN &       NaN &     NaN &       NaN &       NaN &     NaN &      NaN &      NaN &       NaN &       NaN &       NaN &       NaN &       NaN &       NaN &       NaN &       NaN &       NaN &       NaN &       NaN &      NaN &      NaN &       NaN &       NaN &      NaN &       NaN &     NaN &      NaN &      NaN &      NaN &     NaN &     NaN &     NaN &      NaN &       NaN &     NaN &     NaN &      NaN &       NaN &     NaN &      NaN &     NaN \\
-3 &  1972 &    4 &       27 &    17 &       2 &    1 &     0 &  30458.0 &  NaN &   NaN &    NaN &    NaN &     NaN &     NaN &      NaN &     NaN &      NaN &      NaN &     NaN &     NaN &     NaN &     NaN &     NaN &       NaN &      NaN &       NaN &      NaN &      NaN &       NaN &      NaN &      NaN &      NaN &      NaN &     NaN &      NaN &      NaN &     NaN &      NaN &      NaN &      NaN &     NaN &       NaN &     NaN &     NaN &     NaN &     NaN &     NaN &     NaN &     NaN &     NaN &     NaN &     NaN &     NaN &     NaN &     NaN &     NaN &     NaN &      NaN &      NaN &      NaN &      NaN &      NaN &      NaN &     NaN &     NaN &    NaN &    NaN &   NaN &     NaN &      NaN &       NaN &   NaN &       NaN &      NaN &     NaN &    NaN &     NaN &     NaN &      NaN &     NaN &      NaN &      NaN &      NaN &     NaN &       NaN &      NaN &       NaN &     NaN &     NaN &      NaN &      NaN &       NaN &       NaN &    NaN &     NaN &     NaN &   NaN &      NaN &   NaN &    NaN &       NaN &     NaN &       NaN &      NaN &     NaN &       NaN &       NaN &       NaN &    NaN &       NaN &     NaN &       NaN &      NaN &     NaN &     NaN &     NaN &      NaN &     NaN &     NaN &     NaN &     NaN &    NaN &       NaN &       NaN &     NaN &     NaN &     NaN &       NaN &    NaN &       NaN &      NaN &     NaN &       NaN &      NaN &      NaN &      NaN &      NaN &       NaN &      NaN &       NaN &       NaN &       NaN &       NaN &       NaN &   NaN &     NaN &     NaN &      NaN &   NaN &    NaN &     NaN &     NaN &       NaN &    NaN &      NaN &      NaN &      NaN &      NaN &  NaN &     NaN &       NaN &      NaN &       NaN &       NaN &       NaN &     NaN &       NaN &       NaN &     NaN &      NaN &      NaN &       NaN &       NaN &       NaN &       NaN &       NaN &       NaN &       NaN &       NaN &       NaN &       NaN &       NaN &      NaN &      NaN &       NaN &       NaN &      NaN &       NaN &     NaN &      NaN &      NaN &      NaN &     NaN &     NaN &     NaN &      NaN &       NaN &     NaN &     NaN &      NaN &       NaN &     NaN &      NaN &     NaN \\
-4 &  1972 &    5 &       61 &    12 &       2 &    1 &     0 &  50763.0 &  NaN &   NaN &    NaN &    NaN &     NaN &     NaN &      NaN &     NaN &      NaN &      NaN &     NaN &     NaN &     NaN &     NaN &     NaN &       NaN &      NaN &       NaN &      NaN &      NaN &       NaN &      NaN &      NaN &      NaN &      NaN &     NaN &      NaN &      NaN &     NaN &      NaN &      NaN &      NaN &     NaN &       NaN &     NaN &     NaN &     NaN &     NaN &     NaN &     NaN &     NaN &     NaN &     NaN &     NaN &     NaN &     NaN &     NaN &     NaN &     NaN &      NaN &      NaN &      NaN &      NaN &      NaN &      NaN &     NaN &     NaN &    NaN &    NaN &   NaN &     NaN &      NaN &       NaN &   NaN &       NaN &      NaN &     NaN &    NaN &     NaN &     NaN &      NaN &     NaN &      NaN &      NaN &      NaN &     NaN &       NaN &      NaN &       NaN &     NaN &     NaN &      NaN &      NaN &       NaN &       NaN &    NaN &     NaN &     NaN &   NaN &      NaN &   NaN &    NaN &       NaN &     NaN &       NaN &      NaN &     NaN &       NaN &       NaN &       NaN &    NaN &       NaN &     NaN &       NaN &      NaN &     NaN &     NaN &     NaN &      NaN &     NaN &     NaN &     NaN &     NaN &    NaN &       NaN &       NaN &     NaN &     NaN &     NaN &       NaN &    NaN &       NaN &      NaN &     NaN &       NaN &      NaN &      NaN &      NaN &      NaN &       NaN &      NaN &       NaN &       NaN &       NaN &       NaN &       NaN &   NaN &     NaN &     NaN &      NaN &   NaN &    NaN &     NaN &     NaN &       NaN &    NaN &      NaN &      NaN &      NaN &      NaN &  NaN &     NaN &       NaN &      NaN &       NaN &       NaN &       NaN &     NaN &       NaN &       NaN &     NaN &      NaN &      NaN &       NaN &       NaN &       NaN &       NaN &       NaN &       NaN &       NaN &       NaN &       NaN &       NaN &       NaN &      NaN &      NaN &       NaN &       NaN &      NaN &       NaN &     NaN &      NaN &      NaN &      NaN &     NaN &     NaN &     NaN &      NaN &       NaN &     NaN &     NaN &      NaN &       NaN &     NaN &      NaN &     NaN \\
+0 &  1972 &    1 &   23 &    16 &    2 &       1 &      0 &  18951.0 \\
+1 &  1972 &    2 &   70 &    10 &    1 &       1 &      0 &  24366.0 \\
+2 &  1972 &    3 &   48 &    12 &    2 &       1 &      0 &  24366.0 \\
+3 &  1972 &    4 &   27 &    17 &    2 &       1 &      0 &  30458.0 \\
+4 &  1972 &    5 &   61 &    12 &    2 &       1 &      0 &  50763.0 \\
 \midrule
 \end{tabular}
 
@@ -191,11 +191,29 @@ gss['EDUC'].value_counts().sort_index()
 \midrule
 {} &   EDUC \\
 \midrule
-0 &  25149 \\
-1 &  11884 \\
-2 &  25662 \\
-8 &   2004 \\
-9 &    115 \\
+0  &    165 \\
+1  &     47 \\
+2  &    152 \\
+3  &    257 \\
+4  &    319 \\
+5  &    402 \\
+6  &    828 \\
+7  &    879 \\
+8  &   2724 \\
+9  &   2083 \\
+10 &   2880 \\
+11 &   3743 \\
+12 &  19663 \\
+13 &   5360 \\
+14 &   7160 \\
+15 &   2910 \\
+16 &   8355 \\
+17 &   1967 \\
+18 &   2384 \\
+19 &    920 \\
+20 &   1439 \\
+98 &     73 \\
+99 &    104 \\
 \midrule
 \end{tabular}
 
@@ -261,9 +279,9 @@ pmf_educ.head()
 \midrule
 {} &  probs \\
 \midrule
-0 &  25149 \\
-1 &  11884 \\
-2 &  25662 \\
+0.0 &    165 \\
+1.0 &     47 \\
+2.0 &    152 \\
 \midrule
 \end{tabular}
 
@@ -280,9 +298,9 @@ pmf_educ.tail()
 \midrule
 {} &  probs \\
 \midrule
-2 &  25662 \\
-8 &   2004 \\
-9 &    115 \\
+18.0 &   2384 \\
+19.0 &    920 \\
+20.0 &   1439 \\
 \midrule
 \end{tabular}
 
@@ -296,65 +314,7 @@ You can use the bracket operator to look up a value in a
 \begin{lstlisting}[]
 pmf_educ[20]
 (@\dashfill@)
-@@@---------------------------------------------------------------------------
-
-KeyError                                  Traceback (most recent call last)
-
-~/anaconda3/envs/ElementsOfDataScience/lib/python3.7/site-packages/pandas/core/indexes/base.py in get_loc(self, key, method, tolerance)
-   3360             try:
--> 3361                 return self._engine.get_loc(casted_key)
-   3362             except KeyError as err:
-
-
-~/anaconda3/envs/ElementsOfDataScience/lib/python3.7/site-packages/pandas/_libs/index.pyx in pandas._libs.index.IndexEngine.get_loc()
-
-
-~/anaconda3/envs/ElementsOfDataScience/lib/python3.7/site-packages/pandas/_libs/index.pyx in pandas._libs.index.IndexEngine.get_loc()
-
-
-pandas/_libs/hashtable_class_helper.pxi in pandas._libs.hashtable.Int64HashTable.get_item()
-
-
-pandas/_libs/hashtable_class_helper.pxi in pandas._libs.hashtable.Int64HashTable.get_item()
-
-
-KeyError: 20
-
-
-The above exception was the direct cause of the following exception:
-
-
-KeyError                                  Traceback (most recent call last)
-
-/tmp/ipykernel_505021/2199868775.py in <module>
-----> 1 pmf_educ[20]
-
-
-~/anaconda3/envs/ElementsOfDataScience/lib/python3.7/site-packages/pandas/core/series.py in __getitem__(self, key)
-    940 
-    941         elif key_is_scalar:
---> 942             return self._get_value(key)
-    943 
-    944         if is_hashable(key):
-
-
-~/anaconda3/envs/ElementsOfDataScience/lib/python3.7/site-packages/pandas/core/series.py in _get_value(self, label, takeable)
-   1049 
-   1050         # Similar to Index.get_value, but we do not fall back to positional
--> 1051         loc = self.index.get_loc(label)
-   1052         return self.index._get_values_for_loc(self, loc, label)
-   1053 
-
-
-~/anaconda3/envs/ElementsOfDataScience/lib/python3.7/site-packages/pandas/core/indexes/base.py in get_loc(self, key, method, tolerance)
-   3361                 return self._engine.get_loc(casted_key)
-   3362             except KeyError as err:
--> 3363                 raise KeyError(key) from err
-   3364 
-   3365         if is_scalar(key) and isna(key) and not self.hasnans:
-
-
-KeyError: 20@@@
+@@@1439@@@
 \end{lstlisting}
 
 Usually when we make a PMF, we want to know the \emph{fraction} of
@@ -368,12 +328,24 @@ pmf_educ_norm = Pmf.from_seq(educ, normalize=True)
 pmf_educ_norm.head()
 \end{lstlisting}
 
+\begin{tabular}{lr}
+\midrule
+{} &     probs \\
+\midrule
+0.0 &  0.002553 \\
+1.0 &  0.000727 \\
+2.0 &  0.002352 \\
+\midrule
+\end{tabular}
+
 Now if we use the bracket operator, the result is a fraction. For
 example, the fraction of people with 12 years of education is about
 30\%:
 
 \begin{lstlisting}[]
 pmf_educ_norm[12]
+(@\dashfill@)
+@@@0.30420656899299164@@@
 \end{lstlisting}
 
 \passthrough{\lstinline!Pmf!} provides a \passthrough{\lstinline!bar!}
@@ -388,6 +360,10 @@ plt.ylabel('PMF')
 plt.title('Distribution of years of education')
 plt.legend();
 \end{lstlisting}
+
+\begin{center}
+\includegraphics[width=4in]{chapters/08_distributions_files/08_distributions_48_0.png}
+\end{center}
 
 In this figure, we can see that the most common value is 12 years, but
 there are also peaks at 14 and 16, which correspond to two and four
@@ -434,6 +410,17 @@ Here's the \passthrough{\lstinline!Pmf!} of these values.
 Pmf.from_seq(values)
 \end{lstlisting}
 
+\begin{tabular}{lr}
+\midrule
+{} &  probs \\
+\midrule
+1 &    0.2 \\
+2 &    0.4 \\
+3 &    0.2 \\
+5 &    0.2 \\
+\midrule
+\end{tabular}
+
 If you draw a random value from \passthrough{\lstinline!values!}, the
 \passthrough{\lstinline!Pmf!} tells you the chance of getting
 \passthrough{\lstinline!x!}, for any value of
@@ -453,6 +440,17 @@ Here's a \passthrough{\lstinline!Cdf!} object for the same five values.
 \begin{lstlisting}[]
 Cdf.from_seq(values)
 \end{lstlisting}
+
+\begin{tabular}{lr}
+\midrule
+{} &  probs \\
+\midrule
+1 &    0.2 \\
+2 &    0.6 \\
+3 &    0.8 \\
+5 &    1.0 \\
+\midrule
+\end{tabular}
 
 If you draw a random value from \passthrough{\lstinline!values!},
 \passthrough{\lstinline!Cdf!} tells you the chance of getting a value
@@ -510,6 +508,10 @@ plt.ylabel('CDF')
 plt.title('Distribution of age');
 \end{lstlisting}
 
+\begin{center}
+\includegraphics[width=4in]{chapters/08_distributions_files/08_distributions_66_0.png}
+\end{center}
+
 The \(x\)-axis is the ages, from 18 to 89. The \(y\)-axis is the
 cumulative probabilities, from 0 to 1.
 
@@ -521,6 +523,8 @@ array).
 q = 51
 p = cdf_age(q)
 p
+(@\dashfill@)
+@@@array(0.63318676)@@@
 \end{lstlisting}
 
 \passthrough{\lstinline!q!} stands for ``quantity'', which is what we
@@ -545,6 +549,10 @@ plt.ylabel('CDF')
 plt.title('Distribution of age');
 \end{lstlisting}
 
+\begin{center}
+\includegraphics[width=4in]{chapters/08_distributions_files/08_distributions_71_0.png}
+\end{center}
+
 The CDF is an invertible function, which means that if you have a
 probability, \passthrough{\lstinline!p!}, you can look up the
 corresponding quantity, \passthrough{\lstinline!q!}.
@@ -556,6 +564,8 @@ cumulative distribution function.
 p1 = 0.25
 q1 = cdf_age.inverse(p1)
 q1
+(@\dashfill@)
+@@@array(31.)@@@
 \end{lstlisting}
 
 In this example, we look up the probability
@@ -573,6 +583,8 @@ younger.
 p2 = 0.75
 q2 = cdf_age.inverse(p2)
 q2
+(@\dashfill@)
+@@@array(59.)@@@
 \end{lstlisting}
 
 In the following figure, the arrows show how you could read these values
@@ -593,6 +605,10 @@ plt.xlim(x-1, 91)
 plt.ylabel('CDF')
 plt.title('Distribution of age');
 \end{lstlisting}
+
+\begin{center}
+\includegraphics[width=4in]{chapters/08_distributions_files/08_distributions_77_0.png}
+\end{center}
 
 The distance from the 25th to the 75th percentile is called the
 \textbf{interquartile range}, or IQR. It measures the spread of the
@@ -665,6 +681,10 @@ plt.title('Distribution of age by sex')
 plt.legend();
 \end{lstlisting}
 
+\begin{center}
+\includegraphics[width=4in]{chapters/08_distributions_files/08_distributions_88_0.png}
+\end{center}
+
 The plot is pretty noisy. In the range from 40 to 50, it looks like the
 PMF is higher for men. And from 70 to 80, it is higher for women. But
 both of those differences might be due to random variation.
@@ -686,6 +706,10 @@ plt.title('Distribution of age by sex')
 plt.legend();
 \end{lstlisting}
 
+\begin{center}
+\includegraphics[width=4in]{chapters/08_distributions_files/08_distributions_90_0.png}
+\end{center}
+
 In general, CDFs are smoother than PMFs. Because they smooth out
 randomness, we can often get a better view of real differences between
 distributions. In this case, the lines are close together until age 40;
@@ -699,6 +723,8 @@ women.
 
 \begin{lstlisting}[]
 cdf_male_age(60), cdf_female_age(60)
+(@\dashfill@)
+@@@(array(0.78599958), array(0.75529908))@@@
 \end{lstlisting}
 
 Going the other way, we could also compare percentiles. For example, the
@@ -706,6 +732,8 @@ median age woman is older than the median age man, by about one year.
 
 \begin{lstlisting}[]
 cdf_male_age.inverse(0.5), cdf_female_age.inverse(0.5)
+(@\dashfill@)
+@@@(array(43.), array(44.))@@@
 \end{lstlisting}
 
 \textbf{Exercise:} What fraction of men are over 80? What fraction of
@@ -742,6 +770,10 @@ plt.title('Distribution of income')
 plt.legend();
 \end{lstlisting}
 
+\begin{center}
+\includegraphics[width=4in]{chapters/08_distributions_files/08_distributions_99_0.png}
+\end{center}
+
 There are a lot of unique values in this distribution, and none of them
 appear very often. As a result, the PMF is so noisy and we can't really
 see the shape of the distribution.
@@ -759,6 +791,10 @@ plt.ylabel('CDF')
 plt.title('Distribution of income')
 plt.legend();
 \end{lstlisting}
+
+\begin{center}
+\includegraphics[width=4in]{chapters/08_distributions_files/08_distributions_101_0.png}
+\end{center}
 
 Below \$30,000 the CDFs are almost identical; above that, we can see
 that the post-1995 distribution is shifted to the right. In other words,
@@ -855,6 +891,10 @@ plt.ylabel('CDF')
 plt.legend();
 \end{lstlisting}
 
+\begin{center}
+\includegraphics[width=4in]{chapters/08_distributions_files/08_distributions_109_0.png}
+\end{center}
+
 If we did not know that this sample was drawn from a normal
 distribution, and we wanted to check, we could compare the CDF of the
 data to the CDF of an ideal normal distribution, which we can use the
@@ -894,6 +934,10 @@ plt.xlabel('x')
 plt.ylabel('CDF')
 plt.legend();
 \end{lstlisting}
+
+\begin{center}
+\includegraphics[width=4in]{chapters/08_distributions_files/08_distributions_113_0.png}
+\end{center}
 
 The CDF of the random sample agrees with the normal model. And that's
 not surprising because the data were actually sampled from a normal
@@ -970,6 +1014,10 @@ plt.title('Normal density function')
 plt.legend();
 \end{lstlisting}
 
+\begin{center}
+\includegraphics[width=4in]{chapters/08_distributions_files/08_distributions_118_0.png}
+\end{center}
+
 The normal PDF is the classic ``bell curve''.
 
 It is tempting to compare the PMF of the data to the PDF of the normal
@@ -986,6 +1034,10 @@ plt.ylabel('PDF')
 plt.title('Normal density function')
 plt.legend();
 \end{lstlisting}
+
+\begin{center}
+\includegraphics[width=4in]{chapters/08_distributions_files/08_distributions_120_0.png}
+\end{center}
 
 The PMF of the sample is a flat line across the bottom. In the random
 sample, every value is unique, so they all have the same probability,
@@ -1012,6 +1064,10 @@ plt.title('Normal density function')
 plt.legend();
 \end{lstlisting}
 
+\begin{center}
+\includegraphics[width=4in]{chapters/08_distributions_files/08_distributions_122_0.png}
+\end{center}
+
 Now we can compare the KDE plot and the normal PDF.
 
 \begin{lstlisting}[]
@@ -1023,6 +1079,10 @@ plt.ylabel('PDF')
 plt.title('Normal density function')
 plt.legend();
 \end{lstlisting}
+
+\begin{center}
+\includegraphics[width=4in]{chapters/08_distributions_files/08_distributions_124_0.png}
+\end{center}
 
 The KDE plot matches the normal PDF pretty well, although the
 differences look bigger when we compare PDFs than they did with the
