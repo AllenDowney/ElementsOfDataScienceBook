@@ -35,25 +35,26 @@ outcomes, the numbers \passthrough{\lstinline!1!} through
 We can represent this distribution of outcomes with a table, like this:
 
 \begin{longtable}[]{@{}ll@{}}
-\midrule
-Value & Probability\tabularnewline
-\midrule
+\midrule()
+Value & Probability \\
+\midrule()
 \endhead
-1 & 1/6\tabularnewline
-2 & 1/6\tabularnewline
-3 & 1/6\tabularnewline
-4 & 1/6\tabularnewline
-5 & 1/6\tabularnewline
-6 & 1/6\tabularnewline
-\midrule
+1 & 1/6 \\
+2 & 1/6 \\
+3 & 1/6 \\
+4 & 1/6 \\
+5 & 1/6 \\
+6 & 1/6 \\
+\midrule()
 \end{longtable}
 
-More generally, there can be any number of values, the values can be any
-type, and the probabilities do not have to be equal.
+More generally, a distributions can have any number of values, the
+values can be any type, and the probabilities do not have to be equal.
 
 To represent distributions in Python, we will use a library called
 \passthrough{\lstinline!empiricaldist!}, for ``empirical distribution'',
-which means it is based on data rather than a mathematical formula.
+where ``empirical'' means it is based on data rather than a mathematical
+formula.
 
 \passthrough{\lstinline!empiricaldist!} provides an object called
 \passthrough{\lstinline!Pmf!}, which stands for ``probability mass
@@ -98,16 +99,16 @@ additional methods we'll see soon.
 \hypertarget{the-general-social-survey}{%
 \section{The General Social Survey}\label{the-general-social-survey}}
 
-The examples in this chapter are based on a new dataset, the General
-Social Survey (GSS). The GSS has run annually since 1972; it surveys a
-representative sample of adult residents of the U.S. and asks questions
-about demographics, personal history, and beliefs about social and
-political issues.
+Now we'll use \passthrough{\lstinline!Pmf!} objects to represent
+distributions of values from a new dataset, the General Social Survey
+(GSS). The GSS surveys a representative sample of adult residents of the
+U.S. and asks questions about demographics, personal history, and
+beliefs about social and political issues. It is widely used by
+politicians, policy makers, and researchers.
 
-It is widely used by politicians, policy makers, and researchers,
-including me. The GSS dataset contains hundreds of columns; using an
-online tool call \href{https://gssdataexplorer.norc.org/}{GSS Explorer}
-I've selected just a few and created a data extract.
+The GSS dataset contains hundreds of columns; using an online tool call
+\href{https://gssdataexplorer.norc.org/}{GSS Explorer} I've selected
+just a few and created a subset of the data, called an \textbf{extract}.
 
 Like the NSFG data we used in the previous chapter, the GSS data is
 stored in a fixed-width format, described by a Stata data dictionary.
@@ -169,17 +170,16 @@ gss.head()
 \midrule
 \end{tabular}
 
-You can probably guess what the variables are, and I'll explain them as
-we go along. But if you want more information, you can always read the
-codebook at
-\url{https://gssdataexplorer.norc.org/projects/52787/variables/vfilter}.
+I'll explain these variables as we go along, but if you want more
+information, you can read the online documentation at
+\url{https://gssdataexplorer.norc.org/variables/vfilter}.
 
 \hypertarget{distribution-of-education}{%
 \section{Distribution of Education}\label{distribution-of-education}}
 
 To get started with this dataset, let's look at the distribution of
 \passthrough{\lstinline!EDUC!}, which records the number of years of
-education for each respondent. First I'll select a column from the
+education for each respondent. First we'll select a column from the
 \passthrough{\lstinline!DataFrame!} and use
 \passthrough{\lstinline!value\_counts!} to see what values are in it.
 
@@ -227,17 +227,16 @@ plt.title('Histogram of education level');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/08_distributions_files/08_distributions_35_0.png}
+\includegraphics[width=4in]{chapters/08_distributions_files/08_distributions_34_0.png}
 \end{center}
 
 Based on the histogram, we can see the general shape of the distribution
 and the central tendency -- it looks like the peak is near 12 years of
 education. But a histogram is not the best way to visualize this
-distribution.
+distribution because it obscures some important details.
 
-An alternative is a \passthrough{\lstinline!Pmf!}.
-\passthrough{\lstinline!Pmf!} provides a function called
-\passthrough{\lstinline!from\_seq!} that takes any kind of sequence --
+An alternative is to use a \passthrough{\lstinline!Pmf!}. The function
+\passthrough{\lstinline!Pmf.from\_seq!} takes any kind of sequence --
 like a list, tuple, or Pandas \passthrough{\lstinline!Series!} -- and
 computes the distribution of the values in the sequence.
 
@@ -291,8 +290,8 @@ There are \passthrough{\lstinline!1439!} respondents who report that
 they have 20 or more years of formal education, which probably means
 they attended college and graduate school.
 
-You can use the bracket operator to look up a value in a Pmf and get the
-corresponding count:
+You can use the bracket operator to look up a value in a
+\passthrough{\lstinline!Pmf!} and get the corresponding count:
 
 \begin{lstlisting}[]
 pmf_educ[20]
@@ -302,15 +301,15 @@ pmf_educ[20]
 KeyError                                  Traceback (most recent call last)
 
 ~/anaconda3/envs/ElementsOfDataScience/lib/python3.7/site-packages/pandas/core/indexes/base.py in get_loc(self, key, method, tolerance)
-   3079             try:
--> 3080                 return self._engine.get_loc(casted_key)
-   3081             except KeyError as err:
+   3360             try:
+-> 3361                 return self._engine.get_loc(casted_key)
+   3362             except KeyError as err:
 
 
-pandas/_libs/index.pyx in pandas._libs.index.IndexEngine.get_loc()
+~/anaconda3/envs/ElementsOfDataScience/lib/python3.7/site-packages/pandas/_libs/index.pyx in pandas._libs.index.IndexEngine.get_loc()
 
 
-pandas/_libs/index.pyx in pandas._libs.index.IndexEngine.get_loc()
+~/anaconda3/envs/ElementsOfDataScience/lib/python3.7/site-packages/pandas/_libs/index.pyx in pandas._libs.index.IndexEngine.get_loc()
 
 
 pandas/_libs/hashtable_class_helper.pxi in pandas._libs.hashtable.Int64HashTable.get_item()
@@ -327,32 +326,32 @@ The above exception was the direct cause of the following exception:
 
 KeyError                                  Traceback (most recent call last)
 
-<ipython-input-20-dcf96f9a9b29> in <module>
+/tmp/ipykernel_505021/2199868775.py in <module>
 ----> 1 pmf_educ[20]
 
 
 ~/anaconda3/envs/ElementsOfDataScience/lib/python3.7/site-packages/pandas/core/series.py in __getitem__(self, key)
-    849 
-    850         elif key_is_scalar:
---> 851             return self._get_value(key)
-    852 
-    853         if is_hashable(key):
+    940 
+    941         elif key_is_scalar:
+--> 942             return self._get_value(key)
+    943 
+    944         if is_hashable(key):
 
 
 ~/anaconda3/envs/ElementsOfDataScience/lib/python3.7/site-packages/pandas/core/series.py in _get_value(self, label, takeable)
-    957 
-    958         # Similar to Index.get_value, but we do not fall back to positional
---> 959         loc = self.index.get_loc(label)
-    960         return self.index._get_values_for_loc(self, loc, label)
-    961 
+   1049 
+   1050         # Similar to Index.get_value, but we do not fall back to positional
+-> 1051         loc = self.index.get_loc(label)
+   1052         return self.index._get_values_for_loc(self, loc, label)
+   1053 
 
 
 ~/anaconda3/envs/ElementsOfDataScience/lib/python3.7/site-packages/pandas/core/indexes/base.py in get_loc(self, key, method, tolerance)
-   3080                 return self._engine.get_loc(casted_key)
-   3081             except KeyError as err:
--> 3082                 raise KeyError(key) from err
-   3083 
-   3084         if tolerance is not None:
+   3361                 return self._engine.get_loc(casted_key)
+   3362             except KeyError as err:
+-> 3363                 raise KeyError(key) from err
+   3364 
+   3365         if is_scalar(key) and isna(key) and not self.hasnans:
 
 
 KeyError: 20@@@
@@ -361,8 +360,8 @@ KeyError: 20@@@
 Usually when we make a PMF, we want to know the \emph{fraction} of
 respondents with each value, rather than the counts. We can do that by
 setting \passthrough{\lstinline!normalize=True!}; then we get a
-normalized PMF, that is, a PMF where the values in the second column add
-up to 1.
+\textbf{normalized} PMF, that is, a PMF where the values in the second
+column add up to 1.
 
 \begin{lstlisting}[]
 pmf_educ_norm = Pmf.from_seq(educ, normalize=True)
@@ -374,7 +373,7 @@ example, the fraction of people with 12 years of education is about
 30\%:
 
 \begin{lstlisting}[]
-pmf_educ_norm[16]
+pmf_educ_norm[12]
 \end{lstlisting}
 
 \passthrough{\lstinline!Pmf!} provides a \passthrough{\lstinline!bar!}
@@ -396,19 +395,19 @@ years of college.
 
 For this data, the PMF is probably a better choice than the histogram.
 The PMF shows all unique values, so we can see where the peaks are.
-Because the histogram puts values into bins, it obscures some details.
+Because the histogram puts values into bins, it obscures these details.
 With this dataset, and the default number of bins, we couldn't see the
-peaks at 14 and 16 years.
+peaks at 14 and 16 years. But PMFs have limitations, too, as we'll see.
 
-But PMFs have limitations, too, as we'll see. But first, let's get some
-practice with PMFs.
+First, here's an exercise where you can practice with PMFs.
 
-\textbf{Exercise:} Let's look at another column in this
-\passthrough{\lstinline!DataFrame!}, \passthrough{\lstinline!YEAR!},
-which represents the year each respondent was interviewed.
+\textbf{Exercise:} Let's look at the \passthrough{\lstinline!YEAR!}
+column in the \passthrough{\lstinline!DataFrame!}, which represents the
+year each respondent was interviewed.
 
-Make an unnormalized PMF for \passthrough{\lstinline!YEAR!} and display
-the result. How many respondents were interviewed in 2018?
+Make an unnormalized \passthrough{\lstinline!Pmf!} for
+\passthrough{\lstinline!YEAR!} and display the result. How many
+respondents were interviewed in 2018?
 
 \hypertarget{cumulative-distribution-functions}{%
 \section{Cumulative Distribution
@@ -436,19 +435,20 @@ Pmf.from_seq(values)
 \end{lstlisting}
 
 If you draw a random value from \passthrough{\lstinline!values!}, the
-PMF tells you the chance of getting \passthrough{\lstinline!x!}, for any
-value of \passthrough{\lstinline!x!}. So the probability of the value
+\passthrough{\lstinline!Pmf!} tells you the chance of getting
+\passthrough{\lstinline!x!}, for any value of
+\passthrough{\lstinline!x!}. So the probability of the value
 \passthrough{\lstinline!1!} is \passthrough{\lstinline!1/5!}; the
 probability of the value \passthrough{\lstinline!2!} is
 \passthrough{\lstinline!2/5!}; and the probabilities for
 \passthrough{\lstinline!3!} and \passthrough{\lstinline!5!} are
 \passthrough{\lstinline!1/5!} each.
 
-A CDF is similar in the sense that it contains values and their
+A CDF is similar to a PMF in the sense that it contains values and their
 probabilities; the difference is that the probabilities in the CDF are
-the the cumulative sum of the probabilities in the PMF.
+the cumulative sum of the probabilities in the PMF.
 
-Here's the \passthrough{\lstinline!Cdf!} for the same five values.
+Here's a \passthrough{\lstinline!Cdf!} object for the same five values.
 
 \begin{lstlisting}[]
 Cdf.from_seq(values)
@@ -484,8 +484,8 @@ the codebook, the range of the values is from
 ``Don't know'' and ``Didn't answer''. See
 \url{https://gssdataexplorer.norc.org/variables/53/vshow}.
 
-I'll use \passthrough{\lstinline!replace!} to replace the special codes
-with \passthrough{\lstinline!NaN!}.
+We can use \passthrough{\lstinline!replace!} to replace the special
+codes with \passthrough{\lstinline!NaN!}.
 
 \begin{lstlisting}[]
 age = gss['AGE'].replace([98, 99], np.nan)
@@ -631,7 +631,7 @@ One way to compare distributions is to plot multiple PMFs on the same
 axes. For example, suppose we want to compare the distribution of age
 for male and female respondents.
 
-First I'll create a Boolean Series that's true for male respondents.
+First we'll create a Boolean Series that's true for male respondents.
 
 \begin{lstlisting}[]
 male = (gss['SEX'] == 1)
@@ -643,14 +643,14 @@ And another that's true for female respondents.
 female = (gss['SEX'] == 2)
 \end{lstlisting}
 
-Now I can select ages for the male and female respondents.
+Now we can select ages for the male and female respondents.
 
 \begin{lstlisting}[]
 male_age = age[male]
 female_age = age[female]
 \end{lstlisting}
 
-And plot a Pmf for each.
+And plot a PMF for each.
 
 \begin{lstlisting}[]
 pmf_male_age = Pmf.from_seq(male_age)
@@ -711,12 +711,8 @@ cdf_male_age.inverse(0.5), cdf_female_age.inverse(0.5)
 \textbf{Exercise:} What fraction of men are over 80? What fraction of
 women?
 
-\begin{lstlisting}[]
-1-cdf_male_age(80), 1-cdf_female_age(80)
-\end{lstlisting}
-
-\hypertarget{income}{%
-\section{Income}\label{income}}
+\hypertarget{comparing-incomes}{%
+\section{Comparing Incomes}\label{comparing-incomes}}
 
 As another example, let's look at household income and compare the
 distribution before and after 1995 (I chose 1995 because it's roughly
@@ -724,7 +720,7 @@ the midpoint of the survey). The variable
 \passthrough{\lstinline!REALINC!} represents household income in 1986
 dollars.
 
-I'll make a Boolean \passthrough{\lstinline!Series!} to select
+We'll make a Boolean \passthrough{\lstinline!Series!} to select
 respondents interviewed before and after 1995.
 
 \begin{lstlisting}[]
@@ -781,8 +777,8 @@ crowded. Improve the figure by expressing income in 1000s of dollars
 \textbf{Exercise:} Let's compare incomes for different levels of
 education in the GSS dataset
 
-To do that we'll create Boolean Series to identify respondents with
-different levels of education.
+To do that we'll create Boolean \passthrough{\lstinline!Series!} to
+identify respondents with different levels of education.
 
 \begin{itemize}
 \item
@@ -930,7 +926,7 @@ How well do the plotted CDFs agree?
 
 \textbf{Exercise:} In many datasets, the distribution of income is
 approximately \textbf{lognormal}, which means that the logarithms of the
-incomes fit a normal distribution. We'll see whether that's true for the
+incomes fit a normal distribution. Let's see whether that's true for the
 GSS data.
 
 \begin{itemize}
@@ -955,9 +951,8 @@ GSS data.
 How similar are the CDFs of the log-transformed incomes and the normal
 distribution?
 
-\hypertarget{probability-density-functions}{%
-\section{Probability Density
-Functions}\label{probability-density-functions}}
+\hypertarget{kernel-density-estimation}{%
+\section{Kernel Density Estimation}\label{kernel-density-estimation}}
 
 We have seen two ways to represent distributions, PMFs and CDFs. Now
 we'll learn another way: a probability density function, or PDF. The
@@ -1001,8 +996,8 @@ distribution they came from. This process is called \textbf{kernel
 density estimation}, or KDE. It's a way of getting from a PMF, a
 probability mass function, to a PDF, a probability density function.
 
-To generate a KDE plot, we'll use the Seaborn library, which I'll import
-as \passthrough{\lstinline!sns!}. Seaborn provides
+To generate a KDE plot, we'll use the Seaborn library, imported as
+\passthrough{\lstinline!sns!}. Seaborn provides
 \passthrough{\lstinline!kdeplot!}, which takes the sample, estimates the
 PDF, and plots it.
 
@@ -1092,8 +1087,8 @@ same comparison using a PDF and KDE.
 \hypertarget{summary}{%
 \section{Summary}\label{summary}}
 
-In this chapter, we've seen three ways to visualize distributions, PMFs,
-CDFs, and KDE.
+In this chapter, we've seen four ways to visualize distributions, PMFs,
+CDFs, and KDE plots.
 
 In general, I use CDFs when I am exploring data. That way, I get the
 best view of what's going on without getting distracted by noise.
@@ -1101,9 +1096,4 @@ best view of what's going on without getting distracted by noise.
 Then, if I am presenting results to an audience unfamiliar with CDFs, I
 might use a PMF if the dataset contains a small number of unique values,
 or KDE if there are many unique values.
-
-As an example, see my article about the Inspection Paradox at
-\url{https://towardsdatascience.com/the-inspection-paradox-is-everywhere-2ef1c2e9d709}.
-I wrote it for a general audience, so I use KDE to present and compare
-distributions.
 
