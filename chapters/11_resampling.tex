@@ -134,7 +134,7 @@ estimated risk would be 5.8 per 1000, and if there had been 10 fewer, it
 would be 4.8.
 
 \begin{lstlisting}[]
-126 / n_treatment * 1000, 106 / n_treatment * 1000
+(k_treatment + 10) / n_treatment * 1000, (k_treatment - 10) / n_treatment * 1000
 (@\dashfill@)
 @@@(5.750536260325863, 4.837752726940806)@@@
 \end{lstlisting}
@@ -184,7 +184,7 @@ treatment group and the estimated risk:
 p = k_treatment / n_treatment
 simulate_group(n_treatment, p)
 (@\dashfill@)
-@@@5.020309433617817@@@
+@@@5.476701200310346@@@
 \end{lstlisting}
 
 The result is the estimated risk from a simulated trial. If we run this
@@ -211,7 +211,7 @@ plt.title('Estimated Risks from Simulation');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/11_resampling_files/11_resampling_30_0.png}
+\includegraphics[width=4in]{chapters/11_resampling_files/11_resampling_29_0.png}
 \end{center}
 
 The mean of this distribution is about 5.3, which is close to the
@@ -276,7 +276,7 @@ def simulate_trial(n1, p1, n2, p2):
     return efficacy
 \end{lstlisting}
 
-If we call this function once, it simulates both groups, computes their
+If we call this function once, it simulates both groups, computes the
 risks in each group, and uses the results to estimate the efficacy of
 the treatment (assuming that the first group is the control).
 
@@ -307,7 +307,7 @@ plt.title('Estimated Efficacy from Simulation');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/11_resampling_files/11_resampling_45_0.png}
+\includegraphics[width=4in]{chapters/11_resampling_files/11_resampling_44_0.png}
 \end{center}
 
 The mean of this distribution is close to the efficacy we computed with
@@ -339,7 +339,7 @@ np.percentile(t2, [5, 95])
 \end{lstlisting}
 
 In a scientific paper, we could report these results as 0.67, 90\% CI
-{[}0.61, 0.72{]}".
+{[}0.61, 0.72{]}``.
 
 The standard error and confidence interval represent nearly the same
 information. In general, I prefer to report a confidence interval
@@ -438,7 +438,7 @@ plt.title('Sampling Distribution of the Mean');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/11_resampling_files/11_resampling_60_0.png}
+\includegraphics[width=4in]{chapters/11_resampling_files/11_resampling_59_0.png}
 \end{center}
 
 This distribution is called a \textbf{sampling distribution} because it
@@ -483,9 +483,9 @@ a centimeter either way, just due to random sampling. But we should
 remember that there are other possible sources of error, so we might be
 off by more than that.
 
-The confidence interval puts an upper bound on the precision of the
+The confidence interval puts a best-case bound on the precision of the
 estimate; in this example, the precision of the estimate is 1 cm at
-best, and might worse.
+best, and might be worse.
 
 \hypertarget{the-resampling-framework}{%
 \section{The Resampling Framework}\label{the-resampling-framework}}
@@ -509,9 +509,9 @@ distribution, and we use the data to choose the parameters
 We use the model to simulate the experiment many times. Each simulation
 generates a dataset which we use to compute the sample statistic.
 
-Finally, we collect the sample statistics from the simulations and use
-them to plot the sampling distribution and compute standard errors and
-confidence intervals.
+Finally, we collect the sample statistics from the simulations, plot the
+sampling distribution, and compute standard error and a confidence
+interval.
 
 I emphasize the role of the model in this framework because for a given
 experiment there might be several possible models, each including some
@@ -530,14 +530,14 @@ def simulate_variable_group(n, p):
     return k / n * 1000
 \end{lstlisting}
 
-This version of the function generates \passthrough{\lstinline!ps!},
-which is an array of probabilities uniformly distributed between
-\passthrough{\lstinline!0!} and \passthrough{\lstinline!2*n!}. Of
+This version of the function assumes that each person has a different
+probability of getting sick, drawn from a uniform distribution between
+\passthrough{\lstinline!0!} and \passthrough{\lstinline!2*p!}. Of
 course, that's just a guess about how the probabilities might be
 distributed in the group, but we can use it to get a sense of what
 effect this distribution has on the results.
 
-The rest of the function is the same a the previous version: it
+The rest of the function is the same as the previous version: it
 generates \passthrough{\lstinline!xs!}, which is an array of random
 values between \passthrough{\lstinline!0!} and
 \passthrough{\lstinline!1!}. Then it compares
@@ -556,7 +556,7 @@ simulate_variable_group(n_treatment, p)
 
 The return value is the number of cases per 1000.
 
-\textbf{Exercise:} Using this function to run 1000 simulations of the
+\textbf{Exercise:} Use this function to run 1000 simulations of the
 treatment group. Compute the mean of the results and confirm that it is
 close to the observed \passthrough{\lstinline!risk\_treatment!}. To
 quantify the spread of the sampling distribution, compute the standard
@@ -596,7 +596,7 @@ cv
 @@@0.044775280898876405@@@
 \end{lstlisting}
 
-In this example, the standard deviation is about 5\% of the mean. The
+In this example, the standard deviation is about 4.5\% of the mean. The
 following is a version of \passthrough{\lstinline!simulate\_sample!}
 that generates a random sample of heights and returns the coefficient of
 variation, rather than the mean.
@@ -706,7 +706,7 @@ plt.title('Support for gun control over time');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/11_resampling_files/11_resampling_94_0.png}
+\includegraphics[width=4in]{chapters/11_resampling_files/11_resampling_93_0.png}
 \end{center}
 
 The results vary from year to year. It is hard to tell how much of this
