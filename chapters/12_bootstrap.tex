@@ -68,7 +68,7 @@ mean_realinc = gss['REALINC'].mean()
 std_income = gss['REALINC'].std()
 print(mean_realinc, std_income)
 (@\dashfill@)
-@@@31742.563372816312 29526.067896235618@@@
+@@@31742.56337281537 29526.06789623489@@@
 \end{lstlisting}
 
 The average family income in this dataset is \$31,742. But notice that
@@ -96,7 +96,7 @@ sampling distribution of the mean.
 \begin{lstlisting}[]
 simulate_sample_mean(n_realinc, mean_realinc, std_income)
 (@\dashfill@)
-@@@31723.177424603706@@@
+@@@31983.470231857405@@@
 \end{lstlisting}
 
 If we call it many times, we get a random sample from the sampling
@@ -104,7 +104,7 @@ distribution.
 
 \begin{lstlisting}[]
 t1 = [simulate_sample_mean(n_realinc, mean_realinc, std_income)
-     for i in range(1000)]
+      for i in range(1000)]
 \end{lstlisting}
 
 I'll use the following function to summarize the sampling distribution.
@@ -128,7 +128,7 @@ summary1
 \midrule
 {} &  Estimate &     SE &                CI90 \\
 \midrule
-{} &   31739.3 &  116.7 &  [31546.9, 31926.7] \\
+{} &   31743.7 &  119.1 &  [31548.8, 31938.0] \\
 \midrule
 \end{tabular}
 
@@ -175,7 +175,7 @@ plt.legend();
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/12_bootstrap_files/12_bootstrap_29_0.png}
+\includegraphics[width=4in]{chapters/12_bootstrap_files/12_bootstrap_28_0.png}
 \end{center}
 
 The normal distribution is not a good model for the data. As we saw in
@@ -209,7 +209,7 @@ summary2
 \midrule
 {} &  Estimate &      SE &                  CI90 \\
 \midrule
-{} &  -6089.45 &  210.36 &  [-6430.69, -5750.78] \\
+{} &  -6089.75 &  219.37 &  [-6451.33, -5704.66] \\
 \midrule
 \end{tabular}
 
@@ -260,11 +260,11 @@ repeats.head()
 \midrule
 {} &  ID\_ \\
 \midrule
-1320 &   52 \\
-27   &   45 \\
-1337 &   44 \\
-532  &   44 \\
-1388 &   43 \\
+1035 &   50 \\
+1192 &   48 \\
+563  &   47 \\
+1293 &   47 \\
+423  &   47 \\
 \midrule
 \end{tabular}
 
@@ -277,7 +277,7 @@ original dataset but not the bootstrapped sample.
 unused = set(gss['ID_']) - set(bootstrapped['ID_'])
 len(unused)
 (@\dashfill@)
-@@@551@@@
+@@@589@@@
 \end{lstlisting}
 
 Now we can use bootstrapping to generate a sampling distribution. For
@@ -313,8 +313,8 @@ table
 \midrule
 {} &  Estimate &      SE &                  CI90 \\
 \midrule
-normal model  &  31739.30 &  116.70 &    [31546.9, 31926.7] \\
-bootstrapping &  31738.71 &  118.19 &  [31546.09, 31928.57] \\
+normal model  &   31743.7 &  119.10 &    [31548.8, 31938.0] \\
+bootstrapping &   31744.6 &  122.71 &  [31555.18, 31948.75] \\
 \midrule
 \end{tabular}
 
@@ -356,8 +356,8 @@ table
 \midrule
 {} &  Estimate &      SE &                  CI90 \\
 \midrule
-normal model  &  -6089.45 &  210.36 &  [-6430.69, -5750.78] \\
-bootstrapping &   5643.41 &   85.42 &      [5512.5, 5806.0] \\
+normal model  &  -6089.75 &  219.37 &  [-6451.33, -5704.66] \\
+bootstrapping &   5646.71 &   87.43 &      [5512.5, 5806.0] \\
 \midrule
 \end{tabular}
 
@@ -448,7 +448,7 @@ mean_height = height[male].mean()
 std_height = height[male].std()
 mean_height, std_height
 (@\dashfill@)
-@@@(178.0768644146838, 7.966455313471575)@@@
+@@@(178.0768644146838, 7.9664553134728395)@@@
 \end{lstlisting}
 
 The average height for men in the U.S. is about 178.1 cm; the standard
@@ -467,7 +467,7 @@ summarize(t5, digits=3)
 \midrule
 {} &  Estimate &     SE &                CI90 \\
 \midrule
-{} &   178.075 &  0.019 &  [178.045, 178.105] \\
+{} &   178.077 &  0.019 &  [178.048, 178.107] \\
 \midrule
 \end{tabular}
 
@@ -566,11 +566,11 @@ repeats.head()
 \midrule
 {} &  SEQNO \\
 \midrule
-2019000108 &    145 \\
-2019000096 &    141 \\
-2019000047 &    132 \\
-2019006167 &    125 \\
-2019000851 &    115 \\
+2019000108 &    148 \\
+2019006167 &    126 \\
+2019000048 &    116 \\
+2019007402 &    114 \\
+2019006177 &    108 \\
 \midrule
 \end{tabular}
 
@@ -587,7 +587,7 @@ not the sample.
 unused = set(brfss['SEQNO']) - set(bootstrapped['SEQNO'])
 len(unused)
 (@\dashfill@)
-@@@840@@@
+@@@784@@@
 \end{lstlisting}
 
 There are several hundred rows that don't appear in this sample, but
@@ -615,7 +615,7 @@ from the sampling distribution of the weighted mean.
 male_df = brfss[male]
 weighted_bootstrap_mean(male_df)
 (@\dashfill@)
-@@@177.6366718164742@@@
+@@@177.62184728940645@@@
 \end{lstlisting}
 
 If we run it many times, we get a random sample from the sampling
@@ -632,7 +632,7 @@ summarize(t6, digits=3)
 \midrule
 {} &  Estimate &    SE &                CI90 \\
 \midrule
-{} &   177.641 &  0.02 &  [177.609, 177.677] \\
+{} &    177.64 &  0.02 &  [177.607, 177.673] \\
 \midrule
 \end{tabular}
 
@@ -643,7 +643,7 @@ unweighted mean we computed, it is a little lower.
 \begin{lstlisting}[]
 print(np.mean(t6), mean_height)
 (@\dashfill@)
-@@@177.64053128299614 178.0768644146838@@@
+@@@177.63973940107974 178.0768644146838@@@
 \end{lstlisting}
 
 So it seems like people in the oversampled groups are taller than
@@ -758,7 +758,7 @@ summary9
 \midrule
 {} &  Estimate &      SE &              CI90 \\
 \midrule
-{} &   5156.14 &  233.35 &  [5107.5, 5107.5] \\
+{} &   5149.79 &  217.56 &  [5107.5, 5107.5] \\
 \midrule
 \end{tabular}
 
@@ -802,11 +802,12 @@ pd.Series(t9).value_counts().sort_index()
 {} &    0 \\
 \midrule
 4086.0 &    1 \\
-5107.5 &  955 \\
-5334.5 &    1 \\
-5902.0 &    1 \\
+5107.5 &  959 \\
+5221.0 &    1 \\
+5448.0 &    2 \\
+5788.5 &    1 \\
 6129.0 &    1 \\
-6242.5 &   42 \\
+6242.5 &   36 \\
 \midrule
 \end{tabular}
 
@@ -828,7 +829,7 @@ We have used KDE several times to estimate and plot a probability
 density based on a sample. We can also use it to smooth data that have
 been discretized.
 
-In Chapter 7 we saw that the distribution of income is well modeled by a
+In Chapter 8 we saw that the distribution of income is well modeled by a
 lognormal distribution, so if we take the log of income, it is well
 modeled by a normal distribution. Here are the logarithms of the income
 data.
@@ -850,7 +851,7 @@ plt.title('Estimated distribution of income');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/12_bootstrap_files/12_bootstrap_115_0.png}
+\includegraphics[width=4in]{chapters/12_bootstrap_files/12_bootstrap_114_0.png}
 \end{center}
 
 To draw samples from this distribution, we'll use a Scipy function
@@ -882,7 +883,7 @@ a logarithm to a dollar value.
 sample = kde.resample(n)
 10 ** np.percentile(sample, 10)
 (@\dashfill@)
-@@@5302.406099648378@@@
+@@@5431.529352195356@@@
 \end{lstlisting}
 
 The result is a random value from the sampling distribution of the 10th
@@ -916,8 +917,8 @@ table
 \midrule
 {} &  Estimate &      SE &                CI90 \\
 \midrule
-bootstrapping  &   5156.14 &  233.35 &    [5107.5, 5107.5] \\
-KDE resampling &   5106.84 &  252.58 &  [4712.87, 5520.38] \\
+bootstrapping  &   5149.79 &  217.56 &    [5107.5, 5107.5] \\
+KDE resampling &   5106.90 &  250.92 &  [4715.72, 5541.34] \\
 \midrule
 \end{tabular}
 
@@ -1052,12 +1053,12 @@ def plot_data():
 Here's what the predictions look like, plotted along with the data.
 
 \begin{lstlisting}[]
-plt.plot(years, pred, label='logistic model', color='gray')
+plt.plot(years, pred, label='logistic model', color='gray', alpha=0.4)
 plot_data()
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/12_bootstrap_files/12_bootstrap_144_0.png}
+\includegraphics[width=4in]{chapters/12_bootstrap_files/12_bootstrap_143_0.png}
 \end{center}
 
 The model fits past data reasonably well and makes plausible predictions
