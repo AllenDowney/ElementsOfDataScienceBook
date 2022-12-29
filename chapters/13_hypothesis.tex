@@ -1,29 +1,34 @@
 \hypertarget{hypothesis-testing}{%
 \chapter{Hypothesis Testing}\label{hypothesis-testing}}
 
-This chapter introduces hypothesis testing, which has been a
-controversial topic in the last decade or so. What I present here is
-different from what you might see in a statistics book. Instead of
-mathematical analysis, we will use computational simulations. This
-approach has two advantages and one disadvantage:
+This chapter introduces statistical hypothesis testing, which is such a
+contentious topic in the history of statistics, it's hard to provide a
+simple definition. Instead, I'll start with an example, present the
+problem hypothesis testing is intended to solve, and then show a
+solution.
+
+The solution I'll show is different from what you might find in a
+statistics book. Instead of mathematical analysis, we will use
+computational simulations. This approach has two advantages and one
+disadvantage:
 
 \begin{itemize}
 \item
-  PRO: The standard statistics curriculum includes many different tests,
-  and many people find it hard to remember which one to use. In my
-  opinion, simulation makes it clearer that there is only one testing
+  Advantage: The standard statistics curriculum includes many different
+  tests, and many people find it hard to remember which one to use. In
+  my opinion, simulation makes it clearer that there is only one testing
   framework.
 \item
-  PRO: Simulations make modeling decision explicit. All statistical
-  methods are based on models, but when we use mathematical methods, it
-  is easy to forget the assumptions they are based on. With computation,
-  the assumptions are more visible, and it is easier to try different
-  models.
+  Advantage: Simulations make modeling decision explicit. All
+  statistical methods are based on models, but when we use mathematical
+  methods, it is easy to forget the assumptions they are based on. With
+  computation, the assumptions are more visible, and it is easier to try
+  different models.
 \item
-  CON: Simulation uses a lot of computation. Some of the examples in
-  this notebook take several seconds to run and the results are only
-  approximate. For some problems, there are analytic methods that are
-  faster and more accurate.
+  Disadvantage: Simulation uses a lot of computation. Some of the
+  examples in this notebook take several seconds to run and the results
+  are only approximate. For some problems, there are analytic methods
+  that are faster and more accurate.
 \end{itemize}
 
 The examples in this chapter include results from a clinical trial
@@ -31,8 +36,8 @@ related to peanut allergies, and survey data from the National Survey of
 Family Growth (NSFG) and the Behavioral Risk Factor Surveillance System
 (BRFSS).
 
-\hypertarget{peanut-allergies}{%
-\section{Peanut Allergies}\label{peanut-allergies}}
+\hypertarget{testing-medical-treatments}{%
+\section{Testing Medical Treatments}\label{testing-medical-treatments}}
 
 The LEAP study was a randomized trial that tested the effect of eating
 peanut snacks on the development of peanut allergies (see
@@ -179,7 +184,7 @@ plt.title('Relative risks from simulation with risk_all');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/13_hypothesis_files/13_hypothesis_28_0.png}
+\includegraphics[width=4in]{chapters/13_hypothesis_files/13_hypothesis_27_0.png}
 \end{center}
 
 Remember that these simulations are based on the assumption that the
@@ -195,8 +200,8 @@ see a result as small as that in the simulated experiment. We can
 conclude that the relative risk we saw is unlikely if the risk is
 actually the same in both groups.
 
-\hypertarget{p-values}{%
-\section{p-values}\label{p-values}}
+\hypertarget{computing-p-values}{%
+\section{Computing p-values}\label{computing-p-values}}
 
 Now suppose that in addition to the treatment and control groups, the
 experiment included a placebo group that was given a snack that
@@ -287,7 +292,7 @@ nsfg.head()
 \midrule
 \end{tabular}
 
-I'll use the \passthrough{\lstinline!OUTCOME!} column to select
+We'll use the \passthrough{\lstinline!OUTCOME!} column to select
 pregnancies that ended with a live birth.
 
 \begin{lstlisting}[]
@@ -297,9 +302,8 @@ live.sum()
 @@@6693@@@
 \end{lstlisting}
 
-And I'll use \passthrough{\lstinline!PRGLNGTH!} to select babies that
-were born full term, that is, during or after the 37th week of
-pregnancy.
+And use \passthrough{\lstinline!PRGLNGTH!} to select babies that were
+born full term, that is, during or after the 37th week of pregnancy.
 
 \begin{lstlisting}[]
 fullterm = (nsfg['PRGLNGTH'] >= 37) & (nsfg['PRGLNGTH'] < 48)
@@ -325,12 +329,12 @@ n_other
 @@@3115@@@
 \end{lstlisting}
 
-We can use \passthrough{\lstinline!loc!} to select pregnancy lengths for
-the first babies and others.
+Now we can select pregnancy lengths for the first babies and others.
 
 \begin{lstlisting}[]
-length_first = nsfg.loc[first, 'PRGLNGTH']
-length_other = nsfg.loc[other, 'PRGLNGTH']
+length = nsfg['PRGLNGTH']
+length_first = length[first]
+length_other = length[other]
 \end{lstlisting}
 
 Here are the mean pregnancy lengths for the two groups, in weeks.
@@ -361,9 +365,9 @@ is to combine the two groups and compute the mean and standard deviation
 of pregnancy length, like this:
 
 \begin{lstlisting}[]
-length = nsfg.loc[live&fullterm, 'PRGLNGTH']
-mean = length.mean()
-std = length.std()
+length_live_full = length[live&fullterm]
+mean = length_live_full.mean()
+std = length_live_full.std()
 mean, std
 (@\dashfill@)
 @@@(39.29046069532454, 1.1864094701037506)@@@
@@ -415,7 +419,7 @@ plt.title('Distribution of differences');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/13_hypothesis_files/13_hypothesis_66_0.png}
+\includegraphics[width=4in]{chapters/13_hypothesis_files/13_hypothesis_65_0.png}
 \end{center}
 
 The center of this distribution is near zero, which makes sense if the
@@ -440,8 +444,8 @@ scheduled, and less likely that they will go much past 39 weeks. So that
 could bring the average down for non-first babies.
 
 In summary, the results in this section suggest that the observed
-difference is unlikely to be due to chance, but there are still several
-other possible explanations.
+difference is unlikely to be due to chance, but there are other possible
+explanations.
 
 \hypertarget{the-hypothesis-testing-framework}{%
 \section{The Hypothesis Testing
@@ -452,26 +456,24 @@ diagram:
 
 \includegraphics{chapters/figs/hypothesis_testing.png}
 
-Using data from an experiment, we compute a \textbf{test statistic} (see
-\url{https://en.wikipedia.org/wiki/Test_statistic}). In the peanut
-allergy example, the test statistic is relative risk. In the pregnancy
-length example, it is the difference in the means. In both cases, the
-test statistic quantifies the size of the observed effect, denoted
-\(\delta^*\) in the diagram.
+Using data from an experiment, we compute the observed \textbf{test
+statistic}, denoted \(\delta^*\) in the diagram, which quantifies the
+size of the observed effect. In the peanut allergy example, the test
+statistic is relative risk. In the pregnancy length example, it is the
+difference in the means.
 
 Then we build a model of a world where the effect does not exist. This
-model is called the \textbf{null hypothesis} (see
-\url{https://en.wikipedia.org/wiki/Exclusion_of_the_null_hypothesis})
-and denoted \(H_0\). In the peanut allergy example, the model assumes
-that the risk is the same in both groups. In the pregnancy example, it
-assumes that the lengths are drawn from the same normal distribution.
+model is called the \textbf{null hypothesis} and denoted \(H_0\). In the
+peanut allergy example, the model assumes that the risk is the same in
+both groups. In the pregnancy example, it assumes that the lengths are
+drawn from the same normal distribution.
 
 Next we use the model to simulate the experiment many times. Each
-simulation generates a dataset which we use to compute the test
-statistic, \(\delta\). Finally, we collect the test statistics from the
-simulations and compute a p-value, which is the probability under the
-null hypothesis of seeing a test statistic as big as the observed
-effect, \(\delta*\).
+simulation generates a dataset which we use to compute a test statistic,
+\(\delta\). Finally, we collect the test statistics from the simulations
+and compute a p-value, which is the probability under the null
+hypothesis of seeing a test statistic as big as the observed effect,
+\(\delta*\).
 
 If the p-value is small, we can usually rule out the possibility that
 the observed effect is due to random variation. But often there are
@@ -523,7 +525,7 @@ the results we got with the normal model?
 
 \textbf{Exercise:} Are first babies more likely to be \emph{light}? To
 find out, we can use the birth weight data from the NSFG. The variables
-we need use special codes to represent missing data, so I'll replace
+we need use special codes to represent missing data, so let's replace
 them with \passthrough{\lstinline!NaN!}.
 
 \begin{lstlisting}[]
@@ -567,11 +569,10 @@ conclusion can you draw from this result?
 \section{Testing Correlation}\label{testing-correlation}}
 
 The method we used in the previous section is called a
-\textbf{permutation test} because ``permutation'' is another word for
-shuffling (see
-\url{https://en.wikipedia.org/wiki/Resampling_(statistics)\#Permutation_tests}).
-Permutation tests are also useful for testing whether an observed
-correlation might be do to chance.
+\textbf{permutation test} because we permuted the pregnancy lengths
+before dividing them into groups (``permute'' is another word for
+shuffle). As another example, in this section we'll use a permutation
+tests to check whether an observed correlation might be due to chance.
 
 As an example, let's look again at the correlations we computed in
 Chapter 9, using data from the Behavioral Risk Factor Surveillance
@@ -744,7 +745,7 @@ plt.title('Correlation from simulations with permutation');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/13_hypothesis_files/13_hypothesis_108_0.png}
+\includegraphics[width=4in]{chapters/13_hypothesis_files/13_hypothesis_107_0.png}
 \end{center}
 
 The center of the distribution is near 0, and the largest values
@@ -794,7 +795,7 @@ As an example, we'll use NSFG data to explore the relationship between a
 mother's age and her baby's birth weight.
 
 In previous sections we computed birth weight and a Boolean variable
-that identifies first babies. Now I'll store them as columns in
+that identifies first babies. Now we'll store them as columns in
 \passthrough{\lstinline!nsfg!}, so we can use them with StatsModels.
 
 \begin{lstlisting}[]
@@ -802,8 +803,9 @@ nsfg['BIRTHWGT'] = birthwgt
 nsfg['FIRST'] = first
 \end{lstlisting}
 
-I'll select the subset of the rows that represent live, full-term
-births.
+We can select the subset of the rows that represent live, full-term
+births, and make a copy so we can modify the subset without affecting
+the original.
 
 \begin{lstlisting}[]
 subset = nsfg[live & fullterm].copy()
@@ -813,13 +815,10 @@ n
 @@@5839@@@
 \end{lstlisting}
 
-I tried a few different ways to visualize the relationship between
-mother's age and birth weight, including a scatter plot and a violin
-plot. The one that worked best is a box plot with mother's age grouped
-into 3-year bins.
-
-I used \passthrough{\lstinline!np.arange!} to make the bin boundaries,
-and \passthrough{\lstinline!pd.cut!} to put the values from
+To visualize the relationship between mother's age and birth weight,
+we'll use a box plot with mother's age grouped into 3-year bins. We can
+use \passthrough{\lstinline!np.arange!} to make the bin boundaries, and
+\passthrough{\lstinline!pd.cut!} to put the values from
 \passthrough{\lstinline!AGECON!} into bins.
 
 \begin{lstlisting}[]
@@ -845,7 +844,7 @@ plt.ylabel('Birthweight (pounds)');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/13_hypothesis_files/13_hypothesis_118_0.png}
+\includegraphics[width=4in]{chapters/13_hypothesis_files/13_hypothesis_117_0.png}
 \end{center}
 
 It looks like the average birth weight is highest if the mother is 25-31
@@ -1071,11 +1070,11 @@ about 0.10 pounds.
 One of the warning signs of a spurious relationship between two
 variables is that the effect gradually disappears as you add control
 variables. So we should wonder whether the remaining effect might be due
-to chance. To find out, I'll use the following function, which simulates
-a world where there is no difference in weight between first babies and
-others. It takes a \passthrough{\lstinline!DataFrame!} as a parameter,
-shuffles the \passthrough{\lstinline!FIRST!} column, runs the regression
-model with \passthrough{\lstinline!AGECON!} and
+to chance. To find out, we'll use the following function, which
+simulates a world where there is no difference in weight between first
+babies and others. It takes a \passthrough{\lstinline!DataFrame!} as a
+parameter, shuffles the \passthrough{\lstinline!FIRST!} column, runs the
+regression model with \passthrough{\lstinline!AGECON!} and
 \passthrough{\lstinline!AGECON2!}, and returns the estimated difference.
 
 \begin{lstlisting}[]
@@ -1187,7 +1186,7 @@ Let's review the examples in this chapter:
   the null hypothesis and the estimated slope as a test statistic.
 \end{enumerate}
 
-As an exercise, below, you can use the same methods to explore the
+As a final exercise, below, you can use the same methods to explore the
 paternal age effect.
 
 \textbf{Exercise:} A paternal age effect is a relationship between the
@@ -1233,8 +1232,8 @@ Code & Age \\
 \midrule()
 \end{longtable}
 
-I'll create a new column that's true for the fathers in the youngest and
-oldest groups.
+Let's create a new column that's true for the fathers in the youngest
+and oldest groups.
 
 \begin{lstlisting}[]
 subset['YO_DAD'] = subset['HPAGELB'].isin([1, 6])
