@@ -49,19 +49,31 @@ gss.head()
 \end{tabular}
 
 The column \passthrough{\lstinline!REALINC!} records family income,
-converted to 1986 dollars. We can use \passthrough{\lstinline!notna!}
-and \passthrough{\lstinline!sum!} to count the number of valid
-responses.
+converted to 1986 dollars. The following figure uses the Seaborn
+function \passthrough{\lstinline!kdeplot!} to show the distribution of
+family income. The argument \passthrough{\lstinline!cut=0!} cuts off the
+curve so it doesn't extend beyond the observed minimum and maximum
+values.
 
 \begin{lstlisting}[]
-n_realinc = gss['REALINC'].notna().sum()
-n_realinc
-(@\dashfill@)
-@@@58293@@@
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+sns.kdeplot(gss['REALINC'] / 1000, label='GSS data', cut=0)
+
+plt.xlabel('Family income ($1000s)')
+plt.ylabel('PDF')
+plt.title('Distribution of income')
+plt.legend();
 \end{lstlisting}
 
-And we can compute the mean and standard deviation of the valid
-responses.
+\begin{center}
+\includegraphics[width=4in]{chapters/12_bootstrap_files/12_bootstrap_10_0.png}
+\end{center}
+
+The distribution of income is skewed to the right; most household
+incomes are less than \$60,000, but a few are substantially higher. Here
+are the mean and standard deviation of the reported incomes.
 
 \begin{lstlisting}[]
 mean_realinc = gss['REALINC'].mean()
@@ -71,12 +83,10 @@ print(mean_realinc, std_income)
 @@@31742.56337281537 29526.06789623489@@@
 \end{lstlisting}
 
-The average family income in this dataset is \$31,742. But notice that
-the standard deviation is almost equal to the mean. That's because the
-distribution of income is long-tailed; many families have incomes below
-the mean, and there are a few families with incomes much higher than the
-mean. Nevertheless, we can use this function from the previous chapter
-to simulate the sampling process.
+The average family income in this sample is \$31,743. But if we ran the
+GSS survey again, the average might be higher or lower. To see how much
+it might vary, we can use this function from the previous chapter to
+simulate the sampling process.
 
 \begin{lstlisting}[]
 import numpy as np
@@ -87,16 +97,27 @@ def simulate_sample_mean(n, mu, sigma):
 \end{lstlisting}
 
 \passthrough{\lstinline!simulate\_sample\_mean!} takes as parameters the
-sample size, \passthrough{\lstinline!n!}, and the presumed mean and
-standard deviation of income. It generates a sample from a normal
-distribution with the given mean and standard deviation, and returns the
-mean of the sample. If we call it once, we get a random value from the
-sampling distribution of the mean.
+sample size and the observed mean and standard deviation of income. It
+generates a sample from a normal distribution with the given mean and
+standard deviation, and returns the mean of the sample.
+
+Before we call this function, we have to count the number of valid
+responses.
+
+\begin{lstlisting}[]
+n_realinc = gss['REALINC'].notna().sum()
+n_realinc
+(@\dashfill@)
+@@@58293@@@
+\end{lstlisting}
+
+Now, if we call \passthrough{\lstinline!simulate\_sample\_mean!} once,
+we get a single value from the sampling distribution of the mean.
 
 \begin{lstlisting}[]
 simulate_sample_mean(n_realinc, mean_realinc, std_income)
 (@\dashfill@)
-@@@31983.470231857405@@@
+@@@31725.9120143765@@@
 \end{lstlisting}
 
 If we call it many times, we get a random sample from the sampling
@@ -107,7 +128,23 @@ t1 = [simulate_sample_mean(n_realinc, mean_realinc, std_income)
       for i in range(1000)]
 \end{lstlisting}
 
-I'll use the following function to summarize the sampling distribution.
+Here's what the sampling distribution of the mean looks like:
+
+\begin{lstlisting}[]
+sns.kdeplot(t1)
+
+plt.xlabel('Family income (1986 $)')
+plt.ylabel('PDF')
+plt.title('Sampling distribution of mean income');
+\end{lstlisting}
+
+\begin{center}
+\includegraphics[width=4in]{chapters/12_bootstrap_files/12_bootstrap_23_0.png}
+\end{center}
+
+This distribution shows how much we would expect the observed mean to
+vary if we ran the GSS survey again. We'll use the following function to
+summarize the sampling distribution.
 
 \begin{lstlisting}[]
 def summarize(t, digits=2):
@@ -128,61 +165,48 @@ summary1
 \midrule
 {} &  Estimate &     SE &                CI90 \\
 \midrule
-{} &   31743.7 &  119.1 &  [31548.8, 31938.0] \\
+{} &   31739.4 &  123.3 &  [31531.6, 31941.8] \\
 \midrule
 \end{tabular}
 
-The result is a table that shows the mean of the sampling distribution,
-the standard error, and a 90\% confidence interval. The mean of the
-sampling distribution is consistent with the mean of the data, which is
-\$31,743.
+The result shows the mean of the sampling distribution, the standard
+error, and a 90\% confidence interval. The mean of the sampling
+distribution is close to the mean of the data, as we expect. The
+standard error quantifies with width of the sampling distribution, which
+is about \$128. Informally, that's how much we would expect the sample
+mean to change if we ran the survey again. And if we ran the survey many
+times and computed the average income each time, we would expect 90\% of
+the results to fall in the range from \$31,538 to \$31,958.
+
+In this section, we used a normal distribution to simulate the sampling
+process. The normal distribution is not a particularly good model for
+the distribution of income, but it works well enough for this example,
+and the results are reasonable. In the next section we'll see an example
+where the normal distribution is not good enough and the results are not
+reasonable; then we'll see how to fix the problem.
 
 \hypertarget{estimating-percentiles}{%
 \section{Estimating Percentiles}\label{estimating-percentiles}}
 
-The method in the previous section uses a normal distribution to
-simulate the sampling process. In the previous chapter, when we
-estimated average height, this worked well because human heights are
-well modeled by a normal distribution. But income is not. We can see
-that by computing the CDF of a normal distribution with the same mean
-and standard as the income data.
+Suppose that, instead of estimating the average income, we want to
+estimate the 10th percentile. Computing percentiles of income is often
+relevant to discussions of income inequality. To compute the 10th
+percentile of the data, we can use the NumPy function
+\passthrough{\lstinline!percentile!}, but we have to drop the NaN
+values.
 
 \begin{lstlisting}[]
-from scipy.stats import norm
-
-xs = np.linspace(-40000, 150000)
-ys = norm(mean_realinc, std_income).cdf(xs)
+np.percentile(gss['REALINC'].dropna(), 10)
+(@\dashfill@)
+@@@5631.3@@@
 \end{lstlisting}
 
-And comparing it to the CDF of the data.
-
-\begin{lstlisting}[]
-from empiricaldist import Cdf
-
-cdf_realinc = Cdf.from_seq(gss['REALINC'])
-\end{lstlisting}
-
-\begin{lstlisting}[]
-import matplotlib.pyplot as plt
-
-plt.plot(xs, ys, color='0.7', label='normal model')
-cdf_realinc.plot(label='GSS data')
-
-plt.xlabel('Family income (1986 $)')
-plt.ylabel('CDF')
-plt.title('Distribution of income')
-plt.legend();
-\end{lstlisting}
-
-\begin{center}
-\includegraphics[width=4in]{chapters/12_bootstrap_files/12_bootstrap_28_0.png}
-\end{center}
-
-The normal distribution is not a good model for the data. As we saw in
-the previous section, it is good enough to compute the sampling
-distribution of the mean. But for other statistics, like percentiles, it
-is not good enough. To demonstrate, here's a function that generates a
-sample from a normal distribution and returns the 10th percentile.
+The 10th percentile of the sample is \$5631, but if we collected another
+sample, the result might be higher or lower. To see how much it would
+vary, we can use the following function to simulate the sampling
+process: \passthrough{\lstinline!simulate\_sample\_percentile!}
+generates a sample from a normal distribution and returns the 10th
+percentile.
 
 \begin{lstlisting}[]
 def simulate_sample_percentile(n, mu, sigma):
@@ -190,15 +214,31 @@ def simulate_sample_percentile(n, mu, sigma):
     return np.percentile(sample, 10)
 \end{lstlisting}
 
-We can use it to generate a sample from the sampling distribution of the
-10th percentile.
+If we call it several times, the result is a sample from the sampling
+distribution of the 10th percentile.
 
 \begin{lstlisting}[]
 t2 = [simulate_sample_percentile(n_realinc, mean_realinc, std_income)
       for i in range(1000)]
 \end{lstlisting}
 
-Here's a summary of the results.
+Here's what that sampling distribution looks like.
+
+\begin{lstlisting}[]
+sns.kdeplot(t2)
+
+plt.xlabel('Family income (1986 $)')
+plt.ylabel('PDF')
+plt.title('Sampling distribution of the 10th percentile');
+\end{lstlisting}
+
+\begin{center}
+\includegraphics[width=4in]{chapters/12_bootstrap_files/12_bootstrap_37_0.png}
+\end{center}
+
+We can see that something has gone wrong. All of the values in the
+sampling distribution are negative, even though no one in the sample
+reported a negative income. We can summarize the results like this.
 
 \begin{lstlisting}[]
 summary2 = summarize(t2)
@@ -209,16 +249,39 @@ summary2
 \midrule
 {} &  Estimate &      SE &                  CI90 \\
 \midrule
-{} &  -6089.75 &  219.37 &  [-6451.33, -5704.66] \\
+{} &  -6095.13 &  207.46 &  [-6441.61, -5753.08] \\
 \midrule
 \end{tabular}
 
-The mean of the sampling distribution is negative, which is not
-consistent with the actual 10th percentile of the data, which is \$5631.
+But the estimate and the confidence interval are all negative, which is
+not a reasonable result. To see what happened, let's look at the
+distribution of reported incomes again compared to the normal
+distribution with the same mean and standard deviation.
 
-In this example, resampling based on a normal model doesn't produce
-sensible results. Fortunately there is a simple alternative that is more
-robust: bootstrapping.
+\begin{lstlisting}[]
+from scipy.stats import norm
+
+xs = np.linspace(-50, 150)
+ys = norm(mean_realinc/1000, std_income/1000).pdf(xs)
+\end{lstlisting}
+
+\begin{lstlisting}[]
+sns.kdeplot(gss['REALINC'] / 1000, label='GSS data', cut=0)
+plt.plot(xs, ys, color='0.7', label='normal model')
+
+plt.xlabel('Family income ($1000s)')
+plt.ylabel('PDF')
+plt.title('Distribution of income')
+plt.legend();
+\end{lstlisting}
+
+\begin{center}
+\includegraphics[width=4in]{chapters/12_bootstrap_files/12_bootstrap_42_0.png}
+\end{center}
+
+The problem is that the normal model extends past the lower bound of the
+observed values, so it doesn't produce sensible results. Fortunately
+there is a simple alternative that is more robust: bootstrapping.
 
 \hypertarget{bootstrapping}{%
 \section{Bootstrapping}\label{bootstrapping}}
@@ -228,7 +291,7 @@ the previous chapter:
 
 \includegraphics{chapters/figs/resampling.png}
 
-The idea is that we treat the sample as if it were the entire
+The idea is that we treat the original sample as if it were the entire
 population, and simulate the sampling process by choosing random rows
 with replacement. \passthrough{\lstinline!DataFrame!} provides a method
 called \passthrough{\lstinline!sample!} we can use to select a random
@@ -260,24 +323,25 @@ repeats.head()
 \midrule
 {} &  ID\_ \\
 \midrule
-1035 &   50 \\
-1192 &   48 \\
-563  &   47 \\
-1293 &   47 \\
-423  &   47 \\
+797 &   50 \\
+195 &   48 \\
+197 &   47 \\
+171 &   45 \\
+920 &   45 \\
 \midrule
 \end{tabular}
 
-Since some rows appear many times, other rows don't appear at all. To
-see how many, we can use \passthrough{\lstinline!set!} subtraction to
-count the values of \passthrough{\lstinline!ID\_!} that appear in the
-original dataset but not the bootstrapped sample.
+Several of the rows appear more than 40 times. Since some rows appear
+many times, other rows don't appear at all. To see how many, we can use
+\passthrough{\lstinline!set!} subtraction to count the values of
+\passthrough{\lstinline!ID\_!} that appear in the original dataset but
+not the bootstrapped sample.
 
 \begin{lstlisting}[]
 unused = set(gss['ID_']) - set(bootstrapped['ID_'])
 len(unused)
 (@\dashfill@)
-@@@589@@@
+@@@567@@@
 \end{lstlisting}
 
 Now we can use bootstrapping to generate a sampling distribution. For
@@ -313,8 +377,8 @@ table
 \midrule
 {} &  Estimate &      SE &                  CI90 \\
 \midrule
-normal model  &   31743.7 &  119.10 &    [31548.8, 31938.0] \\
-bootstrapping &   31744.6 &  122.71 &  [31555.18, 31948.75] \\
+normal model  &  31739.40 &  123.30 &    [31531.6, 31941.8] \\
+bootstrapping &  31742.67 &  121.39 &  [31544.79, 31946.17] \\
 \midrule
 \end{tabular}
 
@@ -330,7 +394,7 @@ drops \passthrough{\lstinline!NaN!} values. The parameter of
 rather than a percentage between 0 and 100.
 
 \begin{lstlisting}[]
-def bootstrap_percentile(df):
+def bootstrap_income_percentile(df):
     bootstrapped = df.sample(n=len(df), replace=True)
     return bootstrapped['REALINC'].quantile(0.1)
 \end{lstlisting}
@@ -339,7 +403,7 @@ We can use it to generate a sample from the sampling distribution of the
 10th percentile.
 
 \begin{lstlisting}[]
-t4 = [bootstrap_percentile(gss)
+t4 = [bootstrap_income_percentile(gss)
       for i in range(1001)]
 \end{lstlisting}
 
@@ -356,8 +420,8 @@ table
 \midrule
 {} &  Estimate &      SE &                  CI90 \\
 \midrule
-normal model  &  -6089.75 &  219.37 &  [-6451.33, -5704.66] \\
-bootstrapping &   5646.71 &   87.43 &      [5512.5, 5806.0] \\
+normal model  &  -6095.13 &  207.46 &  [-6441.61, -5753.08] \\
+bootstrapping &   5649.50 &   88.71 &      [5512.5, 5806.0] \\
 \midrule
 \end{tabular}
 
@@ -370,8 +434,8 @@ In general, bootstrapping is robust; that is, it works well with many
 different distributions and many different statistics. However, at the
 end of the chapter, we'll see one example where it fails.
 
-\hypertarget{bigger-data}{%
-\section{Bigger Data}\label{bigger-data}}
+\hypertarget{working-with-bigger-data}{%
+\section{Working with Bigger Data}\label{working-with-bigger-data}}
 
 As sample size increases, errors due to random sampling get smaller. To
 demonstrate this effect, I'll use data from the Behavioral Risk Factor
@@ -412,8 +476,15 @@ brfss.head()
 \midrule
 \end{tabular}
 
-Here's a Boolean \passthrough{\lstinline!Series!} that's
-\passthrough{\lstinline!True!} for male respondents.
+The \passthrough{\lstinline!HTM4!} column contains the respondents'
+heights in centimeters.
+
+\begin{lstlisting}[]
+height = brfss['HTM4']
+\end{lstlisting}
+
+To select male respondents, we'll use the \passthrough{\lstinline!SEX!}
+column to make a Boolean \passthrough{\lstinline!Series!}.
 
 \begin{lstlisting}[]
 male = (brfss['_SEX'] == 1)
@@ -422,16 +493,9 @@ male.sum()
 @@@189835@@@
 \end{lstlisting}
 
-The column \passthrough{\lstinline!HTM4!} contains their heights in
-centimeters.
-
-\begin{lstlisting}[]
-height = brfss['HTM4']
-\end{lstlisting}
-
 We can use \passthrough{\lstinline!notna!} and
-\passthrough{\lstinline!sum!} to count the number of rows with valid
-height data.
+\passthrough{\lstinline!sum!} to count the number of male respondents
+with valid height data.
 
 \begin{lstlisting}[]
 n_height = height[male].notna().sum()
@@ -440,8 +504,7 @@ n_height
 @@@182269@@@
 \end{lstlisting}
 
-There are 182 269 male respondents with known heights. Here is the mean
-and standard deviation of these values.
+Here is the mean and standard deviation of these values.
 
 \begin{lstlisting}[]
 mean_height = height[male].mean()
@@ -451,10 +514,10 @@ mean_height, std_height
 @@@(178.0768644146838, 7.9664553134728395)@@@
 \end{lstlisting}
 
-The average height for men in the U.S. is about 178.1 cm; the standard
+The average height for men in the U.S. is about 178 cm; the standard
 deviation is about 8 cm. We can use bootstrapping to generate values
 from the sampling distribution of the mean. To reduce computation time,
-I reduced the number of iterations to 201.
+I set the number of iterations to 201.
 
 \begin{lstlisting}[]
 t5 = [bootstrap_mean(brfss[male], 'HTM4')
@@ -467,7 +530,7 @@ summarize(t5, digits=3)
 \midrule
 {} &  Estimate &     SE &                CI90 \\
 \midrule
-{} &   178.077 &  0.019 &  [178.048, 178.107] \\
+{} &   178.079 &  0.019 &  [178.047, 178.107] \\
 \midrule
 \end{tabular}
 
@@ -482,8 +545,8 @@ vulnerable to \textbf{social desirability bias} (see
 \url{https://en.wikipedia.org/wiki/Social-desirability_bias}). It's also
 possible that there are errors in recording the data. In a previous year
 of the BRFSS, there are a suspicious number of heights recorded as 60 or
-61 centimeters. I suspect that many of them are six feet, or six feet
-and one inch, and something went wrong in the preparation of the data.
+61 centimeters. I suspect that many of them are six feet tall, or six
+feet and one inch, and something went wrong in recording the data.
 
 And that brings us to the first point of this example:
 
@@ -500,10 +563,10 @@ not taken into account: oversampling.
 \hypertarget{weighted-bootstrapping}{%
 \section{Weighted Bootstrapping}\label{weighted-bootstrapping}}
 
-By design, the BRFSS oversamples some groups; that is, people in some
-groups are more likely than others to appear in the sample. If people in
-these groups are taller than others on average, or shorter, our
-estimated mean would not be accurate.
+By design, the BRFSS oversamples some demographic groups; that is,
+people in some groups are more likely than others to appear in the
+sample. If people in these groups are taller than others on average, or
+shorter, our estimated mean would not be accurate.
 
 We encountered this issue in Chapter 7, where we used data from the
 National Survey of Family Growth (NSFG) to compute the average birth
@@ -566,11 +629,11 @@ repeats.head()
 \midrule
 {} &  SEQNO \\
 \midrule
-2019000108 &    148 \\
-2019006167 &    126 \\
-2019000048 &    116 \\
-2019007402 &    114 \\
-2019006177 &    108 \\
+2019000108 &    139 \\
+2019000047 &    122 \\
+2019000048 &    115 \\
+2019000096 &    110 \\
+2019000851 &    110 \\
 \midrule
 \end{tabular}
 
@@ -587,7 +650,7 @@ not the sample.
 unused = set(brfss['SEQNO']) - set(bootstrapped['SEQNO'])
 len(unused)
 (@\dashfill@)
-@@@784@@@
+@@@826@@@
 \end{lstlisting}
 
 There are several hundred rows that don't appear in this sample, but
@@ -608,14 +671,14 @@ def weighted_bootstrap_mean(df):
 \end{lstlisting}
 
 I'll test this function with a \passthrough{\lstinline!DataFrame!} that
-contains only male respondents. If we run it once, we get a random value
+contains only male respondents. If we run it once, we get a single value
 from the sampling distribution of the weighted mean.
 
 \begin{lstlisting}[]
 male_df = brfss[male]
 weighted_bootstrap_mean(male_df)
 (@\dashfill@)
-@@@177.62184728940645@@@
+@@@177.63307589732193@@@
 \end{lstlisting}
 
 If we run it many times, we get a random sample from the sampling
@@ -630,9 +693,9 @@ summarize(t6, digits=3)
 
 \begin{tabular}{lrrl}
 \midrule
-{} &  Estimate &    SE &                CI90 \\
+{} &  Estimate &     SE &                CI90 \\
 \midrule
-{} &    177.64 &  0.02 &  [177.607, 177.673] \\
+{} &   177.639 &  0.021 &  [177.602, 177.671] \\
 \midrule
 \end{tabular}
 
@@ -643,16 +706,16 @@ unweighted mean we computed, it is a little lower.
 \begin{lstlisting}[]
 print(np.mean(t6), mean_height)
 (@\dashfill@)
-@@@177.63973940107974 178.0768644146838@@@
+@@@177.6394121015467 178.0768644146838@@@
 \end{lstlisting}
 
 So it seems like people in the oversampled groups are taller than
 others, on average, by enough to bring the unweighted mean up by about
 half a centimeter.
 
-The difference between the weighted and unweighted means is bigger than
-the width of the confidence interval. So in this example the error if we
-fail to correct for oversampling is bigger than variability due to
+The difference between the weighted and unweighted averages is bigger
+than the width of the confidence interval. So in this example the error
+if we fail to correct for oversampling is bigger than variability due to
 random sampling.
 
 \hypertarget{correlation-and-regression}{%
@@ -736,14 +799,15 @@ different values. To demonstrate, I'll select data from the GSS for one
 year, 2018:
 
 \begin{lstlisting}[]
-gss2018 = gss[gss['YEAR']==2018]
+one_year = gss['YEAR']==2018
+gss2018 = gss[one_year]
 \end{lstlisting}
 
 And I'll use bootstrapping to generate values from the sampling
 distribution of income.
 
 \begin{lstlisting}[]
-t9 = [bootstrap_percentile(gss2018)
+t9 = [bootstrap_income_percentile(gss2018)
       for i in range(1001)]
 \end{lstlisting}
 
@@ -758,16 +822,16 @@ summary9
 \midrule
 {} &  Estimate &      SE &              CI90 \\
 \midrule
-{} &   5149.79 &  217.56 &  [5107.5, 5107.5] \\
+{} &   5149.91 &  212.91 &  [5107.5, 5107.5] \\
 \midrule
 \end{tabular}
 
-The mean of the sampling distribution and the standard error look
-plausible at first glance, but the width of the confidence interval is
-0, which suggests that something has gone wrong!
+The estimate and the standard error look plausible at first glance, but
+the width of the confidence interval is 0, which suggests that something
+has gone wrong!
 
-The problem is that \passthrough{\lstinline!REALINC!} is not really a
-numerical variable; it is a categorical variable in disguise. Using
+The problem is that \passthrough{\lstinline!REALINC!} is not a numerical
+variable; it is a categorical variable in disguise. Using
 \passthrough{\lstinline!value\_counts!}, we can see that there are only
 26 distinct values in this column.
 
@@ -780,8 +844,8 @@ len(gss2018['REALINC'].value_counts())
 The reason is that the GSS does not ask respondents to report their
 incomes. Instead, it gives them a list of ranges and asks them to pick
 the range their income falls in. The ranges are described in the
-documentation of the related variable
-\href{https://gssdataexplorer.norc.org/variables/104/vshow}{\passthrough{\lstinline!INCOME!}}.
+documentation of the related variable \passthrough{\lstinline!INCOME!}
+(see \url{https://gssdataexplorer.norc.org/variables/104/vshow}).
 
 Then GSS analysts compute the midpoint of each range and convert to 1986
 dollars by adjusting for inflation. Details of the methodology are in
@@ -801,13 +865,12 @@ pd.Series(t9).value_counts().sort_index()
 \midrule
 {} &    0 \\
 \midrule
-4086.0 &    1 \\
-5107.5 &  959 \\
-5221.0 &    1 \\
-5448.0 &    2 \\
-5788.5 &    1 \\
+5107.5 &  962 \\
+5334.5 &    1 \\
+5902.0 &    1 \\
+6015.5 &    2 \\
 6129.0 &    1 \\
-6242.5 &   36 \\
+6242.5 &   34 \\
 \midrule
 \end{tabular}
 
@@ -841,8 +904,6 @@ log_realinc = np.log10(gss2018['REALINC'].dropna())
 And here's what the estimated density looks like.
 
 \begin{lstlisting}[]
-import seaborn as sns
-
 sns.kdeplot(log_realinc)
 
 plt.xlabel('Income (log10 1986 dollars)')
@@ -851,7 +912,7 @@ plt.title('Estimated distribution of income');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/12_bootstrap_files/12_bootstrap_114_0.png}
+\includegraphics[width=4in]{chapters/12_bootstrap_files/12_bootstrap_120_0.png}
 \end{center}
 
 To draw samples from this distribution, we'll use a Scipy function
@@ -883,7 +944,7 @@ a logarithm to a dollar value.
 sample = kde.resample(n)
 10 ** np.percentile(sample, 10)
 (@\dashfill@)
-@@@5431.529352195356@@@
+@@@4925.615215615237@@@
 \end{lstlisting}
 
 The result is a random value from the sampling distribution of the 10th
@@ -915,10 +976,10 @@ table
 
 \begin{tabular}{lrrl}
 \midrule
-{} &  Estimate &      SE &                CI90 \\
+{} &  Estimate &      SE &               CI90 \\
 \midrule
-bootstrapping  &   5149.79 &  217.56 &    [5107.5, 5107.5] \\
-KDE resampling &   5106.90 &  250.92 &  [4715.72, 5541.34] \\
+bootstrapping  &   5149.91 &  212.91 &   [5107.5, 5107.5] \\
+KDE resampling &   5092.12 &  244.58 &  [4713.9, 5497.57] \\
 \midrule
 \end{tabular}
 
@@ -938,9 +999,9 @@ There are ten examples in this chapter so far; let's review them:
   family income in the GSS and compute a confidence interval.
 \item
   Then we used the same method to estimate the 10th percentile of
-  income, and we found that the width of the confidence interval was 0.
-  The problem is that the normal model does not fit the distribution of
-  income.
+  income, and we found that all of the values in the sampling
+  distribution are negative. The problem is that the normal model does
+  not fit the distribution of income.
 \item
   To solve this problem, we switched to bootstrap sampling. First we
   estimated average family income and confirmed that the results are
@@ -958,9 +1019,9 @@ There are ten examples in this chapter so far; let's review them:
   One of those sources of error is oversampling; that is, some people
   are more likely to appear in the sample than others. In the BFRSS,
   each respondent has a sampling weight that indicates how many people
-  in the population they represent. We used these weighted to do
-  weighted bootstrapping, and found that the error due to oversampling
-  is larger than the variability due to random sampling.
+  in the population they represent. We used these weights to do weighted
+  bootstrapping, and found that the error due to oversampling is larger
+  than the variability due to random sampling.
 \item
   In one exercise you used weighted bootstrapping to estimate the
   correlation of height and weight and compute a confidence interval.
@@ -968,14 +1029,16 @@ There are ten examples in this chapter so far; let's review them:
   In another exercise you estimated the slope of a regression line and
   computed a confidence interval.
 \item
-  Finally, I demonstrated a problem with bootstrap sampling when the
-  dataset has only a few different values,
+  Then I demonstrated a problem with bootstrap sampling when the dataset
+  has only a few different values,
 \item
   And presented a solution using KDE to smooth the data and draw samples
   from an estimated distribution.
 \end{enumerate}
 
-In the exercise below, you can work on one more example.
+In the exercise below, you can work on one more example. It is a little
+more involved than the previous exercises, but I will walk you through
+it.
 
 \textbf{Exercise:} In Chapter 10 we used logistic regression to model
 support for legalizing marijuana as a function of age, sex, and
@@ -1058,7 +1121,7 @@ plot_data()
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/12_bootstrap_files/12_bootstrap_143_0.png}
+\includegraphics[width=4in]{chapters/12_bootstrap_files/12_bootstrap_149_0.png}
 \end{center}
 
 The model fits past data reasonably well and makes plausible predictions
