@@ -2,9 +2,9 @@
 \chapter{Resampling}\label{resampling}}
 
 This chapter introduces \textbf{resampling methods}, which are used to
-quantify the precision of an estimate. As examples, we'll use results a
-vaccine trial to estimate the efficacy of the vaccine, data from the
-Behavioral Risk Factor Surveillance System to estimate the average
+quantify the precision of an estimate. As examples, we'll use results
+from a vaccine trial to estimate the efficacy of the vaccine, data from
+the Behavioral Risk Factor Surveillance System to estimate the average
 height of men in the U.S., and data from the General Social Survey to
 see how support for gun control has changed over time.
 
@@ -16,7 +16,7 @@ it is 67\% effective at preventing disease. You might wonder where that
 number comes from, what it means, and how confident we should be that it
 is correct.
 
-Results like this often come from a randomized controlled trial(RCT),
+Results like this often come from a randomized controlled trial (RCT),
 which works like this:
 
 \begin{itemize}
@@ -184,7 +184,7 @@ treatment group and the estimated risk:
 p = k_treatment / n_treatment
 simulate_group(n_treatment, p)
 (@\dashfill@)
-@@@5.476701200310346@@@
+@@@5.750536260325863@@@
 \end{lstlisting}
 
 The result is the estimated risk from a simulated trial. If we run this
@@ -265,8 +265,8 @@ If that's not making sense yet, let's try another example. In the
 previous section we simulated one group and estimated their risk. Now
 we'll simulate both groups and estimate the efficacy of the vaccine.
 
-The following function takes as parameters the size of the two groups
-and their actual risks.
+The following function takes four parameters: the sizes of the two
+groups and their actual risks.
 
 \begin{lstlisting}[]
 def simulate_trial(n1, p1, n2, p2):
@@ -343,13 +343,13 @@ In a scientific paper, we could report these results as 0.67, 90\% CI
 
 The standard error and confidence interval represent nearly the same
 information. In general, I prefer to report a confidence interval
-because it is easier to interpret.
+because it is easier to interpret:
 
 \begin{itemize}
 \item
-  Formally, it means that if we run the same experiment again, we expect
-  90\% of the results to fall between 61\% and 72\% (assuming that the
-  estimated risks are correct).
+  Formally, the confidence interval means that if we run the same
+  experiment again, we expect 90\% of the results to fall between 61\%
+  and 72\% (assuming that the estimated risks are correct).
 \item
   More casually, it means that it is plausible that the actually
   efficacy is as low as 61\%, or as high as 72\% (assuming there are no
@@ -614,8 +614,8 @@ and \passthrough{\lstinline!std\_height!} for
 \passthrough{\lstinline!sigma!}. Plot the sampling distribution of the
 coefficient of variation, and compute a 90\% confidence interval.
 
-\hypertarget{gun-control}{%
-\section{Gun Control}\label{gun-control}}
+\hypertarget{support-for-gun-control}{%
+\section{Support for Gun Control}\label{support-for-gun-control}}
 
 In Chapter 10 we used data from the General Social Survey, specifically
 a variable called \passthrough{\lstinline!GUNLAW!}, to describe support
@@ -653,8 +653,8 @@ gss['GUNLAW'].value_counts()
 \midrule
 \end{tabular}
 
-For each year of the survey, I would like to compute the number of
-respondents and the number who said they favor this law. I'll use
+For each year of the survey, we'll compute the number of respondents and
+the number who said they favor this law. We can use
 \passthrough{\lstinline!groupby!} to group the respondents by year of
 interview and \passthrough{\lstinline!agg!} to compute two aggregation
 functions, \passthrough{\lstinline!sum!} and
@@ -711,8 +711,8 @@ plt.title('Support for gun control over time');
 
 The results vary from year to year. It is hard to tell how much of this
 variation is due to real changes in opinion, and how much is due to
-random sampling. We can answer that question by computing confidence
-intervals for each of these data points.
+random sampling. In the following exercise, you'll answer that question
+by computing confidence intervals for each of these data points.
 
 \textbf{Exercise:} Write a loop that goes through the rows in
 \passthrough{\lstinline!agg!} and computes a confidence interval for
