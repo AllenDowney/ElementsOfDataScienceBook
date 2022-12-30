@@ -1,18 +1,18 @@
-\hypertarget{political-views}{%
-\chapter{Political Views}\label{political-views}}
+\hypertarget{political-alignment-and-polarization}{%
+\chapter{Political Alignment and
+Polarization}\label{political-alignment-and-polarization}}
 
-This case study explores the relationship between political alignment
-(conservative, moderate, or liberal) and other attitudes and beliefs.
+This chapter and the next make up a case study that explores uses data
+from the General Social Survey (GSS) to explore political beliefs in the
+United States and political alignment (conservative, moderate, or
+liberal).
 
 In this chapter, we:
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
 \item
-  Explore data from the General Social Survey (GSS), starting with
-  political alignment.
-\item
-  Compare the distribution of responses in 1974 and 1990.
+  Compare the distributions of political alignment from 1974 and 2021.
 \item
   Plot the mean and standard deviation of responses over time as a way
   of quantifying shifts in political alignment and polarization.
@@ -28,14 +28,18 @@ In this chapter, we:
 As an exercise, you will look at changes in political party affiliation
 over the same period.
 
-I've created an HDF file that contains three
-\passthrough{\lstinline!DataFrame!} objects with resampled GSS data.
-We'll work with the first resampling, \passthrough{\lstinline!gss0!}, to
-get started.
+In the next chapter, we'll use the same dataset to explore the
+relationship between political alignment and other attitudes and
+beliefs.
+
+In the the repository for this book, you'll find an HDF file that
+contains the GSS data, which I have cleaned and resampled to correct for
+stratified sampling. The file that contains three resamplings; we'll use
+the first, \passthrough{\lstinline!gss0!}, to get started.
 
 \begin{lstlisting}[]
-datafile = 'gss_eds.3.hdf5'
-gss = pd.read_hdf(datafile, 'gss0')
+datafile = "gss_pacs_resampled.hdf"
+gss = pd.read_hdf(datafile, "gss0")
 gss.shape
 (@\dashfill@)
 @@@(68846, 204)@@@
@@ -50,7 +54,7 @@ spectrum from liberal to conservative.
 
 The variable \passthrough{\lstinline!polviews!} contains responses to
 the following question (see
-\url{https://gssdataexplorer.norc.org/projects/52787/variables/178/vshow}):
+\url{https://gssdataexplorer.norc.org/variables/178/vshow}):
 
 \begin{quote}
 We hear a lot of talk these days about liberals and conservatives. I'm
@@ -73,18 +77,18 @@ Here are the valid responses:
 \end{lstlisting}
 
 To see how the responses have changed over time, we'll inspect them at
-the beginning and end of the observation period. First I'll select the
+the beginning and end of the observation period. First we'll select the
 column.
 
 \begin{lstlisting}[]
-polviews = gss['polviews']
+polviews = gss["polviews"]
 \end{lstlisting}
 
-Then compute a Boolean Series that's \passthrough{\lstinline!True!} for
-responses from 1974.
+Then we can compute a Boolean Series that's
+\passthrough{\lstinline!True!} for responses from 1974.
 
 \begin{lstlisting}[]
-year74 = (gss['year'] == 1974)
+year74 = gss["year"] == 1974
 \end{lstlisting}
 
 Now we can select the responses from 1974.
@@ -99,9 +103,9 @@ response occurs.
 \begin{lstlisting}[]
 def values(series):
     """Count the values and sort.
-    
+
     series: pd.Series
-    
+
     returns: series mapping from values to frequencies
     """
     return series.value_counts().sort_index()
@@ -130,7 +134,7 @@ values(polviews74)
 And here are the responses from 2021.
 
 \begin{lstlisting}[]
-year21 = (gss['year'] == 2021)
+year21 = gss["year"] == 2021
 polviews21 = polviews[year21]
 values(polviews21)
 \end{lstlisting}
@@ -149,45 +153,77 @@ values(polviews21)
 \midrule
 \end{tabular}
 
-\hypertarget{pmfs}{%
-\section{PMFs}\label{pmfs}}
+Looking at a table of counts, we can get a sense of what the
+distribution looks like, but in the next section we'll get a better
+sense by plotting it.
+
+\hypertarget{visualizing-distributions}{%
+\section{Visualizing Distributions}\label{visualizing-distributions}}
 
 To visualize these distributions, we'll use a Probability Mass Function
-(PMF), which is similar to a histogram. The difference is that the PMF
-is normalized, which means that it shows the fraction of people who gave
-each response, rather than the number.
+(PMF), which is similar to a histogram, but there are two differences:
 
-I'll use the \passthrough{\lstinline!Pmf!} class from
-\passthrough{\lstinline!empiricaldist!} to compute it.
+\begin{itemize}
+\item
+  In a histogram, values are often put in bins, with more than one value
+  in each bin. In a PMF each value gets its own bin.
+\item
+  A histogram computes a count, that is, how many times each value
+  appears; a PMF computes a probability, that is, what fraction of the
+  time each value appears.
+\end{itemize}
+
+We'll use the \passthrough{\lstinline!Pmf!} class from
+\passthrough{\lstinline!empiricaldist!} to compute a PMF.
 
 \begin{lstlisting}[]
 from empiricaldist import Pmf
+
+pmf74 = Pmf.from_seq(polviews74)
+pmf74
 \end{lstlisting}
+
+\begin{tabular}{lr}
+\midrule
+{} &     probs \\
+\midrule
+1.0 &  0.021908 \\
+2.0 &  0.142049 \\
+3.0 &  0.149117 \\
+4.0 &  0.380212 \\
+5.0 &  0.157597 \\
+6.0 &  0.127915 \\
+7.0 &  0.021201 \\
+\midrule
+\end{tabular}
 
 Here's the distribution from 1974:
 
 \begin{lstlisting}[]
-pmf74 = Pmf.from_seq(polviews74)
-pmf74.bar(label='1974', color='C0', alpha=0.7)
+pmf74.bar(label="1974", color="C0", alpha=0.7)
 
-decorate(xlabel='Political view on a 7-point scale',
-         ylabel='Fraction of population',
-         title='Distribution of political views')
+decorate(
+    xlabel="Political view on a 7-point scale",
+    ylabel="Fraction of respondents",
+    title="Distribution of political views",
+)
 \end{lstlisting}
 
 \begin{center}
 \includegraphics[width=4in]{chapters/02_polviews_soln_files/02_polviews_soln_32_0.png}
 \end{center}
 
-And from 2018:
+And from 2021:
 
 \begin{lstlisting}[]
 pmf21 = Pmf.from_seq(polviews21)
-pmf21.bar(label='2021', color='C1', alpha=0.7)
+pmf21.bar(label="2021", color="C1", alpha=0.7)
 
-decorate(xlabel='Political view on a 7-point scale',
-         ylabel='Fraction of population',
-         title='Distribution of political views')
+decorate(
+    xlabel="Political view on a 7-point scale",
+    ylabel="Fraction of respondents",
+    title="Distribution of political views",
+)
 \end{lstlisting}
 
 \begin{center}
@@ -201,7 +237,7 @@ polarized after all.
 
 \textbf{Exercise:} To summarize these changes, we can compare the mean
 and standard deviation of \passthrough{\lstinline!polviews!} in 1974 and
-2018.
+2021.
 
 The mean of the responses measures the balance of people in the
 population with liberal or conservative leanings. If the mean increases
@@ -218,20 +254,20 @@ Compute the mean and standard deviation of
 
 What do they indicate about changes over this interval?
 
-\hypertarget{time-series}{%
-\section{Time Series}\label{time-series}}
+\hypertarget{plotting-a-time-series}{%
+\section{Plotting a Time Series}\label{plotting-a-time-series}}
 
-At this point we have looked at the endpoints, 1974 and 2018, but we
-don't know what happened in between. To see how the distribution changes
+At this point we have looked at the endpoints, 1974 and 2021, but we
+don't know what happened in between. To see how the distribution changed
 over time, we can group by year and compute the mean of
-\passthrough{\lstinline!polviews!} during each year. First I'll use
+\passthrough{\lstinline!polviews!} during each year. We can use
 \passthrough{\lstinline!groupby!} to group the respondents by year.
 
 \begin{lstlisting}[]
-gss_by_year = gss.groupby('year')
+gss_by_year = gss.groupby("year")
 gss_by_year
 (@\dashfill@)
-@@@<pandas.core.groupby.generic.DataFrameGroupBy object at 0x7f7fabd1afd0>@@@
+@@@<pandas.core.groupby.generic.DataFrameGroupBy object at 0x7f5fc0b65690>@@@
 \end{lstlisting}
 
 The result is a \passthrough{\lstinline!DataFrameGroupBy!} object that
@@ -242,10 +278,10 @@ a \passthrough{\lstinline!DataFrame!}. We can use the bracket operator
 to select a column:
 
 \begin{lstlisting}[]
-polviews_by_year = gss_by_year['polviews']
+polviews_by_year = gss_by_year["polviews"]
 polviews_by_year
 (@\dashfill@)
-@@@<pandas.core.groupby.generic.SeriesGroupBy object at 0x7f7fabcadfd0>@@@
+@@@<pandas.core.groupby.generic.SeriesGroupBy object at 0x7f5fc0c09e10>@@@
 \end{lstlisting}
 
 A column from a \passthrough{\lstinline!DataFrameGroupBy!} is a
@@ -261,30 +297,38 @@ mean_series = polviews_by_year.mean()
 And here's what it looks like.
 
 \begin{lstlisting}[]
-mean_series.plot(color='C2', label='polviews')
-decorate(xlabel='Year', 
-         ylabel='Mean (7 point scale)',
-         title='Mean of polviews')
+mean_series.plot(color="C2", label="polviews")
+decorate(xlabel="Year", ylabel="Mean (7 point scale)", title="Mean of polviews")
 \end{lstlisting}
 
 \begin{center}
 \includegraphics[width=4in]{chapters/02_polviews_soln_files/02_polviews_soln_50_0.png}
 \end{center}
 
+It looks like the mean increased between 1974 and 2000, decreased since
+then, and ended up almost where it started. The difference between the
+highest and lowest points is only 0.3 points on a 7-point scale, which
+is a modest effect.
+
+\begin{lstlisting}[]
+mean_series.max() - mean_series.min()
+(@\dashfill@)
+@@@0.34240143126104083@@@
+\end{lstlisting}
+
 \textbf{Exercise:} The standard deviation quantifies the spread of the
 distribution, which is one way to measure polarization. Plot standard
 deviation of \passthrough{\lstinline!polviews!} for each year of the
-survey from 1972 to 2018. Does it show evidence of increasing
+survey from 1972 to 2021. Does it show evidence of increasing
 polarization?
 
-\hypertarget{local-regression}{%
-\section{Local Regression}\label{local-regression}}
+\hypertarget{smoothing-the-curve}{%
+\section{Smoothing the Curve}\label{smoothing-the-curve}}
 
 In the previous section we plotted mean and standard deviation of
-\passthrough{\lstinline!polviews!} over time. Both plots are quite
-noisy. We can use \textbf{local regression} to compute a smooth line
-through these data points (see
-\url{https://en.wikipedia.org/wiki/Local_regression}).
+\passthrough{\lstinline!polviews!} over time. In both plots, the values
+are highly variable from year to year. We can use \textbf{local
+regression} to compute a smooth line through these data points.
 
 The following function takes a Pandas Series and uses an algorithm
 called LOWESS to compute a smooth line. LOWESS stands for ``locally
@@ -293,11 +337,12 @@ weighted scatterplot smoothing''.
 \begin{lstlisting}[]
 from statsmodels.nonparametric.smoothers_lowess import lowess
 
+
 def make_lowess(series):
     """Use LOWESS to compute a smooth line.
-    
+
     series: pd.Series
-    
+
     returns: pd.Series
     """
     y = series.values
@@ -306,7 +351,7 @@ def make_lowess(series):
     smooth = lowess(y, x)
     index, data = np.transpose(smooth)
 
-    return pd.Series(data, index=index) 
+    return pd.Series(data, index=index)
 \end{lstlisting}
 
 We'll use the following function to plot data points and the smoothed
@@ -315,31 +360,29 @@ line.
 \begin{lstlisting}[]
 def plot_series_lowess(series, color):
     """Plots a series of data points and a smooth line.
-    
+
     series: pd.Series
     color: string or tuple
     """
-    series.plot(linewidth=0, marker='o', color=color, alpha=0.5)
+    series.plot(linewidth=0, marker="o", color=color, alpha=0.5)
     smooth = make_lowess(series)
-    smooth.plot(label='', color=color)
+    smooth.plot(label="", color=color)
 \end{lstlisting}
 
 The following figure shows the mean of
 \passthrough{\lstinline!polviews!} and a smooth line.
 
 \begin{lstlisting}[]
-mean_series = gss_by_year['polviews'].mean()
-plot_series_lowess(mean_series, 'C2')
-decorate(ylabel='Mean (7 point scale)',
-         title='Mean of polviews',
-         xlabel='Year')
+mean_series = gss_by_year["polviews"].mean()
+plot_series_lowess(mean_series, "C2")
+decorate(ylabel="Mean (7 point scale)", title="Mean of polviews", xlabel="Year")
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/02_polviews_soln_files/02_polviews_soln_57_0.png}
+\includegraphics[width=4in]{chapters/02_polviews_soln_files/02_polviews_soln_59_0.png}
 \end{center}
 
-One reason the PMFs for 1974 and 2018 did not look very different is
+One reason the PMFs for 1974 and 2021 did not look very different is
 that the mean seems to have gone up (more conservative) and then down
 again (more liberal). Generally, it looks like the U.S. has been
 trending toward liberal for the last 20 years, or more, at least in the
@@ -356,20 +399,19 @@ In the previous sections, we treated \passthrough{\lstinline!polviews!}
 as a numerical quantity, so we were able to compute means and standard
 deviations. But the responses are really categorical, which means that
 each value represents a discrete category, like ``liberal'' or
-``conservative''.\\
-In this section, we'll treat \passthrough{\lstinline!polviews!} as a
-categorical variable. Specifically, we'll compute the number of
-respondents in each category for each year, and plot changes over time.
+``conservative''. In this section, we'll treat
+\passthrough{\lstinline!polviews!} as a categorical variable.
+Specifically, we'll compute the number of respondents in each category
+for each year, and plot changes over time.
 
 Pandas provides a function called \passthrough{\lstinline!crosstab!}
-that computes a \textbf{cross tabulation} (see
-\url{https://en.wikipedia.org/wiki/Contingency_table}). It takes two
-\passthrough{\lstinline!Series!} objects as arguments and returns a
-\passthrough{\lstinline!DataFrame!}.
+that computes a \textbf{cross tabulation}, which is like a
+two-dimensional PMF. It takes two \passthrough{\lstinline!Series!}
+objects as arguments and returns a \passthrough{\lstinline!DataFrame!}.
 
 \begin{lstlisting}[]
-year = gss['year']
-column = gss['polviews']
+year = gss["year"]
+column = gss["polviews"]
 
 xtab = pd.crosstab(year, column)
 \end{lstlisting}
@@ -407,7 +449,7 @@ normalize the results, which means computing for each year the
 normalizes each row.
 
 \begin{lstlisting}[]
-xtab_norm = pd.crosstab(year, column, normalize='index')
+xtab_norm = pd.crosstab(year, column, normalize="index")
 \end{lstlisting}
 
 Here's what that looks like for the 7-point scale.
@@ -429,39 +471,39 @@ year &           &           &           &           &           &           &  
 \midrule
 \end{tabular}
 
-\hypertarget{plotting}{%
-\section{Plotting}\label{plotting}}
+Looking at the numbers in the table, it's hard to see what's going on.
+In the next section, we'll plot the results.
 
-To plot the results, I use the following function, which takes a
-\passthrough{\lstinline!DataFrame!} and plots each column using
-\passthrough{\lstinline!plot\_series\_lowess!}.
+\hypertarget{plotting-a-cross-tabulation}{%
+\section{Plotting a Cross
+Tabulation}\label{plotting-a-cross-tabulation}}
 
-\begin{lstlisting}[]
-def plot_columns_lowess(table, columns, colors):
-    """Plot the columns in a DataFrame.
-    
-    table: DataFrame with a cross tabulation
-    columns: list of column names, in the desired order
-    colors: mapping from column names to colors
-    """
-    for col in columns:
-        series = table[col]
-        plot_series_lowess(series, colors[col])
-\end{lstlisting}
+To see how the fraction of people with each political alignment has
+changed over time, we'll use
+\passthrough{\lstinline!plot\_series\_lowess!} to plot the columns from
+\passthrough{\lstinline!xtab\_norm!}.
 
-Here are the 7 categories plotted as a function of time.
+Here are the 7 categories plotted as a function of time. The
+\passthrough{\lstinline!bbox\_to\_anchor!} argument passed to
+\passthrough{\lstinline!plt.legend!} puts the legend outside the axes of
+the figure.
 
 \begin{lstlisting}[]
-plot_columns_lowess(xtab_norm, columns, color_map)
-decorate(xlabel='Year',
-         ylabel='Proportion',
-         title='Fraction of people with each political view')
+for name, column in xtab_norm.iteritems():
+    plot_series_lowess(column, color_map[name])
 
-anchor_legend(1.02, 1.02)
+decorate(
+    xlabel="Year",
+    ylabel="Proportion",
+    title="Fraction of respondents with each political view",
+)
+
+plt.legend(bbox_to_anchor=(1.02, 1.02))
+None
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/02_polviews_soln_files/02_polviews_soln_91_0.png}
+\includegraphics[width=4in]{chapters/02_polviews_soln_files/02_polviews_soln_88_0.png}
 \end{center}
 
 This way of looking at the results suggests that changes in political
@@ -475,22 +517,31 @@ see clearly in this figure. We can get a better view by plotting just
 the extremes.
 
 \begin{lstlisting}[]
-columns2 = ['Extremely liberal', 'Extremely conservative']
+selected_columns = ["Extremely liberal", "Extremely conservative"]
 
-plot_columns_lowess(xtab_norm, columns2, color_map)
-decorate(xlabel='Year',
-         ylabel='Proportion',
-         title='Fraction of people with extreme political views')
+for name, column in xtab_norm.iteritems():
+    if name not in selected_columns:
+        continue
+    plot_series_lowess(column, color_map[name])
 
-anchor_legend(1.02, 1.02)
+decorate(
+    xlabel="Year",
+    ylabel="Proportion",
+    ylim=[0, 0.057],
+    title="Fraction of respondents with extreme political views",
+)
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/02_polviews_soln_files/02_polviews_soln_93_0.png}
+\includegraphics[width=4in]{chapters/02_polviews_soln_files/02_polviews_soln_90_0.png}
 \end{center}
 
+I used \passthrough{\lstinline!ylim!} to set the limits of the y-axis so
+it starts at zero, to avoid making the changes seem bigger than they
+are.
+
 This figure shows that the fraction of people who describe themselves as
-``extreme'' has increased from about 2.5\% to about 4\%. In relative
+``extreme'' has increased from about 2.5\% to about 5\%. In relative
 terms, that's a big increase. But in absolute terms these tails of the
 distribution are still small.
 
@@ -517,5 +568,21 @@ The valid responses are:
 \end{lstlisting}
 
 You can read the codebook for \passthrough{\lstinline!partyid!} at
-\url{https://gssdataexplorer.norc.org/projects/52787/variables/141/vshow}.
+\url{https://gssdataexplorer.norc.org/variables/141/vshow}. In the
+notebook for this chapter, there are some suggestions to get you
+started.
+
+\hypertarget{summary}{%
+\section{Summary}\label{summary}}
+
+This chapter uses some tools we have seen before, like the
+\passthrough{\lstinline!Pmf!} object and the
+\passthrough{\lstinline!groupby!} function. And it introduces two new
+tools: local regression for computing a smooth curve through noisy data,
+and cross tabulation for counting the number of people, or fraction, in
+each group over time.
+
+Now that we have a sense of how political alignment as changed, in the
+next chapter we'll explore the relationship between political alignment
+and other beliefs and attitudes.
 
