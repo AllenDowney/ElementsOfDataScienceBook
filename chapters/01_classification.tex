@@ -1,36 +1,31 @@
-\hypertarget{classification}{%
-\chapter{Classification}\label{classification}}
+\hypertarget{algorithmic-fairness}{%
+\chapter{Algorithmic Fairness}\label{algorithmic-fairness}}
 
-This case study is related to ``Machine Bias'', an article published by
-ProPublica in 2016 (see
+This chapter and the next make up a case study related to ``Machine
+Bias'', an article published by ProPublica in 2016 (see
 \url{https://www.propublica.org/article/machine-bias-risk-assessments-in-criminal-sentencing}).
 The article explores the use of predictive algorithms in the criminal
-justice system. The arguments presented in the article are statistical;
-specifically, they are related to binary classification.
-
-The goal of this case study is to replicate the analysis reported in the
-article and to review ways to evaluate binary classification algorithms.
+justice system.
 
 \begin{itemize}
 \item
-  In this chapter, we start with the confusion matrix and the metrics
-  that are derived from it, including accuracy, sensitivity,
-  specificity, predictive value, false positive rate, and false negative
+  In this chapter, we'll replicate the analysis described in the article
+  and compute statistics that evaluate these algorithms, including
+  accuracy, predictive value, false positive rate, and false negative
   rate.
 \item
-  In the next chapter, I review the arguments made in a response article
-  published in the Washington Post. I compute and interpret calibration
-  curves, and explore the trade-offs between predictive value and error
-  rates.
+  In the next chapter, we'll review the arguments made in a response
+  article published in the Washington Post. We'll compute and interpret
+  calibration curves, and explore the trade-offs between predictive
+  value and error rates.
 \end{itemize}
 
 \hypertarget{machine-bias}{%
 \section{Machine Bias}\label{machine-bias}}
 
-We will start by replicating the analysis reported in
-``\protect\hyperlink{machine-bias}{Machine Bias}'', by Julia Angwin,
-Jeff Larson, Surya Mattu and Lauren Kirchner, and published by
-ProPublica in May 2016.
+We will start by replicating the analysis reported in ``Machine Bias'',
+by Julia Angwin, Jeff Larson, Surya Mattu and Lauren Kirchner, and
+published by ProPublica in May 2016.
 
 This article is about a statistical tool called COMPAS which is used in
 the criminal justice systems of some states to inform decisions about
@@ -72,15 +67,12 @@ failing to appear at their court hearings, or people who were later
 charged with a crime that occurred prior to their COMPAS screening.
 \end{quote}
 
-If you are not familiar with the word ``recidivism'', it means ``a
-tendency to relapse into a previous condition or mode of behavior,
-especially relapse into criminal behavior
-(\url{https://www.merriam-webster.com/dictionary/recidivism})''.
-
-In this context, a person is a ``recidivist'' if they are \emph{charged}
-with another crime within two years of release. However, note that there
-is a big difference between \emph{committing} another crime and being
-\emph{charged} with another crime. We will come back to this issue.
+If you are not familiar with the word ``recidivism'', it usually means a
+tendency to relapse into criminal behavior. In this context, a person is
+a ``recidivist'' if they are charged with another crime within two years
+of release. However, note that there is a big difference between
+\emph{committing} another crime and being \emph{charged} with another
+crime. We will come back to this issue.
 
 The authors of the ProPublica article use this data to evaluate how well
 COMPAS predicts the risk that a defendant will be charged with another
@@ -94,16 +86,16 @@ those deemed likely to re-offend, 61 percent were arrested for any
 subsequent crimes within two years.
 
 \ldots{} In forecasting who would re-offend, the algorithm made mistakes
-with black and white defendants at roughly the same rate but in very
+with Black and White defendants at roughly the same rate but in very
 different ways.
 
 \begin{itemize}
 \item
-  The formula was particularly likely to falsely flag black defendants
+  The formula was particularly likely to falsely flag Black defendants
   as future criminals, wrongly labeling them this way at almost twice
-  the rate as white defendants.
+  the rate as White defendants.
 \item
-  White defendants were mislabeled as low risk more often than black
+  White defendants were mislabeled as low risk more often than Black
   defendants.
 \end{itemize}
 \end{quote}
@@ -118,21 +110,13 @@ there are some technical issues you need to understand. My goal for
 these notebooks is to help you analyze the arguments and interpret the
 statistics they are based on.
 
-Note: The ProPublica article writes ``white'' and ``black'' starting
-with lower-case letters, which was the most common style in 2016. But
-things are changing. As I revise this document in 2021, many style
-guides now suggest that ``Black'' should be capitalized, and some
-suggest that ``White'' should, too. For now, I will follow the
-convention of the original article, but I will revisit this decision in
-future editions.
+\hypertarget{replicating-the-analysis}{%
+\section{Replicating the Analysis}\label{replicating-the-analysis}}
 
-\hypertarget{data}{%
-\section{Data}\label{data}}
-
-The authors of ``Machine Bias'' published their data and analysis at
+The data used in ``Machine Bias'' is available from
 \url{https://github.com/propublica/compas-analysis}.
 
-We can use Pandas to read the data file and make a
+We can use Pandas to read the file and make a
 \passthrough{\lstinline!DataFrame!}.
 
 \begin{lstlisting}[]
@@ -148,9 +132,6 @@ cp.shape
 
 The dataset includes 7214 rows, one for each defendant, and 53 columns.
 
-\hypertarget{the-confusion-matrix}{%
-\section{The Confusion Matrix}\label{the-confusion-matrix}}
-
 The authors of ``Machine Bias'' describe their analysis in a
 supplemental article at
 \url{https://www.propublica.org/article/how-we-analyzed-the-compas-recidivism-algorithm}.
@@ -160,12 +141,9 @@ report:
 \includegraphics{chapters/figs/machine_bias_table.png}
 
 The table summarizes results for all defendants and two subgroups:
-defendants classified as white (``Caucasian'' in the original dataset)
-and black (``African-American'').
-
-For each group, the summary includes a confusion matrix (see
-\url{https://en.wikipedia.org/wiki/Confusion_matrix}) and a number of
-metrics, including
+defendants classified as White (``Caucasian'' in the original dataset)
+and Black (``African-American''). For each group, the summary includes
+several metrics, including:
 
 \begin{itemize}
 
@@ -184,11 +162,9 @@ metrics, including
 \end{itemize}
 
 I will explain what these metrics mean and how to compute them, and
-we'll replicate the results in this table.
-
-But first let's examine the data and compute some recoded variables. The
-following function displays the values in a Series and the number of
-times each value appears.
+we'll replicate the results in this table. But first let's examine the
+data and compute some recoded variables. The following function displays
+the values in a Series and the number of times each value appears.
 
 \begin{lstlisting}[]
 def values(series):
@@ -238,7 +214,7 @@ scores above the threshold to be ``high risk''. Their choice of the
 threshold is arbitrary. Later, we will see what happens with other
 choices, but we'll start by replicating the original analysis.
 
-I'll create a Boolean \passthrough{\lstinline!Series!} called
+We'll create a Boolean \passthrough{\lstinline!Series!} called
 \passthrough{\lstinline!high\_risk!} that's
 \passthrough{\lstinline!True!} for respondents with a decile score
 greater than 4.
@@ -276,7 +252,7 @@ values(cp['two_year_recid'])
 \midrule
 \end{tabular}
 
-I'll create another \passthrough{\lstinline!Series!}, called
+Let's create another \passthrough{\lstinline!Series!}, called
 \passthrough{\lstinline!new\_charge\_2!}, that is
 \passthrough{\lstinline!True!} for defendants who were charged with
 another crime within two years.
@@ -307,11 +283,11 @@ pd.crosstab(new_charge_2, high_risk)
 
 \begin{tabular}{lrr}
 \midrule
-HighRisk &  False &  True  \\
-NewCharge2 &        &        \\
+HighRisk &  False &  True \\
+NewCharge2 &        &       \\
 \midrule
-False      &   2681 &   1282 \\
-True       &   1216 &   2035 \\
+False      &   2681 &  1282 \\
+True       &   1216 &  2035 \\
 \midrule
 \end{tabular}
 
@@ -341,7 +317,7 @@ The values in this matrix are consistent with the values in the
 ProPublica article, so we can confirm that we are reading the data and
 replicating their analysis correctly.
 
-I'll also check the confusion matrices for white and black defendants.
+Now let's check the confusion matrices for White and Black defendants.
 Here are the values of \passthrough{\lstinline!race!}:
 
 \begin{lstlisting}[]
@@ -361,7 +337,8 @@ Other            &   377 \\
 \midrule
 \end{tabular}
 
-Here's a Boolean Series that's true for white defendants.
+Here's a Boolean \passthrough{\lstinline!Series!} that's true for White
+defendants.
 
 \begin{lstlisting}[]
 white = (cp['race'] == 'Caucasian')
@@ -378,7 +355,7 @@ True  &   2454 \\
 \midrule
 \end{tabular}
 
-And here's the confusion matrix for white defendants.
+And here's the confusion matrix for White defendants.
 
 \begin{lstlisting}[]
 pd.crosstab(new_charge_2[white], high_risk[white])
@@ -386,16 +363,16 @@ pd.crosstab(new_charge_2[white], high_risk[white])
 
 \begin{tabular}{lrr}
 \midrule
-HighRisk &  False &  True  \\
-NewCharge2 &        &        \\
+HighRisk &  False &  True \\
+NewCharge2 &        &       \\
 \midrule
-False      &   1139 &    349 \\
-True       &    461 &    505 \\
+False      &   1139 &   349 \\
+True       &    461 &   505 \\
 \midrule
 \end{tabular}
 
 \passthrough{\lstinline!black!} is a Boolean Series that is
-\passthrough{\lstinline!True!} for black defendants.
+\passthrough{\lstinline!True!} for Black defendants.
 
 \begin{lstlisting}[]
 black = (cp['race'] == 'African-American')
@@ -412,7 +389,7 @@ True  &   3696 \\
 \midrule
 \end{tabular}
 
-And here is the confusion matrix for black defendants.
+And here is the confusion matrix for Black defendants.
 
 \begin{lstlisting}[]
 pd.crosstab(new_charge_2[black], high_risk[black])
@@ -420,11 +397,11 @@ pd.crosstab(new_charge_2[black], high_risk[black])
 
 \begin{tabular}{lrr}
 \midrule
-HighRisk &  False &  True  \\
-NewCharge2 &        &        \\
+HighRisk &  False &  True \\
+NewCharge2 &        &       \\
 \midrule
-False      &    990 &    805 \\
-True       &    532 &   1369 \\
+False      &    990 &   805 \\
+True       &    532 &  1369 \\
 \midrule
 \end{tabular}
 
@@ -448,7 +425,7 @@ prosecutors about who to charge.
 
 It is likely that every one of these factors depends on the race of the
 defendant. In this dataset, the prevalence of \emph{new charges} is
-higher for black defendants, but that doesn't necessarily mean that the
+higher for Black defendants, but that doesn't necessarily mean that the
 prevalence of \emph{new crimes} is higher.
 
 If the dataset is affected by racial bias in the probability of being
@@ -475,19 +452,33 @@ along the rows, or the other way around, and you can sort the rows and
 columns in either order.
 
 There is no universal standard arrangement, but the one that seems to be
-most common is the one on the
-\href{https://en.wikipedia.org/wiki/Confusion_matrix}{confusion matrix
-Wikipedia page}, which looks like this:
+most common looks like this:
 
-\includegraphics{chapters/figs/confusion_matrix1.png}
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3043}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3478}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3478}}@{}}
+\midrule()
+\begin{minipage}[b]{\linewidth}\raggedright
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Predicted positive}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Predicted negative}
+\end{minipage} \\
+\midrule()
+\endhead
+\textbf{Actual positive} & True positive (TP) & False negative (FN) \\
+\textbf{Actual negative} & False positive (FP) & True negative (TN) \\
+\midrule()
+\end{longtable}
 
 In this arrangement:
 
 \begin{itemize}
 \item
-  The predictions are down the rows.
+  The actual conditions are down the rows.
 \item
-  The actual results are across the columns.
+  The predictions are across the columns.
 \item
   The rows and columns are sorted so true positives are in the upper
   left and true negatives are in the lower right.
@@ -497,15 +488,14 @@ In the context of the ProPublica article:
 
 \begin{itemize}
 \item
-  ``Predicted condition positive'' means the defendant is classified as
-  high risk.
+  ``Predicted positive'' means the defendant is classified as high risk.
 \item
-  ``Predicted condition negative'' means low risk.
+  ``Predicted negative'' means low risk.
 \item
-  ``Condition positive'' means the defendant was charged with a new
-  crime (recidivated).
+  ``Actual positive'' means the defendant was charged with a new crime
+  (recidivated).
 \item
-  ``Condition negative'' means they were not charged (survived).
+  ``Actual negative'' means they were not charged (survived).
 \end{itemize}
 
 \hypertarget{accuracy}{%
@@ -551,7 +541,7 @@ the costs of false positives and false negatives might be different.
 \section{Predictive Value}\label{predictive-value}}
 
 One way to make these distinctions is to compute the ``predictive
-value'' of positive and negative tests.
+value'' of positive and negative tests:
 
 \begin{itemize}
 \item
@@ -651,10 +641,34 @@ specific than sensitive:
 \end{itemize}
 
 It can be hard to keep all of these metrics straight, especially when
-you are learning about them for the first time. The following diagram
-might help (from \url{https://en.wikipedia.org/wiki/Confusion_matrix}):
+you are learning about them for the first time. The following table
+might help:
 
-\includegraphics{chapters/figs/confusion_matrix2.png}
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.1807}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.2229}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.2229}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.1928}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.1807}}@{}}
+\midrule()
+\begin{minipage}[b]{\linewidth}\raggedright
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Predicted positive (PP)}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Predicted negative (PN)}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\end{minipage} \\
+\midrule()
+\endhead
+\textbf{Actual positive (P)} & True positive (TP) & False negative (FN)
+& Sensitivity = TP / P & FN rate = FN / P \\
+\textbf{Actual negative (N)} & False positive (FP) & True negative (TN)
+& FP rate = FP / N & Specificity = TN / N \\
+Prevalence = P / (P + N) & PPV = TP / PP & NPV = TN / PN & & Accuracy =
+(TP + TN) / (P + N) \\
+\midrule()
+\end{longtable}
 
 PPV and sensitivity are similar in the sense that they both have true
 positives in the numerator. The difference is the denominator:
@@ -788,10 +802,10 @@ report LR+ and LR-, but those are combinations of other metrics and not
 relevant to the current discussion, so I will ignore them.
 
 However, there is one other metric that I think is relevant and not
-included in the ProPublica tables: prevalence, which is the fraction of
-all cases where the condition is positive. In the example, it's the
-fraction of defendants who recidivate. The following function computes
-\textbf{prevalence}:
+included in the ProPublica tables: \textbf{prevalence}, which is the
+fraction of all cases where the condition is positive. In the example,
+it's the fraction of defendants who recidivate. The following function
+computes prevalence:
 
 \begin{lstlisting}[]
 def prevalence(df):
@@ -863,7 +877,7 @@ Prevalence     &  45.065151 \\
 Comparing these results to the table from ProPublica, it looks like our
 analysis agrees with theirs.
 
-Here are the same metrics for black defendants.
+Here are the same metrics for Black defendants.
 
 \begin{lstlisting}[]
 compute_metrics(matrix_black, 'Black defendants')
@@ -882,7 +896,7 @@ Prevalence       &  51.433983 \\
 \midrule
 \end{tabular}
 
-And for white defendants.
+And for White defendants.
 
 \begin{lstlisting}[]
 compute_metrics(matrix_white, 'White defendants')
@@ -907,10 +921,10 @@ including the headline results:
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
 \item
-  The false positive rate for black defendants is substantially higher
-  than for white defendants (45\%, compared to 23\%).
+  The false positive rate for Black defendants is substantially higher
+  than for White defendants (45\%, compared to 23\%).
 \item
-  The false negative rate for black defendants is substantially lower
+  The false negative rate for Black defendants is substantially lower
   (28\%, compared to 48\%).
 \end{enumerate}
 
@@ -930,12 +944,12 @@ In other words:
 
 \begin{itemize}
 \item
-  Of all people who \emph{will not} recidivate, black defendants are
+  Of all people who \emph{will not} recidivate, Black defendants are
   more likely to be be classified as high risk and (if these
   classifications influence sentencing decisions) more likely to be sent
   to prison.
 \item
-  Of all people who \emph{will} recidivate, white defendants are more
+  Of all people who \emph{will} recidivate, White defendants are more
   likely to be classified as low risk, and more likely to be released.
 \end{itemize}
 
