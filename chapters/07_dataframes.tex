@@ -98,7 +98,7 @@ from statadict import parse_stata_dict
 stata_dict = parse_stata_dict(dict_file)
 stata_dict
 (@\dashfill@)
-@@@<statadict.base.StataDict at 0x7fbacc29de10>@@@
+@@@<statadict.base.StataDict at 0x7fad2dd8ef70>@@@
 \end{lstlisting}
 
 The result is an object that contains
@@ -135,21 +135,21 @@ uses to store data. \passthrough{\lstinline!DataFrame!} has a method
 called \passthrough{\lstinline!head()!} that shows the first 5 rows:
 
 \begin{lstlisting}[]
-# NOTE: For the printed version of the book, 
-# I'm using iloc to show
-# the first 5 rows and first 9 columns 
-nsfg.iloc[:5,:9]
+nsfg.iloc[:5,:7]
+(@\dashfill@)
+@@@/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/IPython/core/formatters.py:342: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
+  return method()@@@
 \end{lstlisting}
 
-\begin{tabular}{lrrrrrrrrr}
+\begin{tabular}{lrrrrrrr}
 \midrule
-{} &  CASEID &  PREGORDR &  HOWPREG\_N &  HOWPREG\_P &  MOSCURRP &  NOWPRGDK &  PREGEND1 &  PREGEND2 &  HOWENDDK \\
+{} &  CASEID &  PREGORDR &  HOWPREG\_N &  HOWPREG\_P &  MOSCURRP &  NOWPRGDK &  PREGEND1 \\
 \midrule
-0 &   70627 &         1 &        NaN &        NaN &       NaN &       NaN &       6.0 &       NaN &       NaN \\
-1 &   70627 &         2 &        NaN &        NaN &       NaN &       NaN &       1.0 &       NaN &       NaN \\
-2 &   70627 &         3 &        NaN &        NaN &       NaN &       NaN &       6.0 &       NaN &       NaN \\
-3 &   70628 &         1 &        NaN &        NaN &       NaN &       NaN &       6.0 &       NaN &       NaN \\
-4 &   70628 &         2 &        NaN &        NaN &       NaN &       NaN &       6.0 &       NaN &       NaN \\
+0 &   70627 &         1 &        NaN &        NaN &       NaN &       NaN &       6.0 \\
+1 &   70627 &         2 &        NaN &        NaN &       NaN &       NaN &       1.0 \\
+2 &   70627 &         3 &        NaN &        NaN &       NaN &       NaN &       6.0 \\
+3 &   70628 &         1 &        NaN &        NaN &       NaN &       NaN &       6.0 \\
+4 &   70628 &         2 &        NaN &        NaN &       NaN &       NaN &       6.0 \\
 \midrule
 \end{tabular}
 
@@ -318,6 +318,9 @@ times each value appears.
 
 \begin{lstlisting}[]
 pounds.value_counts()
+(@\dashfill@)
+@@@/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/IPython/core/formatters.py:342: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
+  return method()@@@
 \end{lstlisting}
 
 \begin{tabular}{lr}
@@ -350,6 +353,9 @@ value instead, with the lightest babies first and heaviest babies last.
 
 \begin{lstlisting}[]
 pounds.value_counts().sort_index()
+(@\dashfill@)
+@@@/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/IPython/core/formatters.py:342: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
+  return method()@@@
 \end{lstlisting}
 
 \begin{tabular}{lr}
@@ -440,6 +446,9 @@ Here are the results for \passthrough{\lstinline!pounds!}.
 
 \begin{lstlisting}[]
 pounds.describe()
+(@\dashfill@)
+@@@/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/IPython/core/formatters.py:342: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
+  return method()@@@
 \end{lstlisting}
 
 \begin{tabular}{lr}
@@ -495,6 +504,9 @@ the valid values.
 
 \begin{lstlisting}[]
 pounds_clean.describe()
+(@\dashfill@)
+@@@/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/IPython/core/formatters.py:342: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
+  return method()@@@
 \end{lstlisting}
 
 \begin{tabular}{lr}
@@ -612,7 +624,7 @@ plt.title('Distribution of U.S. birth weight');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/07_dataframes_files/07_dataframes_60_0.png}
+\includegraphics[width=4in]{chapters/07_dataframes_files/07_dataframes_61_0.png}
 \end{center}
 
 The keyword argument, \passthrough{\lstinline!bins!}, tells
@@ -675,6 +687,9 @@ this case, it's \passthrough{\lstinline!True!} for each preterm baby and
 
 \begin{lstlisting}[]
 preterm.head()
+(@\dashfill@)
+@@@/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/IPython/core/formatters.py:342: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
+  return method()@@@
 \end{lstlisting}
 
 \begin{tabular}{ll}
@@ -734,6 +749,8 @@ live_preterm.mean()
 (@\dashfill@)
 @@@0.08929132209777034@@@
 \end{lstlisting}
+
+About 9\% of all pregnancies resulted in a preterm live birth.
 
 \textbf{Exercise:} Of all live births, what fraction are preterm?
 
@@ -818,6 +835,9 @@ alive from a single pregnancy.
 \begin{lstlisting}[]
 nbrnaliv = nsfg['NBRNALIV']
 nbrnaliv.value_counts()
+(@\dashfill@)
+@@@/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/IPython/core/formatters.py:342: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
+  return method()@@@
 \end{lstlisting}
 
 \begin{tabular}{lr}
@@ -864,6 +884,9 @@ looks like.
 \begin{lstlisting}[]
 sampling_weight = nsfg['WGT2015_2017']
 sampling_weight.describe()
+(@\dashfill@)
+@@@/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/IPython/core/formatters.py:342: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
+  return method()@@@
 \end{lstlisting}
 
 \begin{tabular}{lr}
