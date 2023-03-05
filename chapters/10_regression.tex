@@ -135,6 +135,9 @@ and the slope associated with \passthrough{\lstinline!\_VEGESU1!}.
 
 \begin{lstlisting}[]
 results.params
+(@\dashfill@)
+@@@/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/IPython/core/formatters.py:342: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
+  return method()@@@
 \end{lstlisting}
 
 \begin{tabular}{lr}
@@ -207,6 +210,9 @@ Here are the first few rows of \passthrough{\lstinline!gss!}:
 
 \begin{lstlisting}[]
 gss.head()
+(@\dashfill@)
+@@@/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/IPython/core/formatters.py:342: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
+  return method()@@@
 \end{lstlisting}
 
 \begin{tabular}{lrrrrrrrr}
@@ -227,6 +233,9 @@ real income as a function of years of education.
 \begin{lstlisting}[]
 results = smf.ols('REALINC ~ EDUC', data=gss).fit()
 results.params
+(@\dashfill@)
+@@@/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/IPython/core/formatters.py:342: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
+  return method()@@@
 \end{lstlisting}
 
 \begin{tabular}{lr}
@@ -251,6 +260,9 @@ include that in the model, too. Here's how:
 \begin{lstlisting}[]
 results = smf.ols('REALINC ~ EDUC + AGE', data=gss).fit()
 results.params
+(@\dashfill@)
+@@@/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/IPython/core/formatters.py:342: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
+  return method()@@@
 \end{lstlisting}
 
 \begin{tabular}{lr}
@@ -341,6 +353,9 @@ Now we can run a regression with both \passthrough{\lstinline!age!} and
 model = smf.ols('REALINC ~ EDUC + AGE + AGE2', data=gss)
 results = model.fit()
 results.params
+(@\dashfill@)
+@@@/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/IPython/core/formatters.py:342: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
+  return method()@@@
 \end{lstlisting}
 
 \begin{tabular}{lr}
@@ -423,6 +438,9 @@ gss['EDUC2'] = gss['EDUC']**2
 model = smf.ols('REALINC ~ EDUC + EDUC2 + AGE + AGE2', data=gss)
 results = model.fit()
 results.params
+(@\dashfill@)
+@@@/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/IPython/core/formatters.py:342: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
+  return method()@@@
 \end{lstlisting}
 
 \begin{tabular}{lr}
@@ -596,6 +614,9 @@ of a regression model. Here's an example:
 formula = 'REALINC ~ EDUC + EDUC2 + AGE + AGE2 + C(SEX)'
 results = smf.ols(formula, data=gss).fit()
 results.params
+(@\dashfill@)
+@@@/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/IPython/core/formatters.py:342: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
+  return method()@@@
 \end{lstlisting}
 
 \begin{tabular}{lr}
@@ -638,6 +659,9 @@ a column called \passthrough{\lstinline!GUNLAW!}; here are the values.
 
 \begin{lstlisting}[]
 gss['GUNLAW'].value_counts()
+(@\dashfill@)
+@@@/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/IPython/core/formatters.py:342: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
+  return method()@@@
 \end{lstlisting}
 
 \begin{tabular}{lr}
@@ -686,6 +710,9 @@ before. And here are the results.
 
 \begin{lstlisting}[]
 results.params
+(@\dashfill@)
+@@@/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/IPython/core/formatters.py:342: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
+  return method()@@@
 \end{lstlisting}
 
 \begin{tabular}{lr}
@@ -829,7 +856,7 @@ At this point, I'd like to summarize the topics we've covered so far,
 and make some connections that might clarify the big picture.
 
 A central theme of this book is \textbf{exploratory data analysis},
-which a process and set of tools for exploring a dataset, visualizing
+which is a process and set of tools for exploring a dataset, visualizing
 distributions, and discovering relationships between variables. The last
 four chapters demonstrate the steps of this process:
 
