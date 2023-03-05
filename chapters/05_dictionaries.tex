@@ -464,10 +464,11 @@ have
 them.”@@@
 \end{lstlisting}
 
-It removes the comma after \passthrough{\lstinline!anyone!}, but not the
+The comma after \passthrough{\lstinline!anyone!} is removed, but not the
 period and quotation mark after \passthrough{\lstinline!them!}. The
 problem is that this kind of quotation mark is not in
-\passthrough{\lstinline!string.punctuation!}.
+\passthrough{\lstinline!string.punctuation!}, so
+\passthrough{\lstinline!strip!} stops before it gets to the period.
 
 To fix this problem, we'll use the following loop, which
 
