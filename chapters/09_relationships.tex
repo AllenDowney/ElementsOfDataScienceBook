@@ -42,6 +42,9 @@ Here are the first few rows.
 
 \begin{lstlisting}[]
 brfss.head()
+(@\dashfill@)
+@@@/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/IPython/core/formatters.py:342: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
+  return method()@@@
 \end{lstlisting}
 
 \begin{tabular}{lrrrrrrrrr}
@@ -547,6 +550,9 @@ this:
 
 \begin{lstlisting}[]
 subset.corr()
+(@\dashfill@)
+@@@/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/IPython/core/formatters.py:342: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
+  return method()@@@
 \end{lstlisting}
 
 \begin{tabular}{lrrr}
@@ -631,8 +637,8 @@ It's clear that this is a strong relationship; if you are given
 \begin{lstlisting}[]
 np.corrcoef(xs, ys)
 (@\dashfill@)
-@@@array([[ 1.        , -0.00928026],
-       [-0.00928026,  1.        ]])@@@
+@@@array([[1.        , 0.00856993],
+       [0.00856993, 1.        ]])@@@
 \end{lstlisting}
 
 Even though there is a strong non-linear relationship, the computed
@@ -948,9 +954,9 @@ Now we can compute the linear regression.
 res_hw = linregress(height_clean, weight_clean)
 res_hw._asdict()
 (@\dashfill@)
-@@@{'slope': 0.9192115381848297,
- 'intercept': -75.12704250330233,
- 'rvalue': 0.47420308979024584,
+@@@{'slope': 0.9192115381848305,
+ 'intercept': -75.12704250330248,
+ 'rvalue': 0.4742030897902462,
  'pvalue': 0.0,
  'stderr': 0.005632863769802998,
  'intercept_stderr': 0.9608860265433182}@@@
@@ -1019,12 +1025,12 @@ weight_clean = subset['WTKG3']
 res_aw = linregress(age_clean, weight_clean)
 res_aw._asdict()
 (@\dashfill@)
-@@@{'slope': 0.023981159566968724,
+@@@{'slope': 0.023981159566968734,
  'intercept': 80.07977583683224,
- 'rvalue': 0.021641432889064068,
- 'pvalue': 4.374327493007566e-11,
- 'stderr': 0.003638139410742186,
- 'intercept_stderr': 0.18688508176870167}@@@
+ 'rvalue': 0.02164143288906408,
+ 'pvalue': 4.374327493007456e-11,
+ 'stderr': 0.003638139410742185,
+ 'intercept_stderr': 0.1868850817687016}@@@
 \end{lstlisting}
 
 The estimated slope is only 0.02 kilograms per year, or 0.6 kilograms in
@@ -1098,8 +1104,8 @@ This chapter presents three ways to visualize the relationship between
 two variables: a scatter plot, violin plot, and box plot. A scatter plot
 is often a good choice when you are exploring a new data set, but it can
 take some attention to avoid overplotting. Violin and box plot are
-particularly useful when one of the variables is categorical; that is,
-when it only takes on a few discrete values.
+particularly useful when one of the variables only takes on a few
+discrete values.
 
 And we considered two ways to quantify the strength of a relationship:
 the coefficient of correlation and the slope of a regression line. These
