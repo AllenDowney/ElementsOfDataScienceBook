@@ -48,8 +48,8 @@ Value & Probability \\
 \midrule()
 \end{longtable}
 
-More generally, a distributions can have any number of values, the
-values can be any type, and the probabilities do not have to be equal.
+More generally, a distribution can have any number of values, the values
+can be any type, and the probabilities do not have to be equal.
 
 To represent distributions in Python, we will use a library called
 \passthrough{\lstinline!empiricaldist!}, for ``empirical distribution'',
@@ -76,6 +76,11 @@ argument is the list of outcomes. We can display the result like this.
 
 \begin{lstlisting}[]
 die
+(@\dashfill@)
+@@@/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/empiricaldist/empiricaldist.py:98: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
+  return df._repr_html_()
+/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/IPython/core/formatters.py:342: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
+  return method()@@@
 \end{lstlisting}
 
 \begin{tabular}{lr}
@@ -137,7 +142,8 @@ fp = gzip.open(data_file)
 \end{lstlisting}
 
 The result is an object that behaves like a file, so we can pass it as
-an argument to \passthrough{\lstinline!read\_fwf!}:
+an argument to \passthrough{\lstinline!read\_fwf!}, which reads a
+fixed-width file, as we saw in the previous chapter:
 
 \begin{lstlisting}[]
 import pandas as pd
@@ -156,6 +162,9 @@ few rows.
 
 \begin{lstlisting}[]
 gss.head()
+(@\dashfill@)
+@@@/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/IPython/core/formatters.py:342: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
+  return method()@@@
 \end{lstlisting}
 
 \begin{tabular}{lrrrrrrrr}
@@ -185,6 +194,9 @@ education for each respondent. First we'll select a column from the
 
 \begin{lstlisting}[]
 gss['EDUC'].value_counts().sort_index()
+(@\dashfill@)
+@@@/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/IPython/core/formatters.py:342: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
+  return method()@@@
 \end{lstlisting}
 
 \begin{tabular}{lr}
@@ -273,6 +285,11 @@ Here's what the first few rows look like.
 
 \begin{lstlisting}[]
 pmf_educ.head()
+(@\dashfill@)
+@@@/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/empiricaldist/empiricaldist.py:98: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
+  return df._repr_html_()
+/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/IPython/core/formatters.py:342: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
+  return method()@@@
 \end{lstlisting}
 
 \begin{tabular}{lr}
@@ -292,6 +309,11 @@ rows.
 
 \begin{lstlisting}[]
 pmf_educ.tail()
+(@\dashfill@)
+@@@/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/empiricaldist/empiricaldist.py:98: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
+  return df._repr_html_()
+/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/IPython/core/formatters.py:342: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
+  return method()@@@
 \end{lstlisting}
 
 \begin{tabular}{lr}
@@ -326,6 +348,11 @@ column add up to 1.
 \begin{lstlisting}[]
 pmf_educ_norm = Pmf.from_seq(educ, normalize=True)
 pmf_educ_norm.head()
+(@\dashfill@)
+@@@/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/empiricaldist/empiricaldist.py:98: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
+  return df._repr_html_()
+/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/IPython/core/formatters.py:342: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
+  return method()@@@
 \end{lstlisting}
 
 \begin{tabular}{lr}
@@ -338,9 +365,9 @@ pmf_educ_norm.head()
 \midrule
 \end{tabular}
 
-Now if we use the bracket operator, the result is a fraction. For
-example, the fraction of people with 12 years of education is about
-30\%:
+Now if we use the bracket operator to look up a value, the result is a
+fraction rather than a count. For example, the fraction of people with
+12 years of education is about 30\%:
 
 \begin{lstlisting}[]
 pmf_educ_norm[12]
@@ -408,6 +435,11 @@ Here's the \passthrough{\lstinline!Pmf!} of these values.
 
 \begin{lstlisting}[]
 Pmf.from_seq(values)
+(@\dashfill@)
+@@@/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/empiricaldist/empiricaldist.py:98: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
+  return df._repr_html_()
+/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/IPython/core/formatters.py:342: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
+  return method()@@@
 \end{lstlisting}
 
 \begin{tabular}{lr}
@@ -439,6 +471,11 @@ Here's a \passthrough{\lstinline!Cdf!} object for the same five values.
 
 \begin{lstlisting}[]
 Cdf.from_seq(values)
+(@\dashfill@)
+@@@/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/empiricaldist/empiricaldist.py:98: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
+  return df._repr_html_()
+/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/IPython/core/formatters.py:342: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
+  return method()@@@
 \end{lstlisting}
 
 \begin{tabular}{lr}
@@ -685,9 +722,12 @@ plt.legend();
 \includegraphics[width=4in]{chapters/08_distributions_files/08_distributions_88_0.png}
 \end{center}
 
-The plot is pretty noisy. In the range from 40 to 50, it looks like the
-PMF is higher for men. And from 70 to 80, it is higher for women. But
-both of those differences might be due to random variation.
+A plot like this, which is highly variable, is often described as
+\emph{noisy}.
+
+If we ignore the noise, it looks like the PMF is higher for men between
+ages 40 and 50, and higher for women between ages 70 and 80. But both of
+those differences might be due to random variation.
 
 Now let's do the same thing with CDFs; everything is the same except we
 replace \passthrough{\lstinline!Pmf!} with
@@ -1117,8 +1157,9 @@ Now we'll compare the estimated density of the data with the normal PDF.
   density of the ages in the GSS.
 \end{itemize}
 
-Note: Seaborn can't handle NaNs, so use \passthrough{\lstinline!dropna!}
-to drop them before calling \passthrough{\lstinline!kdeplot!}.
+Note: Seaborn can't handle NaNs, but you can use
+\passthrough{\lstinline!dropna!} to drop them before calling
+\passthrough{\lstinline!kdeplot!}.
 
 How well do the PDF and KDE plots agree?
 
