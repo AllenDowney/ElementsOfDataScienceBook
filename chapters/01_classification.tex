@@ -1,5 +1,5 @@
-\hypertarget{algorithmic-fairness}{%
-\chapter{Algorithmic Fairness}\label{algorithmic-fairness}}
+\hypertarget{predicting-crime}{%
+\chapter{Predicting Crime}\label{predicting-crime}}
 
 This chapter and the next make up a case study related to ``Machine
 Bias'', an article published by ProPublica in 2016 (see
@@ -14,7 +14,7 @@ justice system.
   accuracy, predictive value, false positive rate, and false negative
   rate.
 \item
-  In the next chapter, we'll review the arguments made in a response
+  In the next chapter, we'll review arguments presented in a response
   article published in the Washington Post. We'll compute and interpret
   calibration curves, and explore the trade-offs between predictive
   value and error rates.
@@ -23,16 +23,15 @@ justice system.
 \hypertarget{machine-bias}{%
 \section{Machine Bias}\label{machine-bias}}
 
-We will start by replicating the analysis reported in ``Machine Bias'',
-by Julia Angwin, Jeff Larson, Surya Mattu and Lauren Kirchner, and
+We'll start by replicating the analysis reported in ``Machine Bias'', by
+Julia Angwin, Jeff Larson, Surya Mattu and Lauren Kirchner, and
 published by ProPublica in May 2016.
 
 This article is about a statistical tool called COMPAS which is used in
-the criminal justice systems of some states to inform decisions about
-which defendants should be released on bail before trial, how long
-convicted defendants should be imprisoned, and whether prisoners should
-be released on probation (see
-\url{https://en.wikipedia.org/wiki/COMPAS_(software)}).
+some criminal justice systems to inform decisions about which defendants
+should be released on bail before trial, how long convicted defendants
+should be imprisoned, and whether prisoners should be released on
+probation (see \url{https://en.wikipedia.org/wiki/COMPAS_(software)}).
 
 COMPAS uses information about defendants to generate a ``risk score''
 which is intended to quantify the risk that the defendant would commit
@@ -106,9 +105,9 @@ system is racially biased.
 Since the ProPublica article was published, it has been widely discussed
 in the media, and a number of researchers have published responses. In
 order to evaluate the original article and the responses it provoked,
-there are some technical issues you need to understand. My goal for
-these notebooks is to help you analyze the arguments and interpret the
-statistics they are based on.
+there are some technical issues you need to understand. My goal is to
+help you analyze the arguments and interpret the statistics they are
+based on.
 
 \hypertarget{replicating-the-analysis}{%
 \section{Replicating the Analysis}\label{replicating-the-analysis}}
@@ -183,6 +182,9 @@ lowest risk category; \passthrough{\lstinline!10!} is the highest.
 
 \begin{lstlisting}[]
 values(cp['decile_score'])
+(@\dashfill@)
+@@@/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/IPython/core/formatters.py:342: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
+  return method()@@@
 \end{lstlisting}
 
 \begin{tabular}{lr}
@@ -209,7 +211,7 @@ risk that they will recidivate.
 
 In order to evaluate the performance of COMPAS, the authors of the
 ProPublica article chose a threshold, \passthrough{\lstinline!4!}, and
-define decile scores at or below the threshold to be ``low risk'', and
+defined decile scores at or below the threshold to be ``low risk'', and
 scores above the threshold to be ``high risk''. Their choice of the
 threshold is arbitrary. Later, we will see what happens with other
 choices, but we'll start by replicating the original analysis.
@@ -223,6 +225,9 @@ greater than 4.
 high_risk = (cp['decile_score'] > 4)
 high_risk.name = 'HighRisk'
 values(high_risk)
+(@\dashfill@)
+@@@/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/IPython/core/formatters.py:342: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
+  return method()@@@
 \end{lstlisting}
 
 \begin{tabular}{lr}
@@ -235,12 +240,14 @@ True  &      3317 \\
 \end{tabular}
 
 The column \passthrough{\lstinline!two\_year\_recid!} indicates whether
-a defendant was charged with another crime during a two year period,
-after the original charge, when they were not in a correctional
-facility.
+a defendant was charged with another crime during a two year period
+after the original charge when they were not in a correctional facility.
 
 \begin{lstlisting}[]
 values(cp['two_year_recid'])
+(@\dashfill@)
+@@@/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/IPython/core/formatters.py:342: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
+  return method()@@@
 \end{lstlisting}
 
 \begin{tabular}{lr}
@@ -253,41 +260,46 @@ values(cp['two_year_recid'])
 \end{tabular}
 
 Let's create another \passthrough{\lstinline!Series!}, called
-\passthrough{\lstinline!new\_charge\_2!}, that is
+\passthrough{\lstinline!new\_charge!}, that is
 \passthrough{\lstinline!True!} for defendants who were charged with
 another crime within two years.
 
 \begin{lstlisting}[]
-new_charge_2 = (cp['two_year_recid'] == 1)
-new_charge_2.name = 'NewCharge2'
-values(new_charge_2)
+new_charge = (cp['two_year_recid'] == 1)
+new_charge.name = 'NewCharge'
+values(new_charge)
+(@\dashfill@)
+@@@/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/IPython/core/formatters.py:342: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
+  return method()@@@
 \end{lstlisting}
 
 \begin{tabular}{lr}
 \midrule
-{} &  NewCharge2 \\
+{} &  NewCharge \\
 \midrule
-False &        3963 \\
-True  &        3251 \\
+False &       3963 \\
+True  &       3251 \\
 \midrule
 \end{tabular}
 
-If we make a cross-tabulation of
-\passthrough{\lstinline!new\_charge\_2!} and
-\passthrough{\lstinline!high\_risk!}, the result is a DataFrame that
+If we make a cross-tabulation of \passthrough{\lstinline!new\_charge!}
+and \passthrough{\lstinline!high\_risk!}, the result is a DataFrame that
 indicates how many defendants are in each of four groups:
 
 \begin{lstlisting}[]
-pd.crosstab(new_charge_2, high_risk)
+pd.crosstab(new_charge, high_risk)
+(@\dashfill@)
+@@@/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/IPython/core/formatters.py:342: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
+  return method()@@@
 \end{lstlisting}
 
 \begin{tabular}{lrr}
 \midrule
-HighRisk &  False &  True \\
-NewCharge2 &        &       \\
+HighRisk &  False &  True  \\
+NewCharge &        &        \\
 \midrule
-False      &   2681 &  1282 \\
-True       &   1216 &  2035 \\
+False     &   2681 &   1282 \\
+True      &   1216 &   2035 \\
 \midrule
 \end{tabular}
 
@@ -322,6 +334,9 @@ Here are the values of \passthrough{\lstinline!race!}:
 
 \begin{lstlisting}[]
 values(cp['race'])
+(@\dashfill@)
+@@@/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/IPython/core/formatters.py:342: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
+  return method()@@@
 \end{lstlisting}
 
 \begin{tabular}{lr}
@@ -344,6 +359,9 @@ defendants.
 white = (cp['race'] == 'Caucasian')
 white.name = 'white'
 values(white)
+(@\dashfill@)
+@@@/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/IPython/core/formatters.py:342: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
+  return method()@@@
 \end{lstlisting}
 
 \begin{tabular}{lr}
@@ -358,16 +376,19 @@ True  &   2454 \\
 And here's the confusion matrix for White defendants.
 
 \begin{lstlisting}[]
-pd.crosstab(new_charge_2[white], high_risk[white])
+pd.crosstab(new_charge[white], high_risk[white])
+(@\dashfill@)
+@@@/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/IPython/core/formatters.py:342: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
+  return method()@@@
 \end{lstlisting}
 
 \begin{tabular}{lrr}
 \midrule
-HighRisk &  False &  True \\
-NewCharge2 &        &       \\
+HighRisk &  False &  True  \\
+NewCharge &        &        \\
 \midrule
-False      &   1139 &   349 \\
-True       &    461 &   505 \\
+False     &   1139 &    349 \\
+True      &    461 &    505 \\
 \midrule
 \end{tabular}
 
@@ -378,6 +399,9 @@ True       &    461 &   505 \\
 black = (cp['race'] == 'African-American')
 black.name = 'black'
 values(black)
+(@\dashfill@)
+@@@/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/IPython/core/formatters.py:342: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
+  return method()@@@
 \end{lstlisting}
 
 \begin{tabular}{lr}
@@ -392,16 +416,19 @@ True  &   3696 \\
 And here is the confusion matrix for Black defendants.
 
 \begin{lstlisting}[]
-pd.crosstab(new_charge_2[black], high_risk[black])
+pd.crosstab(new_charge[black], high_risk[black])
+(@\dashfill@)
+@@@/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/IPython/core/formatters.py:342: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
+  return method()@@@
 \end{lstlisting}
 
 \begin{tabular}{lrr}
 \midrule
-HighRisk &  False &  True \\
-NewCharge2 &        &       \\
+HighRisk &  False &  True  \\
+NewCharge &        &        \\
 \midrule
-False      &    990 &   805 \\
-True       &    532 &  1369 \\
+False     &    990 &    805 \\
+True      &    532 &   1369 \\
 \midrule
 \end{tabular}
 
@@ -435,7 +462,7 @@ criminal justice system, this is an important issue.
 
 However, I am going to put it aside \emph{for now} in order to focus on
 understanding the arguments posed in the ProPublica article and the
-metrics they are based on. For the rest of this notebook I will take the
+metrics they are based on. For the rest of this chapter I will take the
 ``recidivism rates'' in the dataset at face value; but I will try to be
 clear about that they mean (and don't mean).
 
@@ -446,13 +473,13 @@ matrix}\label{arranging-the-confusion-matrix}}
 In the previous section I arranged the confusion matrix to be consistent
 with the ProPublica article, to make it easy to check for consistency.
 
-In general, there are many possible ways to arrange a confusion matrix:
-you can put the predictions along the columns and the actual conditions
-along the rows, or the other way around, and you can sort the rows and
-columns in either order.
+In general, there are many ways to arrange a confusion matrix: you can
+put the predictions along the columns and the actual conditions along
+the rows, or the other way around, and you can sort the rows and columns
+in either order.
 
-There is no universal standard arrangement, but the one that seems to be
-most common looks like this:
+There is no universal standard arrangement, but the most common one
+looks like this:
 
 \begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3043}}
@@ -498,6 +525,28 @@ In the context of the ProPublica article:
   ``Actual negative'' means they were not charged (survived).
 \end{itemize}
 
+Going forward, we'll present confusion matrices in this format.
+
+Here is the confusion matrix for all defendants.
+
+\begin{lstlisting}[]
+matrix_all = make_matrix(cp)
+matrix_all
+(@\dashfill@)
+@@@/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/IPython/core/formatters.py:342: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
+  return method()@@@
+\end{lstlisting}
+
+\begin{tabular}{lrr}
+\midrule
+{} &  Pred Positive &  Pred Negative \\
+Actual   &                &                \\
+\midrule
+Positive &           2035 &           1216 \\
+Negative &           1282 &           2681 \\
+\midrule
+\end{tabular}
+
 \hypertarget{accuracy}{%
 \section{Accuracy}\label{accuracy}}
 
@@ -506,10 +555,10 @@ Well, it turns out that there are a \emph{lot} of ways to answer that
 question. One of the simplest is overall \textbf{accuracy}, which is the
 fraction (or percentage) of correct predictions. To compute accuracy, it
 is convenient to extract from the confusion matrix the number of true
-positives, false positives, false negatives, and true negatives.
+positives, false negatives, false positives, and true negatives.
 
 \begin{lstlisting}[]
-tp, fp, fn, tn = matrix_all.to_numpy().flatten()
+tp, fn, fp, tn = matrix_all.to_numpy().flatten()
 \end{lstlisting}
 
 The number of true predictions is \passthrough{\lstinline!tp + tn!}. The
@@ -565,7 +614,7 @@ def predictive_value(m):
     
     m: confusion matrix
     """
-    tp, fp, fn, tn = m.to_numpy().flatten()
+    tp, fn, fp, tn = m.to_numpy().flatten()
     ppv = percent(tp, fp)
     npv = percent(tn, fn)
     return ppv, npv
@@ -615,7 +664,7 @@ def sens_spec(m):
     
     m: confusion matrix
     """
-    tp, fp, fn, tn = m.to_numpy().flatten()
+    tp, fn, fp, tn = m.to_numpy().flatten()
     sens = percent(tp, fn)
     spec = percent(tn, fp)
     return sens, spec
@@ -653,9 +702,9 @@ might help:
 \midrule()
 \begin{minipage}[b]{\linewidth}\raggedright
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-\textbf{Predicted positive (PP)}
+\textbf{Pred positive (PP)}
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-\textbf{Predicted negative (PN)}
+\textbf{Pred negative (PN)}
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
 \end{minipage} \\
@@ -665,8 +714,8 @@ might help:
 & Sensitivity = TP / P & FN rate = FN / P \\
 \textbf{Actual negative (N)} & False positive (FP) & True negative (TN)
 & FP rate = FP / N & Specificity = TN / N \\
-Prevalence = P / (P + N) & PPV = TP / PP & NPV = TN / PN & & Accuracy =
-(TP + TN) / (P + N) \\
+Prevalence = P / (P + N) & PPV = TP / PP & NPV = TN / PN & & Acc = (TP +
+TN) / (P + N) \\
 \midrule()
 \end{longtable}
 
@@ -734,7 +783,7 @@ def error_rates(m):
     
     m: confusion matrix
     """
-    tp, fp, fn, tn = m.to_numpy().flatten()
+    tp, fn, fp, tn = m.to_numpy().flatten()
     fpr = percent(fp, tn)
     fnr = percent(fn, tp)
     return fpr, fnr
@@ -808,12 +857,12 @@ it's the fraction of defendants who recidivate. The following function
 computes prevalence:
 
 \begin{lstlisting}[]
-def prevalence(df):
+def prevalence(m):
     """Compute prevalence.
     
     m: confusion matrix
     """
-    tp, fp, fn, tn = df.to_numpy().flatten()
+    tp, fn, fp, tn = m.to_numpy().flatten()
     prevalence = percent(tp+fn, tn+fp)
     return prevalence
 \end{lstlisting}
@@ -852,25 +901,28 @@ def compute_metrics(m, name=''):
     df = pd.DataFrame(index=index, columns=['Percent'])
     df.Percent = fpr, fnr, ppv, npv, prev
     df.index.name = name
-    return df
+    return df.round(1)
 \end{lstlisting}
 
 Here are the metrics for all defendants.
 
 \begin{lstlisting}[]
 compute_metrics(matrix_all, 'All defendants')
+(@\dashfill@)
+@@@/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/IPython/core/formatters.py:342: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
+  return method()@@@
 \end{lstlisting}
 
 \begin{tabular}{lr}
 \midrule
-{} &    Percent \\
-All defendants &            \\
+{} &  Percent \\
+All defendants &          \\
 \midrule
-FP rate        &  32.349230 \\
-FN rate        &  37.403876 \\
-PPV            &  61.350618 \\
-NPV            &  68.796510 \\
-Prevalence     &  45.065151 \\
+FP rate        &     32.3 \\
+FN rate        &     37.4 \\
+PPV            &     61.4 \\
+NPV            &     68.8 \\
+Prevalence     &     45.1 \\
 \midrule
 \end{tabular}
 
@@ -881,18 +933,21 @@ Here are the same metrics for Black defendants.
 
 \begin{lstlisting}[]
 compute_metrics(matrix_black, 'Black defendants')
+(@\dashfill@)
+@@@/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/IPython/core/formatters.py:342: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
+  return method()@@@
 \end{lstlisting}
 
 \begin{tabular}{lr}
 \midrule
-{} &    Percent \\
-Black defendants &            \\
+{} &  Percent \\
+Black defendants &          \\
 \midrule
-FP rate          &  44.846797 \\
-FN rate          &  27.985271 \\
-PPV              &  62.971481 \\
-NPV              &  65.045992 \\
-Prevalence       &  51.433983 \\
+FP rate          &     44.8 \\
+FN rate          &     28.0 \\
+PPV              &     63.0 \\
+NPV              &     65.0 \\
+Prevalence       &     51.4 \\
 \midrule
 \end{tabular}
 
@@ -900,18 +955,21 @@ And for White defendants.
 
 \begin{lstlisting}[]
 compute_metrics(matrix_white, 'White defendants')
+(@\dashfill@)
+@@@/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/IPython/core/formatters.py:342: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
+  return method()@@@
 \end{lstlisting}
 
 \begin{tabular}{lr}
 \midrule
-{} &    Percent \\
-White defendants &            \\
+{} &  Percent \\
+White defendants &          \\
 \midrule
-FP rate          &  23.454301 \\
-FN rate          &  47.722567 \\
-PPV              &  59.133489 \\
-NPV              &  71.187500 \\
-Prevalence       &  39.364303 \\
+FP rate          &     23.5 \\
+FN rate          &     47.7 \\
+PPV              &     59.1 \\
+NPV              &     71.2 \\
+Prevalence       &     39.4 \\
 \midrule
 \end{tabular}
 
