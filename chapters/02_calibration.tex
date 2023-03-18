@@ -1,5 +1,5 @@
-\hypertarget{calibration}{%
-\chapter{Calibration}\label{calibration}}
+\hypertarget{algorithmic-fairness}{%
+\chapter{Algorithmic Fairness}\label{algorithmic-fairness}}
 
 In the previous chapter, we replicated the analysis reported in
 ``Machine Bias'', by Julia Angwin, Jeff Larson, Surya Mattu and Lauren
@@ -8,14 +8,14 @@ Kirchner, published by ProPublica in May 2016.
 After the ProPublica article, the Washington Post published a response
 by Sam Corbett-Davies, Emma Pierson, Avi Feller and Sharad Goel: ``A
 computer program used for bail and sentencing decisions was labeled
-biased against blacks. It's actually not that clear.''.
+biased against Blacks. It's actually not that clear.''
 
 I encourage you to read both of those articles before you go on. In this
 chapter, I explain some of the arguments presented in the Washington
 Post (WaPo) article, and we will replicate their analysis.
 
-\hypertarget{the-wapo-response}{%
-\section{The WaPo Response}\label{the-wapo-response}}
+\hypertarget{the-response}{%
+\section{The Response}\label{the-response}}
 
 The Washington Post article summarizes the ProPublica article and the
 response from Northpointe, the company that makes COMPAS, like this:
@@ -23,28 +23,28 @@ response from Northpointe, the company that makes COMPAS, like this:
 \begin{itemize}
 \item
   ProPublica claims that COMPAS is unfair because ``among defendants who
-  ultimately did not reoffend, blacks were more than twice as likely as
-  whites to be classified as medium or high risk.''
+  ultimately did not reoffend, Blacks were more than twice as likely as
+  Whites to be classified as medium or high risk.''
 \item
   Northpointe claims that COMPAS is fair because ``scores mean
   essentially the same thing regardless of the defendant's race. For
   example, among defendants who scored a seven on the COMPAS scale, 60
-  percent of white defendants reoffended, which is nearly identical to
-  the 61 percent of black defendants who reoffended.''
+  percent of White defendants reoffended, which is nearly identical to
+  the 61 percent of Black defendants who reoffended.''
 \end{itemize}
 
 So ProPublica and Northpointe are invoking different definitions of
 ``fair''.
 
 In the previous chapter we explored the first definition by computing
-error rates (false positive and false negative) for white and black
+error rates (false positive and false negative) for White and Black
 defendants. In this chapter, we'll explore the second definition, which
 is called ``calibration''.
 
-\hypertarget{calibration-1}{%
-\section{Calibration}\label{calibration-1}}
+\hypertarget{calibration}{%
+\section{Calibration}\label{calibration}}
 
-The WaPo article includes this figure, which shows ``white and black
+The WaPo article includes this figure, which shows ``White and Black
 defendants with the same risk score are roughly equally likely to
 reoffend.''
 
@@ -69,7 +69,7 @@ def calibration_curve(df):
 \end{lstlisting}
 
 The following figure shows this calibration curve for all defendants and
-for white and black defendants separately.
+for White and Black defendants separately.
 
 \begin{lstlisting}[]
 cal_all = calibration_curve(cp)
@@ -91,44 +91,47 @@ decorate(xlabel='Risk score',
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/02_calibration_files/02_calibration_21_0.png}
+\includegraphics[width=4in]{chapters/02_calibration_files/02_calibration_20_0.png}
 \end{center}
 
 This figure shows that people with higher risk scores are more likely to
 be charged with a new crime within two years. In that sense COMPAS works
 as intended.
 
-Furthermore, the test is equally calibrated for black and white
+Furthermore, the test is equally \textbf{calibrated} for Black and White
 defendants; that is, in each risk group, the rate of recidivism is about
-the same for black and white defendants.
+the same for both groups.
 
 The WaPo article explains why this is important:
 
 \begin{quote}
-A risk score of seven for black defendants should mean the same thing as
-a score of seven for white defendants. Imagine if that were not so, and
-we systematically assigned whites higher risk scores than equally risky
-black defendants with the goal of mitigating ProPublica's criticism. We
+A risk score of seven for Black defendants should mean the same thing as
+a score of seven for White defendants. Imagine if that were not so, and
+we systematically assigned Whites higher risk scores than equally risky
+Black defendants with the goal of mitigating ProPublica's criticism. We
 would consider that a violation of the fundamental tenet of equal
 treatment.
 \end{quote}
 
 So we want a test that has the same calibration for all groups, and we
 want a test that has the same error rates for all groups. But there's
-the problem: as the WaPo article explains, it is mathematically
-impossible to be fair by both definitions at the same time.
+the problem: it is mathematically impossible to be fair by both
+definitions at the same time.
 
 To see why, let's go back to the confusion matrix.
 
 \hypertarget{matrices-and-metrics}{%
 \section{Matrices and Metrics}\label{matrices-and-metrics}}
 
-In the previous chapter, we computed confusion matrices for white and
-black defendants. Here they are again:
+In the previous chapter, we computed confusion matrices for White and
+Black defendants. Here they are again:
 
 \begin{lstlisting}[]
 matrix_white = make_matrix(cp[white])
 matrix_white
+(@\dashfill@)
+@@@/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/IPython/core/formatters.py:342: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
+  return method()@@@
 \end{lstlisting}
 
 \begin{tabular}{lrr}
@@ -144,6 +147,9 @@ Negative  &        461 &          1139 \\
 \begin{lstlisting}[]
 matrix_black = make_matrix(cp[black])
 matrix_black
+(@\dashfill@)
+@@@/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/IPython/core/formatters.py:342: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
+  return method()@@@
 \end{lstlisting}
 
 \begin{tabular}{lrr}
@@ -162,6 +168,9 @@ And here are the metrics we computed from the confusion matrices:
 metrics_white = compute_metrics(matrix_white, 
                                 'White defendants')
 metrics_white
+(@\dashfill@)
+@@@/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/IPython/core/formatters.py:342: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
+  return method()@@@
 \end{lstlisting}
 
 \begin{tabular}{lr}
@@ -181,6 +190,9 @@ Prevalence       &  39.364303 \\
 metrics_black = compute_metrics(matrix_black, 
                                 'Black defendants')
 metrics_black
+(@\dashfill@)
+@@@/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/IPython/core/formatters.py:342: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
+  return method()@@@
 \end{lstlisting}
 
 \begin{tabular}{lr}
@@ -197,28 +209,28 @@ Prevalence       &  51.433983 \\
 \end{tabular}
 
 If we look at the error rates (FPR and FNR), it seems like COMPAS is
-biased against black defendants:
+biased against Black defendants:
 
 \begin{itemize}
 \item
   Their false positive rate is higher (45\% vs 23\%): among people who
-  \emph{will not} recidivate, black defendants are more likely to be
+  \emph{will not} recidivate, Black defendants are more likely to be
   classified high risk.
 \item
   Their false negative rate is lower (28\% vs 48\%): among people who
-  \emph{will} recidivate, black defendants are less likely to be
+  \emph{will} recidivate, Black defendants are less likely to be
   classified low risk.
 \end{itemize}
 
 But if we look at the the predictive values (PPV and NPV) it seems like
-COMPAS is biased in favor of black defendants:
+COMPAS is biased in favor of Black defendants:
 
 \begin{itemize}
 \item
-  Among people in the \emph{high risk group}, black defendants are more
+  Among people in the \emph{high risk group}, Black defendants are more
   likely to be charged with another crime (63\% vs 59\%).
 \item
-  Among people in the \emph{low risk group}, black defendants are less
+  Among people in the \emph{low risk group}, Black defendants are less
   likely to ``survive'' two years without another charge (65\% vs 71\%).
 \end{itemize}
 
@@ -229,11 +241,10 @@ that we can't. We'll see why in the next section.
 \section{What Would It Take?}\label{what-would-it-take}}
 
 Suppose we want to fix COMPAS so that predictive values are the same for
-black and white defendants. We could do that by using different
-thresholds for the two groups.
-
-In this section, we'll figure out what it would take to re-calibrate
-COMPAS; then we'll see what effect that would have on predictive values.
+Black and White defendants. We could do that by using different
+thresholds for the two groups. In this section, we'll figure out what it
+would take to re-calibrate COMPAS; then we'll see what effect that would
+have on predictive values.
 
 The following function loops through possible thresholds, makes the
 confusion matrix with each threshold, and computes accuracy metrics.
@@ -264,6 +275,9 @@ Here's the resulting table for all defendants.
 \begin{lstlisting}[]
 table_all = sweep_threshold(cp)
 table_all.head()
+(@\dashfill@)
+@@@/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/IPython/core/formatters.py:342: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
+  return method()@@@
 \end{lstlisting}
 
 \begin{tabular}{lrrrrr}
@@ -290,7 +304,7 @@ decorate(xlabel='Threshold',
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/02_calibration_files/02_calibration_37_0.png}
+\includegraphics[width=4in]{chapters/02_calibration_files/02_calibration_36_0.png}
 \end{center}
 
 When the threshold is low, almost everyone is in the high risk group; in
@@ -327,20 +341,20 @@ decorate(xlabel='Threshold',
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/02_calibration_files/02_calibration_39_0.png}
+\includegraphics[width=4in]{chapters/02_calibration_files/02_calibration_38_0.png}
 \end{center}
 
 When the threshold is too low, PPV is low. When the threshold is too
 high, NPV is low.
 
-Now I'll compute tables for black and white defendants separately.
+Now let's compute tables for Black and White defendants separately.
 
 \begin{lstlisting}[]
 table_white = sweep_threshold(cp[white])
 table_black = sweep_threshold(cp[black])
 \end{lstlisting}
 
-I'll use the following function to interpolate columns in the table;
+We'll use the following function to interpolate columns in the table;
 that is, for a given threshold I can compute the corresponding metric.
 
 \begin{lstlisting}[]
@@ -377,8 +391,8 @@ def crossing(series, value, **options):
 \end{lstlisting}
 
 We can use \passthrough{\lstinline!crossing!} to calibrate the test for
-white defendants; that is, we can compute the threshold that would make
-the error rates for white defendants the same as for the general
+White defendants; that is, we can compute the threshold that would make
+the error rates for White defendants the same as for the general
 population.
 
 \begin{lstlisting}[]
@@ -398,9 +412,9 @@ crossing(table_white['FNR'], fnr)
 @@@array(3.11788885)@@@
 \end{lstlisting}
 
-With a threshold near 3.2, white defendants would have the same error
+With a threshold near 3.2, White defendants would have the same error
 rates as the general population. Now let's do the same computation for
-black defendants.
+Black defendants.
 
 \begin{lstlisting}[]
 crossing(table_black['FPR'], fpr)
@@ -414,10 +428,10 @@ crossing(table_black['FNR'], fnr)
 @@@array(5.01417524)@@@
 \end{lstlisting}
 
-To get the same error rates for black and white defendants, we would
+To get the same error rates for Black and White defendants, we would
 need different thresholds: about 5.1 compared to 3.2. At those levels,
-the predictive values are substantially different. Here's PPV for each
-group with different thresholds:
+the predictive values are substantially different. Here's PPV with
+different thresholds for each group:
 
 \begin{lstlisting}[]
 interpolate(table_white['PPV'], 3.2)
@@ -435,14 +449,14 @@ With equal error rates, we get different PPV:
 
 \begin{itemize}
 \item
-  Among white defendants in the high risk group, about 55\% would
+  Among White defendants in the high risk group, about 55\% would
   recidivate.
 \item
-  Among black defendants in the high risk group, about 66\% would
+  Among Black defendants in the high risk group, about 66\% would
   recidivate.
 \end{itemize}
 
-Here's NPV for each group with different thresholds:
+Here's NPV with different thresholds for each group:
 
 \begin{lstlisting}[]
 interpolate(table_white['NPV'], 3.2)
@@ -460,10 +474,11 @@ With equal error rates, the NPVs are substantially different:
 
 \begin{itemize}
 \item
-  Among white defendants in the low risk group, 73\% survive two years
+  Among White defendants in the low risk group, 73\% went two years
   without another charge.
 \item
-  Among black defendants in the low risk group, 62\% survive two years without another charge.
+  Among Black defendants in the low risk group, 62\% went two years
+  without another charge.
 \end{itemize}
 
 To summarize, if the test is calibrated in terms of error rates, it is
@@ -479,22 +494,23 @@ not calibrated in terms of predictive values.
 \end{itemize}
 
 Fundamentally, the problem is that the prevalence of recidivism is
-different in the two groups: about 39\% of white defendants were charged
-with another crime within two years, compared to 51\% of black
-defendants.
+different in the two groups: about 39\% of White defendants were charged
+with another crime within two years, compared to 51\% of Black
+defendants. As long as that's the case (for any two groups) the
+predictive values and error rates can't be ``fair'' at the same time.
 
-As long as that's the case (for any two groups) the predictive values
-and error rates can't be ``fair'' at the same time.
+That's the argument the Washington Post article presented. In the next
+section, we'll take the argument one step farther by introducing one
+more metric, the area under the ROC curve.
 
-\hypertarget{roc}{%
-\section{ROC}\label{roc}}
+\hypertarget{roc-curve}{%
+\section{ROC Curve}\label{roc-curve}}
 
-In the previous section I plotted various metrics as as function of
+In the previous section we plotted various metrics as as function of
 threshold. Another common and useful way to visualize these results is
-to plot sensitivity (which is the complement of FNR) versus FPR. For
-historical reasons, the result is called a receiver operating
-characteristic (ROC) curve (see
-\url{https://en.wikipedia.org/wiki/Receiver_operating_characteristic}).
+to plot sensitivity versus false positive rate (FPR). For historical
+reasons, the result is called a \textbf{receiver operating
+characteristic (ROC) curve}.
 
 The following function plots the ROC curve:
 
@@ -521,7 +537,7 @@ plot_roc(table_all, color='C2', label='All defendants')
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/02_calibration_files/02_calibration_64_0.png}
+\includegraphics[width=4in]{chapters/02_calibration_files/02_calibration_63_0.png}
 \end{center}
 
 The green line is the ROC curve. The gray dotted line shows the identity
@@ -539,8 +555,8 @@ reality there is almost always a trade-off:
 
 The ROC curve tells us how much sensitivity we get for a given FPR or,
 the other way around, how much FPR we have to accept to achieve a given
-sensitivity. The following figure shows the ROC curves for white and
-black defendants.
+sensitivity. The following figure shows the ROC curves for White and
+Black defendants.
 
 \begin{lstlisting}[]
 plot_roc(table_white)
@@ -548,7 +564,7 @@ plot_roc(table_black)
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/02_calibration_files/02_calibration_66_0.png}
+\includegraphics[width=4in]{chapters/02_calibration_files/02_calibration_65_0.png}
 \end{center}
 
 The ROC curves are similar for the two groups, which shows that we can
@@ -557,8 +573,8 @@ we did in the previous section. It also shows that the test has nearly
 the same ``concordance'' for both groups, which I explain in the next
 section.
 
-\hypertarget{auc}{%
-\section{AUC}\label{auc}}
+\hypertarget{concordance}{%
+\section{Concordance}\label{concordance}}
 
 The authors of the ProPublica article published a supplementary article,
 ``How We Analyzed the COMPAS Recidivism Algorithm'', which describes
@@ -583,19 +599,17 @@ They explain:
 \begin{quote}
 {[}These estimates{]} are lower than what Northpointe describes as a
 threshold for reliability. ``A rule of thumb according to several recent
-articles is that AUCs of .70 or above typically indicate satisfactory
-predictive accuracy, and measures between .60 and .70 suggest low to
-moderate predictive accuracy,'' the company says in its study.
+articles is that {[}concordances{]} of .70 or above typically indicate
+satisfactory predictive accuracy, and measures between .60 and .70
+suggest low to moderate predictive accuracy,'' the company says in its
+study.
 \end{quote}
 
 There are several ways to compute concordance, but one of the simplest
-is to compute the area under the ROC curve. If you would like to know
-why this works, you might find this discussion helpful:
-\url{https://stats.stackexchange.com/questions/180638/how-to-derive-the-probabilistic-interpretation-of-the-auc}.
-
-Since we've already computed the ROC, we can use Simpson's rule to
-estimate the area under the curve (see
-\url{https://en.wikipedia.org/wiki/Simpsons_rule}).
+is to compute the area under the ROC curve, which is why concordance is
+also called the \textbf{area under the curve} or AUC. Since we've
+already computed the ROC, we can use Simpson's rule to estimate the area
+under the curve (see \url{https://en.wikipedia.org/wiki/Simpsons_rule}).
 
 \begin{lstlisting}[]
 from scipy.integrate import simps
@@ -609,7 +623,7 @@ def compute_auc(table):
     return simps(y.values, x.values)
 \end{lstlisting}
 
-The concordance (AUC) for all respondents is about 70\%.
+The concordance for all respondents is about 70\%.
 
 \begin{lstlisting}[]
 compute_auc(table_all)
@@ -628,25 +642,25 @@ compute_auc(table_white)
 \begin{lstlisting}[]
 compute_auc(table_black)
 (@\dashfill@)
-@@@0.694567757058852@@@
+@@@0.6945677570588521@@@
 \end{lstlisting}
 
 Different ways of computing concordance handle ties differently, which
 is probably why we, ProPublica, and Northpointe get somewhat different
 estimates. But qualitatively they all tell the same story; as a binary
 classifier, COMPAS is only moderately accurate. However, it seems to be
-equally accurate, by this metric, for white and black defendants.
+equally accurate, by this metric, for White and Black defendants.
 
 \hypertarget{summary}{%
 \section{Summary}\label{summary}}
 
-In this chapter, we replicated the analysis reported in the WaPo article
-and confirmed two of the arguments they presented:
+In this chapter, we replicated the analysis reported in the Washington
+Post article and confirmed two of the arguments they presented:
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
 \item
-  COMPAS is calibrated in the sense that white and black defendants with
+  COMPAS is calibrated in the sense that White and Black defendants with
   the same risk score have almost the same probability of being charged
   with another crime. This implies that it has roughly the same
   predictive value for both groups.
@@ -671,5 +685,51 @@ And we showed:
 \end{itemize}
 
 Finally, we derived the ROC curve and computed AUC, which shows that
-COMPAS has nearly the same concordance for white and black defendants.
+COMPAS has nearly the same concordance for White and Black defendants.
+
+\hypertarget{discussion}{%
+\section{Discussion}\label{discussion}}
+
+If it is impossible to make a classification algorithm fair for all
+groups, what should we do?
+
+It might be tempting to forbid algorithms like COMPAS in the criminal
+justice system, but unfortunately, that doesn't solve the problem. The
+conclusions we reached in this case study apply to human decision-makers
+as well, with the additional problem that humans are more unpredictable
+than algorithms, and can be more biased. As long as we have to make
+decisions about bail, sentencing, and parole, we will need data and
+algorithms to inform those decisions, regardless of whether the
+algorithms are run by humans or machines.
+
+I don't have a solution to these problems, but I will suggest two
+guidelines: the data we use should be unbiased, and the algorithms
+should be transparent.
+
+I discussed the problem of data bias in the previous chapter. In this
+example, we used data about additional \emph{charges} as a measure of
+additional \emph{crimes}. But not everyone who commits a crime gets
+charged. If one group is more likely than another to be charged with a
+crime, the algorithm will be unfair, no matter how it is calibrated.
+
+Of course we should use unbiased data if we can, but if that's not
+possible, sometimes we can do as well if we \emph{know} the data is
+biased, in what directions, and by how much. So one thing we can do to
+make algorithms more fair is to quantify biases in the data we use and
+compensate for them.
+
+Another thing we can do is make systems like COMPAS more transparent;
+that is, we should know how they work, what factors they take into
+account, and what they ignore. Algorithms intended to serve the public
+interest should be the subject of public discussion, not the trade
+secrets of a private company.
+
+The use of algorithms in criminal justice, and in many other domains
+that profoundly affect people's lives, is relatively new. It raises
+difficult questions about fairness that we have only begun to recognize.
+
+The goal of this case study is to help us measure the accuracy of these
+algorithms and quantify their fairness. I hope it will contribute to the
+ongoing debate as we address the many challenges of the criminal justice
+system and the use of algorithms in our lives.
 
