@@ -211,7 +211,7 @@ which we can use to convert a string to a
 \begin{lstlisting}[]
 pd.Timestamp('6:30:00')
 (@\dashfill@)
-@@@Timestamp('2023-03-05 06:30:00')@@@
+@@@Timestamp('2023-04-10 06:30:00')@@@
 \end{lstlisting}
 
 Or we can do the same thing using the variable defined above.
@@ -219,7 +219,7 @@ Or we can do the same thing using the variable defined above.
 \begin{lstlisting}[]
 pd.Timestamp(not_really_a_time)
 (@\dashfill@)
-@@@Timestamp('2023-03-05 06:30:00')@@@
+@@@Timestamp('2023-04-10 06:30:00')@@@
 \end{lstlisting}
 
 In this example, the string specifies a time but no date, so Pandas
@@ -262,7 +262,7 @@ date_of_birth.day_name(), date_of_birth.month_name()
 now = pd.Timestamp.now()
 now
 (@\dashfill@)
-@@@Timestamp('2023-03-05 11:30:12.258924')@@@
+@@@Timestamp('2023-04-10 14:22:31.147207')@@@
 \end{lstlisting}
 
 \textbf{Exercise:} Use the value of \passthrough{\lstinline!now!} to
@@ -279,7 +279,7 @@ operations. For example, you can compute the difference between two
 age = now - date_of_birth
 age
 (@\dashfill@)
-@@@Timedelta('12327 days 11:30:12.258924')@@@
+@@@Timedelta('12363 days 14:22:31.147207')@@@
 \end{lstlisting}
 
 The result is a \passthrough{\lstinline!Timedelta!} that represents the
@@ -292,7 +292,7 @@ hours, etc. between the two \passthrough{\lstinline!Timestamp!} values.
 \begin{lstlisting}[]
 age.components
 (@\dashfill@)
-@@@Components(days=12327, hours=11, minutes=30, seconds=12, milliseconds=258, microseconds=924, nanoseconds=0)@@@
+@@@Components(days=12363, hours=14, minutes=22, seconds=31, milliseconds=147, microseconds=207, nanoseconds=0)@@@
 \end{lstlisting}
 
 You can get one of the components like this:
@@ -300,7 +300,7 @@ You can get one of the components like this:
 \begin{lstlisting}[]
 age.days
 (@\dashfill@)
-@@@12327@@@
+@@@12363@@@
 \end{lstlisting}
 
 The biggest component of \passthrough{\lstinline!Timedelta!} is days,
@@ -316,7 +316,7 @@ One way to compute age in years is to divide age in days by 365.24:
 \begin{lstlisting}[]
 age.days / 365.24
 (@\dashfill@)
-@@@33.75041068886212@@@
+@@@33.848976015770454@@@
 \end{lstlisting}
 
 But people usually report their ages in integer years. We can use the
@@ -689,7 +689,7 @@ world.plot(color='white', edgecolor='gray');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/02_times_files/02_times_122_0.png}
+\includegraphics[width=4in]{chapters/02_times_files/02_times_122_0.pdf}
 \end{center}
 
 By default, Geopandas uses an equirectangular projection, which provides
@@ -718,11 +718,11 @@ series.plot();
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/02_times_files/02_times_126_0.png}
+\includegraphics[width=4in]{chapters/02_times_files/02_times_126_0.pdf}
 \end{center}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/02_times_files/02_times_126_1.png}
+\includegraphics[width=4in]{chapters/02_times_files/02_times_126_1.pdf}
 \end{center}
 
 The two plots are on different axes, which is not what we want in this
@@ -748,7 +748,7 @@ series.plot(ax=ax);
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/02_times_files/02_times_130_0.png}
+\includegraphics[width=4in]{chapters/02_times_files/02_times_130_0.pdf}
 \end{center}
 
 \textbf{Exercise:} Modify the code in this section to plot a point that
