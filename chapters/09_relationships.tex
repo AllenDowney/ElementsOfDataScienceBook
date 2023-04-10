@@ -42,9 +42,6 @@ Here are the first few rows.
 
 \begin{lstlisting}[]
 brfss.head()
-(@\dashfill@)
-@@@/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/IPython/core/formatters.py:342: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
-  return method()@@@
 \end{lstlisting}
 
 \begin{tabular}{lrrrrrrrrr}
@@ -89,7 +86,7 @@ plt.title('Scatter plot of weight versus height');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_12_0.png}
+\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_12_0.pdf}
 \end{center}
 
 Each marker represents the height and weight of one person.
@@ -116,7 +113,7 @@ plt.title('Scatter plot of weight versus height');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_14_0.png}
+\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_14_0.pdf}
 \end{center}
 
 This is better, but there are so many data points, the scatter plot is
@@ -133,7 +130,7 @@ plt.title('Scatter plot of weight versus height');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_16_0.png}
+\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_16_0.pdf}
 \end{center}
 
 Again, this is better, but now we can see that the points fall in
@@ -165,7 +162,7 @@ plt.title('Scatter plot of weight versus height');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_20_0.png}
+\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_20_0.pdf}
 \end{center}
 
 The columns are gone, but now we can see that there are rows where
@@ -187,7 +184,7 @@ plt.title('Scatter plot of weight versus height');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_23_0.png}
+\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_23_0.pdf}
 \end{center}
 
 Finally, let's zoom in on the area where most of the data points are.
@@ -211,7 +208,7 @@ plt.title('Scatter plot of weight versus height');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_25_0.png}
+\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_25_0.pdf}
 \end{center}
 
 Now we have a reliable picture of the relationship between height and
@@ -251,7 +248,7 @@ plt.tight_layout()
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_27_0.png}
+\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_27_0.pdf}
 \end{center}
 
 The point of this example is that it takes some effort to make an
@@ -299,7 +296,7 @@ plt.title('Distribution of weight');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_33_0.png}
+\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_33_0.pdf}
 \end{center}
 
 To get a better view of this distribution, try plotting the CDF.
@@ -356,7 +353,7 @@ plt.title('Weight versus age');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_38_0.png}
+\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_38_0.pdf}
 \end{center}
 
 In this version of the scatter plot, the weights are jittered, but
@@ -395,7 +392,7 @@ plt.title('Weight versus age');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_42_0.png}
+\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_42_0.pdf}
 \end{center}
 
 The \passthrough{\lstinline!x!} and \passthrough{\lstinline!y!}
@@ -423,7 +420,7 @@ plt.title('Weight versus age');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_44_0.png}
+\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_44_0.pdf}
 \end{center}
 
 The argument \passthrough{\lstinline!whis=10!} turns off a feature we
@@ -466,7 +463,7 @@ plt.title('Weight versus age');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_46_0.png}
+\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_46_0.pdf}
 \end{center}
 
 On a log scale, the distributions are symmetric, so the spines are the
@@ -550,9 +547,6 @@ this:
 
 \begin{lstlisting}[]
 subset.corr()
-(@\dashfill@)
-@@@/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/IPython/core/formatters.py:342: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
-  return method()@@@
 \end{lstlisting}
 
 \begin{tabular}{lrrr}
@@ -597,7 +591,7 @@ plt.title('Weight versus age');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_57_0.png}
+\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_57_0.pdf}
 \end{center}
 
 People in their forties are the heaviest; younger and older people are
@@ -627,7 +621,7 @@ plt.title('Scatter plot of a fake dataset');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_61_0.png}
+\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_61_0.pdf}
 \end{center}
 
 It's clear that this is a strong relationship; if you are given
@@ -637,8 +631,8 @@ It's clear that this is a strong relationship; if you are given
 \begin{lstlisting}[]
 np.corrcoef(xs, ys)
 (@\dashfill@)
-@@@array([[1.        , 0.00709693],
-       [0.00709693, 1.        ]])@@@
+@@@array([[1.        , 0.05470027],
+       [0.05470027, 1.        ]])@@@
 \end{lstlisting}
 
 Even though there is a strong non-linear relationship, the computed
@@ -675,7 +669,7 @@ plt.title('Fake dataset #1');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_66_0.png}
+\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_66_0.pdf}
 \end{center}
 
 And here's the second dataset:
@@ -692,7 +686,7 @@ plt.title('Fake dataset #2');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_68_0.png}
+\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_68_0.pdf}
 \end{center}
 
 I constructed these examples so they look similar, but they have
@@ -804,7 +798,7 @@ plt.tight_layout()
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_77_0.png}
+\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_77_0.pdf}
 \end{center}
 
 The one on the left has higher correlation, about 0.75 compared to 0.5.
@@ -889,7 +883,7 @@ plt.title('Fake Dataset #1');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_87_0.png}
+\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_87_0.pdf}
 \end{center}
 
 And here's what it looks like for the second example.
@@ -907,7 +901,7 @@ plt.title('Fake Dataset #2');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_89_0.png}
+\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_89_0.pdf}
 \end{center}
 
 The visualization here might be misleading unless you look closely at
@@ -933,7 +927,7 @@ plt.title('Scatter plot of weight versus height');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_92_0.png}
+\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_92_0.pdf}
 \end{center}
 
 To compute the regression line, we'll use
@@ -988,7 +982,7 @@ plt.title('Scatter plot of weight versus height');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_100_0.png}
+\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_100_0.pdf}
 \end{center}
 
 The slope of this line seems consistent with the scatter plot.
@@ -1008,7 +1002,7 @@ plt.title('Weight versus age');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_102_0.png}
+\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_102_0.pdf}
 \end{center}
 
 People in their 40s are the heaviest; younger and older people are
@@ -1051,7 +1045,7 @@ plt.title('Weight versus age');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_106_0.png}
+\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_106_0.pdf}
 \end{center}
 
 A straight line does not capture the relationship between these
