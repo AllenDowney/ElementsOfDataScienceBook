@@ -183,7 +183,7 @@ plt.title('Relative risks from simulation with risk_all');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/13_hypothesis_files/13_hypothesis_27_0.png}
+\includegraphics[width=4in]{chapters/13_hypothesis_files/13_hypothesis_27_0.pdf}
 \end{center}
 
 Remember that these simulations are based on the assumption that the
@@ -277,9 +277,6 @@ import pandas as pd
 
 nsfg = pd.read_hdf('nsfg.hdf', 'nsfg')
 nsfg.head()
-(@\dashfill@)
-@@@/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/IPython/core/formatters.py:342: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
-  return method()@@@
 \end{lstlisting}
 
 \begin{tabular}{lrrrrrrrrrrr}
@@ -421,7 +418,7 @@ plt.title('Distribution of differences');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/13_hypothesis_files/13_hypothesis_65_0.png}
+\includegraphics[width=4in]{chapters/13_hypothesis_files/13_hypothesis_65_0.pdf}
 \end{center}
 
 The center of this distribution is near zero, which makes sense if the
@@ -596,9 +593,6 @@ columns = ['HTM4', 'WTKG3', 'AGE']
 subset = brfss[columns]
 corr_actual = subset.corr()
 corr_actual
-(@\dashfill@)
-@@@/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/IPython/core/formatters.py:342: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
-  return method()@@@
 \end{lstlisting}
 
 \begin{tabular}{lrrr}
@@ -656,9 +650,6 @@ order.
 \begin{lstlisting}[]
 shuffled = series.sample(frac=1)
 shuffled.head()
-(@\dashfill@)
-@@@/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/IPython/core/formatters.py:342: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
-  return method()@@@
 \end{lstlisting}
 
 \begin{tabular}{lr}
@@ -753,7 +744,7 @@ plt.title('Correlation from simulations with permutation');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/13_hypothesis_files/13_hypothesis_107_0.png}
+\includegraphics[width=4in]{chapters/13_hypothesis_files/13_hypothesis_107_0.pdf}
 \end{center}
 
 The center of the distribution is near 0, and the largest values
@@ -852,7 +843,7 @@ plt.ylabel('Birthweight (pounds)');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/13_hypothesis_files/13_hypothesis_117_0.png}
+\includegraphics[width=4in]{chapters/13_hypothesis_files/13_hypothesis_117_0.pdf}
 \end{center}
 
 It looks like the average birth weight is highest if the mother is 25-31
@@ -866,9 +857,6 @@ import statsmodels.formula.api as smf
 
 results = smf.ols('BIRTHWGT ~ AGECON', data=subset).fit()
 results.params
-(@\dashfill@)
-@@@/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/IPython/core/formatters.py:342: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
-  return method()@@@
 \end{lstlisting}
 
 \begin{tabular}{lr}
@@ -954,9 +942,6 @@ And run the model again with both the linear and quadratic terms.
 formula = 'BIRTHWGT ~ AGECON + AGECON2'
 results2 = smf.ols(formula, data=subset).fit()
 results2.params
-(@\dashfill@)
-@@@/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/IPython/core/formatters.py:342: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
-  return method()@@@
 \end{lstlisting}
 
 \begin{tabular}{lr}
@@ -1017,9 +1002,6 @@ weight as a function of the Boolean variable
 formula = 'BIRTHWGT ~ FIRST'
 results = smf.ols(formula, data=subset).fit()
 results.params
-(@\dashfill@)
-@@@/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/IPython/core/formatters.py:342: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
-  return method()@@@
 \end{lstlisting}
 
 \begin{tabular}{lr}
@@ -1039,9 +1021,6 @@ now we can add \passthrough{\lstinline!AGECON!} as a control variable.
 formula = 'BIRTHWGT ~ FIRST + AGECON'
 results = smf.ols(formula, data=subset).fit()
 results.params
-(@\dashfill@)
-@@@/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/IPython/core/formatters.py:342: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
-  return method()@@@
 \end{lstlisting}
 
 \begin{tabular}{lr}
@@ -1063,9 +1042,6 @@ age more effectively by adding \passthrough{\lstinline!AGECON2!}.
 formula = 'BIRTHWGT ~ FIRST + AGECON + AGECON2'
 results = smf.ols(formula, data=subset).fit()
 results.params
-(@\dashfill@)
-@@@/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/IPython/core/formatters.py:342: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
-  return method()@@@
 \end{lstlisting}
 
 \begin{tabular}{lr}
@@ -1224,9 +1200,6 @@ missing data with \passthrough{\lstinline!NaN!}.
 \begin{lstlisting}[]
 subset['HPAGELB'].replace([98, 99], np.nan, inplace=True)
 subset['HPAGELB'].value_counts().sort_index()
-(@\dashfill@)
-@@@/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/IPython/core/formatters.py:342: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
-  return method()@@@
 \end{lstlisting}
 
 \begin{tabular}{lr}
@@ -1272,9 +1245,6 @@ in birth weight for young and old fathers compared to the others.
 formula = 'BIRTHWGT ~ YO_DAD'
 results = smf.ols(formula, data=subset).fit()
 results.params
-(@\dashfill@)
-@@@/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/IPython/core/formatters.py:342: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
-  return method()@@@
 \end{lstlisting}
 
 \begin{tabular}{lr}
