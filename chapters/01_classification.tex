@@ -182,9 +182,6 @@ lowest risk category; \passthrough{\lstinline!10!} is the highest.
 
 \begin{lstlisting}[]
 values(cp['decile_score'])
-(@\dashfill@)
-@@@/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/IPython/core/formatters.py:342: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
-  return method()@@@
 \end{lstlisting}
 
 \begin{tabular}{lr}
@@ -225,9 +222,6 @@ greater than 4.
 high_risk = (cp['decile_score'] > 4)
 high_risk.name = 'HighRisk'
 values(high_risk)
-(@\dashfill@)
-@@@/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/IPython/core/formatters.py:342: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
-  return method()@@@
 \end{lstlisting}
 
 \begin{tabular}{lr}
@@ -245,9 +239,6 @@ after the original charge when they were not in a correctional facility.
 
 \begin{lstlisting}[]
 values(cp['two_year_recid'])
-(@\dashfill@)
-@@@/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/IPython/core/formatters.py:342: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
-  return method()@@@
 \end{lstlisting}
 
 \begin{tabular}{lr}
@@ -268,9 +259,6 @@ another crime within two years.
 new_charge = (cp['two_year_recid'] == 1)
 new_charge.name = 'NewCharge'
 values(new_charge)
-(@\dashfill@)
-@@@/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/IPython/core/formatters.py:342: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
-  return method()@@@
 \end{lstlisting}
 
 \begin{tabular}{lr}
@@ -288,9 +276,6 @@ indicates how many defendants are in each of four groups:
 
 \begin{lstlisting}[]
 pd.crosstab(new_charge, high_risk)
-(@\dashfill@)
-@@@/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/IPython/core/formatters.py:342: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
-  return method()@@@
 \end{lstlisting}
 
 \begin{tabular}{lrr}
@@ -334,9 +319,6 @@ Here are the values of \passthrough{\lstinline!race!}:
 
 \begin{lstlisting}[]
 values(cp['race'])
-(@\dashfill@)
-@@@/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/IPython/core/formatters.py:342: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
-  return method()@@@
 \end{lstlisting}
 
 \begin{tabular}{lr}
@@ -359,9 +341,6 @@ defendants.
 white = (cp['race'] == 'Caucasian')
 white.name = 'white'
 values(white)
-(@\dashfill@)
-@@@/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/IPython/core/formatters.py:342: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
-  return method()@@@
 \end{lstlisting}
 
 \begin{tabular}{lr}
@@ -377,9 +356,6 @@ And here's the confusion matrix for White defendants.
 
 \begin{lstlisting}[]
 pd.crosstab(new_charge[white], high_risk[white])
-(@\dashfill@)
-@@@/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/IPython/core/formatters.py:342: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
-  return method()@@@
 \end{lstlisting}
 
 \begin{tabular}{lrr}
@@ -399,9 +375,6 @@ True      &    461 &    505 \\
 black = (cp['race'] == 'African-American')
 black.name = 'black'
 values(black)
-(@\dashfill@)
-@@@/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/IPython/core/formatters.py:342: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
-  return method()@@@
 \end{lstlisting}
 
 \begin{tabular}{lr}
@@ -417,9 +390,6 @@ And here is the confusion matrix for Black defendants.
 
 \begin{lstlisting}[]
 pd.crosstab(new_charge[black], high_risk[black])
-(@\dashfill@)
-@@@/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/IPython/core/formatters.py:342: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
-  return method()@@@
 \end{lstlisting}
 
 \begin{tabular}{lrr}
@@ -532,9 +502,6 @@ Here is the confusion matrix for all defendants.
 \begin{lstlisting}[]
 matrix_all = make_matrix(cp)
 matrix_all
-(@\dashfill@)
-@@@/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/IPython/core/formatters.py:342: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
-  return method()@@@
 \end{lstlisting}
 
 \begin{tabular}{lrr}
@@ -908,9 +875,6 @@ Here are the metrics for all defendants.
 
 \begin{lstlisting}[]
 compute_metrics(matrix_all, 'All defendants')
-(@\dashfill@)
-@@@/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/IPython/core/formatters.py:342: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
-  return method()@@@
 \end{lstlisting}
 
 \begin{tabular}{lr}
@@ -933,9 +897,6 @@ Here are the same metrics for Black defendants.
 
 \begin{lstlisting}[]
 compute_metrics(matrix_black, 'Black defendants')
-(@\dashfill@)
-@@@/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/IPython/core/formatters.py:342: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
-  return method()@@@
 \end{lstlisting}
 
 \begin{tabular}{lr}
@@ -955,9 +916,6 @@ And for White defendants.
 
 \begin{lstlisting}[]
 compute_metrics(matrix_white, 'White defendants')
-(@\dashfill@)
-@@@/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/IPython/core/formatters.py:342: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
-  return method()@@@
 \end{lstlisting}
 
 \begin{tabular}{lr}
