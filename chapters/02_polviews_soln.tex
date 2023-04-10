@@ -2,10 +2,9 @@
 \chapter{Political Alignment and
 Polarization}\label{political-alignment-and-polarization}}
 
-This chapter and the next make up a case study that explores uses data
-from the General Social Survey (GSS) to explore political beliefs in the
-United States and political alignment (conservative, moderate, or
-liberal).
+This chapter and the next make up a case study that uses data from the
+General Social Survey (GSS) to explore political beliefs and political
+alignment (conservative, moderate, or liberal) in the United States.
 
 In this chapter, we:
 
@@ -46,7 +45,7 @@ gss.shape
 \end{lstlisting}
 
 \hypertarget{political-alignment}{%
-\section{Political alignment}\label{political-alignment}}
+\section{Political Alignment}\label{political-alignment}}
 
 The people surveyed as part of the GSS were asked about their
 ``political alignment'', which is where they place themselves on a
@@ -207,11 +206,26 @@ decorate(
     ylabel="Fraction of respondents",
     title="Distribution of political views",
 )
-\end{lstlisting}
+(@\dashfill@)
+@@@---------------------------------------------------------------------------
 
-\begin{center}
-\includegraphics[width=4in]{chapters/02_polviews_soln_files/02_polviews_soln_32_0.png}
-\end{center}
+NameError                                 Traceback (most recent call last)
+
+Cell In[11], line 3
+      1 pmf74.bar(label="1974", color="C0", alpha=0.7)
+----> 3 decorate(
+      4     xlabel="Political view on a 7-point scale",
+      5     ylabel="Fraction of respondents",
+      6     title="Distribution of political views",
+      7 )
+
+
+NameError: name 'decorate' is not defined
+
+
+
+<Figure size 640x400 with 1 Axes>@@@
+\end{lstlisting}
 
 And from 2021:
 
@@ -225,10 +239,6 @@ decorate(
     title="Distribution of political views",
 )
 \end{lstlisting}
-
-\begin{center}
-\includegraphics[width=4in]{chapters/02_polviews_soln_files/02_polviews_soln_34_0.png}
-\end{center}
 
 In both cases, the most common response is \passthrough{\lstinline!4!},
 which is the code for ``moderate''. Few respondents describe themselves
@@ -266,8 +276,6 @@ over time, we can group by year and compute the mean of
 \begin{lstlisting}[]
 gss_by_year = gss.groupby("year")
 gss_by_year
-(@\dashfill@)
-@@@<pandas.core.groupby.generic.DataFrameGroupBy object at 0x7f5fc0b65690>@@@
 \end{lstlisting}
 
 The result is a \passthrough{\lstinline!DataFrameGroupBy!} object that
@@ -280,8 +288,6 @@ to select a column:
 \begin{lstlisting}[]
 polviews_by_year = gss_by_year["polviews"]
 polviews_by_year
-(@\dashfill@)
-@@@<pandas.core.groupby.generic.SeriesGroupBy object at 0x7f5fc0c09e10>@@@
 \end{lstlisting}
 
 A column from a \passthrough{\lstinline!DataFrameGroupBy!} is a
@@ -301,10 +307,6 @@ mean_series.plot(color="C2", label="polviews")
 decorate(xlabel="Year", ylabel="Mean (7 point scale)", title="Mean of polviews")
 \end{lstlisting}
 
-\begin{center}
-\includegraphics[width=4in]{chapters/02_polviews_soln_files/02_polviews_soln_50_0.png}
-\end{center}
-
 It looks like the mean increased between 1974 and 2000, decreased since
 then, and ended up almost where it started. The difference between the
 highest and lowest points is only 0.3 points on a 7-point scale, which
@@ -312,8 +314,6 @@ is a modest effect.
 
 \begin{lstlisting}[]
 mean_series.max() - mean_series.min()
-(@\dashfill@)
-@@@0.34240143126104083@@@
 \end{lstlisting}
 
 \textbf{Exercise:} The standard deviation quantifies the spread of the
@@ -378,10 +378,6 @@ plot_series_lowess(mean_series, "C2")
 decorate(ylabel="Mean (7 point scale)", title="Mean of polviews", xlabel="Year")
 \end{lstlisting}
 
-\begin{center}
-\includegraphics[width=4in]{chapters/02_polviews_soln_files/02_polviews_soln_59_0.png}
-\end{center}
-
 One reason the PMFs for 1974 and 2021 did not look very different is
 that the mean seems to have gone up (more conservative) and then down
 again (more liberal). Generally, it looks like the U.S. has been
@@ -422,19 +418,6 @@ Here are the first few lines from the result.
 xtab.head()
 \end{lstlisting}
 
-\begin{tabular}{lrrrrrrr}
-\midrule
-polviews &  1.0 &  2.0 &  3.0 &  4.0 &  5.0 &  6.0 &  7.0 \\
-year &      &      &      &      &      &      &      \\
-\midrule
-1974 &   31 &  201 &  211 &  538 &  223 &  181 &   30 \\
-1975 &   56 &  184 &  207 &  540 &  204 &  162 &   45 \\
-1976 &   31 &  198 &  175 &  564 &  209 &  206 &   34 \\
-1977 &   37 &  181 &  214 &  594 &  243 &  164 &   42 \\
-1978 &   21 &  140 &  255 &  559 &  265 &  187 &   25 \\
-\midrule
-\end{tabular}
-
 It contains one row for each value of \passthrough{\lstinline!year!} and
 one column for each value of \passthrough{\lstinline!polviews!}. Reading
 the first row, we see that in 1974, 31 people gave response 1,
@@ -457,19 +440,6 @@ Here's what that looks like for the 7-point scale.
 \begin{lstlisting}[]
 xtab_norm.head()
 \end{lstlisting}
-
-\begin{tabular}{lrrrrrrr}
-\midrule
-polviews &       1.0 &       2.0 &       3.0 &       4.0 &       5.0 &       6.0 &       7.0 \\
-year &           &           &           &           &           &           &           \\
-\midrule
-1974 &  0.021908 &  0.142049 &  0.149117 &  0.380212 &  0.157597 &  0.127915 &  0.021201 \\
-1975 &  0.040057 &  0.131617 &  0.148069 &  0.386266 &  0.145923 &  0.115880 &  0.032189 \\
-1976 &  0.021877 &  0.139732 &  0.123500 &  0.398024 &  0.147495 &  0.145378 &  0.023994 \\
-1977 &  0.025085 &  0.122712 &  0.145085 &  0.402712 &  0.164746 &  0.111186 &  0.028475 \\
-1978 &  0.014463 &  0.096419 &  0.175620 &  0.384986 &  0.182507 &  0.128788 &  0.017218 \\
-\midrule
-\end{tabular}
 
 Looking at the numbers in the table, it's hard to see what's going on.
 In the next section, we'll plot the results.
@@ -502,10 +472,6 @@ plt.legend(bbox_to_anchor=(1.02, 1.02))
 None
 \end{lstlisting}
 
-\begin{center}
-\includegraphics[width=4in]{chapters/02_polviews_soln_files/02_polviews_soln_88_0.png}
-\end{center}
-
 This way of looking at the results suggests that changes in political
 alignment during this period have generally been slow and small. The
 fraction of self-described moderates has not changed substantially. The
@@ -531,10 +497,6 @@ decorate(
     title="Fraction of respondents with extreme political views",
 )
 \end{lstlisting}
-
-\begin{center}
-\includegraphics[width=4in]{chapters/02_polviews_soln_files/02_polviews_soln_90_0.png}
-\end{center}
 
 I used \passthrough{\lstinline!ylim!} to set the limits of the y-axis so
 it starts at zero, to avoid making the changes seem bigger than they
