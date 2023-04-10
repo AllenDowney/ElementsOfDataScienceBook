@@ -426,50 +426,11 @@ for key in ["gss0", "gss1", "gss2"]:
 
     plt.figure()
     plot_by_polviews(df)
-(@\dashfill@)
-@@@---------------------------------------------------------------------------
-
-KeyError                                  Traceback (most recent call last)
-
-Cell In[29], line 4
-      1 datafile = "gss_pacs_resampled.hdf"
-      3 for key in ["gss0", "gss1", "gss2"]:
-----> 4     df = pd.read_hdf(datafile, key)
-      6     plt.figure()
-      7     plot_by_polviews(df)
-
-
-File ~/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/pandas/io/pytables.py:442, in read_hdf(path_or_buf, key, mode, errors, where, start, stop, columns, iterator, chunksize, **kwargs)
-    437                 raise ValueError(
-    438                     "key must be provided when HDF5 "
-    439                     "file contains multiple datasets."
-    440                 )
-    441         key = candidate_only_group._v_pathname
---> 442     return store.select(
-    443         key,
-    444         where=where,
-    445         start=start,
-    446         stop=stop,
-    447         columns=columns,
-    448         iterator=iterator,
-    449         chunksize=chunksize,
-    450         auto_close=auto_close,
-    451     )
-    452 except (ValueError, TypeError, KeyError):
-    453     if not isinstance(path_or_buf, HDFStore):
-    454         # if there is an error, close the store if we opened it.
-
-
-File ~/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/pandas/io/pytables.py:847, in HDFStore.select(self, key, where, start, stop, columns, iterator, chunksize, auto_close)
-    845 group = self.get_node(key)
-    846 if group is None:
---> 847     raise KeyError(f"No object named {key} in the file")
-    849 # create the storer and axes
-    850 where = _ensure_term(where, scope_level=1)
-
-
-KeyError: 'No object named gss2 in the file'@@@
 \end{lstlisting}
+
+\begin{center}
+\includegraphics[width=4in]{chapters/03_outlook_files/03_outlook_59_0.pdf}
+\end{center}
 
 \begin{center}
 \includegraphics[width=4in]{chapters/03_outlook_files/03_outlook_59_1.pdf}
