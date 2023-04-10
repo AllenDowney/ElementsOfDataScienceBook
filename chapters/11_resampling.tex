@@ -185,7 +185,7 @@ treatment group and the estimated risk:
 p = k_treatment / n_treatment
 simulate_group(n_treatment, p)
 (@\dashfill@)
-@@@4.746474373602299@@@
+@@@4.427000136917529@@@
 \end{lstlisting}
 
 The result is a risk from a single simulated trial. If we run this
@@ -212,7 +212,7 @@ plt.title('Risks from Simulations');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/11_resampling_files/11_resampling_29_0.png}
+\includegraphics[width=4in]{chapters/11_resampling_files/11_resampling_29_0.pdf}
 \end{center}
 
 The mean of this distribution is about 5.3, which is close to the
@@ -307,7 +307,7 @@ plt.title('Efficacies from Simulations');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/11_resampling_files/11_resampling_44_0.png}
+\includegraphics[width=4in]{chapters/11_resampling_files/11_resampling_44_0.pdf}
 \end{center}
 
 The mean of this distribution is close to the efficacy we computed with
@@ -437,7 +437,7 @@ plt.title('Sampling Distribution of the Mean');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/11_resampling_files/11_resampling_59_0.png}
+\includegraphics[width=4in]{chapters/11_resampling_files/11_resampling_59_0.pdf}
 \end{center}
 
 This distribution is called a \textbf{sampling distribution} because it
@@ -641,9 +641,6 @@ this variable if we recode it so \passthrough{\lstinline!0!} means no.
 \begin{lstlisting}[]
 gss['GUNLAW'].replace(2, 0, inplace=True)
 gss['GUNLAW'].value_counts()
-(@\dashfill@)
-@@@/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/IPython/core/formatters.py:342: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
-  return method()@@@
 \end{lstlisting}
 
 \begin{tabular}{lr}
@@ -666,9 +663,6 @@ functions, \passthrough{\lstinline!sum!} and
 grouped = gss.groupby('YEAR')['GUNLAW']
 agg = grouped.agg(['sum', 'count'])
 agg.head()
-(@\dashfill@)
-@@@/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/IPython/core/formatters.py:342: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
-  return method()@@@
 \end{lstlisting}
 
 \begin{tabular}{lrr}
@@ -711,7 +705,7 @@ plt.title('Support for gun control over time');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/11_resampling_files/11_resampling_93_0.png}
+\includegraphics[width=4in]{chapters/11_resampling_files/11_resampling_93_0.pdf}
 \end{center}
 
 The results vary from year to year. It is hard to tell how much of this
