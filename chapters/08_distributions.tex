@@ -76,11 +76,6 @@ argument is the list of outcomes. We can display the result like this.
 
 \begin{lstlisting}[]
 die
-(@\dashfill@)
-@@@/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/empiricaldist/empiricaldist.py:98: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
-  return df._repr_html_()
-/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/IPython/core/formatters.py:342: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
-  return method()@@@
 \end{lstlisting}
 
 \begin{tabular}{lr}
@@ -162,9 +157,6 @@ few rows.
 
 \begin{lstlisting}[]
 gss.head()
-(@\dashfill@)
-@@@/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/IPython/core/formatters.py:342: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
-  return method()@@@
 \end{lstlisting}
 
 \begin{tabular}{lrrrrrrrr}
@@ -194,9 +186,6 @@ education for each respondent. First we'll select a column from the
 
 \begin{lstlisting}[]
 gss['EDUC'].value_counts().sort_index()
-(@\dashfill@)
-@@@/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/IPython/core/formatters.py:342: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
-  return method()@@@
 \end{lstlisting}
 
 \begin{tabular}{lr}
@@ -257,7 +246,7 @@ plt.title('Histogram of education level');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/08_distributions_files/08_distributions_34_0.png}
+\includegraphics[width=4in]{chapters/08_distributions_files/08_distributions_34_0.pdf}
 \end{center}
 
 Based on the histogram, we can see the general shape of the distribution
@@ -285,11 +274,6 @@ Here's what the first few rows look like.
 
 \begin{lstlisting}[]
 pmf_educ.head()
-(@\dashfill@)
-@@@/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/empiricaldist/empiricaldist.py:98: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
-  return df._repr_html_()
-/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/IPython/core/formatters.py:342: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
-  return method()@@@
 \end{lstlisting}
 
 \begin{tabular}{lr}
@@ -309,11 +293,6 @@ rows.
 
 \begin{lstlisting}[]
 pmf_educ.tail()
-(@\dashfill@)
-@@@/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/empiricaldist/empiricaldist.py:98: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
-  return df._repr_html_()
-/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/IPython/core/formatters.py:342: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
-  return method()@@@
 \end{lstlisting}
 
 \begin{tabular}{lr}
@@ -348,11 +327,6 @@ column add up to 1.
 \begin{lstlisting}[]
 pmf_educ_norm = Pmf.from_seq(educ, normalize=True)
 pmf_educ_norm.head()
-(@\dashfill@)
-@@@/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/empiricaldist/empiricaldist.py:98: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
-  return df._repr_html_()
-/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/IPython/core/formatters.py:342: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
-  return method()@@@
 \end{lstlisting}
 
 \begin{tabular}{lr}
@@ -389,7 +363,7 @@ plt.legend();
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/08_distributions_files/08_distributions_48_0.png}
+\includegraphics[width=4in]{chapters/08_distributions_files/08_distributions_48_0.pdf}
 \end{center}
 
 In this figure, we can see that the most common value is 12 years, but
@@ -435,11 +409,6 @@ Here's the \passthrough{\lstinline!Pmf!} of these values.
 
 \begin{lstlisting}[]
 Pmf.from_seq(values)
-(@\dashfill@)
-@@@/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/empiricaldist/empiricaldist.py:98: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
-  return df._repr_html_()
-/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/IPython/core/formatters.py:342: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
-  return method()@@@
 \end{lstlisting}
 
 \begin{tabular}{lr}
@@ -471,11 +440,6 @@ Here's a \passthrough{\lstinline!Cdf!} object for the same five values.
 
 \begin{lstlisting}[]
 Cdf.from_seq(values)
-(@\dashfill@)
-@@@/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/empiricaldist/empiricaldist.py:98: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
-  return df._repr_html_()
-/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/IPython/core/formatters.py:342: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
-  return method()@@@
 \end{lstlisting}
 
 \begin{tabular}{lr}
@@ -546,7 +510,7 @@ plt.title('Distribution of age');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/08_distributions_files/08_distributions_66_0.png}
+\includegraphics[width=4in]{chapters/08_distributions_files/08_distributions_66_0.pdf}
 \end{center}
 
 The \(x\)-axis is the ages, from 18 to 89. The \(y\)-axis is the
@@ -587,7 +551,7 @@ plt.title('Distribution of age');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/08_distributions_files/08_distributions_71_0.png}
+\includegraphics[width=4in]{chapters/08_distributions_files/08_distributions_71_0.pdf}
 \end{center}
 
 The CDF is an invertible function, which means that if you have a
@@ -644,7 +608,7 @@ plt.title('Distribution of age');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/08_distributions_files/08_distributions_77_0.png}
+\includegraphics[width=4in]{chapters/08_distributions_files/08_distributions_77_0.pdf}
 \end{center}
 
 The distance from the 25th to the 75th percentile is called the
@@ -719,7 +683,7 @@ plt.legend();
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/08_distributions_files/08_distributions_88_0.png}
+\includegraphics[width=4in]{chapters/08_distributions_files/08_distributions_88_0.pdf}
 \end{center}
 
 A plot like this, which is highly variable, is often described as
@@ -747,7 +711,7 @@ plt.legend();
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/08_distributions_files/08_distributions_90_0.png}
+\includegraphics[width=4in]{chapters/08_distributions_files/08_distributions_90_0.pdf}
 \end{center}
 
 In general, CDFs are smoother than PMFs. Because they smooth out
@@ -811,7 +775,7 @@ plt.legend();
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/08_distributions_files/08_distributions_99_0.png}
+\includegraphics[width=4in]{chapters/08_distributions_files/08_distributions_99_0.pdf}
 \end{center}
 
 There are a lot of unique values in this distribution, and none of them
@@ -833,7 +797,7 @@ plt.legend();
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/08_distributions_files/08_distributions_101_0.png}
+\includegraphics[width=4in]{chapters/08_distributions_files/08_distributions_101_0.pdf}
 \end{center}
 
 Below \$30,000 the CDFs are almost identical; above that, we can see
@@ -932,7 +896,7 @@ plt.legend();
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/08_distributions_files/08_distributions_109_0.png}
+\includegraphics[width=4in]{chapters/08_distributions_files/08_distributions_109_0.pdf}
 \end{center}
 
 If we did not know that this sample was drawn from a normal
@@ -976,7 +940,7 @@ plt.legend();
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/08_distributions_files/08_distributions_113_0.png}
+\includegraphics[width=4in]{chapters/08_distributions_files/08_distributions_113_0.pdf}
 \end{center}
 
 The CDF of the random sample agrees with the normal model. And that's
@@ -1055,7 +1019,7 @@ plt.legend();
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/08_distributions_files/08_distributions_118_0.png}
+\includegraphics[width=4in]{chapters/08_distributions_files/08_distributions_118_0.pdf}
 \end{center}
 
 The normal PDF is the classic ``bell curve''.
@@ -1076,7 +1040,7 @@ plt.legend();
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/08_distributions_files/08_distributions_120_0.png}
+\includegraphics[width=4in]{chapters/08_distributions_files/08_distributions_120_0.pdf}
 \end{center}
 
 The PMF of the sample is a flat line across the bottom. In the random
@@ -1105,7 +1069,7 @@ plt.legend();
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/08_distributions_files/08_distributions_122_0.png}
+\includegraphics[width=4in]{chapters/08_distributions_files/08_distributions_122_0.pdf}
 \end{center}
 
 Now we can compare the KDE plot and the normal PDF.
@@ -1121,7 +1085,7 @@ plt.legend();
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/08_distributions_files/08_distributions_124_0.png}
+\includegraphics[width=4in]{chapters/08_distributions_files/08_distributions_124_0.pdf}
 \end{center}
 
 The KDE plot matches the normal PDF pretty well, although the
