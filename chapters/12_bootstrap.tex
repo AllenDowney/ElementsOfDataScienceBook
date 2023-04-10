@@ -68,7 +68,7 @@ plt.legend();
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/12_bootstrap_files/12_bootstrap_10_0.png}
+\includegraphics[width=4in]{chapters/12_bootstrap_files/12_bootstrap_10_0.pdf}
 \end{center}
 
 The distribution of income is skewed to the right; most household
@@ -80,7 +80,7 @@ mean_realinc = gss['REALINC'].mean()
 std_income = gss['REALINC'].std()
 print(mean_realinc, std_income)
 (@\dashfill@)
-@@@31742.56337281537 29526.06789623489@@@
+@@@31742.563372816312 29526.067896235618@@@
 \end{lstlisting}
 
 The average family income in this sample is \$31,743. But if we ran the
@@ -117,7 +117,7 @@ we get a single value from the sampling distribution of the mean.
 \begin{lstlisting}[]
 simulate_sample_mean(n_realinc, mean_realinc, std_income)
 (@\dashfill@)
-@@@31725.9120143765@@@
+@@@31725.912014377434@@@
 \end{lstlisting}
 
 If we call it many times, we get a random sample from the sampling
@@ -139,7 +139,7 @@ plt.title('Sampling distribution of mean income');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/12_bootstrap_files/12_bootstrap_23_0.png}
+\includegraphics[width=4in]{chapters/12_bootstrap_files/12_bootstrap_23_0.pdf}
 \end{center}
 
 This distribution shows how much we would expect the observed mean to
@@ -233,7 +233,7 @@ plt.title('Sampling distribution of the 10th percentile');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/12_bootstrap_files/12_bootstrap_37_0.png}
+\includegraphics[width=4in]{chapters/12_bootstrap_files/12_bootstrap_37_0.pdf}
 \end{center}
 
 We can see that something has gone wrong. All of the values in the
@@ -276,7 +276,7 @@ plt.legend();
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/12_bootstrap_files/12_bootstrap_42_0.png}
+\includegraphics[width=4in]{chapters/12_bootstrap_files/12_bootstrap_42_0.pdf}
 \end{center}
 
 The problem is that the normal model extends past the lower bound of the
@@ -511,7 +511,7 @@ mean_height = height[male].mean()
 std_height = height[male].std()
 mean_height, std_height
 (@\dashfill@)
-@@@(178.0768644146838, 7.9664553134728395)@@@
+@@@(178.0768644146838, 7.966455313471575)@@@
 \end{lstlisting}
 
 The average height for men in the U.S. is about 178 cm; the standard
@@ -730,7 +730,7 @@ var1, var2 = 'HTM4', 'WTKG3'
 corr = brfss[var1].corr(brfss[var2])
 corr
 (@\dashfill@)
-@@@0.47715146283881427@@@
+@@@0.4771514628388141@@@
 \end{lstlisting}
 
 That correlation does not take into account oversampling. We can correct
@@ -764,7 +764,7 @@ subset = brfss.dropna(subset=['WTKG3', 'HTM4'])
 res = linregress(subset['HTM4'], subset['WTKG3'])
 res.slope
 (@\dashfill@)
-@@@0.932929241334935@@@
+@@@0.9329292413349343@@@
 \end{lstlisting}
 
 The estimated slope is 0.93 kg/cm, which means that we expect someone 1
@@ -912,7 +912,7 @@ plt.title('Estimated distribution of income');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/12_bootstrap_files/12_bootstrap_120_0.png}
+\includegraphics[width=4in]{chapters/12_bootstrap_files/12_bootstrap_120_0.pdf}
 \end{center}
 
 To draw samples from this distribution, we'll use a Scipy function
@@ -1121,7 +1121,7 @@ plot_data()
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/12_bootstrap_files/12_bootstrap_149_0.png}
+\includegraphics[width=4in]{chapters/12_bootstrap_files/12_bootstrap_149_0.pdf}
 \end{center}
 
 The model fits past data reasonably well and makes plausible predictions
