@@ -91,7 +91,7 @@ decorate(xlabel='Risk score',
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/02_calibration_files/02_calibration_20_0.png}
+\includegraphics[width=4in]{chapters/02_calibration_files/02_calibration_20_0.pdf}
 \end{center}
 
 This figure shows that people with higher risk scores are more likely to
@@ -129,9 +129,6 @@ Black defendants. Here they are again:
 \begin{lstlisting}[]
 matrix_white = make_matrix(cp[white])
 matrix_white
-(@\dashfill@)
-@@@/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/IPython/core/formatters.py:342: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
-  return method()@@@
 \end{lstlisting}
 
 \begin{tabular}{lrr}
@@ -147,9 +144,6 @@ Negative  &        461 &          1139 \\
 \begin{lstlisting}[]
 matrix_black = make_matrix(cp[black])
 matrix_black
-(@\dashfill@)
-@@@/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/IPython/core/formatters.py:342: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
-  return method()@@@
 \end{lstlisting}
 
 \begin{tabular}{lrr}
@@ -168,9 +162,6 @@ And here are the metrics we computed from the confusion matrices:
 metrics_white = compute_metrics(matrix_white, 
                                 'White defendants')
 metrics_white
-(@\dashfill@)
-@@@/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/IPython/core/formatters.py:342: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
-  return method()@@@
 \end{lstlisting}
 
 \begin{tabular}{lr}
@@ -190,9 +181,6 @@ Prevalence       &  39.364303 \\
 metrics_black = compute_metrics(matrix_black, 
                                 'Black defendants')
 metrics_black
-(@\dashfill@)
-@@@/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/IPython/core/formatters.py:342: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
-  return method()@@@
 \end{lstlisting}
 
 \begin{tabular}{lr}
@@ -275,9 +263,6 @@ Here's the resulting table for all defendants.
 \begin{lstlisting}[]
 table_all = sweep_threshold(cp)
 table_all.head()
-(@\dashfill@)
-@@@/home/downey/miniconda3/envs/ElementsOfDataScience/lib/python3.8/site-packages/IPython/core/formatters.py:342: FutureWarning: In future versions `DataFrame.to_latex` is expected to utilise the base implementation of `Styler.to_latex` for formatting and rendering. The arguments signature may therefore change. It is recommended instead to use `DataFrame.style.to_latex` which also contains additional functionality.
-  return method()@@@
 \end{lstlisting}
 
 \begin{tabular}{lrrrrr}
@@ -304,7 +289,7 @@ decorate(xlabel='Threshold',
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/02_calibration_files/02_calibration_36_0.png}
+\includegraphics[width=4in]{chapters/02_calibration_files/02_calibration_36_0.pdf}
 \end{center}
 
 When the threshold is low, almost everyone is in the high risk group; in
@@ -341,7 +326,7 @@ decorate(xlabel='Threshold',
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/02_calibration_files/02_calibration_38_0.png}
+\includegraphics[width=4in]{chapters/02_calibration_files/02_calibration_38_0.pdf}
 \end{center}
 
 When the threshold is too low, PPV is low. When the threshold is too
@@ -537,7 +522,7 @@ plot_roc(table_all, color='C2', label='All defendants')
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/02_calibration_files/02_calibration_63_0.png}
+\includegraphics[width=4in]{chapters/02_calibration_files/02_calibration_63_0.pdf}
 \end{center}
 
 The green line is the ROC curve. The gray dotted line shows the identity
@@ -564,7 +549,7 @@ plot_roc(table_black)
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/02_calibration_files/02_calibration_65_0.png}
+\includegraphics[width=4in]{chapters/02_calibration_files/02_calibration_65_0.pdf}
 \end{center}
 
 The ROC curves are similar for the two groups, which shows that we can
@@ -636,13 +621,13 @@ For the subgroups it is slightly lower, but also near 70\%.
 \begin{lstlisting}[]
 compute_auc(table_white)
 (@\dashfill@)
-@@@0.6995093159638619@@@
+@@@0.699509315963862@@@
 \end{lstlisting}
 
 \begin{lstlisting}[]
 compute_auc(table_black)
 (@\dashfill@)
-@@@0.6945677570588521@@@
+@@@0.6945677570588519@@@
 \end{lstlisting}
 
 Different ways of computing concordance handle ties differently, which
