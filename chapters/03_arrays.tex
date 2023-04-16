@@ -145,6 +145,10 @@ sandwich prices in Boston and London:
 Americans pay more for lunch than Britons do}''. It includes this graph
 showing prices of several sandwiches in the two cities:
 
+\begin{center}
+\includegraphics[width=2.7in]{chapters/figs/20190907_FNC941.png}
+\end{center}
+
 Here are the sandwich names from the graph, as a list of strings.
 
 \begin{lstlisting}[]
@@ -310,13 +314,13 @@ By this measure, which set of prices is more variable?
 
 \textbf{Exercise:} The definition of the mean, in math notation, is
 
-\(\mu = \frac{1}{N} \sum_i x_i\)
+\[ \mu = \frac{1}{N} \sum_i x_i \]
 
 where \(x\) is a sequence of elements, \(x_i\) is the element with index
 \(i\), and \(N\) is the number of elements. The definition of standard
 deviation is
 
-\(\sigma = \sqrt{\frac{1}{N} \sum_i (x_i - \mu)^2}\)
+\[ \sigma = \sqrt{\frac{1}{N} \sum_i (x_i - \mu)^2} \]
 
 Compute the standard deviation of
 \passthrough{\lstinline!boston\_price\_list!} using NumPy functions

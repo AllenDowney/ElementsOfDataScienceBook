@@ -135,28 +135,28 @@ uses to store data. \passthrough{\lstinline!DataFrame!} has a method
 called \passthrough{\lstinline!head()!} that shows the first 5 rows:
 
 \begin{lstlisting}[]
-nsfg.iloc[:5,:7]
+nsfg.head()
 \end{lstlisting}
 
 \begin{tabular}{lrrrrrrr}
 \midrule
-{} &  CASEID &  PREGORDR &  HOWPREG\_N &  HOWPREG\_P &  MOSCURRP &  NOWPRGDK &  PREGEND1 \\
+{} &  CASEID &  PREGORDR &  HOWPREG\_N &  HOWPREG\_P &  MOSCURRP \\
 \midrule
-0 &   70627 &         1 &        NaN &        NaN &       NaN &       NaN &       6.0 \\
-1 &   70627 &         2 &        NaN &        NaN &       NaN &       NaN &       1.0 \\
-2 &   70627 &         3 &        NaN &        NaN &       NaN &       NaN &       6.0 \\
-3 &   70628 &         1 &        NaN &        NaN &       NaN &       NaN &       6.0 \\
-4 &   70628 &         2 &        NaN &        NaN &       NaN &       NaN &       6.0 \\
+0 &   70627 &         1 &        NaN &        NaN &       NaN  \\
+1 &   70627 &         2 &        NaN &        NaN &       NaN  \\
+2 &   70627 &         3 &        NaN &        NaN &       NaN  \\
+3 &   70628 &         1 &        NaN &        NaN &       NaN  \\
+4 &   70628 &         2 &        NaN &        NaN &       NaN  \\
 \midrule
 \end{tabular}
 
+Only the first five columns are shown here.
 The first two columns are is \passthrough{\lstinline!CASEID!} and
 \passthrough{\lstinline!PREGORDR!}, which I mentioned earlier. The first
 three rows have the same \passthrough{\lstinline!CASEID!}, so this
 respondent reported three pregnancies; the values of
 \passthrough{\lstinline!PREGORDR!} indicate that they are the first,
 second, and third pregnancies, in that order.
-
 We will learn more about the other variables as we go along.
 
 In addition to methods like \passthrough{\lstinline!head!}, a
