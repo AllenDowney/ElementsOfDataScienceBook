@@ -108,14 +108,18 @@ example of an \passthrough{\lstinline!int!} and a
 
 \begin{lstlisting}[]
 3
-(@\dashfill@)
-@@@3@@@
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+3
 \end{lstlisting}
 
 \begin{lstlisting}[]
 3.14159
-(@\dashfill@)
-@@@3.14159@@@
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+3.14159
 \end{lstlisting}
 
 \passthrough{\lstinline!float!} is short for ``floating-point'', which
@@ -130,8 +134,10 @@ perform addition and subtraction are \passthrough{\lstinline!+!} and
 
 \begin{lstlisting}[]
 3 + 2 - 1
-(@\dashfill@)
-@@@4@@@
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+4
 \end{lstlisting}
 
 The operators that perform multiplication and division are
@@ -139,22 +145,28 @@ The operators that perform multiplication and division are
 
 \begin{lstlisting}[]
 2 * 3
-(@\dashfill@)
-@@@6@@@
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+6
 \end{lstlisting}
 
 \begin{lstlisting}[]
 2 / 3
-(@\dashfill@)
-@@@0.6666666666666666@@@
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+0.6666666666666666
 \end{lstlisting}
 
 And the operator for exponentiation is \passthrough{\lstinline!**!}:
 
 \begin{lstlisting}[]
 2**3
-(@\dashfill@)
-@@@8@@@
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+8
 \end{lstlisting}
 
 Unlike math notation, Python does not allow ``implicit multiplication''.
@@ -182,8 +194,10 @@ So in this expression:
 
 \begin{lstlisting}[]
 1 + 2 * 3
-(@\dashfill@)
-@@@7@@@
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+7
 \end{lstlisting}
 
 The multiplication happens first. If that's not what you want, you can
@@ -191,8 +205,10 @@ use parentheses to make the order of operations explicit:
 
 \begin{lstlisting}[]
 (1 + 2) * 3
-(@\dashfill@)
-@@@9@@@
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+9
 \end{lstlisting}
 
 \textbf{Exercise:} Write a Python expression that raises
@@ -234,8 +250,10 @@ approximation of the mathematical constant \(\pi\).
 
 \begin{lstlisting}[]
 np.pi
-(@\dashfill@)
-@@@3.141592653589793@@@
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+3.141592653589793
 \end{lstlisting}
 
 The result is a \passthrough{\lstinline!float!} with 16 digits. As you
@@ -247,8 +265,10 @@ logarithm
 
 \begin{lstlisting}[]
 np.log(100)
-(@\dashfill@)
-@@@4.605170185988092@@@
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+4.605170185988092
 \end{lstlisting}
 
 NumPy also provides \passthrough{\lstinline!exp!}, which raises the
@@ -256,8 +276,10 @@ constant \passthrough{\lstinline!e!} to a power.
 
 \begin{lstlisting}[]
 np.exp(1)
-(@\dashfill@)
-@@@2.718281828459045@@@
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+2.718281828459045
 \end{lstlisting}
 
 \textbf{Exercise:} Use these functions to confirm the mathematical
@@ -275,8 +297,10 @@ As another example, let's see what happens when you add up
 
 \begin{lstlisting}[]
 0.1 + 0.1 + 0.1
-(@\dashfill@)
-@@@0.30000000000000004@@@
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+0.30000000000000004
 \end{lstlisting}
 
 The result is close to \passthrough{\lstinline!0.3!}, but not exact.
@@ -302,14 +326,18 @@ operation, it represents the value \passthrough{\lstinline!5!}:
 
 \begin{lstlisting}[]
 x + 1
-(@\dashfill@)
-@@@6@@@
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+6
 \end{lstlisting}
 
 \begin{lstlisting}[]
 x**2
-(@\dashfill@)
-@@@25@@@
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+25
 \end{lstlisting}
 
 We can also use \passthrough{\lstinline!x!} with
@@ -317,8 +345,10 @@ We can also use \passthrough{\lstinline!x!} with
 
 \begin{lstlisting}[]
 np.exp(x)
-(@\dashfill@)
-@@@148.4131591025766@@@
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+148.4131591025766
 \end{lstlisting}
 
 Notice that the result from \passthrough{\lstinline!exp!} is a
@@ -399,8 +429,10 @@ And computing the total accumulated value like this.
 
 \begin{lstlisting}[]
 P * (1 + r/n)**(n*t)
-(@\dashfill@)
-@@@2661.6108980682593@@@
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+2661.6108980682593
 \end{lstlisting}
 
 \textbf{Exercise:} Continuing the previous example, suppose you start
