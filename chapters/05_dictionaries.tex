@@ -19,35 +19,41 @@ refers to a list or tuple. You can select an element using the
 \textbf{bracket operator}, \passthrough{\lstinline![]!}. For example,
 here's a tuple of strings:
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 t = 'zero', 'one', 'two'
 \end{lstlisting}
 
 To select the first element, we put \passthrough{\lstinline!0!} in
 brackets:
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 t[0]
-(@\dashfill@)
-@@@'zero'@@@
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+'zero'
 \end{lstlisting}
 
 To select the second element, we put \passthrough{\lstinline!1!} in
 brackets:
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 t[1]
-(@\dashfill@)
-@@@'one'@@@
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+'one'
 \end{lstlisting}
 
 To select the third element, we put \passthrough{\lstinline!2!} in
 brackets:
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 t[2]
-(@\dashfill@)
-@@@'two'@@@
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+'two'
 \end{lstlisting}
 
 The number in brackets is called an \textbf{index} because it indicates
@@ -58,19 +64,23 @@ systems (see \url{https://en.wikipedia.org/wiki/Zero-based_numbering}).
 
 The index in brackets can also be a variable:
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 i = 1
 t[i]
-(@\dashfill@)
-@@@'one'@@@
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+'one'
 \end{lstlisting}
 
 Or an expression with variables, values, and operators:
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 t[i+1]
-(@\dashfill@)
-@@@'two'@@@
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+'two'
 \end{lstlisting}
 
 But if the index goes past the end of the list or tuple, you get an
@@ -90,13 +100,13 @@ A dictionary is similar to a tuple or list, but in a dictionary, the
 index can be almost any type, not just an integer. We can create an
 empty dictionary like this:
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 d = {}
 \end{lstlisting}
 
 Then we can add elements like this:
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 d['one'] = 1
 d['two'] = 2
 \end{lstlisting}
@@ -106,20 +116,24 @@ In this example, the indices are the strings,
 you display the dictionary, it shows each index and the corresponding
 value.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 d
-(@\dashfill@)
-@@@{'one': 1, 'two': 2}@@@
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+{'one': 1, 'two': 2}
 \end{lstlisting}
 
 Instead of creating an empty dictionary and then adding elements, you
 can create a dictionary and specify the elements at the same time:
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 d = {'one': 1, 'two': 2, 'three': 3}
 d
-(@\dashfill@)
-@@@{'one': 1, 'two': 2, 'three': 3}@@@
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+{'one': 1, 'two': 2, 'three': 3}
 \end{lstlisting}
 
 When we are talking about dictionaries, an index is usually called a
@@ -134,10 +148,12 @@ integers.
 You can use the bracket operator to select an element from a dictionary,
 like this:
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 d['two']
-(@\dashfill@)
-@@@2@@@
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+2
 \end{lstlisting}
 
 But don't forget the quotation marks. Without them, Python looks for a
@@ -146,16 +162,20 @@ variable named \passthrough{\lstinline!two!} and doesn't find one.
 To check whether a particular key is in a dictionary, you can use the
 special word \passthrough{\lstinline!in!}:
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 'one' in d
-(@\dashfill@)
-@@@True@@@
 \end{lstlisting}
 
-\begin{lstlisting}[]
+\begin{lstlisting}[style=output]
+True
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python,style=source]
 'zero' in d
-(@\dashfill@)
-@@@False@@@
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+False
 \end{lstlisting}
 
 Because the word \passthrough{\lstinline!in!} is an operator in Python,
@@ -163,60 +183,72 @@ you can't use it as a variable name.
 
 If a key is already in a dictionary, adding it again has no effect:
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 d
-(@\dashfill@)
-@@@{'one': 1, 'two': 2, 'three': 3}@@@
 \end{lstlisting}
 
-\begin{lstlisting}[]
+\begin{lstlisting}[style=output]
+{'one': 1, 'two': 2, 'three': 3}
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python,style=source]
 d['one'] = 1
 d
-(@\dashfill@)
-@@@{'one': 1, 'two': 2, 'three': 3}@@@
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+{'one': 1, 'two': 2, 'three': 3}
 \end{lstlisting}
 
 But you can change the value associated with a key:
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 d['one'] = 100
 d
-(@\dashfill@)
-@@@{'one': 100, 'two': 2, 'three': 3}@@@
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+{'one': 100, 'two': 2, 'three': 3}
 \end{lstlisting}
 
 You can loop through the keys in a dictionary like this:
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 for key in d:
     print(key)
-(@\dashfill@)
-@@@one
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+one
 two
-three@@@
+three
 \end{lstlisting}
 
 If you want the keys and the values, one way to get them is to loop
 through the keys and look up the values:
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 for key in d:
     print(key, d[key])
-(@\dashfill@)
-@@@one 100
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+one 100
 two 2
-three 3@@@
+three 3
 \end{lstlisting}
 
 Or you can loop through both at the same time, like this:
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 for key, value in d.items():
     print(key, value)
-(@\dashfill@)
-@@@one 100
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+one 100
 two 2
-three 3@@@
+three 3
 \end{lstlisting}
 
 The \passthrough{\lstinline!items!} method loops through the key-value
@@ -242,21 +274,23 @@ number of times each one appears.
 As we did in the previous chapter, we can read the text of \emph{War and
 Peace} and count the number of words.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 fp = open('2600-0.txt')
 count = 0
 for line in fp:
     count += len(line.split())
     
 count
-(@\dashfill@)
-@@@566317@@@
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+566317
 \end{lstlisting}
 
 To count the number of unique words, we'll loop through the words in
 each line and add them as keys in a dictionary:
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 fp = open('2600-0.txt')
 unique_words = {}
 for line in fp:
@@ -281,15 +315,17 @@ dictionary contains only one copy of each unique word in the file.
 
 At the end of the loop, we can display the first 10 keys:
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 i = 0
 for key in unique_words:
     print(key)
     i += 1
     if i == 10:
         break
-(@\dashfill@)
-@@@
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+
 The
 Project
 Gutenberg
@@ -298,17 +334,19 @@ of
 War
 and
 Peace,
-by@@@
+by
 \end{lstlisting}
 
 The dictionary contains all the words in the file, in order of first
 appearance. But each word only appears once, so the number of keys is
 the number of unique words:
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 len(unique_words)
-(@\dashfill@)
-@@@41991@@@
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+41991
 \end{lstlisting}
 
 It looks like there are about 42,000 different words in the book, which
@@ -320,7 +358,7 @@ capitalization and punctuation.
 nested loops, that is, one loop inside another. Suppose you have a list
 of words, like this:
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 line = ['War', 'and', 'Peace']
 \end{lstlisting}
 
@@ -336,36 +374,42 @@ When we count unique words, we probably want to treat
 same word. We can do that by converting all words to lower case, using
 the \passthrough{\lstinline!lower!} function:
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 word = 'The'
 word.lower()
-(@\dashfill@)
-@@@'the'@@@
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+'the'
 \end{lstlisting}
 
 \passthrough{\lstinline!lower!} creates a new string; it does not modify
 the original string.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 word
-(@\dashfill@)
-@@@'The'@@@
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+'The'
 \end{lstlisting}
 
 However, you can assign the new string back to the existing variable,
 like this:
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 word = word.lower()
 \end{lstlisting}
 
 Now if we can display the new value of \passthrough{\lstinline!word!},
 we get the lowercase version:
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 word
-(@\dashfill@)
-@@@'the'@@@
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+'the'
 \end{lstlisting}
 
 \textbf{Exercise:} Modify the previous loop so it makes a lowercase
@@ -380,11 +424,13 @@ To remove punctuation from the words, we can use
 \passthrough{\lstinline!strip!}, which removes specified characters from
 the beginning and end of a string. Here's an example:
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 word = 'abracadabra'
 word.strip('ab')
-(@\dashfill@)
-@@@'racadabr'@@@
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+'racadabr'
 \end{lstlisting}
 
 In this example, \passthrough{\lstinline!strip!} removes all instances
@@ -392,23 +438,25 @@ of \passthrough{\lstinline!a!} and \passthrough{\lstinline!b!} from the
 beginning and end of the word, but not from the middle. But note that it
 makes a new word; it doesn't modify the original:
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 word
-(@\dashfill@)
-@@@'abracadabra'@@@
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+'abracadabra'
 \end{lstlisting}
 
 To remove punctuation, we can use the \passthrough{\lstinline!string!}
 library, which provides a variable named
 \passthrough{\lstinline!punctuation!}.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 import string
 
 string.punctuation
 \end{lstlisting}
 
-\begin{lstlisting}
+\begin{lstlisting}[style=output]
 '!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~'
 \end{lstlisting}
 
@@ -416,14 +464,16 @@ string.punctuation
 punctuation marks, but as we'll see, not all of them. Nevertheless, we
 can use it to handle most cases. Here's an example:
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 line = "It's not given to people to judge what's right or wrong."
 
 for word in line.split():
     word = word.strip(string.punctuation)
     print(word)
-(@\dashfill@)
-@@@It's
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+It's
 not
 given
 to
@@ -433,7 +483,7 @@ judge
 what's
 right
 or
-wrong@@@
+wrong
 \end{lstlisting}
 
 \passthrough{\lstinline!strip!} removes the period at the end of
@@ -442,18 +492,20 @@ wrong@@@
 \passthrough{\lstinline!what's!}. So that's good, but we have one more
 problem to solve. Here's another line from the book.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 line = 'anyone, and so you don’t deserve to have them.”'
 \end{lstlisting}
 
 Here's what happens when we try to remove the punctuation.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 for word in line.split():
     word = word.strip(string.punctuation)
     print(word)
-(@\dashfill@)
-@@@anyone
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+anyone
 and
 so
 you
@@ -461,7 +513,7 @@ don’t
 deserve
 to
 have
-them.”@@@
+them.”
 \end{lstlisting}
 
 The comma after \passthrough{\lstinline!anyone!} is removed, but not the
@@ -487,7 +539,7 @@ should read it and see how much you can figure out. You can read the
 documentation of the \passthrough{\lstinline!unicodedata!} library here
 at \url{https://docs.python.org/3/library/unicodedata.html}.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 import unicodedata
 
 fp = open('2600-0.txt')
@@ -500,8 +552,10 @@ for line in fp:
         
 all_punctuation = ''.join(punc_marks)
 print(all_punctuation)
-(@\dashfill@)
-@@@,.-:[#]*/“’—‘!?”;()%@@@@
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+,.-:[#]*/“’—‘!?”;()%@
 \end{lstlisting}
 
 The result is a string containing all of the punctuation characters that
@@ -528,7 +582,7 @@ to the number of times it appears.
 Here's an example that loops through a string and counts the number of
 times each letter appears.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 word = 'Mississippi'
 
 letter_counts = {}
@@ -539,8 +593,10 @@ for x in word:
         letter_counts[x] = 1
         
 letter_counts
-(@\dashfill@)
-@@@{'M': 1, 'i': 4, 's': 4, 'p': 2}@@@
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+{'M': 1, 'i': 4, 's': 4, 'p': 2}
 \end{lstlisting}
 
 The \passthrough{\lstinline!if!} statement here uses a feature we have
@@ -573,28 +629,32 @@ To get the most common letters, we can use a
 use it, we have to import a library called
 \passthrough{\lstinline!collections!}:
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 import collections
 \end{lstlisting}
 
 Then we use \passthrough{\lstinline!collections.Counter!} to convert the
 dictionary to a \passthrough{\lstinline!Counter!}:
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 counter = collections.Counter(letter_counts)
 type(counter)
-(@\dashfill@)
-@@@collections.Counter@@@
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+collections.Counter
 \end{lstlisting}
 
 \passthrough{\lstinline!Counter!} provides a function called
 \passthrough{\lstinline!most\_common!} we can use to get the most common
 characters:
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 counter.most_common(3)
-(@\dashfill@)
-@@@[('i', 4), ('s', 4), ('p', 2)]@@@
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+[('i', 4), ('s', 4), ('p', 2)]
 \end{lstlisting}
 
 The result is a list of tuples, where each tuple contains a character
@@ -607,7 +667,7 @@ most common words and the number of times each one appears.
 \textbf{Exercise:} You can run \passthrough{\lstinline!most\_common!}
 with no value in parentheses, like this:
 
-\begin{lstlisting}
+\begin{lstlisting}[style=output]
 word_freq_pairs = counter.most_common()
 \end{lstlisting}
 
