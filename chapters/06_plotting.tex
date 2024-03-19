@@ -529,6 +529,10 @@ freqs = list(unique_words.values())
 type(freqs)
 \end{lstlisting}
 
+\begin{lstlisting}[style=output]
+list
+\end{lstlisting}
+
 And now we can use \passthrough{\lstinline!sort!}. By default it sorts
 in ascending order, but we can pass a keyword argument to reverse the
 order.
@@ -548,11 +552,19 @@ range from 1 to 5.
 range(1, 5)
 \end{lstlisting}
 
+\begin{lstlisting}[style=output]
+range(1, 5)
+\end{lstlisting}
+
 However, there's a catch. If we use the range to make a list, we see
 that ``the range from 1 to 5'' includes 1, but it doesn't include 5.
 
 \begin{lstlisting}[language=Python,style=source]
 list(range(1, 5))
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+[1, 2, 3, 4]
 \end{lstlisting}
 
 That might seem strange, but it is often more convenient to use
@@ -564,6 +576,10 @@ want by increasing the second argument by one:
 list(range(1, 6))
 \end{lstlisting}
 
+\begin{lstlisting}[style=output]
+[1, 2, 3, 4, 5]
+\end{lstlisting}
+
 So, finally, we can make a range that represents the ranks from
 \passthrough{\lstinline!1!} to \passthrough{\lstinline!n!}:
 
@@ -571,6 +587,10 @@ So, finally, we can make a range that represents the ranks from
 n = len(freqs)
 ranks = range(1, n+1)
 ranks
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+range(1, 20683)
 \end{lstlisting}
 
 And now we can plot the frequencies versus the ranks:
@@ -582,6 +602,10 @@ plt.xlabel('Rank')
 plt.ylabel('Frequency')
 plt.title("War and Peace and Zipf's law");
 \end{lstlisting}
+
+\begin{center}
+\includegraphics[width=4in]{chapters/06_plotting_files/06_plotting_84_0.pdf}
+\end{center}
 
 The most common words are very common, but the great majority of words
 are rare. But Zipf's law is more specific. It claims that the
@@ -615,6 +639,10 @@ plt.title("War and Peace and Zipf's law")
 plt.xscale('log')
 \end{lstlisting}
 
+\begin{center}
+\includegraphics[width=4in]{chapters/06_plotting_files/06_plotting_87_0.pdf}
+\end{center}
+
 And \passthrough{\lstinline!plt.yscale!} to plot the
 \passthrough{\lstinline!y!} axis on a log scale.
 
@@ -628,6 +656,10 @@ plt.xscale('log')
 plt.yscale('log')
 \end{lstlisting}
 
+\begin{center}
+\includegraphics[width=4in]{chapters/06_plotting_files/06_plotting_89_0.pdf}
+\end{center}
+
 The result is not quite a straight line, but it is close. We can get a
 sense of the slope by connecting the end points with a line. First,
 we'll select the first and last elements from
@@ -638,11 +670,19 @@ xs = ranks[0], ranks[-1]
 xs
 \end{lstlisting}
 
+\begin{lstlisting}[style=output]
+(1, 20682)
+\end{lstlisting}
+
 And the first and last elements from \passthrough{\lstinline!ys!}.
 
 \begin{lstlisting}[language=Python,style=source]
 ys = freqs[0], freqs[-1]
 ys
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+(34559, 1)
 \end{lstlisting}
 
 And plot a line between them.
@@ -658,6 +698,10 @@ plt.xscale('log')
 plt.yscale('log')
 \end{lstlisting}
 
+\begin{center}
+\includegraphics[width=4in]{chapters/06_plotting_files/06_plotting_95_0.pdf}
+\end{center}
+
 The slope of this line is the ``rise over run'', that is, the difference
 on the \passthrough{\lstinline!y!} axis divided by the difference on the
 \passthrough{\lstinline!x!} axis. We can compute the rise using
@@ -668,12 +712,20 @@ first and last values:
 np.log10(ys)
 \end{lstlisting}
 
+\begin{lstlisting}[style=output]
+array([4.53856117, 0.        ])
+\end{lstlisting}
+
 Then we can use \passthrough{\lstinline!np.diff!} to compute the
 difference between the elements:
 
 \begin{lstlisting}[language=Python,style=source]
 rise = np.diff(np.log10(ys))
 rise
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+array([-4.53856117])
 \end{lstlisting}
 
 In the following exercise, you'll compute the run and the slope of the
