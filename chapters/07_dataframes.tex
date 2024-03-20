@@ -1,23 +1,6 @@
 \hypertarget{dataframes-and-series}{%
 \chapter{DataFrames and Series}\label{dataframes-and-series}}
 
-\begin{lstlisting}[language=Python,style=source]
-from os.path import basename, exists
-
-def download(url):
-    filename = basename(url)
-    if not exists(filename):
-        from urllib.request import urlretrieve
-
-        local, _ = urlretrieve(url, filename)
-        print("Downloaded " + str(local))
-    return filename
-
-download('https://raw.githubusercontent.com/AllenDowney/ElementsOfDataScience/v1/utils.py')
-
-import utils
-\end{lstlisting}
-
 This chapter introduces Pandas, a Python library that provides functions
 for reading and writing data files, exploring and analyzing data, and
 generating visualizations. And it provides two new types for working
@@ -112,7 +95,7 @@ stata_dict
 \end{lstlisting}
 
 \begin{lstlisting}[style=output]
-<statadict.base.StataDict at 0x7f57aa594050>
+<statadict.base.StataDict at 0x7f93d4f08f10>
 \end{lstlisting}
 
 The result is an object that contains
@@ -722,8 +705,7 @@ live_preterm.mean()
 0.08929132209777034
 \end{lstlisting}
 
-About \passthrough{\lstinline!9!}\% of all pregnancies resulted in a
-preterm live birth.
+About \(9\%\) of all pregnancies resulted in a preterm live birth.
 
 The other common logical operators that work with
 \passthrough{\lstinline!Series!} objects are:
