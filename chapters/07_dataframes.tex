@@ -1,6 +1,26 @@
 \hypertarget{dataframes-and-series}{%
 \chapter{DataFrames and Series}\label{dataframes-and-series}}
 
+\href{https://colab.research.google.com/github/AllenDowney/ElementsOfDataScience/blob/v1/07_dataframes.ipynb}{Click
+here to run this notebook on Colab}.
+
+\begin{lstlisting}[language=Python,style=source]
+from os.path import basename, exists
+
+def download(url):
+    filename = basename(url)
+    if not exists(filename):
+        from urllib.request import urlretrieve
+
+        local, _ = urlretrieve(url, filename)
+        print("Downloaded " + str(local))
+    return filename
+
+download('https://raw.githubusercontent.com/AllenDowney/ElementsOfDataScience/v1/utils.py')
+
+import utils
+\end{lstlisting}
+
 This chapter introduces Pandas, a Python library that provides functions
 for reading and writing data files, exploring and analyzing data, and
 generating visualizations. And it provides two new types for working
@@ -42,6 +62,11 @@ Center for Health Statistics. To download the data, you have to agree to
 the Data User's Agreement. URLs for the data and the agreement are in
 the notebook for this chapter.
 
+The NSFG data is available from \url{https://www.cdc.gov/nchs/nsfg}.
+
+The Data User's Agreement is at
+\url{https://www.cdc.gov/nchs/data_access/ftp_dua.htm}.
+
 You should read the terms carefully, but let me draw your attention to
 what I think is the most important one:
 
@@ -78,10 +103,39 @@ dict_file = '2015_2017_FemPregSetup.dct'
 data_file = '2015_2017_FemPregData.dat'
 \end{lstlisting}
 
+Once you have agreed to the terms, you can use the following cells to
+download the data.
+
+\begin{lstlisting}[language=Python,style=source]
+download('https://ftp.cdc.gov/pub/health_statistics/nchs/datasets/NSFG/stata/' + dict_file)
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+'2015_2017_FemPregSetup.dct'
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python,style=source]
+download('https://ftp.cdc.gov/pub/health_statistics/nchs/datasets/NSFG/' + data_file)
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+'2015_2017_FemPregData.dat'
+\end{lstlisting}
+
 Pandas can read data in most common formats, including CSV, Excel, and
 fixed-width format, but it cannot read the data dictionary, which is in
 Stata format. For that, we'll use a Python library called
 \passthrough{\lstinline!statadict!}.
+
+The following cell installs \passthrough{\lstinline!statadict!} if
+necessary.
+
+\begin{lstlisting}[language=Python,style=source]
+try:
+    from statadict import parse_stata_dict
+except ImportError:
+    !pip install statadict
+\end{lstlisting}
 
 From \passthrough{\lstinline!statadict!}, we'll import
 \passthrough{\lstinline!parse\_stata\_dict!}, which reads the data
@@ -95,7 +149,7 @@ stata_dict
 \end{lstlisting}
 
 \begin{lstlisting}[style=output]
-<statadict.base.StataDict at 0x7f93d4f08f10>
+<statadict.base.StataDict at 0x7f92ea6507d0>
 \end{lstlisting}
 
 The result is an object that contains
@@ -160,6 +214,12 @@ nsfg.head()
 \end{lstlisting}
 
 \begin{lstlisting}[language=Python,style=source]
+# NOTE: For the printed version of the book, 
+# I'm using iloc to show
+# the first 5 rows and first 9 columns
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python,style=source]
 nsfg.iloc[:5,:7]
 \end{lstlisting}
 
@@ -215,6 +275,14 @@ Index(['CASEID', 'PREGORDR', 'HOWPREG_N', 'HOWPREG_P', 'MOSCURRP', 'NOWPRGDK',
 
 The column names are stored in an \passthrough{\lstinline!Index!}, which
 is another Pandas type, similar to a list.
+
+\begin{lstlisting}[language=Python,style=source]
+type(nsfg.columns)
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+pandas.core.indexes.base.Index
+\end{lstlisting}
 
 Based on the names, you might be able to guess what some of the columns
 are, but in general you have to read the documentation. When you work
@@ -295,6 +363,27 @@ Select the column \passthrough{\lstinline!'BIRTHWGT\_OZ1'!} from
 \passthrough{\lstinline!nsfg!} and assign it to a new variable called
 \passthrough{\lstinline!ounces!}. Then display the first 5 elements of
 \passthrough{\lstinline!ounces!}.
+
+\textbf{Exercise:} The Pandas types we have seen so far are
+\passthrough{\lstinline!DataFrame!}, \passthrough{\lstinline!Index!},
+and \passthrough{\lstinline!Series!}. You can find the documentation of
+these types at:
+
+\begin{itemize}
+\item
+  \passthrough{\lstinline!DataFrame!}:
+  \url{https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html}
+\item
+  \passthrough{\lstinline!Index!}:
+  \url{https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.Index.html}
+\item
+  \passthrough{\lstinline!Series!}:
+  \url{https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.Series.html}
+\end{itemize}
+
+This documentation can be overwhelming -- I don't recommend trying to
+read it all now. But you might want to skim it so you know where to look
+later.
 
 \hypertarget{validation}{%
 \section{Validation}\label{validation}}
@@ -961,4 +1050,12 @@ use of the term because it might be confusing to say that we select a
 ``variable'' from a \passthrough{\lstinline!DataFrame!} and assign it to
 a Python variable. But you might see this use of the term elsewhere, so
 I thought I would mention it.
+
+\emph{Elements of Data Science}
+
+Copyright 2021 \href{https://allendowney.com}{Allen B. Downey}
+
+License:
+\href{https://creativecommons.org/licenses/by-nc-sa/4.0/}{Creative
+Commons Attribution-NonCommercial-ShareAlike 4.0 International}
 
