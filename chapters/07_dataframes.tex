@@ -95,7 +95,7 @@ stata_dict
 \end{lstlisting}
 
 \begin{lstlisting}[style=output]
-<statadict.base.StataDict at 0x7f3d41a6c290>
+<statadict.base.StataDict at 0x7f8022038150>
 \end{lstlisting}
 
 The result is an object that contains
@@ -312,11 +312,16 @@ Before we do anything with this data, we have to validate it. One part
 of validation is confirming that we are interpreting the data correctly.
 We can use the \passthrough{\lstinline!value\_counts!} method to see
 what values appear in \passthrough{\lstinline!pounds!} and how many
-times each value appears. pounds.value\_counts() The values are in the
-left column and the counts are in the right column. By default, the
-results are sorted with the highest count first, but we can use
-\passthrough{\lstinline!sort\_index!} to sort them by value instead,
-with the lightest babies first and heaviest babies last.
+times each value appears.
+
+\begin{lstlisting}[language=Python,style=source]
+pounds.value_counts()
+\end{lstlisting}
+
+The values are in the left column and the counts are in the right
+column. By default, the results are sorted with the highest count first,
+but we can use \passthrough{\lstinline!sort\_index!} to sort them by
+value instead, with the lightest babies first and heaviest babies last.
 
 \begin{lstlisting}[language=Python,style=source]
 pounds.value_counts().sort_index()
