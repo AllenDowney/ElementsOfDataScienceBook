@@ -500,7 +500,7 @@ array(0.62121445)
 are looking up. \passthrough{\lstinline!p!} stands for probability,
 which is the result. In this example, the quantity is age
 \passthrough{\lstinline!51!}, and the corresponding probability is about
-\passthrough{\lstinline!0.63!}. That means that about \(63\%\) of the
+\passthrough{\lstinline!0.62!}. That means that about \(62\%\) of the
 respondents are \passthrough{\lstinline!51!} years old or younger. The
 arrow in the following figure shows how you could read this value from
 the CDF, at least approximately.
@@ -541,13 +541,13 @@ array(32.)
 
 In this example, we look up the probability
 \passthrough{\lstinline!0.25!} and the result is
-\passthrough{\lstinline!31!}.\\
-That means that 25\% of the respondents are age 31 or less. Another way
-to say the same thing is ``age 31 is the 25th percentile of this
+\passthrough{\lstinline!32!}.\\
+That means that 25\% of the respondents are age 32 or less. Another way
+to say the same thing is ``age 32 is the 25th percentile of this
 distribution''.
 
 If we look up probability \passthrough{\lstinline!0.75!}, it returns
-\passthrough{\lstinline!59!}, so 75\% of the respondents are 59 or
+\passthrough{\lstinline!60!}, so 75\% of the respondents are 60 or
 younger.
 
 \begin{lstlisting}[language=Python,style=source]
@@ -607,6 +607,10 @@ distribution by plotting the CDF. Select
 dataset, make a \passthrough{\lstinline!Cdf!} called
 \passthrough{\lstinline!cdf\_income!}, and plot it. Remember to label
 the axes!
+
+Because the tail of the distribution extends to the right, the mean is
+greater than the median. Use the \passthrough{\lstinline!Cdf!} object to
+compute the fraction of respondents whose income is below the mean.
 
 \hypertarget{comparing-distributions}{%
 \section{Comparing Distributions}\label{comparing-distributions}}
@@ -762,10 +766,10 @@ plt.legend();
 \includegraphics[width=4in]{chapters/08_distributions_files/08_distributions_94_0.png}
 \end{center}
 
-Below \textbackslash\$30,000 the CDFs are almost identical; above that,
-we can see that the post-1995 distribution is shifted to the right. In
-other words, the fraction of people with high incomes is about the same,
-but the income of high earners has increased.
+Below \$30,000 the CDFs are almost identical; above that, we can see
+that the post-1995 distribution is shifted to the right. In other words,
+the fraction of people with high incomes is about the same, but the
+income of high earners has increased.
 
 In general, I recommend CDFs for exploratory analysis. They give you a
 clear view of the distribution, without too much noise, and they are
@@ -808,10 +812,6 @@ The following statement uses NumPy's \passthrough{\lstinline!random!}
 library to generate 1000 values from a normal distribution with mean
 \passthrough{\lstinline!0!} and standard deviation
 \passthrough{\lstinline!1!}.
-
-\begin{lstlisting}[language=Python,style=source]
-np.random.seed(17)
-\end{lstlisting}
 
 \begin{lstlisting}[language=Python,style=source]
 sample = np.random.normal(size=1000)
@@ -877,30 +877,6 @@ distribution. When we collect data in the real world, we do not expect
 it to fit a normal distribution as well as this. In the next exercise,
 we'll try it and see.
 
-\textbf{Exercise:} Is the normal distribution a good model for the
-distribution of ages in the U.S. population?
-
-To answer this question:
-
-\begin{itemize}
-\item
-  Use \passthrough{\lstinline!linspace!} to create an array of equally
-  spaced values between \passthrough{\lstinline!18!} and
-  \passthrough{\lstinline!89!}.
-\item
-  Compute the mean and standard deviation of ages in the GSS dataset.
-\item
-  Use \passthrough{\lstinline!norm!} to create a normal distribution
-  with the same mean and standard deviation as the data, then use it to
-  compute the normal CDF for each value in the array.
-\item
-  Plot the normal CDF with a gray line.
-\item
-  Plot the CDF of the ages in the GSS.
-\end{itemize}
-
-How well do the plotted CDFs agree?
-
 \textbf{Exercise:} In many datasets, the distribution of income is
 approximately \textbf{lognormal}, which means that the logarithms of the
 incomes fit a normal distribution. Let's see whether that's true for the
@@ -910,9 +886,7 @@ GSS data.
 \item
   Extract \passthrough{\lstinline!realinc!} from
   \passthrough{\lstinline!gss!} and compute its logarithm using
-  \passthrough{\lstinline!np.log10()!}. Hint: Replace the value
-  \passthrough{\lstinline!0!} with \passthrough{\lstinline!NaN!} before
-  computing logarithms.
+  \passthrough{\lstinline!np.log10()!}.
 \item
   Compute the mean and standard deviation of the log-transformed
   incomes.
@@ -948,12 +922,12 @@ plt.legend();
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/08_distributions_files/08_distributions_111_0.png}
+\includegraphics[width=4in]{chapters/08_distributions_files/08_distributions_112_0.png}
 \end{center}
 
-The normal PDF is the classic ``bell curve''.\\
-It is tempting to compare the PMF of the data to the PDF of the normal
-distribution, but that doesn't work. Let's see what happens if we try:
+The normal PDF is the classic ``bell curve''. It is tempting to compare
+the PMF of the data to the PDF of the normal distribution, but that
+doesn't work. Let's see what happens if we try:
 
 \begin{lstlisting}[language=Python,style=source]
 plt.plot(xs, ys, color='gray', label='Normal PDF')
@@ -968,7 +942,7 @@ plt.legend();
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/08_distributions_files/08_distributions_113_0.png}
+\includegraphics[width=4in]{chapters/08_distributions_files/08_distributions_114_0.png}
 \end{center}
 
 The PMF of the sample is a flat line across the bottom. In the random
@@ -996,7 +970,7 @@ plt.legend();
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/08_distributions_files/08_distributions_115_0.png}
+\includegraphics[width=4in]{chapters/08_distributions_files/08_distributions_116_0.png}
 \end{center}
 
 Now we can compare the KDE plot and the normal PDF.
@@ -1012,7 +986,7 @@ plt.legend();
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/08_distributions_files/08_distributions_117_0.png}
+\includegraphics[width=4in]{chapters/08_distributions_files/08_distributions_118_0.png}
 \end{center}
 
 The KDE plot matches the normal PDF pretty well, although the
@@ -1021,38 +995,6 @@ CDFs. That means that the PDF is a more sensitive way to look for
 differences, but often it is too sensitive.\\
 It's hard to tell whether apparent differences mean anything, or if they
 are just random, as in this case.
-
-\textbf{Exercise:} In a previous exercise, we asked ``Is the normal
-distribution a good model for the distribution of ages in the U.S.
-population?'' To answer this question, we plotted the CDF of the data
-and compared it to the CDF of a normal distribution with the same mean
-and standard deviation.
-
-Now we'll compare the estimated density of the data with the normal PDF.
-
-\begin{itemize}
-\item
-  Again, compute the mean and standard deviation of ages in the GSS
-  dataset.
-\item
-  Use \passthrough{\lstinline!linspace!} to create an array of values
-  between 18 and 89.
-\item
-  Use \passthrough{\lstinline!norm!} to create a normal distribution
-  with the same mean and standard deviation as the data, then use it to
-  compute the normal PDF for each value in the array.
-\item
-  Plot the normal PDF with a gray line.
-\item
-  Use \passthrough{\lstinline!sns.kdeplot!} to estimate and plot the
-  density of the ages in the GSS.
-\end{itemize}
-
-Note: Seaborn can't handle NaNs, but you can use
-\passthrough{\lstinline!dropna!} to drop them before calling
-\passthrough{\lstinline!kdeplot!}.
-
-How well do the PDF and KDE plots agree?
 
 \textbf{Exercise:} In a previous exercise, we used CDFs to see if the
 distribution of income fits a lognormal distribution. We can make the
