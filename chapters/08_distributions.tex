@@ -735,6 +735,8 @@ post95 = (gss['year'] >= 1995)
 Now we can plot the PMFs of \passthrough{\lstinline!realinc!}
 
 \begin{lstlisting}[language=Python,style=source]
+realinc = gss['realinc']
+
 Pmf.from_seq(realinc[pre95]).plot(label='Before 1995')
 Pmf.from_seq(realinc[post95]).plot(label='After 1995')
 
@@ -744,9 +746,9 @@ plt.title('Distribution of income')
 plt.legend();
 \end{lstlisting}
 
-\begin{lstlisting}[style=output]
-NameError: name 'realinc' is not defined
-\end{lstlisting}
+\begin{center}
+\includegraphics[width=4in]{chapters/08_distributions_files/08_distributions_91_0.png}
+\end{center}
 
 There are a lot of unique values in this distribution, and none of them
 appear very often. As a result, the PMF is so noisy and we can't really
@@ -764,6 +766,10 @@ plt.ylabel('CDF')
 plt.title('Distribution of income')
 plt.legend();
 \end{lstlisting}
+
+\begin{center}
+\includegraphics[width=4in]{chapters/08_distributions_files/08_distributions_93_0.png}
+\end{center}
 
 Below \$30,000 the CDFs are almost identical; above that, we can see
 that the post-1995 distribution is shifted to the right. In other words,
@@ -827,6 +833,10 @@ plt.ylabel('CDF')
 plt.legend();
 \end{lstlisting}
 
+\begin{center}
+\includegraphics[width=4in]{chapters/08_distributions_files/08_distributions_101_0.png}
+\end{center}
+
 If we did not know that this sample was drawn from a normal
 distribution, and we wanted to check, we could compare the CDF of the
 data to the CDF of an ideal normal distribution, which we can use the
@@ -862,6 +872,10 @@ plt.xlabel('x')
 plt.ylabel('CDF')
 plt.legend();
 \end{lstlisting}
+
+\begin{center}
+\includegraphics[width=4in]{chapters/08_distributions_files/08_distributions_105_0.png}
+\end{center}
 
 The CDF of the random sample agrees with the normal model -- which is
 not surprising because the data were actually sampled from a normal
@@ -918,6 +932,10 @@ plt.title('Normal density function')
 plt.legend();
 \end{lstlisting}
 
+\begin{center}
+\includegraphics[width=4in]{chapters/08_distributions_files/08_distributions_112_0.png}
+\end{center}
+
 The normal PDF is the classic ``bell curve''. Now, it is tempting to
 compare the PMF of the data to the PDF of the normal distribution, but
 that doesn't work. Let's see what happens if we try:
@@ -933,6 +951,10 @@ plt.ylabel('PDF')
 plt.title('Normal density function')
 plt.legend();
 \end{lstlisting}
+
+\begin{center}
+\includegraphics[width=4in]{chapters/08_distributions_files/08_distributions_114_0.png}
+\end{center}
 
 The PMF of the sample is a flat line across the bottom. In the random
 sample, every value is unique, so they all have the same probability,
@@ -955,6 +977,10 @@ plt.title('Normal density function')
 plt.legend();
 \end{lstlisting}
 
+\begin{center}
+\includegraphics[width=4in]{chapters/08_distributions_files/08_distributions_116_0.png}
+\end{center}
+
 Now we can compare the KDE plot and the normal PDF.
 
 \begin{lstlisting}[language=Python,style=source]
@@ -966,6 +992,10 @@ plt.ylabel('PDF')
 plt.title('Normal density function')
 plt.legend();
 \end{lstlisting}
+
+\begin{center}
+\includegraphics[width=4in]{chapters/08_distributions_files/08_distributions_118_0.png}
+\end{center}
 
 The KDE plot matches the normal PDF pretty well, although the
 differences look bigger when we compare PDFs than they did with the
