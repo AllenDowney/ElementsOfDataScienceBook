@@ -14,54 +14,39 @@ This chapter explores relationships between variables.
 
 The most important lesson in this chapter is that you should always
 visualize the relationship between variables before you try to quantify
-it; otherwise, you are likely to be misled.
+it -- otherwise, you are likely to be misled.
 
 \hypertarget{exploring-relationships}{%
 \section{Exploring relationships}\label{exploring-relationships}}
 
 So far we have mostly considered one variable at a time. Now it's time
 to explore relationships between variables. As a first example, we'll
-look at the relationship between height and weight.
+look at the relationship between height and weight. We'll use data from
+the Behavioral Risk Factor Surveillance System (BRFSS), which is run by
+the Centers for Disease Control (CDC). Based on the BRFSS data from
+2021, I have created an extract with one row for each survey respondent
+and one column for each of the variables I selected.
 
-We'll use data from the Behavioral Risk Factor Surveillance System
-(BRFSS), which is run by the Centers for Disease Control at
-\url{https://www.cdc.gov/brfss}. The survey includes more than 400,000
-respondents, but to keep things manageable, we'll work with a random
-subsample of 100,000.
-
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 import pandas as pd
 
-brfss = pd.read_hdf('brfss.hdf5', 'brfss')
+brfss = pd.read_hdf('brfss_2021.hdf', 'brfss')
 brfss.shape
-(@\dashfill@)
-@@@(100000, 9)@@@
 \end{lstlisting}
 
 Here are the first few rows.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 brfss.head()
 \end{lstlisting}
 
-\begin{tabular}{lrrrrrrrrr}
-\midrule
-{} &  SEX &   HTM4 &   WTKG3 &  INCOME2 &       \_LLCPWT &  \_AGEG5YR  \\
-\midrule
-96230  &  2.0 &  160.0 &   60.33 &      8.0 &   1398.525290 &       6.0  \\
-244920 &  2.0 &  163.0 &   58.97 &      5.0 &     84.057503 &      13.0  \\
-57312  &  2.0 &  163.0 &   72.57 &      8.0 &    390.248599 &       5.0  \\
-32573  &  2.0 &  165.0 &   74.84 &      1.0 &  11566.705300 &       3.0  \\
-355929 &  2.0 &  170.0 &  108.86 &      3.0 &    844.485450 &       3.0  \\
-\midrule
-\end{tabular}
-
 The BRFSS includes hundreds of variables. For the examples in this
-chapter, we'll work with just nine. The ones we'll start with are
+chapter, we'll work with just these nine. The ones we'll start with are
 \passthrough{\lstinline!HTM4!}, which records each respondent's height
-in cm, and \passthrough{\lstinline!WTKG3!}, which records weight in kg.
+in centimeters, and \passthrough{\lstinline!WTKG3!}, which records
+weight in kilograms.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 height = brfss['HTM4']
 weight = brfss['WTKG3']
 \end{lstlisting}
@@ -69,13 +54,11 @@ weight = brfss['WTKG3']
 To visualize the relationship between these variables, we'll make a
 \textbf{scatter plot}, which shows one marker for each pair of values.
 Scatter plots are common and readily understood, but they are
-surprisingly hard to get right.
+surprisingly hard to get right. As a first attempt, we'll use
+\passthrough{\lstinline!plot!} with the style string
+\passthrough{\lstinline!o!}, which plots a circle for each data point.
 
-As a first attempt, we'll use \passthrough{\lstinline!plot!} with the
-style string \passthrough{\lstinline!o!}, which plots a circle for each
-data point.
-
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 import matplotlib.pyplot as plt
 
 plt.plot(height, weight, 'o')
@@ -85,65 +68,50 @@ plt.ylabel('Weight in kg')
 plt.title('Scatter plot of weight versus height');
 \end{lstlisting}
 
-\begin{center}
-\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_12_0.png}
-\end{center}
-
-Each marker represents the height and weight of one person.
-
-Based on the shape of the result, it looks like taller people are
-heavier, but there are a few things about this plot that make it hard to
-interpret. Most importantly, it is \textbf{overplotted}, which means
-that there are markers piled on top of each other so you can't tell
-where there are a lot of data points and where there is just one. When
-that happens, the results can be seriously misleading.
+Each marker represents the height and weight of one person. Based on the
+shape of the result, it looks like taller people are heavier, but there
+are a few things about this plot that make it hard to interpret. Most
+importantly, it is \textbf{overplotted}, which means that there are
+markers piled on top of each other so you can't tell where there are a
+lot of data points and where there is just one. When that happens, the
+results can be misleading.
 
 One way to improve the plot is to use transparency, which we can do with
 the keyword argument \passthrough{\lstinline!alpha!}. The lower the
-value of alpha, the more transparent each data point is.
+value of alpha, the more transparent each data point is.\\
+Here's what it looks like with \passthrough{\lstinline!alpha=0.01!}.
 
-Here's what it looks like with \passthrough{\lstinline!alpha=0.02!}.
-
-\begin{lstlisting}[]
-plt.plot(height, weight, 'o', alpha=0.02)
+\begin{lstlisting}[language=Python,style=source]
+plt.plot(height, weight, 'o', alpha=0.01)
 
 plt.xlabel('Height in cm')
 plt.ylabel('Weight in kg')
 plt.title('Scatter plot of weight versus height');
 \end{lstlisting}
-
-\begin{center}
-\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_14_0.png}
-\end{center}
 
 This is better, but there are so many data points, the scatter plot is
 still overplotted. The next step is to make the markers smaller. With
-\passthrough{\lstinline!markersize=1!} and a low value of alpha, the
+\passthrough{\lstinline!markersize=0.5!} and a low value of alpha, the
 scatter plot is less saturated. Here's what it looks like.
 
-\begin{lstlisting}[]
-plt.plot(height, weight, 'o', alpha=0.02, markersize=1)
+\begin{lstlisting}[language=Python,style=source]
+plt.plot(height, weight, 'o', alpha=0.01, markersize=0.5)
 
 plt.xlabel('Height in cm')
 plt.ylabel('Weight in kg')
 plt.title('Scatter plot of weight versus height');
 \end{lstlisting}
-
-\begin{center}
-\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_16_0.png}
-\end{center}
 
 Again, this is better, but now we can see that the points fall in
 discrete columns. That's because most heights were reported in inches
 and converted to centimeters. We can break up the columns by adding some
-random noise to the values; in effect, we are filling in the values that
-got rounded off. Adding random noise like this is called
-\textbf{jittering}.
+random noise to the values -- in effect, we are filling in the values
+that got rounded off. Adding random noise like this is called
+\textbf{jittering}. We can use NumPy to add noise from a normal
+distribution with mean \passthrough{\lstinline!0!} and standard
+deviation \passthrough{\lstinline!2!}.
 
-We can use NumPy to add noise from a normal distribution with mean 0 and
-standard deviation 2.
-
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 import numpy as np
 
 noise = np.random.normal(0, 2, size=len(brfss))
@@ -152,53 +120,42 @@ height_jitter = height + noise
 
 Here's what the plot looks like with jittered heights.
 
-\begin{lstlisting}[]
-plt.plot(height_jitter, weight, 'o', 
-         alpha=0.02, markersize=1)
+\begin{lstlisting}[language=Python,style=source]
+plt.plot(height_jitter, weight, 'o', alpha=0.01, markersize=0.5)
 
 plt.xlabel('Height in cm')
 plt.ylabel('Weight in kg')
 plt.title('Scatter plot of weight versus height');
 \end{lstlisting}
-
-\begin{center}
-\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_20_0.png}
-\end{center}
 
 The columns are gone, but now we can see that there are rows where
 people rounded off their weight. We can fix that by jittering weight,
 too.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 noise = np.random.normal(0, 2, size=len(brfss))
 weight_jitter = weight + noise
 \end{lstlisting}
 
-\begin{lstlisting}[]
+Here's what it looks like.
+
+\begin{lstlisting}[language=Python,style=source]
 plt.plot(height_jitter, weight_jitter, 'o', 
-         alpha=0.02, markersize=1)
+         alpha=0.01, markersize=0.5)
 
 plt.xlabel('Height in cm')
 plt.ylabel('Weight in kg')
 plt.title('Scatter plot of weight versus height');
 \end{lstlisting}
 
-\begin{center}
-\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_23_0.png}
-\end{center}
-
 Finally, let's zoom in on the area where most of the data points are.
-
 The functions \passthrough{\lstinline!xlim!} and
-\passthrough{\lstinline!ylim!} set the lower and upper bounds for the
-\(x\) and \(y\)-axis; in this case, we plot heights from 140 to 200
-centimeters and weights up to 160 kilograms.
+\passthrough{\lstinline!ylim!} set the lower and upper limits of the
+\(x\)-axis and \(y\)-axis; in this case, we plot heights from 140 to 200
+centimeters and weights up to 160 kilograms. Here's what it looks like.
 
-Here's what it looks like.
-
-\begin{lstlisting}[]
-plt.plot(height_jitter, weight_jitter, 'o', 
-         alpha=0.02, markersize=1)
+\begin{lstlisting}[language=Python,style=source]
+plt.plot(height_jitter, weight_jitter, 'o', alpha=0.01, markersize=0.5)
 
 plt.xlim([140, 200])
 plt.ylim([0, 160])
@@ -207,18 +164,12 @@ plt.ylabel('Weight in kg')
 plt.title('Scatter plot of weight versus height');
 \end{lstlisting}
 
-\begin{center}
-\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_25_0.png}
-\end{center}
-
 Now we have a reliable picture of the relationship between height and
-weight.
+weight. Below you can see the misleading plot we started with and the
+more reliable one we ended with. They are clearly different, and they
+suggest different relationships between these variables.
 
-Below you can see the misleading plot we started with and the more
-reliable one we ended with. They are clearly different, and they suggest
-different relationships between these variables.
-
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 # Set the figure size
 plt.figure(figsize=(8, 3))
 
@@ -236,8 +187,7 @@ plt.tight_layout()
 # Start plot 2
 plt.subplot(1, 2, 2)
 
-plt.plot(height_jitter, weight_jitter, 'o', 
-         alpha=0.02, markersize=1)
+plt.plot(height_jitter, weight_jitter, 'o', alpha=0.01, markersize=0.5)
 
 plt.xlim([140, 200])
 plt.ylim([0, 160])
@@ -247,30 +197,24 @@ plt.title('Scatter plot of weight versus height')
 plt.tight_layout()
 \end{lstlisting}
 
-\begin{center}
-\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_27_0.png}
-\end{center}
-
 The point of this example is that it takes some effort to make an
 effective scatter plot.
 
 \textbf{Exercise:} Do people tend to gain weight as they get older? We
 can answer this question by visualizing the relationship between weight
-and age.
-
-But before we make a scatter plot, it is a good idea to visualize
-distributions one variable at a time. So let's look at the distribution
-of age.
+and age. But before we make a scatter plot, it is a good idea to
+visualize distributions one variable at a time. So let's look at the
+distribution of age.
 
 The BRFSS dataset includes a column, \passthrough{\lstinline!AGE!},
 which represents each respondent's age in years. To protect respondents'
-privacy, ages are rounded off into 5-year bins.
-\passthrough{\lstinline!AGE!} contains the midpoint of the bins.
+privacy, ages are rounded off into 5-year bins. The values in
+\passthrough{\lstinline!AGE!} are the midpoints of the bins.
 
 \begin{itemize}
 \item
-  Extract the variable \passthrough{\lstinline!'AGE'!} from the
-  DataFrame \passthrough{\lstinline!brfss!} and assign it to
+  Extract the variable \passthrough{\lstinline!'AGE'!} from
+  \passthrough{\lstinline!brfss!} and assign it to
   \passthrough{\lstinline!age!}.
 \item
   Plot the PMF of \passthrough{\lstinline!age!} as a bar chart, using
@@ -278,35 +222,18 @@ privacy, ages are rounded off into 5-year bins.
   \passthrough{\lstinline!empiricaldist!}.
 \end{itemize}
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 from empiricaldist import Pmf
 \end{lstlisting}
 
 \textbf{Exercise:} Now let's look at the distribution of weight. The
 column that contains weight in kilograms is
 \passthrough{\lstinline!WTKG3!}. Because this column contains many
-unique values, displaying it as a PMF doesn't work very well.
+unique values, displaying it as a PMF doesn't work very well. Instead,
+use \passthrough{\lstinline!Cdf!} from
+\passthrough{\lstinline!empiricaldist!} to plot the CDF of weight.
 
-\begin{lstlisting}[]
-Pmf.from_seq(weight).bar()
-
-plt.xlabel('Weight in kg')
-plt.ylabel('PMF')
-plt.title('Distribution of weight');
-\end{lstlisting}
-
-\begin{center}
-\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_33_0.pdf}
-\end{center}
-
-To get a better view of this distribution, try plotting the CDF.
-
-Compute the CDF of a normal distribution with the same mean and standard
-deviation, and compare it with the distribution of weight. Is the normal
-distribution a good model for this data? What about log-transformed
-weights?
-
-\textbf{Exercise:} Now let's make a scatter plot of
+\textbf{Exercise:} Now make a scatter plot of
 \passthrough{\lstinline!weight!} versus \passthrough{\lstinline!age!}.
 Adjust \passthrough{\lstinline!alpha!} and
 \passthrough{\lstinline!markersize!} to avoid overplotting. Use
@@ -334,17 +261,15 @@ scatter plot will show the relationship more clearly.
 In the previous section we used scatter plots to visualize relationships
 between variables, and in the exercises, you explored the relationship
 between age and weight. In this section, we'll see other ways to
-visualize these relationships, including boxplots and violin plots.
-
+visualize these relationships, including box plots and violin plots.
 Let's start with a scatter plot of weight versus age.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 age = brfss['AGE']
 noise = np.random.normal(0, 1.0, size=len(brfss))
 age_jitter = age + noise
 
-plt.plot(age_jitter, weight_jitter, 'o', 
-         alpha=0.01, markersize=1)
+plt.plot(age_jitter, weight_jitter, 'o', alpha=0.01, markersize=0.5)
 
 plt.xlabel('Age in years')
 plt.ylabel('Weight in kg')
@@ -352,36 +277,30 @@ plt.ylim([0, 200])
 plt.title('Weight versus age');
 \end{lstlisting}
 
-\begin{center}
-\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_38_0.png}
-\end{center}
-
-In this version of the scatter plot, the weights are jittered, but
-there's still space between the columns. That makes it possible to see
-the shape of the distribution in each age group, and the differences
-between groups. With this view, it looks like weight increases until age
-40 or 50, and then starts to decrease.
+In this version of the scatter plot, the ages are jittered, but there's
+still space between the columns. That makes it possible to see the shape
+of the distribution in each age group, and the differences between
+groups. With this view, it looks like average weights increase until age
+40 or 50, and then start to decrease.
 
 If we take this idea one step farther, we can use KDE to estimate the
-density function in each column and plot it. And there's a name for
-that; it's called a \textbf{violin plot}. Seaborn provides a function
-that makes violin plots, but before we can use it, we have to get rid of
-any rows with missing data. Here's how:
+density function in each column and plot it. And there's a name for that
+-- it's called a \textbf{violin plot}. Seaborn provides a function that
+makes violin plots, but before we can use it, we have to get rid of any
+rows with missing data. Here's how:
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 data = brfss.dropna(subset=['AGE', 'WTKG3'])
 data.shape
-(@\dashfill@)
-@@@(92729, 9)@@@
 \end{lstlisting}
 
-\passthrough{\lstinline!dropna()!} creates a new DataFrame that drops
-the rows in \passthrough{\lstinline!brfss!} where
-\passthrough{\lstinline!AGE!} or \passthrough{\lstinline!WTKG3!} are
-\passthrough{\lstinline!NaN!}. Now we can call
-\passthrough{\lstinline!violinplot!}.
+\passthrough{\lstinline!dropna!} creates a new
+\passthrough{\lstinline!DataFrame!} that omits the rows in
+\passthrough{\lstinline!brfss!} where \passthrough{\lstinline!AGE!} or
+\passthrough{\lstinline!WTKG3!} are \passthrough{\lstinline!NaN!}. Now
+we can call \passthrough{\lstinline!violinplot!}.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 import seaborn as sns
 
 sns.violinplot(x='AGE', y='WTKG3', data=data, inner=None)
@@ -391,19 +310,13 @@ plt.ylabel('Weight in kg')
 plt.title('Weight versus age');
 \end{lstlisting}
 
-\begin{center}
-\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_42_0.pdf}
-\end{center}
-
-The \passthrough{\lstinline!x!} and \passthrough{\lstinline!y!}
-arguments mean we want \passthrough{\lstinline!AGE!} on the x-axis and
-\passthrough{\lstinline!WTKG3!} on the y-axis.
-\passthrough{\lstinline!data!} is the DataFrame we just created, which
-contains the variables we're going to plot. The argument
-\passthrough{\lstinline!inner=None!} simplifies the plot a little.
-
-In the figure, each shape represents the distribution of weight in one
-age group. The width of these shapes is proportional to the estimated
+\passthrough{\lstinline!data!} is the
+\passthrough{\lstinline!DataFrame!} we just created; the
+\passthrough{\lstinline!x!} and \passthrough{\lstinline!y!} arguments
+are the names of columns from \passthrough{\lstinline!data!}. The
+argument \passthrough{\lstinline!inner=None!} simplifies the plot a
+little. In the result each shape shows the distribution of weight in one
+age group. The width of each shape is proportional to the estimated
 density, so it's like two vertical KDEs plotted back to back.
 
 Another, related way to look at data like this is called a \textbf{box
@@ -411,7 +324,7 @@ plot}, which represents summary statistics for the values in each
 group.\\
 The code to generate a box plot is very similar.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 sns.boxplot(x='AGE', y='WTKG3', data=data, whis=10)
 
 plt.xlabel('Age in years')
@@ -419,14 +332,9 @@ plt.ylabel('Weight in kg')
 plt.title('Weight versus age');
 \end{lstlisting}
 
-\begin{center}
-\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_44_0.pdf}
-\end{center}
-
 The argument \passthrough{\lstinline!whis=10!} turns off a feature we
-don't need. If you are curious about it, you can
-\href{https://seaborn.pydata.org/generated/seaborn.boxplot.html}{read
-the documentation}.
+don't need. If you are curious about it, you can read about it in the
+Seaborn documentation.
 
 Each box represents the distribution of weight in an age group. The
 height of each box represents the range from the 25th to the 75th
@@ -444,7 +352,7 @@ between weight and age.
   Looking at the sizes of the boxes, it seems like people in their 40s
   have the most variability in weight, too.
 \item
-  These plots also show how skewed the distribution of weight is; that
+  These plots also show how skewed the distribution of weight is -- that
   is, the heaviest people are much farther from the median than the
   lightest people.
 \end{itemize}
@@ -453,7 +361,7 @@ For data that skews toward higher values, it is sometimes useful to look
 at it on a logarithmic scale. We can do that with the Pyplot function
 \passthrough{\lstinline!yscale!}.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 sns.boxplot(x='AGE', y='WTKG3', data=data, whis=10)
 
 plt.yscale('log')
@@ -462,13 +370,10 @@ plt.ylabel('Weight in kg (log scale)')
 plt.title('Weight versus age');
 \end{lstlisting}
 
-\begin{center}
-\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_46_0.pdf}
-\end{center}
-
-On a log scale, the distributions are symmetric, so the spines are the
-same length, the boxes are close to the middle of the figure, and we can
-see the relationship between age and weight more clearly.
+On a log scale, the distributions are symmetric -- so the spines extend
+about the same distance in both directions, the boxes are close to the
+middle of the figure, and we can see the relationship between age and
+weight clearly.
 
 In the following exercises, you'll have a chance to generate violin and
 box plots for other variables.
@@ -481,7 +386,7 @@ that represents height in centimeters, binned into 10 cm groups.
 
 \begin{itemize}
 \item
-  Make a boxplot that shows the distribution of weight in each height
+  Make a box plot that shows the distribution of weight in each height
   group.
 \item
   Plot the y-axis on a logarithmic scale.
@@ -490,32 +395,20 @@ that represents height in centimeters, binned into 10 cm groups.
 Suggestion: If the labels on the \passthrough{\lstinline!x!} axis
 collide, you can rotate them like this:
 
-\begin{lstlisting}
-plt.xticks(rotation='45')
+\begin{lstlisting}[style=output]
+plt.xticks(rotation=45)
 \end{lstlisting}
 
 \textbf{Exercise:} As a second example, let's look at the relationship
-between income and height.
-
-In the BRFSS, income is represented as a categorical variable; that is,
-respondents are assigned to one of 8 income categories. The column name
-is \passthrough{\lstinline!INCOME2!}.
-
-Before we connect income with anything else, let's look at the
-distribution by computing the PMF.
-
-\begin{itemize}
-\item
-  Extract \passthrough{\lstinline!INCOME2!} from
-  \passthrough{\lstinline!brfss!} and assign it to
-  \passthrough{\lstinline!income!}.
-\item
-  Plot the PMF of \passthrough{\lstinline!income!} as a bar chart.
-\end{itemize}
-
-Note: You will see that about a third of the respondents are in the
-highest income group; ideally, it would be better if there were more
-groups at the high end, but we'll work with what we have.
+between income and height. In the BRFSS, income is represented as a
+categorical variable -- that is, respondents are assigned to one of
+seven income categories. The column name is
+\passthrough{\lstinline!\_INCOMG1!}. Before we connect income with
+anything else, let's look at the distribution by computing the PMF.
+Extract \passthrough{\lstinline!\_INCOMG1!} from
+\passthrough{\lstinline!brfss!} and assign it to
+\passthrough{\lstinline!income!} -- then plot the PMF of
+\passthrough{\lstinline!income!} as a bar chart.
 
 \textbf{Exercise:} Generate a violin plot that shows the distribution of
 height in each income group. Can you see a relationship between these
@@ -526,49 +419,37 @@ variables?
 
 In the previous section, we visualized relationships between pairs of
 variables. Now we'll learn about the \textbf{coefficient of
-correlation}, which quantifies the strength of these relationships.
-
-When people say ``correlation'' casually, they might mean any
-relationship between two variables. In statistics, it usually means
-Pearson's correlation coefficient, which is a number between
+correlation}, which quantifies the strength of these relationships. When
+people say ``correlation'' casually, they might mean any relationship
+between two variables. In statistics, it usually means Pearson's
+correlation coefficient, which is a number between
 \passthrough{\lstinline!-1!} and \passthrough{\lstinline!1!} that
-quantifies the strength of a linear relationship between variables.
+quantifies the strength of a linear relationship between variables. To
+demonstrate, we'll select three columns from the BRFSS dataset:
 
-To demonstrate, we'll select three columns from the BRFSS dataset:
-
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 columns = ['HTM4', 'WTKG3', 'AGE']
 subset = brfss[columns]
 \end{lstlisting}
 
-The result is a DataFrame with just those columns. With this subset of
-the data, we can use the \passthrough{\lstinline!corr!} method, like
-this:
+The result is a \passthrough{\lstinline!DataFrame!} with just those
+columns. With this subset of the data, we can use the
+\passthrough{\lstinline!corr!} method, like this:
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 subset.corr()
 \end{lstlisting}
 
-\begin{tabular}{lrrr}
-\midrule
-{} &      HTM4 &     WTKG3 &       AGE \\
-\midrule
-HTM4  &  1.000000 &  0.474203 & -0.093684 \\
-WTKG3 &  0.474203 &  1.000000 &  0.021641 \\
-AGE   & -0.093684 &  0.021641 &  1.000000 \\
-\midrule
-\end{tabular}
-
 The result is a \textbf{correlation matrix}. Reading across the first
 row, the correlation of \passthrough{\lstinline!HTM4!} with itself is
-\passthrough{\lstinline!1!}. That's expected; the correlation of
+\passthrough{\lstinline!1!}. That's expected -- the correlation of
 anything with itself is \passthrough{\lstinline!1!}.
 
-The next entry is more interesting; the correlation of height and weight
-is about \passthrough{\lstinline!0.47!}. It's positive, which means
-taller people are heavier, and it is moderate in strength, which means
-it has some predictive value, but not much. If you know someone's
-height, you can make a somewhat better guess about their weight.
+The next entry is more interesting: the correlation of height and weight
+is about \passthrough{\lstinline!0.45!}. It's positive, which means
+taller people are heavier, and it's moderate in strength, which means it
+has some predictive value -- if you know someone's height, you can make
+a somewhat better guess about their weight.
 
 The correlation between height and age is about
 \passthrough{\lstinline!-0.09!}. It's negative, which means that older
@@ -576,12 +457,12 @@ people tend to be shorter, but it's weak, which means that knowing
 someone's age would not help much if you were trying to guess their
 height.
 
-The correlation between age and weight is even smaller. It is tempting
+The correlation between weight and age is even smaller. It is tempting
 to conclude that there is no relationship between age and weight, but we
 have already seen that there is. So why is the correlation so low?
 Remember that the relationship between weight and age looks like this.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 data = brfss.dropna(subset=['AGE', 'WTKG3'])
 sns.boxplot(x='AGE', y='WTKG3', data=data, whis=10)
 
@@ -590,22 +471,18 @@ plt.ylabel('Weight in kg')
 plt.title('Weight versus age');
 \end{lstlisting}
 
-\begin{center}
-\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_57_0.pdf}
-\end{center}
-
 People in their forties are the heaviest; younger and older people are
 lighter. So this relationship is nonlinear. But correlation only
 measures linear relationships. If the relationship is nonlinear,
 correlation generally underestimates how strong it is.
 
-To demonstrate, I'll generate some fake data:
+To demonstrate this point, I'll generate some fake data:
 \passthrough{\lstinline!xs!} contains equally-spaced points between
-\passthrough{\lstinline!-1!} and \passthrough{\lstinline!1!}.
+\passthrough{\lstinline!-1!} and \passthrough{\lstinline!1!};
 \passthrough{\lstinline!ys!} is \passthrough{\lstinline!xs!} squared
 plus some random noise.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 xs = np.linspace(-1, 1)
 ys = xs**2 + np.random.normal(0, 0.05, len(xs))
 \end{lstlisting}
@@ -613,43 +490,35 @@ ys = xs**2 + np.random.normal(0, 0.05, len(xs))
 Here's the scatter plot of \passthrough{\lstinline!xs!} and
 \passthrough{\lstinline!ys!}.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 plt.plot(xs, ys, 'o', alpha=0.5)
 plt.xlabel('x')
 plt.ylabel('y')
 plt.title('Scatter plot of a fake dataset');
 \end{lstlisting}
 
-\begin{center}
-\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_61_0.pdf}
-\end{center}
-
-It's clear that this is a strong relationship; if you are given
+It's clear that this is a strong relationship -- if you are given
 \passthrough{\lstinline!x!}, you can make a much better guess about
 \passthrough{\lstinline!y!}. But here's the correlation matrix:
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 np.corrcoef(xs, ys)
-(@\dashfill@)
-@@@array([[1.        , 0.05470027],
-       [0.05470027, 1.        ]])@@@
 \end{lstlisting}
 
 Even though there is a strong non-linear relationship, the computed
-correlation is close to \passthrough{\lstinline!0!}.
+correlation is close to \passthrough{\lstinline!0!}. In general, if
+correlation is high -- that is, close to \passthrough{\lstinline!1!} or
+\passthrough{\lstinline!-1!} -- you can conclude that there is a strong
+linear relationship. But if correlation is close to
+\passthrough{\lstinline!0!}, that doesn't mean there is no relationship;
+there might be a non-linear relationship. This is one reason correlation
+can be misleading.
 
-In general, if correlation is high -- that is, close to
-\passthrough{\lstinline!1!} or \passthrough{\lstinline!-1!} -- you can
-conclude that there is a strong linear relationship. But if correlation
-is close to \passthrough{\lstinline!0!}, that doesn't mean there is no
-relationship; there might be a non-linear relationship.
-
-This is one of the reasons I think correlation is not such a great
-statistic. There's another reason to be careful with correlation; it
-doesn't mean what people take it to mean. Specifically, correlation says
-nothing about slope. If we say that two variables are correlated, that
-means we can use one to predict the other. But that might not be what we
-care about.
+And there's another reason to be careful with correlation -- it doesn't
+mean what people take it to mean. Specifically, correlation says nothing
+about slope. If we say that two variables are correlated, that means we
+can use one to predict the other. But that might not be what we care
+about.
 
 For example, suppose we are concerned about the health effects of weight
 gain, so we plot weight versus age from 20 to 50 years old. I'll
@@ -657,7 +526,7 @@ generate two fake datasets to demonstrate the point. In each dataset,
 \passthrough{\lstinline!xs!} represents age and
 \passthrough{\lstinline!ys!} represents weight.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 np.random.seed(18)
 xs1 = np.linspace(20, 50)
 ys1 = 75 + 0.02 * xs1 + np.random.normal(0, 0.15, len(xs1))
@@ -668,13 +537,9 @@ plt.ylabel('Weight in kg')
 plt.title('Fake dataset #1');
 \end{lstlisting}
 
-\begin{center}
-\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_66_0.pdf}
-\end{center}
-
 And here's the second dataset:
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 np.random.seed(18)
 xs2 = np.linspace(20, 50)
 ys2 = 65 + 0.2 * xs2 + np.random.normal(0, 3, len(xs2))
@@ -685,25 +550,17 @@ plt.ylabel('Weight in kg')
 plt.title('Fake dataset #2');
 \end{lstlisting}
 
-\begin{center}
-\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_68_0.pdf}
-\end{center}
-
 I constructed these examples so they look similar, but they have
-substantially different correlations:
+substantially different correlations.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 rho1 = np.corrcoef(xs1, ys1)[0][1]
 rho1
-(@\dashfill@)
-@@@0.7579660563439401@@@
 \end{lstlisting}
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 rho2 = np.corrcoef(xs2, ys2)[0][1]
 rho2
-(@\dashfill@)
-@@@0.4782776976576317@@@
 \end{lstlisting}
 
 In the first example, the correlation is strong, close to
@@ -717,8 +574,8 @@ In the first example, the average weight gain over 30 years is less than
 concerned about the health effects of weight gain, the second
 relationship is probably more important, even though the correlation is
 lower.\\
-The statistic we really care about is the slope of the line, not the
-coefficient of correlation.
+In this scenario, the statistic we really care about is the slope of the
+line, not the coefficient of correlation.
 
 In the next section, we'll see how to estimate that slope. But first,
 let's practice with correlation.
@@ -726,48 +583,32 @@ let's practice with correlation.
 \textbf{Exercise:} The purpose of the BRFSS is to explore health risk
 factors, so it includes questions about diet. The column
 \passthrough{\lstinline!\_VEGESU1!} represents the number of servings of
-vegetables respondents reported eating per day.
+vegetables respondents reported eating per day. Before we compute
+correlations, let's look at the distribution of this variable. Extract
+\passthrough{\lstinline!\_VEGESU1!} from \passthrough{\lstinline!brfss!}
+and assign it to \passthrough{\lstinline!vegesu!} -- then plot the CDF
+of the values.
 
-Let's see how this variable relates to age and income.
+\textbf{Exercise:} Now let's visualize the relationship between age and
+vegetables. Make a box plot that summarizes the distribution of
+vegetable servings in each age group. How would you describe the
+relationship, if any?
+
+\textbf{Exercise:} Finally, let's look at correlations between age,
+income, and vegetable servings.
 
 \begin{itemize}
 
 \item
-  From the \passthrough{\lstinline!brfss!} DataFrame, select the columns
-  \passthrough{\lstinline!'AGE'!}, \passthrough{\lstinline!INCOME2!},
+  From \passthrough{\lstinline!brfss!}, select the columns
+  \passthrough{\lstinline!'AGE'!}, \passthrough{\lstinline!\_INCOMG1!},
   and \passthrough{\lstinline!\_VEGESU1!}.
 \item
   Compute the correlation matrix for these variables.
 \end{itemize}
 
-\textbf{Exercise:} In the previous exercise, the correlation between
-income and vegetable consumption is about
-\passthrough{\lstinline!0.12!}. The correlation between age and
-vegetable consumption is about \passthrough{\lstinline!-0.01!}.
-
-Which of the following are correct interpretations of these results?
-
-\begin{itemize}
-
-\item
-  \emph{A}: People in this dataset with higher incomes eat more
-  vegetables.
-\item
-  \emph{B}: The relationship between income and vegetable consumption is
-  linear.
-\item
-  \emph{C}: Older people eat more vegetables.
-\item
-  \emph{D}: There could be a strong non-linear relationship between age
-  and vegetable consumption.
-\end{itemize}
-
-\textbf{Exercise:} In general it is a good idea to visualize the
-relationship between variables \emph{before} you compute a correlation.
-We didn't do that in the previous example, but it's not too late.
-
-Generate a visualization of the relationship between age and vegetables.
-How would you describe the relationship, if any?
+Is the correlation between age and vegetable servings what you expected
+based on the box plot?
 
 \hypertarget{simple-linear-regression}{%
 \section{Simple Linear Regression}\label{simple-linear-regression}}
@@ -779,7 +620,7 @@ simple linear regression.
 Let's look again at the relationship between weight and age. In the
 previous section, I generated two fake datasets to make a point:
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 plt.figure(figsize=(8, 3))
 
 plt.subplot(1, 2, 1)
@@ -797,83 +638,70 @@ plt.title('Fake dataset #2')
 plt.tight_layout()
 \end{lstlisting}
 
-\begin{center}
-\includegraphics[width=4.5in]{chapters/09_relationships_files/09_relationships_77_0.pdf}
-\end{center}
-
-The one on the left has higher correlation, about 0.75 compared to 0.5.
-But in this context, the statistic we probably care about is the slope
-of the line, not the correlation coefficient. To estimate the slope, we
-can use \passthrough{\lstinline!linregress!} from the SciPy
+The one on the left has higher correlation, about
+\passthrough{\lstinline!0.75!} compared to
+\passthrough{\lstinline!0.5!}. But in this context, the statistic we
+probably care about is the slope of the line, not the correlation
+coefficient. To estimate the slope, we can use
+\passthrough{\lstinline!linregress!} from the SciPy
 \passthrough{\lstinline!stats!} library.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 from scipy.stats import linregress
 
 res1 = linregress(xs1, ys1)
 res1._asdict()
-(@\dashfill@)
-@@@{'slope': 0.018821034903244386,
- 'intercept': 75.08049023710964,
- 'rvalue': 0.7579660563439402,
- 'pvalue': 1.8470158725246148e-10,
- 'stderr': 0.002337849260560818,
- 'intercept_stderr': 0.08439154079040358}@@@
 \end{lstlisting}
 
+\passthrough{\lstinline!linregress!} takes two sequences as arguments.
 The result is a \passthrough{\lstinline!LinregressResult!} object that
 contains five values: \passthrough{\lstinline!slope!} is the slope of
 the line of best fit for the data; \passthrough{\lstinline!intercept!}
-is the intercept. We'll interpret some of the other values later.
+is the intercept; and \passthrough{\lstinline!rvalue!} is correlation.
+We'll interpret some of the other values later.
 
 For Fake Dataset \#1, the estimated slope is about 0.019 kilograms per
 year or about 0.56 kilograms over the 30-year range.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 res1.slope * 30
-(@\dashfill@)
-@@@0.5646310470973316@@@
 \end{lstlisting}
 
 Here are the results for Fake Dataset \#2.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 res2 = linregress(xs2, ys2)
 res2._asdict()
-(@\dashfill@)
-@@@{'slope': 0.17642069806488855,
- 'intercept': 66.60980474219305,
- 'rvalue': 0.47827769765763173,
- 'pvalue': 0.0004430600283776241,
- 'stderr': 0.04675698521121631,
- 'intercept_stderr': 1.6878308158080697}@@@
 \end{lstlisting}
 
 The estimated slope is almost 10 times higher: about 0.18 kilograms per
-year or about 5.3 kilograms per 30 years:
+year or about 5.3 kilograms per 30 years.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 res2.slope * 30
-(@\dashfill@)
-@@@5.292620941946657@@@
 \end{lstlisting}
 
-What's called \passthrough{\lstinline!rvalue!} here is correlation,
-which confirms what we saw before; the first example has higher
-correlation, about 0.75 compared to 0.5. But the strength of the effect,
-as measured by the slope of the line, is about 10 times higher in the
-second example.
+\passthrough{\lstinline!rvalue!} confirms what we saw before -- the
+first example has higher correlation, about 0.75 compared to 0.5.
+
+\begin{lstlisting}[language=Python,style=source]
+res1.rvalue, res2.rvalue
+\end{lstlisting}
+
+But the strength of the effect, as measured by the slope of the line, is
+about 10 times higher in the second example.
 
 We can use the results from \passthrough{\lstinline!linregress!} to
-compute the line of best fit: first we get the minimum and maximum of
+compute the line of best fit. First we get the minimum and maximum of
 the observed \passthrough{\lstinline!xs!}; then we multiply by the slope
 and add the intercept. Here's what that looks like for the first
 example.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 plt.plot(xs1, ys1, 'o', alpha=0.5)
 
-fx = np.array([xs1.min(), xs1.max()])
+low, high = xs1.min(), xs1.max()
+fx = np.array([low, high])
 fy = res1.intercept + res1.slope * fx
 plt.plot(fx, fy, '-')
 
@@ -882,16 +710,13 @@ plt.ylabel('Weight in kg')
 plt.title('Fake Dataset #1');
 \end{lstlisting}
 
-\begin{center}
-\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_87_0.pdf}
-\end{center}
-
 And here's what it looks like for the second example.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 plt.plot(xs2, ys2, 'o', alpha=0.5)
 
-fx = np.array([xs2.min(), xs2.max()])
+low, high = xs2.min(), xs2.max()
+fx = np.array([low, high])
 fy = res2.intercept + res2.slope * fx
 plt.plot(fx, fy, '-')
 
@@ -900,12 +725,8 @@ plt.ylabel('Weight in kg')
 plt.title('Fake Dataset #2');
 \end{lstlisting}
 
-\begin{center}
-\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_89_0.pdf}
-\end{center}
-
 The visualization here might be misleading unless you look closely at
-the vertical scales; the slope in the second figure is almost 10 times
+the vertical scales -- the slope in the second figure is almost 10 times
 higher.
 
 \hypertarget{regression-of-height-and-weight}{%
@@ -915,9 +736,9 @@ Weight}\label{regression-of-height-and-weight}}
 Now let's look at an example of regression with real data. Here's the
 scatter plot of height and weight one more time.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 plt.plot(height_jitter, weight_jitter, 'o', 
-         alpha=0.02, markersize=1)
+         alpha=0.01, markersize=0.5)
 
 plt.xlim([140, 200])
 plt.ylim([0, 160])
@@ -926,52 +747,37 @@ plt.ylabel('Weight in kg')
 plt.title('Scatter plot of weight versus height');
 \end{lstlisting}
 
-\begin{center}
-\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_92_0.png}
-\end{center}
-
 To compute the regression line, we'll use
 \passthrough{\lstinline!linregress!} again. But it can't handle
 \passthrough{\lstinline!NaN!} values, so we have to use
 \passthrough{\lstinline!dropna!} to remove rows that are missing the
 data we need.
 
-\begin{lstlisting}[]
-subset = brfss.dropna(subset=['WTKG3', 'HTM4'])
-height_clean = subset['HTM4']
-weight_clean = subset['WTKG3']
+\begin{lstlisting}[language=Python,style=source]
+data = brfss.dropna(subset=['WTKG3', 'HTM4'])
 \end{lstlisting}
 
 Now we can compute the linear regression.
 
-\begin{lstlisting}[]
-res_hw = linregress(height_clean, weight_clean)
+\begin{lstlisting}[language=Python,style=source]
+res_hw = linregress(data['HTM4'], data['WTKG3'])
 res_hw._asdict()
-(@\dashfill@)
-@@@{'slope': 0.9192115381848305,
- 'intercept': -75.12704250330248,
- 'rvalue': 0.4742030897902462,
- 'pvalue': 0.0,
- 'stderr': 0.005632863769802998,
- 'intercept_stderr': 0.9608860265433182}@@@
 \end{lstlisting}
 
-The slope is about 0.92 kilograms per centimeter, which means that we
+The slope is about 0.9 kilograms per centimeter, which means that we
 expect a person one centimeter taller to be almost a kilogram heavier.
-That's quite a lot.
+That's quite a lot. As before, we can compute the line of best fit:
 
-As before, we can compute the line of best fit:
-
-\begin{lstlisting}[]
-fx = np.array([height_clean.min(), height_clean.max()])
+\begin{lstlisting}[language=Python,style=source]
+low, high = data['HTM4'].min(), data['HTM4'].max()
+fx = np.array([low, high])
 fy = res_hw.intercept + res_hw.slope * fx
 \end{lstlisting}
 
 And here's what that looks like.
 
-\begin{lstlisting}[]
-plt.plot(height_jitter, weight_jitter, 'o', alpha=0.02, markersize=1)
-
+\begin{lstlisting}[language=Python,style=source]
+plt.plot(height_jitter, weight_jitter, 'o', alpha=0.01, markersize=0.5)
 plt.plot(fx, fy, '-')
 
 plt.xlim([140, 200])
@@ -981,19 +787,13 @@ plt.ylabel('Weight in kg')
 plt.title('Scatter plot of weight versus height');
 \end{lstlisting}
 
-\begin{center}
-\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_100_0.png}
-\end{center}
+The slope of this line seems consistent with the scatter plot. As
+another example, here's the scatter plot of weight versus age, which we
+saw earlier.
 
-The slope of this line seems consistent with the scatter plot.
-
-Linear regression has the same problem as correlation; it only measures
-the strength of a linear relationship. Here's the scatter plot of weight
-versus age, which we saw earlier.
-
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 plt.plot(age_jitter, weight_jitter, 'o', 
-         alpha=0.01, markersize=1)
+         alpha=0.01, markersize=0.5)
 
 plt.ylim([0, 160])
 plt.xlabel('Age in years')
@@ -1001,40 +801,26 @@ plt.ylabel('Weight in kg')
 plt.title('Weight versus age');
 \end{lstlisting}
 
-\begin{center}
-\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_102_0.png}
-\end{center}
-
 People in their 40s are the heaviest; younger and older people are
-lighter. So the relationship is nonlinear.
+lighter. So the relationship is nonlinear. If we don't look at the
+scatter plot and blindly compute the regression line, here's what we
+get.
 
-If we don't look at the scatter plot and blindly compute the regression
-line, here's what we get.
-
-\begin{lstlisting}[]
-subset = brfss.dropna(subset=['WTKG3', 'AGE'])
-age_clean = subset['AGE']
-weight_clean = subset['WTKG3']
-
-res_aw = linregress(age_clean, weight_clean)
+\begin{lstlisting}[language=Python,style=source]
+subset = brfss.dropna(subset=['WTKG3', 'AGE']) 
+res_aw = linregress(subset['AGE'], subset['WTKG3'])
 res_aw._asdict()
-(@\dashfill@)
-@@@{'slope': 0.023981159566968734,
- 'intercept': 80.07977583683224,
- 'rvalue': 0.02164143288906408,
- 'pvalue': 4.374327493007456e-11,
- 'stderr': 0.003638139410742185,
- 'intercept_stderr': 0.1868850817687016}@@@
 \end{lstlisting}
 
-The estimated slope is only 0.02 kilograms per year, or 0.6 kilograms in
-30 years. And here's what the line of best fit looks like.
+The estimated slope is close to zero. And here's what the line of best
+fit looks like.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 plt.plot(age_jitter, weight_jitter, 'o', 
-         alpha=0.01, markersize=1)
+         alpha=0.01, markersize=0.5)
 
-fx = np.array([age_clean.min(), age_clean.max()])
+low, high = data['AGE'].min(), data['AGE'].max()
+fx = np.array([low, high])
 fy = res_aw.intercept + res_aw.slope * fx
 plt.plot(fx, fy, '-')
 
@@ -1044,31 +830,24 @@ plt.ylabel('Weight in kg')
 plt.title('Weight versus age');
 \end{lstlisting}
 
-\begin{center}
-\includegraphics[width=4in]{chapters/09_relationships_files/09_relationships_106_0.png}
-\end{center}
-
 A straight line does not capture the relationship between these
-variables well.
+variables well. That's because linear regression has the same problem as
+correlation -- it only measures the strength of a linear relationship.
 
-In the next chapter, you'll see how to use multiple regression to
+In the next chapter, we'll see how to use multiple regression to
 estimate non-linear relationships. But first, let's practice simple
 regression.
 
 \textbf{Exercise:} Who do you think eats more vegetables, people with
-low income, or people with high income? Let's find out.
-
-As we've seen previously, the column \passthrough{\lstinline!INCOME2!}
-represents income level and \passthrough{\lstinline!\_VEGESU1!}
-represents the number of vegetable servings respondents reported eating
-per day.
-
-Make a scatter plot with vegetable servings versus income, that is, with
+low income, or people with high income? Let's find out. As we've seen
+previously, the column \passthrough{\lstinline!\_INCOMG1!} represents
+income level and \passthrough{\lstinline!\_VEGESU1!} represents the
+number of vegetable servings respondents reported eating per day. Make a
+scatter plot with vegetable servings versus income, that is, with
 vegetable servings on the \passthrough{\lstinline!y!} axis and income
-group on the \passthrough{\lstinline!x!} axis.
-
-You might want to use \passthrough{\lstinline!ylim!} to zoom in on the
-bottom half of the \passthrough{\lstinline!y!} axis.
+group on the \passthrough{\lstinline!x!} axis. You might want to use
+\passthrough{\lstinline!ylim!} to zoom in on the bottom half of the
+\passthrough{\lstinline!y!} axis.
 
 \textbf{Exercise:} Now let's estimate the slope of the relationship
 between vegetable consumption and income.
@@ -1076,11 +855,11 @@ between vegetable consumption and income.
 \begin{itemize}
 \item
   Use \passthrough{\lstinline!dropna!} to select rows where
-  \passthrough{\lstinline!INCOME2!} and
+  \passthrough{\lstinline!\_INCOMG1!} and
   \passthrough{\lstinline!\_VEGESU1!} are not
   \passthrough{\lstinline!NaN!}.
 \item
-  Extract \passthrough{\lstinline!INCOME2!} and
+  Extract \passthrough{\lstinline!\_INCOMG1!} and
   \passthrough{\lstinline!\_VEGESU1!} and compute the simple linear
   regression of these variables.
 \end{itemize}
@@ -1097,12 +876,12 @@ scatter plot.
 This chapter presents three ways to visualize the relationship between
 two variables: a scatter plot, violin plot, and box plot. A scatter plot
 is often a good choice when you are exploring a new data set, but it can
-take some attention to avoid overplotting. Violin and box plot are
-particularly useful when one of the variables only takes on a few
+take some attention to avoid overplotting. Violin plots and box plots
+are particularly useful when one of the variables only takes on a few
 discrete values.
 
-And we considered two ways to quantify the strength of a relationship:
-the coefficient of correlation and the slope of a regression line. These
+We considered two ways to quantify the strength of a relationship: the
+coefficient of correlation and the slope of a regression line. These
 statistics capture different aspect of what we might mean by
 ``strength''. The coefficient of correlation indicates how well we can
 predict one variable, given the other. The slope of the regression line
