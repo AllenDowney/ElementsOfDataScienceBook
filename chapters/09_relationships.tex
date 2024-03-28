@@ -214,31 +214,6 @@ more reliable one we ended with. They are clearly different, and they
 suggest different relationships between these variables.
 
 \begin{lstlisting}[language=Python,style=source]
-# Set the figure size
-plt.figure(figsize=(8, 3))
-
-# Create subplots with 2 rows, 1 column, and start plot 1
-plt.subplot(1, 2, 1)
-plt.plot(height, weight, 'o')
-
-plt.xlabel('Height in cm')
-plt.ylabel('Weight in kg')
-plt.title('Scatter plot of weight versus height')
-
-# Adjust the layout so the two plots don't overlap
-plt.tight_layout()
-
-# Start plot 2
-plt.subplot(1, 2, 2)
-
-plt.plot(height_jitter, weight_jitter, 'o', alpha=0.01, markersize=0.5)
-
-plt.xlim([140, 200])
-plt.ylim([0, 160])
-plt.xlabel('Height in cm')
-plt.ylabel('Weight in kg')
-plt.title('Scatter plot of weight versus height')
-plt.tight_layout()
 \end{lstlisting}
 
 \begin{center}
@@ -538,12 +513,6 @@ have already seen that there is. So why is the correlation so low?
 Remember that the relationship between weight and age looks like this.
 
 \begin{lstlisting}[language=Python,style=source]
-data = brfss.dropna(subset=['AGE', 'WTKG3'])
-sns.boxplot(x='AGE', y='WTKG3', data=data, whis=10)
-
-plt.xlabel('Age in years')
-plt.ylabel('Weight in kg')
-plt.title('Weight versus age');
 \end{lstlisting}
 
 \begin{center}
@@ -589,8 +558,8 @@ np.corrcoef(xs, ys)
 \end{lstlisting}
 
 \begin{lstlisting}[style=output]
-array([[1.       , 0.0123837],
-       [0.0123837, 1.       ]])
+array([[1.        , 0.01624048],
+       [0.01624048, 1.        ]])
 \end{lstlisting}
 
 Even though there is a strong non-linear relationship, the computed
@@ -615,14 +584,6 @@ generate two fake datasets to demonstrate the point. In each dataset,
 \passthrough{\lstinline!ys!} represents weight.
 
 \begin{lstlisting}[language=Python,style=source]
-np.random.seed(18)
-xs1 = np.linspace(20, 50)
-ys1 = 75 + 0.02 * xs1 + np.random.normal(0, 0.15, len(xs1))
-
-plt.plot(xs1, ys1, 'o', alpha=0.5)
-plt.xlabel('Age in years')
-plt.ylabel('Weight in kg')
-plt.title('Fake dataset #1');
 \end{lstlisting}
 
 \begin{center}
@@ -632,14 +593,6 @@ plt.title('Fake dataset #1');
 And here's the second dataset:
 
 \begin{lstlisting}[language=Python,style=source]
-np.random.seed(18)
-xs2 = np.linspace(20, 50)
-ys2 = 65 + 0.2 * xs2 + np.random.normal(0, 3, len(xs2))
-
-plt.plot(xs2, ys2, 'o', alpha=0.5)
-plt.xlabel('Age in years')
-plt.ylabel('Weight in kg')
-plt.title('Fake dataset #2');
 \end{lstlisting}
 
 \begin{center}
@@ -725,21 +678,6 @@ Let's look again at the relationship between weight and age. In the
 previous section, I generated two fake datasets to make a point:
 
 \begin{lstlisting}[language=Python,style=source]
-plt.figure(figsize=(8, 3))
-
-plt.subplot(1, 2, 1)
-plt.plot(xs1, ys1, 'o', alpha=0.5)
-plt.xlabel('Age in years')
-plt.ylabel('Weight in kg')
-plt.title('Fake dataset #1')
-plt.tight_layout()
-
-plt.subplot(1, 2, 2)
-plt.plot(xs2, ys2, 'o', alpha=0.5)
-plt.xlabel('Age in years')
-plt.ylabel('Weight in kg')
-plt.title('Fake dataset #2')
-plt.tight_layout()
 \end{lstlisting}
 
 \begin{center}
