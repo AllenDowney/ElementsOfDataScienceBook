@@ -33,7 +33,7 @@ which works like this:
 As an example, suppose you recruit 43,783 participants and they are
 assigned to groups with approximately the same size.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 n_control = 21885
 n_treatment = 21911
 \end{lstlisting}
@@ -41,7 +41,7 @@ n_treatment = 21911
 During the observation period, 468 people are diagnosed with the
 disease: 352 in the control group and 116 in the treatment group.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 k_control = 352
 k_treatment = 116
 \end{lstlisting}
@@ -49,18 +49,22 @@ k_treatment = 116
 We can use these results to compute the risk of getting the disease for
 each group, in cases per 1000 people
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 risk_control = k_control / n_control * 1000
 risk_control
-(@\dashfill@)
-@@@16.084075851039522@@@
 \end{lstlisting}
 
-\begin{lstlisting}[]
+\begin{lstlisting}[style=output]
+16.084075851039522
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python,style=source]
 risk_treatment = k_treatment / n_treatment * 1000
 risk_treatment
-(@\dashfill@)
-@@@5.294144493633334@@@
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+5.294144493633334
 \end{lstlisting}
 
 The risk is substantially lower in the treatment group -- about 5 per
@@ -69,11 +73,13 @@ can summarize these results by computing relative risk, which is the
 ratio of the two risks (see
 \url{https://en.wikipedia.org/wiki/Relative_risk}):
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 relative_risk = risk_treatment / risk_control
 relative_risk
-(@\dashfill@)
-@@@0.3291544097817203@@@
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+0.3291544097817203
 \end{lstlisting}
 
 The relative risk in this example is about 0.33, which means that the
@@ -81,11 +87,13 @@ risk of disease in the treatment group is 33\% of the risk in the
 control group. Equivalently, we could report the complement of relative
 risk, which is \textbf{efficacy}:
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 efficacy = 1 - relative_risk
 efficacy
-(@\dashfill@)
-@@@0.6708455902182797@@@
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+0.6708455902182797
 \end{lstlisting}
 
 In this example the efficacy is 0.67, which means that the vaccine
@@ -118,14 +126,16 @@ and show how to compute them.
 \hypertarget{simulating-one-group}{%
 \section{Simulating One Group}\label{simulating-one-group}}
 
-In our hypothetical example, there are 21 911 people in the treatment
+In our hypothetical example, there are 21,911 people in the treatment
 group and 116 of them got the disease, so the estimated risk is about 5
 cases per 1000 people.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 n_treatment, k_treatment, risk_treatment
-(@\dashfill@)
-@@@(21911, 116, 5.294144493633334)@@@
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+(21911, 116, 5.294144493633334)
 \end{lstlisting}
 
 But it's easy to imagine that there might have been a few more cases, or
@@ -133,10 +143,12 @@ fewer, just by chance. For example, if there had been 10 more cases, the
 estimated risk would be 5.8 per 1000, and if there had been 10 fewer, it
 would be 4.8.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 (k_treatment + 10) / n_treatment * 1000, (k_treatment - 10) / n_treatment * 1000
-(@\dashfill@)
-@@@(5.750536260325863, 4.837752726940806)@@@
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+(5.750536260325863, 4.837752726940806)
 \end{lstlisting}
 
 That's a big enough difference that we should wonder how much
@@ -159,7 +171,7 @@ is the number of people in the group (treatment or control) and
 \passthrough{\lstinline!p!} is the probability that any of them gets the
 disease.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 import numpy as np
 
 def simulate_group(n, p):
@@ -181,17 +193,19 @@ group get the disease. Then the function returns the risk in cases per
 Here's how we call this function, passing as arguments the size of the
 treatment group and the estimated risk:
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 p = k_treatment / n_treatment
 simulate_group(n_treatment, p)
-(@\dashfill@)
-@@@4.427000136917529@@@
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+5.613618730318105
 \end{lstlisting}
 
 The result is a risk from a single simulated trial. If we run this
 function 1000 times, it's like running the trial over and over.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 t = [simulate_group(n_treatment, p)
      for i in range(1000)]
 \end{lstlisting}
@@ -200,7 +214,7 @@ The result is a list of risks that shows how much we expect the results
 of the trial to vary due to randomness. We can use a KDE plot to
 visualize the distribution of these results.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 import matplotlib.pyplot as plt
 import seaborn as sns
 
@@ -212,48 +226,52 @@ plt.title('Risks from Simulations');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/11_resampling_files/11_resampling_29_0.pdf}
+\includegraphics[width=4in]{chapters/11_resampling_files/11_resampling_30_0.png}
 \end{center}
 
 The mean of this distribution is about 5.3, which is close to the
 observed risk, as we should expect.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 np.mean(t), risk_treatment
-(@\dashfill@)
-@@@(5.299210442243623, 5.294144493633334)@@@
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+(5.299210442243623, 5.294144493633334)
 \end{lstlisting}
 
 The width of this distribution indicates how much variation there is in
 the estimate due to randomness. One way to quantify the width of the
 distribution is the standard deviation.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 standard_error = np.std(t)
 standard_error
-(@\dashfill@)
-@@@0.48944411243624414@@@
 \end{lstlisting}
 
-This result is called the \textbf{standard error} (see
-\url{https://en.wikipedia.org/wiki/Standard_error}).
+\begin{lstlisting}[style=output]
+0.48944411243624414
+\end{lstlisting}
+
+This result is called the \textbf{standard error}.
 
 Another way to quantify the width of the distribution is an interval
 between two percentiles. For example, if we compute the 5th and 95th
 percentiles, the interval we get contains 90\% of the simulated results.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 confidence_interval = np.percentile(t, [5, 95])
 confidence_interval
-(@\dashfill@)
-@@@array([4.47263931, 6.11793163])@@@
 \end{lstlisting}
 
-This result is called a \textbf{confidence interval} ; specifically,
-this one is a ``90\% confidence interval'', or 90\% CI (see
-\url{https://en.wikipedia.org/wiki/Confidence_interval}). If we assume
-that the observed risk is correct, and we run the same trial many times,
-we expect 90\% of the results to fall in this interval.
+\begin{lstlisting}[style=output]
+array([4.47263931, 6.11793163])
+\end{lstlisting}
+
+This result is called a \textbf{confidence interval}; specifically, this
+one is a ``90\% confidence interval'', or 90\% CI. If we assume that the
+observed risk is correct, and we run the same trial many times, we
+expect 90\% of the results to fall in this interval.
 
 Standard errors and confidence intervals quantify our uncertainty about
 the estimate due to random variation from one trial to another.
@@ -268,7 +286,7 @@ we'll simulate both groups and estimate the efficacy of the vaccine.
 The following function takes four parameters: the sizes of the two
 groups and their actual risks.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 def simulate_trial(n1, p1, n2, p2):
     risk1 = simulate_group(n1, p1)
     risk2 = simulate_group(n2, p2)
@@ -280,25 +298,27 @@ If we call this function once, it simulates both groups, computes the
 risks in each group, and uses the results to compute the efficacy of the
 treatment (assuming that the first group is the control).
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 p1 = k_control / n_control
 p2 = k_treatment / n_treatment
 simulate_trial(n_control, p1, n_treatment, p2)
-(@\dashfill@)
-@@@0.6891301291299345@@@
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+0.6891301291299345
 \end{lstlisting}
 
 If we call it 1000 times, the result is a list of efficacies from 1000
 simulated trials.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 t2 = [simulate_trial(n_control, p1, n_treatment, p2)
       for i in range(1000)]
 \end{lstlisting}
 
 We can use a KDE plot to visualize the distribution of the results.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 sns.kdeplot(t2)
 
 plt.xlabel('Efficacy')
@@ -307,35 +327,41 @@ plt.title('Efficacies from Simulations');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/11_resampling_files/11_resampling_44_0.pdf}
+\includegraphics[width=4in]{chapters/11_resampling_files/11_resampling_45_0.png}
 \end{center}
 
 The mean of this distribution is close to the efficacy we computed with
 the results of the actual trial.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 np.mean(t2), efficacy
-(@\dashfill@)
-@@@(0.6713727268668117, 0.6708455902182797)@@@
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+(0.6713727268668117, 0.6708455902182797)
 \end{lstlisting}
 
 The standard deviation of this distribution is the standard error of the
 estimate.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 np.std(t2)
-(@\dashfill@)
-@@@0.035068503707114076@@@
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+0.035068503707114076
 \end{lstlisting}
 
 In a scientific paper, we could report the estimated efficacy and
 standard error as 0.67 (SE 0.035). As an alternative, we can use
 percentiles to compute a 90\% confidence interval.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 np.percentile(t2, [5, 95])
-(@\dashfill@)
-@@@array([0.61344412, 0.72785182])@@@
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+array([0.61344412, 0.72785182])
 \end{lstlisting}
 
 We could report these results as 0.67, 90\% CI {[}0.61, 0.72{]}``.
@@ -358,9 +384,9 @@ because it is easier to interpret:
 \hypertarget{estimating-means}{%
 \section{Estimating Means}\label{estimating-means}}
 
-In the previous examples, we've estimated risk, which is a proportion,
-and efficacy, which is a ratio of two proportions. As a third example,
-let's estimate a mean.
+In the previous examples, we estimated risk, which is a proportion, and
+efficacy, which is a ratio of two proportions. As a third example, let's
+estimate a mean.
 
 Suppose we want to estimate the average height of men in the United
 States. It would be impractical to measure everyone in the country, but
@@ -385,16 +411,16 @@ adult males, it seems like the actual average in the population might be
 substantially higher or lower.
 
 Again, we can use random simulation to quantify the uncertainty of this
-estimate. As we did in the previous examples, we will assume for
-purposes of simulation that the estimates are correct, and simulate the
-sampling process 1000 times.
+estimate. As we did in the previous examples, we'll assume for purposes
+of simulation that the estimates are correct, and simulate the sampling
+process 1000 times.
 
 The following function takes as parameters the size of the sample,
 \passthrough{\lstinline!n!}, the presumed average height in the
 population, \passthrough{\lstinline!mu!}, and the presumed standard
 deviation, \passthrough{\lstinline!std!}.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 def simulate_sample_mean(n, mu, sigma):
     sample = np.random.normal(mu, sigma, size=n)
     return sample.mean()
@@ -408,27 +434,29 @@ We can run it like this, using the observed mean and standard deviation
 from the sample as the presumed mean and standard deviation of the
 population.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 n_height = 103
 mean_height = 178
 std_height = 7.97
 
 simulate_sample_mean(n_height, mean_height, std_height)
-(@\dashfill@)
-@@@178.64931744931997@@@
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+178.64931744931997
 \end{lstlisting}
 
 If we run it 1000 times, it simulates the sampling and measurement
 process and returns a list of results from 1000 simulated experiments.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 t3 = [simulate_sample_mean(n_height, mean_height, std_height)
       for i in range(1000)]
 \end{lstlisting}
 
 We can use a KDE plot to visualize the distribution of these values.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 sns.kdeplot(t3)
 
 plt.xlabel('Average height (cm)')
@@ -437,54 +465,58 @@ plt.title('Sampling Distribution of the Mean');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/11_resampling_files/11_resampling_59_0.pdf}
+\includegraphics[width=4in]{chapters/11_resampling_files/11_resampling_60_0.png}
 \end{center}
 
-This distribution is called a \textbf{sampling distribution} because it
+This result is called a \textbf{sampling distribution} because it
 represents the variation in the results due to the random sampling
-process. If we recruit 100 people and compute the mean of their heights,
-the result might be as low as 175 cm, or as high as 179 cm, due to
+process. If we recruit 103 people and compute the mean of their heights,
+the result might be as low as 176 cm, or as high as 180 cm, due to
 chance.
 
 The average of the sampling distribution is close to the presumed mean
 of the population.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 np.mean(t3), mean_height
-(@\dashfill@)
-@@@(177.96271260304573, 178)@@@
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+(177.96271260304573, 178)
 \end{lstlisting}
 
 The standard deviation of the sampling distribution is the standard
 error of the estimate.
 
-\begin{lstlisting}[]
-np.std(t3)
-(@\dashfill@)
-@@@0.7646185415617497@@@
+\begin{lstlisting}[language=Python,style=source]
+standard_error = np.std(t3)
+standard_error
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+0.7646185415617497
 \end{lstlisting}
 
 And we can use \passthrough{\lstinline!percentile!} to compute a 90\%
 confidence interval.
 
-\begin{lstlisting}[]
-np.percentile(t3, [5, 95])
-(@\dashfill@)
-@@@array([176.7094124 , 179.22734483])@@@
+\begin{lstlisting}[language=Python,style=source]
+ci90 = np.percentile(t3, [5, 95])
+ci90
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+array([176.7094124 , 179.22734483])
 \end{lstlisting}
 
 If I reported this result in a paper, I would say that the estimated
 height of adult male residents of the U.S. is 177 cm, 90\% CI {[}176,
-178{]} cm.
+179{]} cm.
 
 Informally, that means that the estimate could plausibly be off by about
-a centimeter either way, just due to random sampling. But we should
-remember that there are other possible sources of error, so we might be
-off by more than that.
-
-The confidence interval puts a best-case bound on the precision of the
-estimate; in this example, the precision of the estimate is 1 cm at
-best, and might be worse.
+a centimeter either way, due to random sampling. But we should remember
+that there are other possible sources of error, so we might be off by
+more than that.
 
 \hypertarget{the-resampling-framework}{%
 \section{The Resampling Framework}\label{the-resampling-framework}}
@@ -492,7 +524,7 @@ best, and might be worse.
 The examples we've done so far fit into the framework shown in this
 diagram:
 
-\includegraphics[width=4in]{chapters/figs/resampling.pdf}
+\includegraphics{chapters/figs/resampling.png}
 
 Using data from an experiment, we compute a sample statistic. In the
 vaccine example, we computed risks for each group and efficacy. In the
@@ -521,7 +553,7 @@ in each group has the same risk, but that's probably not true. Here's
 another version of \passthrough{\lstinline!simulate\_group!} that
 includes variation in risk within each group.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 def simulate_variable_group(n, p):
     ps = np.random.uniform(0, 2*p, size=n)
     xs = np.random.random(size=n)
@@ -546,11 +578,13 @@ the number of times \passthrough{\lstinline!p!} exceeds
 
 Here's how we call this function, simulating the treatment group.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 p = k_treatment / n_treatment
 simulate_variable_group(n_treatment, p)
-(@\dashfill@)
-@@@5.339783670302587@@@
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+5.339783670302587
 \end{lstlisting}
 
 The return value is the number of cases per 1000.
@@ -573,7 +607,7 @@ sampling distribution and confirm that it is close to the observed
 \passthrough{\lstinline!efficacy!}. Compute the standard error and
 compare it to the standard error we computed for the original model.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 def simulate_variable_trial(n1, p1, n2, p2):
     risk1 = simulate_variable_group(n1, p1)
     risk2 = simulate_variable_group(n2, p2)
@@ -583,16 +617,17 @@ def simulate_variable_trial(n1, p1, n2, p2):
 
 \textbf{Exercise:} One nice thing about the resampling framework is that
 it is easy to compute the sampling distribution for other statistics.
-
 For example, suppose we want to estimate the coefficient of variation
 (standard deviation as a fraction of the mean) for adult male height.
 Here's how we can compute it.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 cv = std_height / mean_height
 cv
-(@\dashfill@)
-@@@0.044775280898876405@@@
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+0.044775280898876405
 \end{lstlisting}
 
 In this example, the standard deviation is about 4.5\% of the mean. The
@@ -600,7 +635,7 @@ following is a version of \passthrough{\lstinline!simulate\_sample!}
 that generates a random sample of heights and returns the coefficient of
 variation, rather than the mean.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 def simulate_sample_cv(n, mu, sigma):
     sample = np.random.normal(mu, sigma, size=n)
     return sample.std() / sample.mean()
@@ -612,132 +647,6 @@ Use this function to simulate 1000 samples with size
 and \passthrough{\lstinline!std\_height!} for
 \passthrough{\lstinline!sigma!}. Plot the sampling distribution of the
 coefficient of variation, and compute a 90\% confidence interval.
-
-\hypertarget{support-for-gun-control}{%
-\section{Support for Gun Control}\label{support-for-gun-control}}
-
-In Chapter 10 we used data from the General Social Survey, specifically
-a variable called \passthrough{\lstinline!GUNLAW!}, to describe support
-for a gun control law as a function of age, sex, and years of education.
-Now let's come back to that dataset and see how the responses have
-changed over time.
-
-The following cell reloads the data.
-
-\begin{lstlisting}[]
-import pandas as pd
-
-gss = pd.read_hdf('gss_eda.hdf', 'gss')
-\end{lstlisting}
-
-The column named \passthrough{\lstinline!GUNLAW!} records responses to
-the question ``Would you favor or oppose a law which would require a
-person to obtain a police permit before he or she could buy a gun?''
-
-The response code \passthrough{\lstinline!1!} means yes;
-\passthrough{\lstinline!2!} means no. It will be easier to work with
-this variable if we recode it so \passthrough{\lstinline!0!} means no.
-
-\begin{lstlisting}[]
-gss['GUNLAW'].replace(2, 0, inplace=True)
-gss['GUNLAW'].value_counts()
-\end{lstlisting}
-
-\begin{tabular}{lr}
-\midrule
-{} &  GUNLAW \\
-\midrule
-1.0 &   32038 \\
-0.0 &    9975 \\
-\midrule
-\end{tabular}
-
-For each year of the survey, we'll compute the number of respondents and
-the number who said they favor this law. We can use
-\passthrough{\lstinline!groupby!} to group the respondents by year of
-interview and \passthrough{\lstinline!agg!} to compute two aggregation
-functions, \passthrough{\lstinline!sum!} and
-\passthrough{\lstinline!count!}.
-
-\begin{lstlisting}[]
-grouped = gss.groupby('YEAR')['GUNLAW']
-agg = grouped.agg(['sum', 'count'])
-agg.head()
-\end{lstlisting}
-
-\begin{tabular}{lrr}
-\midrule
-{} &     sum &  count \\
-YEAR &         &        \\
-\midrule
-1972 &  1131.0 &   1562 \\
-1973 &  1099.0 &   1470 \\
-1974 &  1112.0 &   1459 \\
-1975 &  1096.0 &   1450 \\
-1976 &  1068.0 &   1472 \\
-\midrule
-\end{tabular}
-
-The result is a \passthrough{\lstinline!DataFrame!} with two columns:
-\passthrough{\lstinline!sum!} is the number of respondents who said
-``yes''; \passthrough{\lstinline!count!} is the number of respondents
-who were asked the question.
-
-In some years the question was not asked, so I'll use
-\passthrough{\lstinline!drop!} to remove those rows.
-
-\begin{lstlisting}[]
-zero = (agg['count'] == 0)
-labels = agg.index[zero]
-agg.drop(labels, inplace=True)
-\end{lstlisting}
-
-Now we can plot the percentage of respondents who favor gun control (at
-least for this wording of the question) during each year.
-
-\begin{lstlisting}[]
-percent = agg['sum'] / agg['count'] * 100
-percent.plot(style='o')
-
-plt.xlabel('Year of survey')
-plt.ylabel('Percent in favor')
-plt.title('Support for gun control over time');
-\end{lstlisting}
-
-\begin{center}
-\includegraphics[width=4in]{chapters/11_resampling_files/11_resampling_93_0.pdf}
-\end{center}
-
-The results vary from year to year. It is hard to tell how much of this
-variation is due to real changes in opinion, and how much is due to
-random sampling. In the following exercise, you'll answer that question
-by computing confidence intervals for each of these data points.
-
-\textbf{Exercise:} Write a loop that goes through the rows in
-\passthrough{\lstinline!agg!} and computes a confidence interval for
-each year. You can use \passthrough{\lstinline!itertuples!} to iterate
-the rows, like this:
-
-\begin{lstlisting}
-for year, k, n in agg.itertuples():
-    print(year, k, n)
-\end{lstlisting}
-
-For each row, compute a 90\% confidence interval and plot it as a
-vertical line. Then plot the data points and label the axes. The result
-should give you a sense of how much variation we expect to see from year
-to year due to random sampling.
-
-You might want to use this version of
-\passthrough{\lstinline!simulate\_group!}, which returns results as a
-percentage, rather than per 1000.
-
-\begin{lstlisting}[]
-def simulate_group_percent(n, p):
-    xs = np.random.random(size=n)
-    k = np.sum(xs < p)
-    return k / n * 100
-\end{lstlisting}
 
 \hypertarget{summary}{%
 \section{Summary}\label{summary}}
@@ -770,11 +679,6 @@ Let's review the examples in this chapter:
   analysis, is that it is easy to compute the sampling distribution of
   almost any statistic. As an exercise, you computed the sampling
   distribution of the coefficient of variation.
-\item
-  Finally, we used data from the General Social Survey to explore
-  changes in support for gun control over time. We used resampling to
-  compute and plot a confidence interval for the percentage of
-  respondents in favor of a proposed law, for each year of the survey.
 \end{enumerate}
 
 The next chapter presents bootstrap sampling, which is a kind of
