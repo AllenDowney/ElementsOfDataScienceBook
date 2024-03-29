@@ -36,13 +36,126 @@ gss.head()
 \end{lstlisting}
 
 \begin{lstlisting}[style=output]
-   year  id   age  educ  degree  sex  gunlaw  grass  realinc
-0  1972   1  23.0  16.0     3.0  2.0     1.0    NaN  18951.0
-1  1972   2  70.0  10.0     0.0  1.0     1.0    NaN  24366.0
-2  1972   3  48.0  12.0     1.0  2.0     1.0    NaN  24366.0
-3  1972   4  27.0  17.0     3.0  2.0     1.0    NaN  30458.0
-4  1972   5  61.0  12.0     1.0  2.0     1.0    NaN  50763.0
+TypeError: NDFrame.to_latex() got an unexpected keyword argument 'max_rows'
 \end{lstlisting}
+
+year
+
+id
+
+age
+
+educ
+
+degree
+
+sex
+
+gunlaw
+
+grass
+
+realinc
+
+0
+
+1972
+
+1
+
+23.0
+
+16.0
+
+3.0
+
+2.0
+
+1.0
+
+NaN
+
+18951.0
+
+1
+
+1972
+
+2
+
+70.0
+
+10.0
+
+0.0
+
+1.0
+
+1.0
+
+NaN
+
+24366.0
+
+2
+
+1972
+
+3
+
+48.0
+
+12.0
+
+1.0
+
+2.0
+
+1.0
+
+NaN
+
+24366.0
+
+3
+
+1972
+
+4
+
+27.0
+
+17.0
+
+3.0
+
+2.0
+
+1.0
+
+NaN
+
+30458.0
+
+4
+
+1972
+
+5
+
+61.0
+
+12.0
+
+1.0
+
+2.0
+
+1.0
+
+NaN
+
+50763.0
 
 The column \passthrough{\lstinline!realinc!} records family income,
 converted to 1986 dollars. The following figure uses the Seaborn
@@ -63,10 +176,6 @@ plt.title('Distribution of income')
 plt.legend();
 \end{lstlisting}
 
-\begin{center}
-\includegraphics[width=4in]{chapters/12_bootstrap_files/12_bootstrap_11_0.png}
-\end{center}
-
 The distribution of income is skewed to the right; most household
 incomes are less than \$60,000, but a few are substantially higher. Here
 are the mean and standard deviation of the reported incomes.
@@ -75,10 +184,6 @@ are the mean and standard deviation of the reported incomes.
 mean_realinc = gss['realinc'].mean()
 std_realinc = gss['realinc'].std()
 print(mean_realinc, std_realinc)
-\end{lstlisting}
-
-\begin{lstlisting}[style=output]
-32537.399981032493 30883.22609399141
 \end{lstlisting}
 
 The average family income in this sample is \$32,537. But if we ran the
@@ -106,19 +211,11 @@ n_realinc = gss['realinc'].notna().sum()
 n_realinc
 \end{lstlisting}
 
-\begin{lstlisting}[style=output]
-64912
-\end{lstlisting}
-
 Now, if we call \passthrough{\lstinline!simulate\_sample\_mean!} once,
 we get a single value from the sampling distribution of the mean.
 
 \begin{lstlisting}[language=Python,style=source]
 simulate_sample_mean(n_realinc, mean_realinc, std_realinc)
-\end{lstlisting}
-
-\begin{lstlisting}[style=output]
-32573.420195135117
 \end{lstlisting}
 
 If we call it many times, we get a random sample from the sampling
@@ -139,10 +236,6 @@ plt.ylabel('PDF')
 plt.title('Sampling distribution of mean income');
 \end{lstlisting}
 
-\begin{center}
-\includegraphics[width=4in]{chapters/12_bootstrap_files/12_bootstrap_24_0.png}
-\end{center}
-
 This distribution shows how much we would expect the observed mean to
 vary if we ran the GSS survey again. We'll use the following function to
 summarize the sampling distribution.
@@ -161,11 +254,6 @@ def summarize(t, digits=2, label=''):
 \begin{lstlisting}[language=Python,style=source]
 summary1 = summarize(t1, digits=1)
 summary1
-\end{lstlisting}
-
-\begin{lstlisting}[style=output]
-  Estimate     SE                CI90
-   32533.9  120.7  [32331.3, 32724.2]
 \end{lstlisting}
 
 The result shows the mean of the sampling distribution, the standard
@@ -196,10 +284,6 @@ values.
 
 \begin{lstlisting}[language=Python,style=source]
 np.percentile(gss['realinc'].dropna(), 10)
-\end{lstlisting}
-
-\begin{lstlisting}[style=output]
-5730.0
 \end{lstlisting}
 
 The 10th percentile of the sample is \$5730, but if we collected another
@@ -233,20 +317,11 @@ plt.ylabel('PDF')
 plt.title('Sampling distribution of the 10th percentile');
 \end{lstlisting}
 
-\begin{center}
-\includegraphics[width=4in]{chapters/12_bootstrap_files/12_bootstrap_38_0.png}
-\end{center}
-
 We can summarize the results like this.
 
 \begin{lstlisting}[language=Python,style=source]
 summary2 = summarize(t2)
 summary2
-\end{lstlisting}
-
-\begin{lstlisting}[style=output]
-  Estimate      SE                  CI90
-  -7035.83  205.95  [-7377.78, -6709.29]
 \end{lstlisting}
 
 We can see that something has gone wrong. All of the values in the
@@ -272,10 +347,6 @@ plt.title('Distribution of income')
 plt.legend();
 \end{lstlisting}
 
-\begin{center}
-\includegraphics[width=4in]{chapters/12_bootstrap_files/12_bootstrap_43_0.png}
-\end{center}
-
 The problem is that the normal model extends past the lower bound of the
 observed values, so it doesn't produce sensible results. Fortunately
 there is a simple alternative that is more robust: bootstrapping.
@@ -299,10 +370,6 @@ bootstrapped = gss.sample(n=n_realinc, replace=True)
 bootstrapped.shape
 \end{lstlisting}
 
-\begin{lstlisting}[style=output]
-(64912, 9)
-\end{lstlisting}
-
 The argument \passthrough{\lstinline!n=n\_realinc!} means that the
 bootstrapped sample has the same size as the original.
 \passthrough{\lstinline!replace=True!} means that sampling is done with
@@ -317,16 +384,6 @@ repeats = bootstrapped['id'].value_counts()
 repeats.head()
 \end{lstlisting}
 
-\begin{lstlisting}[style=output]
-id
-889     51
-504     48
-1302    47
-295     47
-524     46
-Name: count, dtype: int64
-\end{lstlisting}
-
 Several of the rows appear more than 40 times. Since some rows appear
 many times, other rows don't appear at all. To see how many, we can use
 \passthrough{\lstinline!set!} subtraction to count the values of
@@ -336,10 +393,6 @@ the bootstrapped sample.
 \begin{lstlisting}[language=Python,style=source]
 unused = set(gss['id']) - set(bootstrapped['id'])
 len(unused)
-\end{lstlisting}
-
-\begin{lstlisting}[style=output]
-229
 \end{lstlisting}
 
 Now we can use bootstrapping to generate a sampling distribution. For
@@ -369,12 +422,6 @@ summary3 = summarize(t3)
 table = pd.concat([summary1, summary3])
 table.index=['normal model', 'bootstrapping']
 table
-\end{lstlisting}
-
-\begin{lstlisting}[style=output]
-               Estimate      SE                  CI90
-normal model    32533.9  120.70    [32331.3, 32724.2]
-bootstrapping   32541.0  119.32  [32342.12, 32732.88]
 \end{lstlisting}
 
 The results from bootstrap sampling are consistent with the results
@@ -411,12 +458,6 @@ table.index=['normal model', 'bootstrapping']
 table
 \end{lstlisting}
 
-\begin{lstlisting}[style=output]
-               Estimate      SE                  CI90
-normal model   -7035.83  205.95  [-7377.78, -6709.29]
-bootstrapping   5685.33   91.07      [5512.5, 5827.5]
-\end{lstlisting}
-
 The mean of the sampling distribution is consistent with the 10th
 percentile of the data, which is \$5631. So the results from
 bootstrapping are more sensible than the results based on the normal
@@ -446,32 +487,12 @@ brfss = pd.read_hdf('brfss_2021.hdf', 'brfss')
 brfss.shape
 \end{lstlisting}
 
-\begin{lstlisting}[style=output]
-(438693, 10)
-\end{lstlisting}
-
 This dataset contains 438,693 rows, one for each respondent, and 10
 columns, one for each variable in the extract. Here are the first few
 rows.
 
 \begin{lstlisting}[language=Python,style=source]
 brfss.head()
-\end{lstlisting}
-
-\begin{lstlisting}[style=output]
-        SEQNO   HTM4  WTKG3  _SEX  _AGEG5YR  _VEGESU1  _INCOMG1      _LLCPWT  \
-0  2021000001  150.0  32.66     2      11.0      2.14       3.0   744.745531   
-1  2021000002  168.0    NaN     2      10.0      1.28       NaN   299.137394   
-2  2021000003  165.0  77.11     2      11.0      0.71       2.0   587.862986   
-3  2021000004  163.0  88.45     2       9.0      1.65       5.0  1099.621570   
-4  2021000005  180.0  93.44     1      12.0      2.58       2.0  1711.825870   
-
-   _HTM4G10   AGE  
-0     140.0  72.0  
-1     160.0  67.0  
-2     160.0  72.0  
-3     160.0  62.0  
-4     170.0  77.0  
 \end{lstlisting}
 
 The \passthrough{\lstinline!HTM4!} column contains the respondents'
@@ -489,10 +510,6 @@ male = (brfss['_SEX'] == 1)
 male.sum()
 \end{lstlisting}
 
-\begin{lstlisting}[style=output]
-203760
-\end{lstlisting}
-
 We can use \passthrough{\lstinline!notna!} and
 \passthrough{\lstinline!sum!} to count the number of male respondents
 with valid height data.
@@ -502,20 +519,12 @@ n_height = height[male].notna().sum()
 n_height
 \end{lstlisting}
 
-\begin{lstlisting}[style=output]
-193701
-\end{lstlisting}
-
 Here is the mean and standard deviation of these values.
 
 \begin{lstlisting}[language=Python,style=source]
 mean_height = height[male].mean()
 std_height = height[male].std()
 mean_height, std_height
-\end{lstlisting}
-
-\begin{lstlisting}[style=output]
-(178.14807357731763, 7.987083970017878)
 \end{lstlisting}
 
 The average height for men in the U.S. is about 178 cm. To see how
@@ -528,11 +537,6 @@ t5 = [bootstrap_mean(brfss[male], 'HTM4')
       for i in range(201)]
 
 summarize(t5, digits=3)
-\end{lstlisting}
-
-\begin{lstlisting}[style=output]
-  Estimate     SE               CI90
-   178.148  0.018  [178.12, 178.179]
 \end{lstlisting}
 
 Because the sample size is so large, the standard error is small and the
@@ -588,18 +592,6 @@ looks like.
 brfss['_LLCPWT'].describe()
 \end{lstlisting}
 
-\begin{lstlisting}[style=output]
-count    438693.000000
-mean        560.851529
-std        1136.781547
-min           0.545800
-25%          95.573000
-50%         248.677287
-75%         592.546811
-max       49028.547000
-Name: _LLCPWT, dtype: float64
-\end{lstlisting}
-
 The lowest sampling weight is about 0.5; the largest is about 49,000 --
 so that's a very wide range! We can take these weights into account by
 passing them as an argument to \passthrough{\lstinline!sample!}. That
@@ -622,16 +614,6 @@ repeats = bootstrapped['SEQNO'].value_counts()
 repeats.head()
 \end{lstlisting}
 
-\begin{lstlisting}[style=output]
-SEQNO
-2021000019    178
-2021003858    146
-2021001337    143
-2021001348    136
-2021002405    134
-Name: count, dtype: int64
-\end{lstlisting}
-
 Some rows appear more than 100 times. Most likely, these are the rows
 with the highest sampling rates, which correspond to people from
 undersampled groups.
@@ -644,10 +626,6 @@ not the sample.
 \begin{lstlisting}[language=Python,style=source]
 unused = set(brfss['SEQNO']) - set(bootstrapped['SEQNO'])
 len(unused)
-\end{lstlisting}
-
-\begin{lstlisting}[style=output]
-14534
 \end{lstlisting}
 
 There are thousands of rows that don't appear in this sample, but they
@@ -676,10 +654,6 @@ male_df = brfss[male]
 weighted_bootstrap_mean(male_df)
 \end{lstlisting}
 
-\begin{lstlisting}[style=output]
-177.54082642905527
-\end{lstlisting}
-
 If we run it many times, we get a random sample from the sampling
 distribution.
 
@@ -690,21 +664,12 @@ t6 = [weighted_bootstrap_mean(male_df)
 summarize(t6, digits=3)
 \end{lstlisting}
 
-\begin{lstlisting}[style=output]
-  Estimate     SE                CI90
-   177.542  0.017  [177.512, 177.574]
-\end{lstlisting}
-
 The mean of the sampling distribution estimates the average height for
 men in the U.S., corrected for oversampling. If we compare it to the
 unweighted mean we computed, it is a little lower.
 
 \begin{lstlisting}[language=Python,style=source]
 print(np.mean(t6), mean_height)
-\end{lstlisting}
-
-\begin{lstlisting}[style=output]
-177.5418871819706 178.14807357731763
 \end{lstlisting}
 
 So it seems like people in the oversampled groups are taller than
@@ -727,10 +692,6 @@ correlation between height and weight, which is about 0.47.
 var1, var2 = 'HTM4', 'WTKG3'
 corr = brfss[var1].corr(brfss[var2])
 corr
-\end{lstlisting}
-
-\begin{lstlisting}[style=output]
-0.4693981914367917
 \end{lstlisting}
 
 That correlation does not take into account oversampling. We can correct
@@ -762,10 +723,6 @@ from scipy.stats import linregress
 subset = brfss.dropna(subset=['WTKG3', 'HTM4'])
 res = linregress(subset['HTM4'], subset['WTKG3'])
 res.slope
-\end{lstlisting}
-
-\begin{lstlisting}[style=output]
-0.9366891536604244
 \end{lstlisting}
 
 The estimated slope is 0.94 kg/cm, which means that we expect someone 1
@@ -819,11 +776,6 @@ summary9 = summarize(t9)
 summary9
 \end{lstlisting}
 
-\begin{lstlisting}[style=output]
-  Estimate      SE              CI90
-   5153.88  227.34  [5107.5, 5107.5]
-\end{lstlisting}
-
 The estimate and the standard error look plausible at first glance, but
 the width of the confidence interval is 0, which suggests that something
 has gone wrong! The problem is that \passthrough{\lstinline!realinc!} is
@@ -833,10 +785,6 @@ there are only 26 distinct values in this column.
 
 \begin{lstlisting}[language=Python,style=source]
 len(gss2018['realinc'].value_counts())
-\end{lstlisting}
-
-\begin{lstlisting}[style=output]
-26
 \end{lstlisting}
 
 The reason is that the GSS does not ask respondents to report their
@@ -850,16 +798,6 @@ Here are the values that appear in our sample.
 
 \begin{lstlisting}[language=Python,style=source]
 pd.Series(t9).value_counts().sort_index()
-\end{lstlisting}
-
-\begin{lstlisting}[style=output]
-4086.0      1
-5107.5    957
-5675.0      1
-5902.0      1
-6015.5      2
-6242.5     39
-Name: count, dtype: int64
 \end{lstlisting}
 
 There are only four different values, and one of them appears more than
@@ -899,10 +837,6 @@ plt.ylabel('Probability density')
 plt.title('Estimated distribution of income');
 \end{lstlisting}
 
-\begin{center}
-\includegraphics[width=4in]{chapters/12_bootstrap_files/12_bootstrap_124_0.png}
-\end{center}
-
 To draw samples from this distribution, we'll use a Scipy function
 called \passthrough{\lstinline!gaussian\_kde!}, which takes the data and
 returns an object that represents the estimated density.
@@ -923,20 +857,12 @@ n = gss2018['realinc'].notna().sum()
 n
 \end{lstlisting}
 
-\begin{lstlisting}[style=output]
-2152
-\end{lstlisting}
-
 Now we can draw a sample, compute the 10th percentile, and convert from
 a logarithm to a dollar value.
 
 \begin{lstlisting}[language=Python,style=source]
 sample = kde.resample(n)
 10 ** np.percentile(sample, 10)
-\end{lstlisting}
-
-\begin{lstlisting}[style=output]
-4762.186349881458
 \end{lstlisting}
 
 The result is a random value from the sampling distribution of the 10th
@@ -964,12 +890,6 @@ bootstrapping.
 table = pd.concat([summary9, summary10])
 table.index=['bootstrapping', 'KDE resampling']
 table
-\end{lstlisting}
-
-\begin{lstlisting}[style=output]
-                Estimate      SE                CI90
-bootstrapping    5153.88  227.34    [5107.5, 5107.5]
-KDE resampling   5084.19  248.93  [4675.48, 5509.98]
 \end{lstlisting}
 
 The means and standard errors are about the same with either method. But
@@ -1044,13 +964,6 @@ gss['grass'].replace(2, 0, inplace=True)
 gss['grass'].value_counts()
 \end{lstlisting}
 
-\begin{lstlisting}[style=output]
-grass
-0.0    25997
-1.0    12672
-Name: count, dtype: int64
-\end{lstlisting}
-
 As explanatory variables we'll use \passthrough{\lstinline!year!} and
 \passthrough{\lstinline!year!} squared, which I'll store in a column
 called \passthrough{\lstinline!year2!}.
@@ -1106,10 +1019,6 @@ Here's what the predictions look like, plotted along with the data.
 plt.plot(years, pred, label='logistic model', color='gray', alpha=0.4)
 plot_data()
 \end{lstlisting}
-
-\begin{center}
-\includegraphics[width=4in]{chapters/12_bootstrap_files/12_bootstrap_153_0.png}
-\end{center}
 
 The model fits past data reasonably well and makes plausible predictions
 for the next decade, although we can never be sure that trends like this
