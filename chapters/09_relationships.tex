@@ -558,8 +558,8 @@ np.corrcoef(xs, ys)
 \end{lstlisting}
 
 \begin{lstlisting}[style=output]
-array([[1.        , 0.01624048],
-       [0.01624048, 1.        ]])
+array([[1.        , 0.00367445],
+       [0.00367445, 1.        ]])
 \end{lstlisting}
 
 Even though there is a strong non-linear relationship, the computed
@@ -631,11 +631,10 @@ In the first example, the average weight gain over 30 years is less than
 concerned about the health effects of weight gain, the second
 relationship is probably more important, even though the correlation is
 lower.\\
-In this scenario, the statistic we really care about is the slope of the
-line, not the coefficient of correlation.
-
-In the next section, we'll see how to estimate that slope. But first,
-let's practice with correlation.
+In this scenario, the statistic we really care about is the line of best
+fit, not the coefficient of correlation. In the next section, we'll see
+how to fit a line to this data, but first let's practice with
+correlation.
 
 \textbf{Exercise:} The purpose of the BRFSS is to explore health risk
 factors, so it includes questions about diet. The column
@@ -645,6 +644,10 @@ correlations, let's look at the distribution of this variable. Extract
 \passthrough{\lstinline!\_VEGESU1!} from \passthrough{\lstinline!brfss!}
 and assign it to \passthrough{\lstinline!vegesu!} -- then plot the CDF
 of the values.
+
+The original dataset includes a small number of values greater than 10,
+some of them unreasonably large. For this extract, I have cut off the
+values at 10.
 
 \textbf{Exercise:} Now let's visualize the relationship between age and
 vegetables. Make a box plot that summarizes the distribution of
@@ -672,7 +675,9 @@ based on the box plot?
 
 In the previous section we saw that correlation does not always measure
 what we really want to know. In this section, we look at an alternative:
-simple linear regression.
+simple linear regression. Here ``simple'' means there are only two
+variables, as opposed to ``multiple'' regression, which can work with
+any number of variables.
 
 Let's look again at the relationship between weight and age. In the
 previous section, I generated two fake datasets to make a point:
