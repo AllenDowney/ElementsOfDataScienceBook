@@ -3,63 +3,59 @@
 
 In the previous chapter we used resampling to compute standard errors
 and confidence intervals, which quantify the variability in an estimate
-due to random sampling. As one of the examples, we used data from the
-General Social Survey (GSS) to explore changes in support for gun
-control over time and to compute confidence intervals for the estimated
-proportions.
+due to random sampling.
 
-In this chapter, we'll use GSS data to estimate average income and the
-10th percentile of income. We'll see that the resampling method we used
-in the previous chapter works for the average income but not for the
-10th percentile.
+In this chapter, we'll use data from the General Social Survey (GSS) to
+estimate average income and the 10th percentile of income. We'll see
+that the resampling method we used in the previous chapter works for the
+average income but not for the 10th percentile.
 
 To solve this problem, we'll use another kind of resampling, called
-bootstrapping or bootstrap sampling (see
-\url{https://en.wikipedia.org/wiki/Bootstrapping_(statistics)}). Then
-we'll use bootstrapping to compute sampling distributions and confidence
-intervals for other statistics, including the coefficient of correlation
-and the parameters of linear regression. Finally, I'll point out a
-problem with bootstrap resampling when there are not enough different
-values in a dataset, and a way to solve it with KDE resampling.
+bootstrapping or bootstrap sampling. Then we'll use bootstrapping to
+compute sampling distributions and confidence intervals for other
+statistics, including the coefficient of correlation and the parameters
+of linear regression. Finally, I'll point out a problem with bootstrap
+resampling when there are not enough different values in a dataset, and
+a way to solve it with KDE resampling.
 
 \hypertarget{estimating-average-income}{%
 \section{Estimating Average Income}\label{estimating-average-income}}
 
 As a first example, we'll use data from the General Social Survey to
-estimate average family income. The following cell loads the data, which
-I have stored in an HDF file.
+estimate average family income. We'll work with an extract that contains
+just the columns we need, as we did in Chapter 8. Instructions for
+downloading the extract are in the notebook for this chapter.
 
-\begin{lstlisting}[]
+We can load the data like this and display the first few rows.
+
+\begin{lstlisting}[language=Python,style=source]
 import pandas as pd
 
-gss = pd.read_hdf('gss_eda.hdf', 'gss')
+gss = pd.read_hdf('gss_extract_2022.hdf', 'gss')
 gss.head()
 \end{lstlisting}
 
-\begin{tabular}{lrrrrrrrr}
-\midrule
-{} &  YEAR &  ID\_ &   AGE &  EDUC &  SEX &  GUNLAW &  GRASS &  REALINC \\
-\midrule
-0 &  1972 &    1 &  23.0 &  16.0 &    2 &     1.0 &    NaN &  18951.0 \\
-1 &  1972 &    2 &  70.0 &  10.0 &    1 &     1.0 &    NaN &  24366.0 \\
-2 &  1972 &    3 &  48.0 &  12.0 &    2 &     1.0 &    NaN &  24366.0 \\
-3 &  1972 &    4 &  27.0 &  17.0 &    2 &     1.0 &    NaN &  30458.0 \\
-4 &  1972 &    5 &  61.0 &  12.0 &    2 &     1.0 &    NaN &  50763.0 \\
-\midrule
-\end{tabular}
+\begin{lstlisting}[style=output]
+   year  id   age  educ  degree  sex  gunlaw  grass  realinc
+0  1972   1  23.0  16.0     3.0  2.0     1.0    NaN  18951.0
+1  1972   2  70.0  10.0     0.0  1.0     1.0    NaN  24366.0
+2  1972   3  48.0  12.0     1.0  2.0     1.0    NaN  24366.0
+3  1972   4  27.0  17.0     3.0  2.0     1.0    NaN  30458.0
+4  1972   5  61.0  12.0     1.0  2.0     1.0    NaN  50763.0
+\end{lstlisting}
 
-The column \passthrough{\lstinline!REALINC!} records family income,
+The column \passthrough{\lstinline!realinc!} records family income,
 converted to 1986 dollars. The following figure uses the Seaborn
 function \passthrough{\lstinline!kdeplot!} to show the distribution of
 family income. The argument \passthrough{\lstinline!cut=0!} cuts off the
 curve so it doesn't extend beyond the observed minimum and maximum
 values.
 
-\begin{lstlisting}[]
-import matplotlib.pyplot as plt
+\begin{lstlisting}[language=Python,style=source]
 import seaborn as sns
+import matplotlib.pyplot as plt
 
-sns.kdeplot(gss['REALINC'] / 1000, label='GSS data', cut=0)
+sns.kdeplot(gss['realinc'] / 1000, label='GSS data', cut=0)
 
 plt.xlabel('Family income ($1000s)')
 plt.ylabel('PDF')
@@ -68,27 +64,29 @@ plt.legend();
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/12_bootstrap_files/12_bootstrap_10_0.pdf}
+\includegraphics[width=4in]{chapters/12_bootstrap_files/12_bootstrap_11_0.png}
 \end{center}
 
 The distribution of income is skewed to the right; most household
 incomes are less than \$60,000, but a few are substantially higher. Here
 are the mean and standard deviation of the reported incomes.
 
-\begin{lstlisting}[]
-mean_realinc = gss['REALINC'].mean()
-std_income = gss['REALINC'].std()
-print(mean_realinc, std_income)
-(@\dashfill@)
-@@@31742.563372816312 29526.067896235618@@@
+\begin{lstlisting}[language=Python,style=source]
+mean_realinc = gss['realinc'].mean()
+std_realinc = gss['realinc'].std()
+print(mean_realinc, std_realinc)
 \end{lstlisting}
 
-The average family income in this sample is \$31,743. But if we ran the
+\begin{lstlisting}[style=output]
+32537.399981032493 30883.22609399141
+\end{lstlisting}
+
+The average family income in this sample is \$32,537. But if we ran the
 GSS survey again, the average might be higher or lower. To see how much
 it might vary, we can use this function from the previous chapter to
 simulate the sampling process.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 import numpy as np
 
 def simulate_sample_mean(n, mu, sigma):
@@ -97,40 +95,43 @@ def simulate_sample_mean(n, mu, sigma):
 \end{lstlisting}
 
 \passthrough{\lstinline!simulate\_sample\_mean!} takes as parameters the
-sample size and the observed mean and standard deviation of income. It
-generates a sample from a normal distribution with the given mean and
-standard deviation, and returns the mean of the sample.
+sample size and the mean and standard deviation. It generates a sample
+from a normal distribution and returns the mean.
 
 Before we call this function, we have to count the number of valid
 responses.
 
-\begin{lstlisting}[]
-n_realinc = gss['REALINC'].notna().sum()
+\begin{lstlisting}[language=Python,style=source]
+n_realinc = gss['realinc'].notna().sum()
 n_realinc
-(@\dashfill@)
-@@@58293@@@
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+64912
 \end{lstlisting}
 
 Now, if we call \passthrough{\lstinline!simulate\_sample\_mean!} once,
 we get a single value from the sampling distribution of the mean.
 
-\begin{lstlisting}[]
-simulate_sample_mean(n_realinc, mean_realinc, std_income)
-(@\dashfill@)
-@@@31725.912014377434@@@
+\begin{lstlisting}[language=Python,style=source]
+simulate_sample_mean(n_realinc, mean_realinc, std_realinc)
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+32573.420195135117
 \end{lstlisting}
 
 If we call it many times, we get a random sample from the sampling
 distribution.
 
-\begin{lstlisting}[]
-t1 = [simulate_sample_mean(n_realinc, mean_realinc, std_income)
+\begin{lstlisting}[language=Python,style=source]
+t1 = [simulate_sample_mean(n_realinc, mean_realinc, std_realinc)
       for i in range(1000)]
 \end{lstlisting}
 
-Here's what the sampling distribution of the mean looks like:
+Here's what the sampling distribution looks like.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 sns.kdeplot(t1)
 
 plt.xlabel('Family income (1986 $)')
@@ -139,51 +140,49 @@ plt.title('Sampling distribution of mean income');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/12_bootstrap_files/12_bootstrap_23_0.pdf}
+\includegraphics[width=4in]{chapters/12_bootstrap_files/12_bootstrap_24_0.png}
 \end{center}
 
 This distribution shows how much we would expect the observed mean to
 vary if we ran the GSS survey again. We'll use the following function to
 summarize the sampling distribution.
 
-\begin{lstlisting}[]
-def summarize(t, digits=2):
-    table = pd.DataFrame(columns=['Estimate', 'SE', 'CI90'])
+\begin{lstlisting}[language=Python,style=source]
+def summarize(t, digits=2, label=''):
     est = np.mean(t).round(digits)
     SE = np.std(t).round(digits)
     CI90 = np.percentile(t, [5, 95]).round(digits)
-    table.loc[''] = est, SE, CI90
+    data = [est, SE, CI90]
+    columns = ['Estimate', 'SE', 'CI90']
+    table = pd.DataFrame([data], index=[label], columns=columns)
     return table
 \end{lstlisting}
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 summary1 = summarize(t1, digits=1)
 summary1
 \end{lstlisting}
 
-\begin{tabular}{lrrl}
-\midrule
-{} &  Estimate &     SE &                CI90 \\
-\midrule
-{} &   31739.4 &  123.3 &  [31531.6, 31941.8] \\
-\midrule
-\end{tabular}
+\begin{lstlisting}[style=output]
+  Estimate     SE                CI90
+   32533.9  120.7  [32331.3, 32724.2]
+\end{lstlisting}
 
 The result shows the mean of the sampling distribution, the standard
 error, and a 90\% confidence interval. The mean of the sampling
 distribution is close to the mean of the data, as we expect. The
 standard error quantifies with width of the sampling distribution, which
-is about \$128. Informally, that's how much we would expect the sample
+is about \$121. Informally, that's how much we would expect the sample
 mean to change if we ran the survey again. And if we ran the survey many
 times and computed the average income each time, we would expect 90\% of
-the results to fall in the range from \$31,538 to \$31,958.
+the results to fall in the range from 32,331 to 32,724.
 
 In this section, we used a normal distribution to simulate the sampling
 process. The normal distribution is not a particularly good model for
 the distribution of income, but it works well enough for this example,
 and the results are reasonable. In the next section we'll see an example
 where the normal distribution is not good enough and the results are not
-reasonable; then we'll see how to fix the problem.
+reasonable. Then we'll see how to fix the problem.
 
 \hypertarget{estimating-percentiles}{%
 \section{Estimating Percentiles}\label{estimating-percentiles}}
@@ -195,20 +194,22 @@ percentile of the data, we can use the NumPy function
 \passthrough{\lstinline!percentile!}, but we have to drop the NaN
 values.
 
-\begin{lstlisting}[]
-np.percentile(gss['REALINC'].dropna(), 10)
-(@\dashfill@)
-@@@5631.3@@@
+\begin{lstlisting}[language=Python,style=source]
+np.percentile(gss['realinc'].dropna(), 10)
 \end{lstlisting}
 
-The 10th percentile of the sample is \$5631, but if we collected another
+\begin{lstlisting}[style=output]
+5730.0
+\end{lstlisting}
+
+The 10th percentile of the sample is \$5730, but if we collected another
 sample, the result might be higher or lower. To see how much it would
 vary, we can use the following function to simulate the sampling
 process: \passthrough{\lstinline!simulate\_sample\_percentile!}
 generates a sample from a normal distribution and returns the 10th
 percentile.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 def simulate_sample_percentile(n, mu, sigma):
     sample = np.random.normal(mu, sigma, size=n)
     return np.percentile(sample, 10)
@@ -217,14 +218,14 @@ def simulate_sample_percentile(n, mu, sigma):
 If we call it several times, the result is a sample from the sampling
 distribution of the 10th percentile.
 
-\begin{lstlisting}[]
-t2 = [simulate_sample_percentile(n_realinc, mean_realinc, std_income)
+\begin{lstlisting}[language=Python,style=source]
+t2 = [simulate_sample_percentile(n_realinc, mean_realinc, std_realinc)
       for i in range(1000)]
 \end{lstlisting}
 
 Here's what that sampling distribution looks like.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 sns.kdeplot(t2)
 
 plt.xlabel('Family income (1986 $)')
@@ -233,40 +234,36 @@ plt.title('Sampling distribution of the 10th percentile');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/12_bootstrap_files/12_bootstrap_37_0.pdf}
+\includegraphics[width=4in]{chapters/12_bootstrap_files/12_bootstrap_38_0.png}
 \end{center}
 
-We can see that something has gone wrong. All of the values in the
-sampling distribution are negative, even though no one in the sample
-reported a negative income. We can summarize the results like this.
+We can summarize the results like this.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 summary2 = summarize(t2)
 summary2
 \end{lstlisting}
 
-\begin{tabular}{lrrl}
-\midrule
-{} &  Estimate &      SE &                  CI90 \\
-\midrule
-{} &  -6095.13 &  207.46 &  [-6441.61, -5753.08] \\
-\midrule
-\end{tabular}
+\begin{lstlisting}[style=output]
+  Estimate      SE                  CI90
+  -7035.83  205.95  [-7377.78, -6709.29]
+\end{lstlisting}
 
-But the estimate and the confidence interval are all negative, which is
-not a reasonable result. To see what happened, let's look at the
+We can see that something has gone wrong. All of the values in the
+sampling distribution are negative, even though no one in the sample
+reported a negative income. To see what happened, let's look at the
 distribution of reported incomes again compared to the normal
 distribution with the same mean and standard deviation.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 from scipy.stats import norm
 
 xs = np.linspace(-50, 150)
-ys = norm(mean_realinc/1000, std_income/1000).pdf(xs)
+ys = norm(mean_realinc/1000, std_realinc/1000).pdf(xs)
 \end{lstlisting}
 
-\begin{lstlisting}[]
-sns.kdeplot(gss['REALINC'] / 1000, label='GSS data', cut=0)
+\begin{lstlisting}[language=Python,style=source]
+sns.kdeplot(gss['realinc'] / 1000, label='GSS data', cut=0)
 plt.plot(xs, ys, color='0.7', label='normal model')
 
 plt.xlabel('Family income ($1000s)')
@@ -276,7 +273,7 @@ plt.legend();
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/12_bootstrap_files/12_bootstrap_42_0.pdf}
+\includegraphics[width=4in]{chapters/12_bootstrap_files/12_bootstrap_43_0.png}
 \end{center}
 
 The problem is that the normal model extends past the lower bound of the
@@ -289,7 +286,7 @@ there is a simple alternative that is more robust: bootstrapping.
 Bootstrapping is a kind of resampling, based on the framework we saw in
 the previous chapter:
 
-\includegraphics[width=4in]{chapters/figs/resampling.pdf}
+\includegraphics{chapters/figs/resampling.png}
 
 The idea is that we treat the original sample as if it were the entire
 population, and simulate the sampling process by choosing random rows
@@ -297,51 +294,52 @@ with replacement. \passthrough{\lstinline!DataFrame!} provides a method
 called \passthrough{\lstinline!sample!} we can use to select a random
 sample of the rows.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 bootstrapped = gss.sample(n=n_realinc, replace=True)
 bootstrapped.shape
-(@\dashfill@)
-@@@(58293, 8)@@@
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+(64912, 9)
 \end{lstlisting}
 
 The argument \passthrough{\lstinline!n=n\_realinc!} means that the
 bootstrapped sample has the same size as the original.
-
 \passthrough{\lstinline!replace=True!} means that sampling is done with
-replacement; that is, the same row can be chosen more than once. To see
-how many times each row appears in the bootstrapped sample, we can use
-\passthrough{\lstinline!value\_counts!} and the
-\passthrough{\lstinline!\_ID!} column, which contains a unique
-identifier for each respondent.
+replacement -- that is, the same row can be chosen more than once. To
+see how many times each row appears in the bootstrapped sample, we can
+use \passthrough{\lstinline!value\_counts!} and the
+\passthrough{\lstinline!id!} column, which contains a unique identifier
+for each respondent.
 
-\begin{lstlisting}[]
-repeats = bootstrapped['ID_'].value_counts()
+\begin{lstlisting}[language=Python,style=source]
+repeats = bootstrapped['id'].value_counts()
 repeats.head()
 \end{lstlisting}
 
-\begin{tabular}{lr}
-\midrule
-{} &  ID\_ \\
-\midrule
-797 &   50 \\
-195 &   48 \\
-197 &   47 \\
-171 &   45 \\
-920 &   45 \\
-\midrule
-\end{tabular}
+\begin{lstlisting}[style=output]
+id
+889     51
+504     48
+1302    47
+295     47
+524     46
+Name: count, dtype: int64
+\end{lstlisting}
 
 Several of the rows appear more than 40 times. Since some rows appear
 many times, other rows don't appear at all. To see how many, we can use
 \passthrough{\lstinline!set!} subtraction to count the values of
-\passthrough{\lstinline!ID\_!} that appear in the original dataset but
-not the bootstrapped sample.
+\passthrough{\lstinline!id!} that appear in the original dataset but not
+the bootstrapped sample.
 
-\begin{lstlisting}[]
-unused = set(gss['ID_']) - set(bootstrapped['ID_'])
+\begin{lstlisting}[language=Python,style=source]
+unused = set(gss['id']) - set(bootstrapped['id'])
 len(unused)
-(@\dashfill@)
-@@@567@@@
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+229
 \end{lstlisting}
 
 Now we can use bootstrapping to generate a sampling distribution. For
@@ -349,7 +347,7 @@ example, the following function takes a
 \passthrough{\lstinline!DataFrame!}, generates a bootstrapped sample,
 and returns the average income.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 def bootstrap_mean(df, varname):
     bootstrapped = df.sample(n=len(df), replace=True)
     return bootstrapped[varname].mean()
@@ -358,29 +356,26 @@ def bootstrap_mean(df, varname):
 If we run it many times, we get a sample from the sampling distribution
 of the mean.
 
-\begin{lstlisting}[]
-t3 = [bootstrap_mean(gss, 'REALINC')
+\begin{lstlisting}[language=Python,style=source]
+t3 = [bootstrap_mean(gss, 'realinc')
       for i in range(1001)]
 \end{lstlisting}
 
 Here's a summary of the results, compared to the results based on the
 normal model.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 summary3 = summarize(t3)
 table = pd.concat([summary1, summary3])
 table.index=['normal model', 'bootstrapping']
 table
 \end{lstlisting}
 
-\begin{tabular}{lrrl}
-\midrule
-{} &  Estimate &      SE &                  CI90 \\
-\midrule
-normal model  &  31739.40 &  123.30 &    [31531.6, 31941.8] \\
-bootstrapping &  31742.67 &  121.39 &  [31544.79, 31946.17] \\
-\midrule
-\end{tabular}
+\begin{lstlisting}[style=output]
+               Estimate      SE                  CI90
+normal model    32533.9  120.70    [32331.3, 32724.2]
+bootstrapping   32541.0  119.32  [32342.12, 32732.88]
+\end{lstlisting}
 
 The results from bootstrap sampling are consistent with the results
 based on the normal model. Now let's see what happens when we estimate
@@ -393,44 +388,41 @@ drops \passthrough{\lstinline!NaN!} values. The parameter of
 \passthrough{\lstinline!quantile!} is a probability between 0 and 1,
 rather than a percentage between 0 and 100.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 def bootstrap_income_percentile(df):
     bootstrapped = df.sample(n=len(df), replace=True)
-    return bootstrapped['REALINC'].quantile(0.1)
+    return bootstrapped['realinc'].quantile(0.1)
 \end{lstlisting}
 
 We can use it to generate a sample from the sampling distribution of the
 10th percentile.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 t4 = [bootstrap_income_percentile(gss)
       for i in range(1001)]
 \end{lstlisting}
 
 Here are the results along with the results based on the normal model.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 summary4 = summarize(t4)
 table = pd.concat([summary2, summary4])
 table.index=['normal model', 'bootstrapping']
 table
 \end{lstlisting}
 
-\begin{tabular}{lrrl}
-\midrule
-{} &  Estimate &      SE &                  CI90 \\
-\midrule
-normal model  &  -6095.13 &  207.46 &  [-6441.61, -5753.08] \\
-bootstrapping &   5649.50 &   88.71 &      [5512.5, 5806.0] \\
-\midrule
-\end{tabular}
+\begin{lstlisting}[style=output]
+               Estimate      SE                  CI90
+normal model   -7035.83  205.95  [-7377.78, -6709.29]
+bootstrapping   5685.33   91.07      [5512.5, 5827.5]
+\end{lstlisting}
 
 The mean of the sampling distribution is consistent with the 10th
 percentile of the data, which is \$5631. So the results from
 bootstrapping are more sensible than the results based on the normal
 model.
 
-In general, bootstrapping is robust; that is, it works well with many
+In general, bootstrapping is robust -- that is, it works well with many
 different distributions and many different statistics. However, at the
 end of the chapter, we'll see one example where it fails.
 
@@ -438,101 +430,110 @@ end of the chapter, we'll see one example where it fails.
 \section{Working with Bigger Data}\label{working-with-bigger-data}}
 
 As sample size increases, errors due to random sampling get smaller. To
-demonstrate this effect, I'll use data from the Behavioral Risk Factor
-Surveillance System (BRFSS).
+demonstrate this effect, we'll use data from the Behavioral Risk Factor
+Surveillance System (BRFSS) to estimate the average height for men in
+the United States.
 
-In previous chapters, we used BRFSS data to explore the relationship
-between height and weight, and the relationship between income and
-vegetable consumption. In this section, we'll use it to estimate the
-average height for men in the United States.
+First, let's read the 2021 data, which I have stored in an HDF file.
+Instructions for downloading it are in the notebook for this chapter.
 
-First, let's read the 2019 data, which I have stored in an HDF file.
+We can read the data like this.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 import pandas as pd
 
-brfss = pd.read_hdf('brfss.hdf', 'brfss')
+brfss = pd.read_hdf('brfss_2021.hdf', 'brfss')
 brfss.shape
-(@\dashfill@)
-@@@(418268, 9)@@@
 \end{lstlisting}
 
-This dataset contains 418 268 rows, one for each respondent, and 11
-columns, one for each variable I selected. Here are the first few rows.
+\begin{lstlisting}[style=output]
+(438693, 10)
+\end{lstlisting}
 
-\begin{lstlisting}[]
+This dataset contains 438,693 rows, one for each respondent, and 10
+columns, one for each variable in the extract. Here are the first few
+rows.
+
+\begin{lstlisting}[language=Python,style=source]
 brfss.head()
 \end{lstlisting}
 
-\begin{tabular}{lrrrrrrrrr}
-\midrule
-{} &       SEQNO &   HTM4 &  WTKG3 &  \_SEX &  \_AGEG5YR &  \_VEGESU1  \\
-\midrule
-0 &  2019000001 &  157.0 &  69.85 &     2 &      13.0 &     114.0  \\
-1 &  2019000002 &  163.0 &  48.99 &     2 &      11.0 &     121.0  \\
-2 &  2019000003 &  165.0 &  86.18 &     2 &      10.0 &     164.0  \\
-3 &  2019000004 &  165.0 &  55.34 &     2 &      13.0 &       NaN  \\
-4 &  2019000005 &  152.0 &  49.90 &     2 &      13.0 &     178.0  \\
-\midrule
-\end{tabular}
+\begin{lstlisting}[style=output]
+        SEQNO   HTM4  WTKG3  _SEX  _AGEG5YR  _VEGESU1  _INCOMG1      _LLCPWT  \
+0  2021000001  150.0  32.66     2      11.0      2.14       3.0   744.745531   
+1  2021000002  168.0    NaN     2      10.0      1.28       NaN   299.137394   
+2  2021000003  165.0  77.11     2      11.0      0.71       2.0   587.862986   
+3  2021000004  163.0  88.45     2       9.0      1.65       5.0  1099.621570   
+4  2021000005  180.0  93.44     1      12.0      2.58       2.0  1711.825870   
+
+   _HTM4G10   AGE  
+0     140.0  72.0  
+1     160.0  67.0  
+2     160.0  72.0  
+3     160.0  62.0  
+4     170.0  77.0  
+\end{lstlisting}
 
 The \passthrough{\lstinline!HTM4!} column contains the respondents'
 heights in centimeters.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 height = brfss['HTM4']
 \end{lstlisting}
 
 To select male respondents, we'll use the \passthrough{\lstinline!SEX!}
 column to make a Boolean \passthrough{\lstinline!Series!}.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 male = (brfss['_SEX'] == 1)
 male.sum()
-(@\dashfill@)
-@@@189835@@@
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+203760
 \end{lstlisting}
 
 We can use \passthrough{\lstinline!notna!} and
 \passthrough{\lstinline!sum!} to count the number of male respondents
 with valid height data.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 n_height = height[male].notna().sum()
 n_height
-(@\dashfill@)
-@@@182269@@@
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+193701
 \end{lstlisting}
 
 Here is the mean and standard deviation of these values.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 mean_height = height[male].mean()
 std_height = height[male].std()
 mean_height, std_height
-(@\dashfill@)
-@@@(178.0768644146838, 7.966455313471575)@@@
 \end{lstlisting}
 
-The average height for men in the U.S. is about 178 cm; the standard
-deviation is about 8 cm. We can use bootstrapping to generate values
-from the sampling distribution of the mean. To reduce computation time,
-I set the number of iterations to 201.
+\begin{lstlisting}[style=output]
+(178.14807357731763, 7.987083970017878)
+\end{lstlisting}
 
-\begin{lstlisting}[]
+The average height for men in the U.S. is about 178 cm. To see how
+precise this estimate is, we can use bootstrapping to generate values
+from the sampling distribution. To reduce computation time, I set the
+number of iterations to 201.
+
+\begin{lstlisting}[language=Python,style=source]
 t5 = [bootstrap_mean(brfss[male], 'HTM4')
       for i in range(201)]
 
 summarize(t5, digits=3)
 \end{lstlisting}
 
-\begin{tabular}{lrrl}
-\midrule
-{} &  Estimate &     SE &                CI90 \\
-\midrule
-{} &   178.079 &  0.019 &  [178.047, 178.107] \\
-\midrule
-\end{tabular}
+\begin{lstlisting}[style=output]
+  Estimate     SE               CI90
+   178.148  0.018  [178.12, 178.179]
+\end{lstlisting}
 
 Because the sample size is so large, the standard error is small and the
 confidence interval is narrow. This result suggests that our estimate is
@@ -540,21 +541,22 @@ very precise, which is true in the sense that the error due to random
 sampling is small.
 
 But there are other sources of error. For example, the heights and
-weights in this dataset are based on self-reports, so they are
-vulnerable to \textbf{social desirability bias} (see
-\url{https://en.wikipedia.org/wiki/Social-desirability_bias}). It's also
-possible that there are errors in recording the data. In a previous year
-of the BRFSS, there are a suspicious number of heights recorded as 60 or
-61 centimeters. I suspect that many of them are six feet tall, or six
-feet and one inch, and something went wrong in recording the data.
+weights in this dataset are self-reported, so they are vulnerable to
+\textbf{social desirability bias}, which is the tendency of people to
+represent themselves in a positive light.
 
-And that brings us to the first point of this example:
+It's also possible that there are errors in recording the data. In a
+previous year of the BRFSS, there are a suspicious number of heights
+recorded as 60 or 61 centimeters. I suspect that many of them are six
+feet tall, or six feet and one inch, and something went wrong in
+recording the data.
+
+And that brings us to the point of this example:
 
 \begin{quote}
 With large sample sizes, error due to random sampling is small, but with
-real-world data, that usually means that there are other sources of
-error that are bigger. So we can't be sure that the estimate is
-accurate.
+real-world data, that often means that there are other sources of error
+that are bigger. So we can't be sure that the estimate is accurate.
 \end{quote}
 
 In fact, there is another source of error in this example that we have
@@ -563,7 +565,7 @@ not taken into account: oversampling.
 \hypertarget{weighted-bootstrapping}{%
 \section{Weighted Bootstrapping}\label{weighted-bootstrapping}}
 
-By design, the BRFSS oversamples some demographic groups; that is,
+By design, the BRFSS oversamples some demographic groups -- that is,
 people in some groups are more likely than others to appear in the
 sample. If people in these groups are taller than others on average, or
 shorter, our estimated mean would not be accurate.
@@ -575,7 +577,6 @@ for oversampling by computing a weighted mean.
 
 In this example, we will use a different method, \textbf{weighted
 bootstrapping}, to estimate the mean and compute a confidence interval.
-
 The BRFSS dataset includes a column, \passthrough{\lstinline!\_LLCPWT!},
 that contains sampling weights. The sampling weight for each respondent
 is the number of people in the population they represent. People in
@@ -583,33 +584,29 @@ oversampled groups have lower sampling weights; people in undersampled
 groups have higher sampling weights. Here's what the range of values
 looks like.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 brfss['_LLCPWT'].describe()
 \end{lstlisting}
 
-\begin{tabular}{lr}
-\midrule
-{} &        \_LLCPWT \\
-\midrule
-count &  418268.000000 \\
-mean  &     603.513276 \\
-std   &    1082.430311 \\
-min   &       1.016173 \\
-25\%   &     111.160528 \\
-50\%   &     272.869258 \\
-75\%   &     654.211787 \\
-max   &   42066.730900 \\
-\midrule
-\end{tabular}
+\begin{lstlisting}[style=output]
+count    438693.000000
+mean        560.851529
+std        1136.781547
+min           0.545800
+25%          95.573000
+50%         248.677287
+75%         592.546811
+max       49028.547000
+Name: _LLCPWT, dtype: float64
+\end{lstlisting}
 
-The lowest sampling weight is about 1; the largest is 42 066. So that's
-a very wide range!
+The lowest sampling weight is about 0.5; the largest is about 49,000 --
+so that's a very wide range! We can take these weights into account by
+passing them as an argument to \passthrough{\lstinline!sample!}. That
+way, the probability that any row is selected is proportional to its
+sampling weight.
 
-We can take these weights into account by passing them as an argument to
-\passthrough{\lstinline!sample!}. That way, the probability that any row
-is selected is proportional to its sampling weight.
-
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 n = len(brfss)
 bootstrapped = brfss.sample(n=n, replace=True, weights='_LLCPWT')
 \end{lstlisting}
@@ -620,22 +617,20 @@ than once. To see how many times, we can use
 \passthrough{\lstinline!SEQNO!} column, which contains a unique
 identifier for each respondent.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 repeats = bootstrapped['SEQNO'].value_counts()
 repeats.head()
 \end{lstlisting}
 
-\begin{tabular}{lr}
-\midrule
-{} &  SEQNO \\
-\midrule
-2019000108 &    139 \\
-2019000047 &    122 \\
-2019000048 &    115 \\
-2019000096 &    110 \\
-2019000851 &    110 \\
-\midrule
-\end{tabular}
+\begin{lstlisting}[style=output]
+SEQNO
+2021000019    178
+2021003858    146
+2021001337    143
+2021001348    136
+2021002405    134
+Name: count, dtype: int64
+\end{lstlisting}
 
 Some rows appear more than 100 times. Most likely, these are the rows
 with the highest sampling rates, which correspond to people from
@@ -646,24 +641,26 @@ To see how many rows don't appear at all, we can use
 \passthrough{\lstinline!SEQNO!} that appear in the original dataset but
 not the sample.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 unused = set(brfss['SEQNO']) - set(bootstrapped['SEQNO'])
 len(unused)
-(@\dashfill@)
-@@@826@@@
 \end{lstlisting}
 
-There are several hundred rows that don't appear in this sample, but
-they are not dropped altogether; when we repeat this process, they will
+\begin{lstlisting}[style=output]
+14534
+\end{lstlisting}
+
+There are thousands of rows that don't appear in this sample, but they
+are not dropped altogether -- when we repeat this process, they will
 appear in other samples.
 
-We can use weighted bootstrapping to generate values from the sampling
-distribution of the mean. The following function uses
+Now we can use weighted bootstrapping to generate values from the
+sampling distribution of the mean. The following function uses
 \passthrough{\lstinline!sample!} and the
 \passthrough{\lstinline!\_LLCPWT!} column to generate a bootstrapped
 sample, then returns the average height.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 def weighted_bootstrap_mean(df):
     n = len(df)
     sample = df.sample(n=n, replace=True, weights='_LLCPWT')
@@ -674,39 +671,40 @@ I'll test this function with a \passthrough{\lstinline!DataFrame!} that
 contains only male respondents. If we run it once, we get a single value
 from the sampling distribution of the weighted mean.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 male_df = brfss[male]
 weighted_bootstrap_mean(male_df)
-(@\dashfill@)
-@@@177.63307589732193@@@
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+177.54082642905527
 \end{lstlisting}
 
 If we run it many times, we get a random sample from the sampling
 distribution.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 t6 = [weighted_bootstrap_mean(male_df) 
       for i in range(201)]
 
 summarize(t6, digits=3)
 \end{lstlisting}
 
-\begin{tabular}{lrrl}
-\midrule
-{} &  Estimate &     SE &                CI90 \\
-\midrule
-{} &   177.639 &  0.021 &  [177.602, 177.671] \\
-\midrule
-\end{tabular}
+\begin{lstlisting}[style=output]
+  Estimate     SE                CI90
+   177.542  0.017  [177.512, 177.574]
+\end{lstlisting}
 
 The mean of the sampling distribution estimates the average height for
 men in the U.S., corrected for oversampling. If we compare it to the
 unweighted mean we computed, it is a little lower.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 print(np.mean(t6), mean_height)
-(@\dashfill@)
-@@@177.6394121015467 178.0768644146838@@@
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+177.5418871819706 178.14807357731763
 \end{lstlisting}
 
 So it seems like people in the oversampled groups are taller than
@@ -723,14 +721,16 @@ random sampling.
 
 Bootstrap resampling can be used to estimate other statistics and their
 sampling distributions. For example, in Chapter 9 we computed the
-correlation between height and weight, which is about 0.48.
+correlation between height and weight, which is about 0.47.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 var1, var2 = 'HTM4', 'WTKG3'
 corr = brfss[var1].corr(brfss[var2])
 corr
-(@\dashfill@)
-@@@0.4771514628388141@@@
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+0.4693981914367917
 \end{lstlisting}
 
 That correlation does not take into account oversampling. We can correct
@@ -738,7 +738,7 @@ it with this function, which generates a weighted bootstrapped sample
 and uses it to compute the correlation of the columns with names
 \passthrough{\lstinline!var1!} and \passthrough{\lstinline!var2!}.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 def weighted_bootstrap_corr(df, var1, var2):
     n = len(df)
     sample = df.sample(n=n, replace=True, weights='_LLCPWT')
@@ -754,21 +754,22 @@ standard error and 90\% confidence interval for the estimated
 correlation.
 
 \textbf{Exercise:} In Chapter 9 we also computed the slope of the
-regression line for weight as a function of height. Here's the result
-with with 2019 data.
+regression line for weight as a function of height. Here's the result.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 from scipy.stats import linregress
 
 subset = brfss.dropna(subset=['WTKG3', 'HTM4'])
 res = linregress(subset['HTM4'], subset['WTKG3'])
 res.slope
-(@\dashfill@)
-@@@0.9329292413349343@@@
 \end{lstlisting}
 
-The estimated slope is 0.93 kg/cm, which means that we expect someone 1
-cm taller than average to be about 0.93 kg heavier than average.
+\begin{lstlisting}[style=output]
+0.9366891536604244
+\end{lstlisting}
+
+The estimated slope is 0.94 kg/cm, which means that we expect someone 1
+cm taller than average to be about 0.94 kg heavier than average.
 
 Write a function called
 \passthrough{\lstinline!weighted\_bootstrap\_slope!} that takes a
@@ -798,92 +799,79 @@ sampling does not work well with datasets that contain a small number of
 different values. To demonstrate, I'll select data from the GSS for one
 year, 2018:
 
-\begin{lstlisting}[]
-one_year = gss['YEAR']==2018
+\begin{lstlisting}[language=Python,style=source]
+one_year = gss['year']==2018
 gss2018 = gss[one_year]
 \end{lstlisting}
 
 And I'll use bootstrapping to generate values from the sampling
 distribution of income.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 t9 = [bootstrap_income_percentile(gss2018)
       for i in range(1001)]
 \end{lstlisting}
 
 Here are the results.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 summary9 = summarize(t9)
 summary9
 \end{lstlisting}
 
-\begin{tabular}{lrrl}
-\midrule
-{} &  Estimate &      SE &              CI90 \\
-\midrule
-{} &   5149.91 &  212.91 &  [5107.5, 5107.5] \\
-\midrule
-\end{tabular}
+\begin{lstlisting}[style=output]
+  Estimate      SE              CI90
+   5153.88  227.34  [5107.5, 5107.5]
+\end{lstlisting}
 
 The estimate and the standard error look plausible at first glance, but
 the width of the confidence interval is 0, which suggests that something
-has gone wrong!
+has gone wrong! The problem is that \passthrough{\lstinline!realinc!} is
+not really a numerical variable -- it is a categorical variable in
+disguise. Using \passthrough{\lstinline!value\_counts!}, we can see that
+there are only 26 distinct values in this column.
 
-The problem is that \passthrough{\lstinline!REALINC!} is not a numerical
-variable; it is a categorical variable in disguise. Using
-\passthrough{\lstinline!value\_counts!}, we can see that there are only
-26 distinct values in this column.
+\begin{lstlisting}[language=Python,style=source]
+len(gss2018['realinc'].value_counts())
+\end{lstlisting}
 
-\begin{lstlisting}[]
-len(gss2018['REALINC'].value_counts())
-(@\dashfill@)
-@@@26@@@
+\begin{lstlisting}[style=output]
+26
 \end{lstlisting}
 
 The reason is that the GSS does not ask respondents to report their
 incomes. Instead, it gives them a list of ranges and asks them to pick
-the range their income falls in. The ranges are described in the
-documentation of the related variable \passthrough{\lstinline!INCOME!}
-(see \url{https://gssdataexplorer.norc.org/variables/104/vshow}).
-
-Then GSS analysts compute the midpoint of each range and convert to 1986
-dollars by adjusting for inflation. Details of the methodology are in
-available from
-\url{https://gss.norc.org/Documents/reports/methodological-reports/MR101\%20Getting\%20the\%20Most\%20Out\%20of\%20the\%20GSS\%20Income\%20Measures.pdf}.
-
-As a result, there are only 26 distinct values in
-\passthrough{\lstinline!REALINC!}. When we generate a bootstrapped
+the range their income falls in. Then GSS analysts compute the midpoint
+of each range and convert to 1986 dollars by adjusting for inflation. As
+a result, there are only 26 distinct values in
+\passthrough{\lstinline!realinc!}. When we generate a bootstrapped
 sample and compute the 10th percentile, we get a small subset of them.
-Here are the values that appear in our sample:
+Here are the values that appear in our sample.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 pd.Series(t9).value_counts().sort_index()
 \end{lstlisting}
 
-\begin{tabular}{lr}
-\midrule
-{} &    0 \\
-\midrule
-5107.5 &  962 \\
-5334.5 &    1 \\
-5902.0 &    1 \\
-6015.5 &    2 \\
-6129.0 &    1 \\
-6242.5 &   34 \\
-\midrule
-\end{tabular}
+\begin{lstlisting}[style=output]
+4086.0      1
+5107.5    957
+5675.0      1
+5902.0      1
+6015.5      2
+6242.5     39
+Name: count, dtype: int64
+\end{lstlisting}
 
-There are only 5 different values, and one of them appears more than
+There are only four different values, and one of them appears more than
 95\% of the time. When we compute a 90\% confidence interval, this value
 is both the 5th and the 95th percentile.
 
-Bootstrapping works well for most distributions and most statistics; the
-one thing it can't handle is lack of diversity in the data. However,
-even this problem can be solved. The fundamental cause is that the data
-have been discretized excessively, so the solution is to smooth it.
-Jittering is one option. Another is to use kernel density estimation
-(KDE).
+Bootstrapping works well for most distributions and most statistics, but
+the one thing it can't handle is lack of diversity in the data.
+Fortunately, this problem can be solved. The cause of the problem is
+that the data have been discretized excessively, so the solution is to
+smooth it. Jittering is one option. Another is to use kernel density
+estimation (KDE).
 
 \hypertarget{resampling-with-kde}{%
 \section{Resampling with KDE}\label{resampling-with-kde}}
@@ -897,13 +885,13 @@ lognormal distribution, so if we take the log of income, it is well
 modeled by a normal distribution. Here are the logarithms of the income
 data.
 
-\begin{lstlisting}[]
-log_realinc = np.log10(gss2018['REALINC'].dropna())
+\begin{lstlisting}[language=Python,style=source]
+log_realinc = np.log10(gss2018['realinc'].dropna())
 \end{lstlisting}
 
 And here's what the estimated density looks like.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 sns.kdeplot(log_realinc)
 
 plt.xlabel('Income (log10 1986 dollars)')
@@ -912,14 +900,14 @@ plt.title('Estimated distribution of income');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/12_bootstrap_files/12_bootstrap_120_0.pdf}
+\includegraphics[width=4in]{chapters/12_bootstrap_files/12_bootstrap_124_0.png}
 \end{center}
 
 To draw samples from this distribution, we'll use a Scipy function
 called \passthrough{\lstinline!gaussian\_kde!}, which takes the data and
 returns an object that represents the estimated density.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 from scipy.stats import gaussian_kde
 
 kde = gaussian_kde(log_realinc)
@@ -930,27 +918,31 @@ kde = gaussian_kde(log_realinc)
 estimated density. As we've done in previous examples, we'll generate a
 resampled dataset with the same size as the original.
 
-\begin{lstlisting}[]
-n = gss2018['REALINC'].notna().sum()
+\begin{lstlisting}[language=Python,style=source]
+n = gss2018['realinc'].notna().sum()
 n
-(@\dashfill@)
-@@@2152@@@
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+2152
 \end{lstlisting}
 
 Now we can draw a sample, compute the 10th percentile, and convert from
 a logarithm to a dollar value.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 sample = kde.resample(n)
 10 ** np.percentile(sample, 10)
-(@\dashfill@)
-@@@4925.615215615237@@@
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+4762.186349881458
 \end{lstlisting}
 
 The result is a random value from the sampling distribution of the 10th
 percentile. The following function encapsulates these steps.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 def resample_kde_percentile(kde):
     sample = kde.resample(kde.n)
     return 10 ** np.percentile(sample, 10)
@@ -958,39 +950,36 @@ def resample_kde_percentile(kde):
 
 Now we can generate a sample from the sampling distribution.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 t10 = [resample_kde_percentile(kde)
        for i in range(1000)]
 
 summary10 = summarize(t10)
 \end{lstlisting}
 
-The following table compares the results with KDE resampling to the
-previous result with bootstrapping.
+The following table compares the result to the previous result with
+bootstrapping.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 table = pd.concat([summary9, summary10])
 table.index=['bootstrapping', 'KDE resampling']
 table
 \end{lstlisting}
 
-\begin{tabular}{lrrl}
-\midrule
-{} &  Estimate &      SE &               CI90 \\
-\midrule
-bootstrapping  &   5149.91 &  212.91 &   [5107.5, 5107.5] \\
-KDE resampling &   5092.12 &  244.58 &  [4713.9, 5497.57] \\
-\midrule
-\end{tabular}
+\begin{lstlisting}[style=output]
+                Estimate      SE                CI90
+bootstrapping    5153.88  227.34    [5107.5, 5107.5]
+KDE resampling   5084.19  248.93  [4675.48, 5509.98]
+\end{lstlisting}
 
-The means and standard errors are about the same with either method. The
-difference is that the confidence interval we get from KDE resampling is
-much more reasonable.
+The means and standard errors are about the same with either method. But
+the confidence interval we get from KDE resampling is much more
+reasonable.
 
 \hypertarget{summary}{%
 \section{Summary}\label{summary}}
 
-There are ten examples in this chapter so far; let's review them:
+There are ten examples in this chapter, so let's review them:
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
@@ -1046,51 +1035,49 @@ education level. Going back to that example, let's explore changes in
 support over time and generate predictions for the next decade.
 
 To prepare the data for logistic regression, we have to recode the
-\passthrough{\lstinline!GRASS!} column so \passthrough{\lstinline!1!}
+\passthrough{\lstinline!grass!} column so \passthrough{\lstinline!1!}
 means in favor of legalization and \passthrough{\lstinline!0!} means not
 in favor.
 
-\begin{lstlisting}[]
-gss['GRASS'].replace(2, 0, inplace=True)
-gss['GRASS'].value_counts()
+\begin{lstlisting}[language=Python,style=source]
+gss['grass'].replace(2, 0, inplace=True)
+gss['grass'].value_counts()
 \end{lstlisting}
 
-\begin{tabular}{lr}
-\midrule
-{} &  GRASS \\
-\midrule
-0.0 &  25662 \\
-1.0 &  11884 \\
-\midrule
-\end{tabular}
+\begin{lstlisting}[style=output]
+grass
+0.0    25997
+1.0    12672
+Name: count, dtype: int64
+\end{lstlisting}
 
-As explanatory variables we'll use \passthrough{\lstinline!YEAR!} and
-\passthrough{\lstinline!YEAR!} squared, which I'll store in a column
-called \passthrough{\lstinline!YEAR2!}.
+As explanatory variables we'll use \passthrough{\lstinline!year!} and
+\passthrough{\lstinline!year!} squared, which I'll store in a column
+called \passthrough{\lstinline!year2!}.
 
-\begin{lstlisting}[]
-gss['YEAR2'] = (gss['YEAR']-1990) ** 2
+\begin{lstlisting}[language=Python,style=source]
+gss['year2'] = (gss['year']-1990) ** 2
 \end{lstlisting}
 
 Now we can run the model like this:
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 import statsmodels.formula.api as smf
 
-formula = 'GRASS ~ YEAR + YEAR2'
+formula = 'grass ~ year + year2'
 results = smf.logit(formula, data=gss).fit(disp=False)
 \end{lstlisting}
 
 To generate predictions, I'll create a
 \passthrough{\lstinline!DataFrame!} with a range of values of
-\passthrough{\lstinline!YEAR!} up to 2030, and corresponding values of
-\passthrough{\lstinline!YEAR2!}.
+\passthrough{\lstinline!year!} up to 2030, and corresponding values of
+\passthrough{\lstinline!year2!}.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 years = np.linspace(1972, 2030)
 df_pred = pd.DataFrame()
-df_pred['YEAR'] = years
-df_pred['YEAR2'] = (df_pred['YEAR']-1990)**2
+df_pred['year'] = years
+df_pred['year2'] = (df_pred['year']-1990)**2
 
 pred = results.predict(df_pred)
 \end{lstlisting}
@@ -1098,13 +1085,13 @@ pred = results.predict(df_pred)
 I'll use \passthrough{\lstinline!groupby!} to compute the fraction of
 respondents in favor of legalization during each year.
 
-\begin{lstlisting}[]
-grass_by_year = gss.groupby('YEAR')['GRASS'].mean()
+\begin{lstlisting}[language=Python,style=source]
+grass_by_year = gss.groupby('year')['grass'].mean()
 \end{lstlisting}
 
 The following function plots the data and decorates the axes.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 def plot_data():
     grass_by_year.plot(style='o', alpha=0.5, label='data')
     plt.xlabel('Year')
@@ -1115,13 +1102,13 @@ def plot_data():
 
 Here's what the predictions look like, plotted along with the data.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 plt.plot(years, pred, label='logistic model', color='gray', alpha=0.4)
 plot_data()
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/12_bootstrap_files/12_bootstrap_149_0.pdf}
+\includegraphics[width=4in]{chapters/12_bootstrap_files/12_bootstrap_153_0.png}
 \end{center}
 
 The model fits past data reasonably well and makes plausible predictions
