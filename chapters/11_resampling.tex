@@ -54,17 +54,9 @@ risk_control = k_control / n_control * 1000
 risk_control
 \end{lstlisting}
 
-\begin{lstlisting}[style=output]
-16.084075851039522
-\end{lstlisting}
-
 \begin{lstlisting}[language=Python,style=source]
 risk_treatment = k_treatment / n_treatment * 1000
 risk_treatment
-\end{lstlisting}
-
-\begin{lstlisting}[style=output]
-5.294144493633334
 \end{lstlisting}
 
 The risk is substantially lower in the treatment group -- about 5 per
@@ -78,10 +70,6 @@ relative_risk = risk_treatment / risk_control
 relative_risk
 \end{lstlisting}
 
-\begin{lstlisting}[style=output]
-0.3291544097817203
-\end{lstlisting}
-
 The relative risk in this example is about 0.33, which means that the
 risk of disease in the treatment group is 33\% of the risk in the
 control group. Equivalently, we could report the complement of relative
@@ -90,10 +78,6 @@ risk, which is \textbf{efficacy}:
 \begin{lstlisting}[language=Python,style=source]
 efficacy = 1 - relative_risk
 efficacy
-\end{lstlisting}
-
-\begin{lstlisting}[style=output]
-0.6708455902182797
 \end{lstlisting}
 
 In this example the efficacy is 0.67, which means that the vaccine
@@ -134,10 +118,6 @@ cases per 1000 people.
 n_treatment, k_treatment, risk_treatment
 \end{lstlisting}
 
-\begin{lstlisting}[style=output]
-(21911, 116, 5.294144493633334)
-\end{lstlisting}
-
 But it's easy to imagine that there might have been a few more cases, or
 fewer, just by chance. For example, if there had been 10 more cases, the
 estimated risk would be 5.8 per 1000, and if there had been 10 fewer, it
@@ -145,10 +125,6 @@ would be 4.8.
 
 \begin{lstlisting}[language=Python,style=source]
 (k_treatment + 10) / n_treatment * 1000, (k_treatment - 10) / n_treatment * 1000
-\end{lstlisting}
-
-\begin{lstlisting}[style=output]
-(5.750536260325863, 4.837752726940806)
 \end{lstlisting}
 
 That's a big enough difference that we should wonder how much
@@ -198,10 +174,6 @@ p = k_treatment / n_treatment
 simulate_group(n_treatment, p)
 \end{lstlisting}
 
-\begin{lstlisting}[style=output]
-5.613618730318105
-\end{lstlisting}
-
 The result is a risk from a single simulated trial. If we run this
 function 1000 times, it's like running the trial over and over.
 
@@ -225,19 +197,11 @@ plt.ylabel('Probability density')
 plt.title('Risks from Simulations');
 \end{lstlisting}
 
-\begin{center}
-\includegraphics[width=4in]{chapters/11_resampling_files/11_resampling_30_0.png}
-\end{center}
-
 The mean of this distribution is about 5.3, which is close to the
 observed risk, as we should expect.
 
 \begin{lstlisting}[language=Python,style=source]
 np.mean(t), risk_treatment
-\end{lstlisting}
-
-\begin{lstlisting}[style=output]
-(5.299210442243623, 5.294144493633334)
 \end{lstlisting}
 
 The width of this distribution indicates how much variation there is in
@@ -249,10 +213,6 @@ standard_error = np.std(t)
 standard_error
 \end{lstlisting}
 
-\begin{lstlisting}[style=output]
-0.48944411243624414
-\end{lstlisting}
-
 This result is called the \textbf{standard error}.
 
 Another way to quantify the width of the distribution is an interval
@@ -262,10 +222,6 @@ percentiles, the interval we get contains 90\% of the simulated results.
 \begin{lstlisting}[language=Python,style=source]
 confidence_interval = np.percentile(t, [5, 95])
 confidence_interval
-\end{lstlisting}
-
-\begin{lstlisting}[style=output]
-array([4.47263931, 6.11793163])
 \end{lstlisting}
 
 This result is called a \textbf{confidence interval}; specifically, this
@@ -304,10 +260,6 @@ p2 = k_treatment / n_treatment
 simulate_trial(n_control, p1, n_treatment, p2)
 \end{lstlisting}
 
-\begin{lstlisting}[style=output]
-0.6891301291299345
-\end{lstlisting}
-
 If we call it 1000 times, the result is a list of efficacies from 1000
 simulated trials.
 
@@ -326,19 +278,11 @@ plt.ylabel('Probability density')
 plt.title('Efficacies from Simulations');
 \end{lstlisting}
 
-\begin{center}
-\includegraphics[width=4in]{chapters/11_resampling_files/11_resampling_45_0.png}
-\end{center}
-
 The mean of this distribution is close to the efficacy we computed with
 the results of the actual trial.
 
 \begin{lstlisting}[language=Python,style=source]
 np.mean(t2), efficacy
-\end{lstlisting}
-
-\begin{lstlisting}[style=output]
-(0.6713727268668117, 0.6708455902182797)
 \end{lstlisting}
 
 The standard deviation of this distribution is the standard error of the
@@ -348,20 +292,12 @@ estimate.
 np.std(t2)
 \end{lstlisting}
 
-\begin{lstlisting}[style=output]
-0.035068503707114076
-\end{lstlisting}
-
 In a scientific paper, we could report the estimated efficacy and
 standard error as 0.67 (SE 0.035). As an alternative, we can use
 percentiles to compute a 90\% confidence interval.
 
 \begin{lstlisting}[language=Python,style=source]
 np.percentile(t2, [5, 95])
-\end{lstlisting}
-
-\begin{lstlisting}[style=output]
-array([0.61344412, 0.72785182])
 \end{lstlisting}
 
 We could report these results as 0.67, 90\% CI {[}0.61, 0.72{]}``.
@@ -442,10 +378,6 @@ std_height = 7.97
 simulate_sample_mean(n_height, mean_height, std_height)
 \end{lstlisting}
 
-\begin{lstlisting}[style=output]
-178.64931744931997
-\end{lstlisting}
-
 If we run it 1000 times, it simulates the sampling and measurement
 process and returns a list of results from 1000 simulated experiments.
 
@@ -464,10 +396,6 @@ plt.ylabel('Probability density')
 plt.title('Sampling Distribution of the Mean');
 \end{lstlisting}
 
-\begin{center}
-\includegraphics[width=4in]{chapters/11_resampling_files/11_resampling_60_0.png}
-\end{center}
-
 This result is called a \textbf{sampling distribution} because it
 represents the variation in the results due to the random sampling
 process. If we recruit 103 people and compute the mean of their heights,
@@ -481,10 +409,6 @@ of the population.
 np.mean(t3), mean_height
 \end{lstlisting}
 
-\begin{lstlisting}[style=output]
-(177.96271260304573, 178)
-\end{lstlisting}
-
 The standard deviation of the sampling distribution is the standard
 error of the estimate.
 
@@ -493,20 +417,12 @@ standard_error = np.std(t3)
 standard_error
 \end{lstlisting}
 
-\begin{lstlisting}[style=output]
-0.7646185415617497
-\end{lstlisting}
-
 And we can use \passthrough{\lstinline!percentile!} to compute a 90\%
 confidence interval.
 
 \begin{lstlisting}[language=Python,style=source]
 ci90 = np.percentile(t3, [5, 95])
 ci90
-\end{lstlisting}
-
-\begin{lstlisting}[style=output]
-array([176.7094124 , 179.22734483])
 \end{lstlisting}
 
 If I reported this result in a paper, I would say that the estimated
@@ -583,10 +499,6 @@ p = k_treatment / n_treatment
 simulate_variable_group(n_treatment, p)
 \end{lstlisting}
 
-\begin{lstlisting}[style=output]
-5.339783670302587
-\end{lstlisting}
-
 The return value is the number of cases per 1000.
 
 \textbf{Exercise:} Use this function to run 1000 simulations of the
@@ -624,10 +536,6 @@ Here's how we can compute it.
 \begin{lstlisting}[language=Python,style=source]
 cv = std_height / mean_height
 cv
-\end{lstlisting}
-
-\begin{lstlisting}[style=output]
-0.044775280898876405
 \end{lstlisting}
 
 In this example, the standard deviation is about 4.5\% of the mean. The
