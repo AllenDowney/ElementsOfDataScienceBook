@@ -21,14 +21,12 @@ display the first few rows.
 import pandas as pd
 
 def to_latex(df, *args, **options):
-    return df.to_latex()
-
-def to_latex(df, *args, **options):
     print('hello')
     print(df.to_latex())
     return ''
 
-
+def to_latex(df, *args, **options):
+    return df.to_latex()
 
 pd.DataFrame._repr_html_ = to_latex
 \end{lstlisting}
@@ -40,8 +38,6 @@ gss = pd.read_hdf('gss_extract_2022.hdf', 'gss')
 gss.head()
 \end{lstlisting}
 
-\begin{lstlisting}[style=output]
-hello
 \begin{tabular}{lrrrrrrrrr}
 \midrule
  & year & id & age & educ & degree & sex & gunlaw & grass & realinc \\
@@ -53,7 +49,6 @@ hello
 4 & 1972 & 5 & 61.000000 & 12.000000 & 1.000000 & 2.000000 & 1.000000 & NaN & 50763.000000 \\
 \midrule
 \end{tabular}
-\end{lstlisting}
 
 We'll start with a simple regression, estimating the parameters of real
 income as a function of years of education. First we'll select the
