@@ -35,17 +35,19 @@ gss = pd.read_hdf('gss_extract_2022.hdf', 'gss')
 gss.head()
 \end{lstlisting}
 
-\begin{tabular}{lrrrrrrrrr}
-\midrule
- & year & id & age & educ & degree & sex & gunlaw & grass & realinc \\
-\midrule
-0 & 1972 & 1 & 23.000000 & 16.000000 & 3.000000 & 2.000000 & 1.000000 & NaN & 18951.000000 \\
-1 & 1972 & 2 & 70.000000 & 10.000000 & 0.000000 & 1.000000 & 1.000000 & NaN & 24366.000000 \\
-2 & 1972 & 3 & 48.000000 & 12.000000 & 1.000000 & 2.000000 & 1.000000 & NaN & 24366.000000 \\
-3 & 1972 & 4 & 27.000000 & 17.000000 & 3.000000 & 2.000000 & 1.000000 & NaN & 30458.000000 \\
-4 & 1972 & 5 & 61.000000 & 12.000000 & 1.000000 & 2.000000 & 1.000000 & NaN & 50763.000000 \\
-\midrule
-\end{tabular}
+`\textbackslash begin\{tabular\}\{lrrrrrrrrr\}\n\textbackslash toprule\n \&
+year \& id \& age \& educ \& degree \& sex \& gunlaw \& grass \& realinc
+\textbackslash\textbackslash{}\n\textbackslash midrule\n0 \& 1972 \& 1
+\& 23.000000 \& 16.000000 \& 3.000000 \& 2.000000 \& 1.000000 \& NaN \&
+18951.000000 \textbackslash\textbackslash{}\n1 \& 1972 \& 2 \& 70.000000
+\& 10.000000 \& 0.000000 \& 1.000000 \& 1.000000 \& NaN \& 24366.000000
+\textbackslash\textbackslash{}\n2 \& 1972 \& 3 \& 48.000000 \& 12.000000
+\& 1.000000 \& 2.000000 \& 1.000000 \& NaN \& 24366.000000
+\textbackslash\textbackslash{}\n3 \& 1972 \& 4 \& 27.000000 \& 17.000000
+\& 3.000000 \& 2.000000 \& 1.000000 \& NaN \& 30458.000000
+\textbackslash\textbackslash{}\n4 \& 1972 \& 5 \& 61.000000 \& 12.000000
+\& 1.000000 \& 2.000000 \& 1.000000 \& NaN \& 50763.000000
+\textbackslash\textbackslash{}\n\textbackslash bottomrule\n\textbackslash end\{tabular\}\n'
 
 The column \passthrough{\lstinline!realinc!} records family income,
 converted to 1986 dollars. The following figure uses the Seaborn
@@ -166,13 +168,11 @@ summary1 = summarize(t1, digits=1)
 summary1
 \end{lstlisting}
 
-\begin{tabular}{lrrl}
-\midrule
- & Estimate & SE & CI90 \\
-\midrule
- & 32533.900000 & 120.700000 & [32331.3 32724.2] \\
-\midrule
-\end{tabular}
+`\textbackslash begin\{tabular\}\{lrrl\}\n\textbackslash toprule\n \&
+Estimate \& SE \& CI90
+\textbackslash\textbackslash{}\n\textbackslash midrule\n \& 32533.900000
+\& 120.700000 \& {[}32331.3 32724.2{]}
+\textbackslash\textbackslash{}\n\textbackslash bottomrule\n\textbackslash end\{tabular\}\n'
 
 The result shows the mean of the sampling distribution, the standard
 error, and a 90\% confidence interval. The mean of the sampling
@@ -250,13 +250,11 @@ summary2 = summarize(t2)
 summary2
 \end{lstlisting}
 
-\begin{tabular}{lrrl}
-\midrule
- & Estimate & SE & CI90 \\
-\midrule
- & -7035.830000 & 205.950000 & [-7377.78 -6709.29] \\
-\midrule
-\end{tabular}
+`\textbackslash begin\{tabular\}\{lrrl\}\n\textbackslash toprule\n \&
+Estimate \& SE \& CI90
+\textbackslash\textbackslash{}\n\textbackslash midrule\n \& -7035.830000
+\& 205.950000 \& {[}-7377.78 -6709.29{]}
+\textbackslash\textbackslash{}\n\textbackslash bottomrule\n\textbackslash end\{tabular\}\n'
 
 We can see that something has gone wrong. All of the values in the
 sampling distribution are negative, even though no one in the sample
@@ -380,14 +378,13 @@ table.index=['normal model', 'bootstrapping']
 table
 \end{lstlisting}
 
-\begin{tabular}{lrrl}
-\midrule
- & Estimate & SE & CI90 \\
-\midrule
-normal model & 32533.900000 & 120.700000 & [32331.3 32724.2] \\
-bootstrapping & 32541.000000 & 119.320000 & [32342.12 32732.88] \\
-\midrule
-\end{tabular}
+`\textbackslash begin\{tabular\}\{lrrl\}\n\textbackslash toprule\n \&
+Estimate \& SE \& CI90
+\textbackslash\textbackslash{}\n\textbackslash midrule\nnormal model \&
+32533.900000 \& 120.700000 \& {[}32331.3 32724.2{]}
+\textbackslash\textbackslash{}\nbootstrapping \& 32541.000000 \&
+119.320000 \& {[}32342.12 32732.88{]}
+\textbackslash\textbackslash{}\n\textbackslash bottomrule\n\textbackslash end\{tabular\}\n'
 
 The results from bootstrap sampling are consistent with the results
 based on the normal model. Now let's see what happens when we estimate
@@ -423,14 +420,13 @@ table.index=['normal model', 'bootstrapping']
 table
 \end{lstlisting}
 
-\begin{tabular}{lrrl}
-\midrule
- & Estimate & SE & CI90 \\
-\midrule
-normal model & -7035.830000 & 205.950000 & [-7377.78 -6709.29] \\
-bootstrapping & 5685.330000 & 91.070000 & [5512.5 5827.5] \\
-\midrule
-\end{tabular}
+`\textbackslash begin\{tabular\}\{lrrl\}\n\textbackslash toprule\n \&
+Estimate \& SE \& CI90
+\textbackslash\textbackslash{}\n\textbackslash midrule\nnormal model \&
+-7035.830000 \& 205.950000 \& {[}-7377.78 -6709.29{]}
+\textbackslash\textbackslash{}\nbootstrapping \& 5685.330000 \&
+91.070000 \& {[}5512.5 5827.5{]}
+\textbackslash\textbackslash{}\n\textbackslash bottomrule\n\textbackslash end\{tabular\}\n'
 
 The mean of the sampling distribution is consistent with the 10th
 percentile of the data, which is \$5631. So the results from
@@ -473,17 +469,22 @@ rows.
 brfss.head()
 \end{lstlisting}
 
-\begin{tabular}{lrrrrrrrrrr}
-\midrule
- & SEQNO & HTM4 & WTKG3 & _SEX & _AGEG5YR & _VEGESU1 & _INCOMG1 & _LLCPWT & _HTM4G10 & AGE \\
-\midrule
-0 & 2021000001 & 150.000000 & 32.660000 & 2 & 11.000000 & 2.140000 & 3.000000 & 744.745531 & 140.000000 & 72.000000 \\
-1 & 2021000002 & 168.000000 & NaN & 2 & 10.000000 & 1.280000 & NaN & 299.137394 & 160.000000 & 67.000000 \\
-2 & 2021000003 & 165.000000 & 77.110000 & 2 & 11.000000 & 0.710000 & 2.000000 & 587.862986 & 160.000000 & 72.000000 \\
-3 & 2021000004 & 163.000000 & 88.450000 & 2 & 9.000000 & 1.650000 & 5.000000 & 1099.621570 & 160.000000 & 62.000000 \\
-4 & 2021000005 & 180.000000 & 93.440000 & 1 & 12.000000 & 2.580000 & 2.000000 & 1711.825870 & 170.000000 & 77.000000 \\
-\midrule
-\end{tabular}
+'\textbackslash begin\{tabular\}\{lrrrrrrrrrr\}\n\textbackslash toprule\n \&
+SEQNO \& HTM4 \& WTKG3 \& \_SEX \& \_AGEG5YR \& \_VEGESU1 \& \_INCOMG1
+\& \_LLCPWT \& \_HTM4G10 \& AGE
+\textbackslash\textbackslash{}\n\textbackslash midrule\n0 \& 2021000001
+\& 150.000000 \& 32.660000 \& 2 \& 11.000000 \& 2.140000 \& 3.000000 \&
+744.745531 \& 140.000000 \& 72.000000 \textbackslash\textbackslash{}\n1
+\& 2021000002 \& 168.000000 \& NaN \& 2 \& 10.000000 \& 1.280000 \& NaN
+\& 299.137394 \& 160.000000 \& 67.000000
+\textbackslash\textbackslash{}\n2 \& 2021000003 \& 165.000000 \&
+77.110000 \& 2 \& 11.000000 \& 0.710000 \& 2.000000 \& 587.862986 \&
+160.000000 \& 72.000000 \textbackslash\textbackslash{}\n3 \& 2021000004
+\& 163.000000 \& 88.450000 \& 2 \& 9.000000 \& 1.650000 \& 5.000000 \&
+1099.621570 \& 160.000000 \& 62.000000 \textbackslash\textbackslash{}\n4
+\& 2021000005 \& 180.000000 \& 93.440000 \& 1 \& 12.000000 \& 2.580000
+\& 2.000000 \& 1711.825870 \& 170.000000 \& 77.000000
+\textbackslash\textbackslash{}\n\textbackslash bottomrule\n\textbackslash end\{tabular\}\n'
 
 The \passthrough{\lstinline!HTM4!} column contains the respondents'
 heights in centimeters.
@@ -541,13 +542,11 @@ t5 = [bootstrap_mean(brfss[male], 'HTM4')
 summarize(t5, digits=3)
 \end{lstlisting}
 
-\begin{tabular}{lrrl}
-\midrule
- & Estimate & SE & CI90 \\
-\midrule
- & 178.148000 & 0.018000 & [178.12  178.179] \\
-\midrule
-\end{tabular}
+`\textbackslash begin\{tabular\}\{lrrl\}\n\textbackslash toprule\n \&
+Estimate \& SE \& CI90
+\textbackslash\textbackslash{}\n\textbackslash midrule\n \& 178.148000
+\& 0.018000 \& {[}178.12 178.179{]}
+\textbackslash\textbackslash{}\n\textbackslash bottomrule\n\textbackslash end\{tabular\}\n'
 
 Because the sample size is so large, the standard error is small and the
 confidence interval is narrow. This result suggests that our estimate is
@@ -704,13 +703,11 @@ t6 = [weighted_bootstrap_mean(male_df)
 summarize(t6, digits=3)
 \end{lstlisting}
 
-\begin{tabular}{lrrl}
-\midrule
- & Estimate & SE & CI90 \\
-\midrule
- & 177.542000 & 0.017000 & [177.512 177.574] \\
-\midrule
-\end{tabular}
+`\textbackslash begin\{tabular\}\{lrrl\}\n\textbackslash toprule\n \&
+Estimate \& SE \& CI90
+\textbackslash\textbackslash{}\n\textbackslash midrule\n \& 177.542000
+\& 0.017000 \& {[}177.512 177.574{]}
+\textbackslash\textbackslash{}\n\textbackslash bottomrule\n\textbackslash end\{tabular\}\n'
 
 The mean of the sampling distribution estimates the average height for
 men in the U.S., corrected for oversampling. If we compare it to the
@@ -836,13 +833,11 @@ summary9 = summarize(t9)
 summary9
 \end{lstlisting}
 
-\begin{tabular}{lrrl}
-\midrule
- & Estimate & SE & CI90 \\
-\midrule
- & 5153.880000 & 227.340000 & [5107.5 5107.5] \\
-\midrule
-\end{tabular}
+`\textbackslash begin\{tabular\}\{lrrl\}\n\textbackslash toprule\n \&
+Estimate \& SE \& CI90
+\textbackslash\textbackslash{}\n\textbackslash midrule\n \& 5153.880000
+\& 227.340000 \& {[}5107.5 5107.5{]}
+\textbackslash\textbackslash{}\n\textbackslash bottomrule\n\textbackslash end\{tabular\}\n'
 
 The estimate and the standard error look plausible at first glance, but
 the width of the confidence interval is 0, which suggests that something
@@ -986,14 +981,13 @@ table.index=['bootstrapping', 'KDE resampling']
 table
 \end{lstlisting}
 
-\begin{tabular}{lrrl}
-\midrule
- & Estimate & SE & CI90 \\
-\midrule
-bootstrapping & 5153.880000 & 227.340000 & [5107.5 5107.5] \\
-KDE resampling & 5084.190000 & 248.930000 & [4675.48 5509.98] \\
-\midrule
-\end{tabular}
+`\textbackslash begin\{tabular\}\{lrrl\}\n\textbackslash toprule\n \&
+Estimate \& SE \& CI90
+\textbackslash\textbackslash{}\n\textbackslash midrule\nbootstrapping \&
+5153.880000 \& 227.340000 \& {[}5107.5 5107.5{]}
+\textbackslash\textbackslash{}\nKDE resampling \& 5084.190000 \&
+248.930000 \& {[}4675.48 5509.98{]}
+\textbackslash\textbackslash{}\n\textbackslash bottomrule\n\textbackslash end\{tabular\}\n'
 
 The means and standard errors are about the same with either method. But
 the confidence interval we get from KDE resampling is much more
