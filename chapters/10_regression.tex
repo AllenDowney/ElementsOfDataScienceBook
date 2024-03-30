@@ -20,20 +20,6 @@ display the first few rows.
 \begin{lstlisting}[language=Python,style=source]
 import pandas as pd
 
-def to_latex(df, *args, **options):
-    print('hello')
-    print(df.to_latex())
-    return ''
-
-def to_latex(df, *args, **options):
-    return df.to_latex()
-
-pd.DataFrame._repr_html_ = to_latex
-\end{lstlisting}
-
-\begin{lstlisting}[language=Python,style=source]
-import pandas as pd
-
 gss = pd.read_hdf('gss_extract_2022.hdf', 'gss')
 gss.head()
 \end{lstlisting}
@@ -227,7 +213,7 @@ plt.title('Average income, grouped by age');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/10_regression_files/10_regression_32_0.png}
+\includegraphics[width=4in]{chapters/10_regression_files/10_regression_31_0.png}
 \end{center}
 
 Average income increases from age 20 to age 50, then starts to fall. And
@@ -386,7 +372,7 @@ plt.legend();
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/10_regression_files/10_regression_49_0.png}
+\includegraphics[width=4in]{chapters/10_regression_files/10_regression_48_0.png}
 \end{center}
 
 The dots show the average income in each age group. The line shows the
@@ -421,7 +407,7 @@ plt.legend();
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/10_regression_files/10_regression_52_0.png}
+\includegraphics[width=4in]{chapters/10_regression_files/10_regression_51_0.png}
 \end{center}
 
 The lines show expected income as a function of age for three levels of
@@ -656,7 +642,7 @@ plt.legend();
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/10_regression_files/10_regression_78_0.png}
+\includegraphics[width=4in]{chapters/10_regression_files/10_regression_77_0.png}
 \end{center}
 
 According to the model, people near age 50 are least likely to support
