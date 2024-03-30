@@ -20,127 +20,40 @@ display the first few rows.
 \begin{lstlisting}[language=Python,style=source]
 import pandas as pd
 
+def to_latex(df, *args, **options):
+    return df.to_latex()
+
+def to_latex(df, *args, **options):
+    print('hello')
+    print(df.to_latex())
+    return ''
+
+
+
+pd.DataFrame._repr_html_ = to_latex
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python,style=source]
+import pandas as pd
+
 gss = pd.read_hdf('gss_extract_2022.hdf', 'gss')
 gss.head()
 \end{lstlisting}
 
-year
-
-id
-
-age
-
-educ
-
-degree
-
-sex
-
-gunlaw
-
-grass
-
-realinc
-
-0
-
-1972
-
-1
-
-23.0
-
-16.0
-
-3.0
-
-2.0
-
-1.0
-
-NaN
-
-18951.0
-
-1
-
-1972
-
-2
-
-70.0
-
-10.0
-
-0.0
-
-1.0
-
-1.0
-
-NaN
-
-24366.0
-
-2
-
-1972
-
-3
-
-48.0
-
-12.0
-
-1.0
-
-2.0
-
-1.0
-
-NaN
-
-24366.0
-
-3
-
-1972
-
-4
-
-27.0
-
-17.0
-
-3.0
-
-2.0
-
-1.0
-
-NaN
-
-30458.0
-
-4
-
-1972
-
-5
-
-61.0
-
-12.0
-
-1.0
-
-2.0
-
-1.0
-
-NaN
-
-50763.0
+\begin{lstlisting}[style=output]
+hello
+\begin{tabular}{lrrrrrrrrr}
+\midrule
+ & year & id & age & educ & degree & sex & gunlaw & grass & realinc \\
+\midrule
+0 & 1972 & 1 & 23.000000 & 16.000000 & 3.000000 & 2.000000 & 1.000000 & NaN & 18951.000000 \\
+1 & 1972 & 2 & 70.000000 & 10.000000 & 0.000000 & 1.000000 & 1.000000 & NaN & 24366.000000 \\
+2 & 1972 & 3 & 48.000000 & 12.000000 & 1.000000 & 2.000000 & 1.000000 & NaN & 24366.000000 \\
+3 & 1972 & 4 & 27.000000 & 17.000000 & 3.000000 & 2.000000 & 1.000000 & NaN & 30458.000000 \\
+4 & 1972 & 5 & 61.000000 & 12.000000 & 1.000000 & 2.000000 & 1.000000 & NaN & 50763.000000 \\
+\midrule
+\end{tabular}
+\end{lstlisting}
 
 We'll start with a simple regression, estimating the parameters of real
 income as a function of years of education. First we'll select the
@@ -319,7 +232,7 @@ plt.title('Average income, grouped by age');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/10_regression_files/10_regression_31_0.png}
+\includegraphics[width=4in]{chapters/10_regression_files/10_regression_32_0.png}
 \end{center}
 
 Average income increases from age 20 to age 50, then starts to fall. And
@@ -478,7 +391,7 @@ plt.legend();
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/10_regression_files/10_regression_48_0.png}
+\includegraphics[width=4in]{chapters/10_regression_files/10_regression_49_0.png}
 \end{center}
 
 The dots show the average income in each age group. The line shows the
@@ -513,7 +426,7 @@ plt.legend();
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/10_regression_files/10_regression_51_0.png}
+\includegraphics[width=4in]{chapters/10_regression_files/10_regression_52_0.png}
 \end{center}
 
 The lines show expected income as a function of age for three levels of
@@ -748,7 +661,7 @@ plt.legend();
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/10_regression_files/10_regression_77_0.png}
+\includegraphics[width=4in]{chapters/10_regression_files/10_regression_78_0.png}
 \end{center}
 
 According to the model, people near age 50 are least likely to support
