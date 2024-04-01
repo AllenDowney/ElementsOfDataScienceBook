@@ -1,6 +1,23 @@
 \hypertarget{hypothesis-testing}{%
 \chapter{Hypothesis Testing}\label{hypothesis-testing}}
 
+\begin{lstlisting}[language=Python,style=source]
+from os.path import basename, exists
+
+def download(url):
+    filename = basename(url)
+    if not exists(filename):
+        from urllib.request import urlretrieve
+
+        local, _ = urlretrieve(url, filename)
+        print("Downloaded " + str(local))
+    return filename
+
+download('https://raw.githubusercontent.com/AllenDowney/ElementsOfDataScience/v1/utils.py')
+
+import utils
+\end{lstlisting}
+
 This chapter introduces statistical hypothesis testing, which is such a
 contentious topic in the history of statistics, it's hard to provide a
 simple definition. Instead, I'll start with an example, present the
@@ -39,11 +56,10 @@ Family Growth (NSFG) and the Behavioral Risk Factor Surveillance System
 \section{Testing Medical Treatments}\label{testing-medical-treatments}}
 
 The LEAP study was a randomized trial that tested the effect of eating
-peanut snacks on the development of peanut allergies (see
-\url{http://www.leapstudy.co.uk/leap-0\#.YEJax3VKikA}). The subjects
-were infants who were at high risk of developing peanut allergies
-because they had been diagnosed with other food allergies. Over a period
-of several years, half of the subjects were periodically given a snack
+peanut snacks on the development of peanut allergies. The subjects were
+infants who were at high risk of developing peanut allergies because
+they had been diagnosed with other food allergies. Over a period of
+several years, half of the subjects were periodically given a snack
 containing peanuts; the other half were given no peanuts at all.
 
 The conclusion of the study, reported in 2015 is:
@@ -57,21 +73,12 @@ first 11 months of life was highly effective in preventing the
 development of peanut allergy.
 \end{quote}
 
-These results seem impressive, but as skeptical data scientists we
-should wonder whether it is possible that we are getting fooled by
-randomness. Maybe the apparent difference between the groups is due to
-chance, not the effectiveness of the treatment. To see whether this is
-likely, we will simulate the experiment using a model where the
-treatment has no effect, and see how often we see such a big difference
-between the groups.
-
 Detailed results of the study are reported in the \emph{New England
-Journal of Medicine} (see
-\url{https://www.nejm.org/doi/full/10.1056/NEJMoa1414850}). In that
-article, Figure 1 shows the number of subjects in the treatment and
-control groups, which happened to be equal.
+Journal of Medicine} In that article, Figure 1 shows the number of
+subjects in the treatment and control groups, which happened to be
+equal.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 n_control = 314
 n_treatment = 314
 \end{lstlisting}
@@ -80,7 +87,7 @@ And from Figure 2 we can extract the number of subjects who developed
 peanut allergies in each group. Specifically, we'll use the numbers from
 the ``intention to treat analysis for both cohorts''.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 k_control = 54
 k_treatment = 10
 \end{lstlisting}
@@ -88,45 +95,62 @@ k_treatment = 10
 Using these numbers, we can compute the risk in each group as a
 percentage.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 risk_control = k_control / n_control * 100
 risk_control
-(@\dashfill@)
-@@@17.197452229299362@@@
 \end{lstlisting}
 
-\begin{lstlisting}[]
+\begin{lstlisting}[style=output]
+17.197452229299362
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python,style=source]
 risk_treatment = k_treatment / n_treatment * 100
 risk_treatment
-(@\dashfill@)
-@@@3.1847133757961785@@@
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+3.1847133757961785
 \end{lstlisting}
 
 These are consistent with the percentages reported in the paper. To
 quantify the difference between the groups, we'll use relative risk,
 which is the ratio of the risks in the two groups.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 relative_risk_actual = risk_treatment / risk_control
 relative_risk_actual
-(@\dashfill@)
-@@@0.1851851851851852@@@
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+0.1851851851851852
 \end{lstlisting}
 
 The risk in the treatment group is about 18\% of the risk in the control
-group. So it seems like the treatment is highly effective. To check,
-let's imagine a world where the treatment is completely ineffective, so
+group, which means the treatment might prevent 82\% of cases.
+
+These results seem impressive, but as skeptical data scientists we
+should wonder whether it is possible that we are getting fooled by
+randomness. Maybe the apparent difference between the groups is due to
+chance, not the effectiveness of the treatment. To see whether this is
+likely, we will simulate the experiment using a model where the
+treatment has no effect, and see how often we see such a big difference
+between the groups.
+
+Let's imagine a world where the treatment is completely ineffective, so
 the risk is actually the same in both groups, and the difference we saw
 is due to chance. If that's true, we can estimate the hypothetical risk
-by combining the two groups:
+by combining the two groups.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 n_all = n_control + n_treatment
 k_all = k_control + k_treatment
 risk_all = k_all / n_all
 risk_all
-(@\dashfill@)
-@@@0.10191082802547771@@@
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+0.10191082802547771
 \end{lstlisting}
 
 If the risk is the same for both groups, it is close to 10\%. Now we can
@@ -137,7 +161,7 @@ Chapter 11. It takes as parameters the size of the group,
 It simulates the experiment and returns the number of cases as a
 percentage of the group, which is the observed risk.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 import numpy as np
 
 def simulate_group_percent(n, p):
@@ -150,14 +174,14 @@ If we call this function many times, the result is a list of observed
 risks, one for each simulated experiment. Here's the list for the
 treatment group.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 t1 = [simulate_group_percent(n_treatment, risk_all)
       for i in range(1000)]
 \end{lstlisting}
 
 And the control group.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 t2 = [simulate_group_percent(n_control, risk_all)
       for i in range(1000)]
 \end{lstlisting}
@@ -165,13 +189,13 @@ t2 = [simulate_group_percent(n_control, risk_all)
 If we divide these lists elementwise, the result is a list of relative
 risks, one for each simulated experiment.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 relative_risks = np.divide(t2, t1)
 \end{lstlisting}
 
 We can use a KDE plot to visualize the distribution of these results.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 import matplotlib.pyplot as plt
 import seaborn as sns
 
@@ -179,11 +203,11 @@ sns.kdeplot(relative_risks)
 
 plt.xlabel('Relative risk')
 plt.ylabel('Probability density')
-plt.title('Relative risks from simulation with risk_all');
+plt.title('Relative risks from simulation');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/13_hypothesis_files/13_hypothesis_27_0.pdf}
+\includegraphics[width=4in]{chapters/13_hypothesis_files/13_hypothesis_31_0.png}
 \end{center}
 
 Remember that these simulations are based on the assumption that the
@@ -208,26 +232,30 @@ contained no peanuts. Suppose this group was the same size as the
 others, and 42 of the subjects developed peanut allergies.
 
 To be clear, there was no third group, and I made up these numbers, but
-let's see how this hypothetical works out. Here's the risk in the
-placebo group.
+let's see how this hypothetical example works out. Here's the risk in
+the placebo group.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 n_placebo = 314
 k_placebo = 42
 
 risk_placebo = k_placebo / n_placebo * 100
 risk_placebo
-(@\dashfill@)
-@@@13.375796178343949@@@
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+13.375796178343949
 \end{lstlisting}
 
 And here's the relative risk compared to the control group.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 relative_risk_placebo = risk_placebo / risk_control
 relative_risk_placebo
-(@\dashfill@)
-@@@0.7777777777777778@@@
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+0.7777777777777778
 \end{lstlisting}
 
 The relative risk is less than 1, which means the risk in the placebo
@@ -243,36 +271,38 @@ risk as low or lower than
 \passthrough{\lstinline!relative\_risk\_placebo!}, even if the two
 groups are the same, like this:
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 p_value = (relative_risks <= relative_risk_placebo).mean()
 p_value
-(@\dashfill@)
-@@@0.137@@@
 \end{lstlisting}
 
-This probability is called a \textbf{p-value} (see
-\url{https://en.wikipedia.org/wiki/P-value}). In this case, the p-value
-is about 14\%, which means that even if the two groups are the same, we
-expect to see a relative risk as low as 0.77 about 14\% of the time. So,
-for this imagined experiment, we can't rule out the possibility that the
-apparent difference is due to chance.
+\begin{lstlisting}[style=output]
+0.137
+\end{lstlisting}
+
+This probability is called a \textbf{p-value}. In this case, it is about
+14\%, which means that even if the two groups are the same, we expect to
+see a relative risk as low as 0.77 about 14\% of the time. So, for this
+imagined experiment, we can't rule out the possibility that the apparent
+difference is due to chance.
 
 \hypertarget{are-first-babies-more-likely-to-be-late}{%
 \section{Are First Babies More Likely To Be
 Late?}\label{are-first-babies-more-likely-to-be-late}}
 
-In the previous example, we saw a difference in proportion between two
-groups. As a second example, let's consider a difference in means.
+In the previous example, we computed relative risk, which is a ratio of
+two proportions. As a second example, let's consider a difference
+between two means.
 
 When my wife and I were expecting our first child, we heard that first
 babies are more likely to be born late. But we also heard that first
 babies are more likely to be born early. So which is it? As a data
-scientist with too much time on my hands, I decided to find out. I got
+scientist with too much time on my hands, I decided to find out. I used
 data from the National Survey of Family Growth (NSFG), the same survey
-we have used in previous chapters. I've put the results from the
-2015-2017 survey in an HDF file. Here are the first few rows.
+we used in Chapter 7. At the end of that chapter, we stored a subset of
+the data in an HDF file. Now we can read it back.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 import pandas as pd
 
 nsfg = pd.read_hdf('nsfg.hdf', 'nsfg')
@@ -281,56 +311,63 @@ nsfg.head()
 
 \begin{tabular}{lrrrrrrrrrrr}
 \midrule
-{} &  CASEID &  OUTCOME &  BIRTHWGT\_LB1 &  BIRTHWGT\_OZ1 &  PRGLNGTH  \\
+ & CASEID & OUTCOME & BIRTHWGT\_LB1 & BIRTHWGT\_OZ1 & PRGLNGTH & NBRNALIV & AGECON & AGEPREG & BIRTHORD & HPAGELB & WGT2015\_2017 \\
 \midrule
-0 &   70627 &        1 &           7.0 &           8.0 &        40  \\
-1 &   70627 &        4 &           NaN &           NaN &        14  \\
-2 &   70627 &        1 &           9.0 &           2.0 &        39  \\
-3 &   70628 &        1 &           6.0 &           9.0 &        39  \\
-4 &   70628 &        1 &           7.0 &           0.0 &        39  \\
+0 & 70627 & 1 & 7.000000 & 8.000000 & 40 & 1.000000 & 28 & 29.000000 & 1.000000 & 5.000000 & 19877.457610 \\
+1 & 70627 & 4 & NaN & NaN & 14 & NaN & 32 & 32.000000 & NaN & NaN & 19877.457610 \\
+2 & 70627 & 1 & 9.000000 & 2.000000 & 39 & 1.000000 & 33 & 33.000000 & 2.000000 & 5.000000 & 19877.457610 \\
+3 & 70628 & 1 & 6.000000 & 9.000000 & 39 & 1.000000 & 17 & 18.000000 & 1.000000 & 1.000000 & 4221.017695 \\
+4 & 70628 & 1 & 7.000000 & 0.000000 & 39 & 1.000000 & 19 & 20.000000 & 2.000000 & 2.000000 & 4221.017695 \\
 \midrule
 \end{tabular}
 
 We'll use the \passthrough{\lstinline!OUTCOME!} column to select
 pregnancies that ended with a live birth.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 live = (nsfg['OUTCOME'] == 1)
 live.sum()
-(@\dashfill@)
-@@@6693@@@
 \end{lstlisting}
 
-And use \passthrough{\lstinline!PRGLNGTH!} to select babies that were
-born full term, that is, during or after the 37th week of pregnancy.
+\begin{lstlisting}[style=output]
+6693
+\end{lstlisting}
 
-\begin{lstlisting}[]
+And we'll use \passthrough{\lstinline!PRGLNGTH!} to select babies that
+were born full term, that is, during or after the 37th week of
+pregnancy.
+
+\begin{lstlisting}[language=Python,style=source]
 fullterm = (nsfg['PRGLNGTH'] >= 37) & (nsfg['PRGLNGTH'] < 48)
 \end{lstlisting}
 
 This dataset includes data from 2724 first babies.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 first = live & fullterm & (nsfg['BIRTHORD'] == 1)
 n_first = first.sum()
 n_first
-(@\dashfill@)
-@@@2724@@@
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+2724
 \end{lstlisting}
 
 And 3115 other (not first) babies.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 other = live & fullterm & (nsfg['BIRTHORD'] > 1)
 n_other = other.sum()
 n_other
-(@\dashfill@)
-@@@3115@@@
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+3115
 \end{lstlisting}
 
 Now we can select pregnancy lengths for the first babies and others.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 length = nsfg['PRGLNGTH']
 length_first = length[first]
 length_other = length[other]
@@ -338,20 +375,24 @@ length_other = length[other]
 
 Here are the mean pregnancy lengths for the two groups, in weeks.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 print(length_first.mean(), length_other.mean())
-(@\dashfill@)
-@@@39.39647577092511 39.19775280898877@@@
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+39.39647577092511 39.19775280898877
 \end{lstlisting}
 
 In this dataset, first babies are born a little later on average. The
 difference is about 0.2 weeks, or 33 hours.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 diff_actual = length_first.mean() - length_other.mean()
 diff_actual, diff_actual * 7 * 24
-(@\dashfill@)
-@@@(0.19872296193634043, 33.38545760530519)@@@
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+(0.19872296193634043, 33.38545760530519)
 \end{lstlisting}
 
 Relative to an average length of 39 weeks, that's not a very big
@@ -361,40 +402,41 @@ let's imagine a world where there is no difference in pregnancy length
 between first babies and others. How should we model a world like that?
 As always with modeling decisions, there are many options. A simple one
 is to combine the two groups and compute the mean and standard deviation
-of pregnancy length, like this:
+of pregnancy length, like this.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 length_live_full = length[live&fullterm]
 mean = length_live_full.mean()
 std = length_live_full.std()
 mean, std
-(@\dashfill@)
-@@@(39.29046069532454, 1.1864094701037655)@@@
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+(39.29046069532454, 1.1864094701037655)
 \end{lstlisting}
 
 Now we can use \passthrough{\lstinline!simulate\_sample\_mean!} from
 Chapter 11 to draw a random sample from a normal distribution with the
 given parameters and return the mean.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 def simulate_sample_mean(n, mu, sigma):
     sample = np.random.normal(mu, sigma, size=n)
     return sample.mean()
 \end{lstlisting}
 
-If we run it 1000 times, it simulates the sampling and measurement
-process and returns a list of results from 1000 simulated experiments.
-Here are the simulated results with sample size
-\passthrough{\lstinline!n\_first!}:
+If we run it 1000 times, it runs the sampling and measurement process
+and returns a list of results from 1000 simulated experiments. Here are
+the results with sample size \passthrough{\lstinline!n\_first!}:
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 t_first = [simulate_sample_mean(n_first, mean, std)
            for i in range(1000)]
 \end{lstlisting}
 
 And with sample size \passthrough{\lstinline!n\_other!}.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 t_other = [simulate_sample_mean(n_other, mean, std)
            for i in range(1000)]
 \end{lstlisting}
@@ -403,13 +445,13 @@ If we subtract the simulated means elementwise, the result is a list of
 observed differences from simulated experiments where the distribution
 is the same for both groups.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 diffs = np.subtract(t_first, t_other)
 \end{lstlisting}
 
 We can use a KDE plot to visualize the distribution of these values.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 sns.kdeplot(diffs)
 
 plt.xlabel('Difference in pregnancy length (weeks)')
@@ -418,7 +460,7 @@ plt.title('Distribution of differences');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/13_hypothesis_files/13_hypothesis_65_0.pdf}
+\includegraphics[width=4in]{chapters/13_hypothesis_files/13_hypothesis_68_0.png}
 \end{center}
 
 The center of this distribution is near zero, which makes sense if the
@@ -436,11 +478,10 @@ than their recollection of more recent babies. Or the estimation of
 pregnancy length might be less accurate with less experienced mothers.
 
 A correspondent of mine, who knows more than me about giving birth,
-suggested yet another possibility. If a first baby is born by
-\href{https://en.wikipedia.org/wiki/Caesarean_section}{Caesarean
-section}, it is more likely that subsequent deliveries will be
-scheduled, and less likely that they will go much past 39 weeks. So that
-could bring the average down for non-first babies.
+suggested yet another possibility. If a first baby is born by Caesarean
+section, it is more likely that subsequent deliveries will be scheduled,
+and less likely that they will go much past 39 weeks. So that could
+bring the average down for non-first babies.
 
 In summary, the results in this section suggest that the observed
 difference is unlikely to be due to chance, but there are other possible
@@ -453,7 +494,7 @@ Framework}\label{the-hypothesis-testing-framework}}
 The examples we've done so far fit into the framework shown in this
 diagram:
 
-\includegraphics[width=4in]{chapters/figs/hypothesis_testing.pdf}
+\includegraphics{chapters/figs/hypothesis_testing.png}
 
 Using data from an experiment, we compute the observed \textbf{test
 statistic}, denoted \(\delta^*\) in the diagram, which quantifies the
@@ -492,7 +533,7 @@ shuffles it, and then splits it again into groups with the same size as
 the originals. The return value is the difference in means between the
 groups.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 def simulate_two_groups(data1, data2):
     n, m = len(data1), len(data2)
     data = np.append(data1, data2)
@@ -506,15 +547,17 @@ If we call this function once, we get a random difference in means from
 a simulated world where the distribution of pregnancy lengths is the
 same in both groups.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 simulate_two_groups(length_first, length_other)
-(@\dashfill@)
-@@@-0.03111395525888838@@@
 \end{lstlisting}
 
-\textbf{Exercise:} Using this function to run 1000 simulations of the
-null hypothesis and save the results as \passthrough{\lstinline!diff2!}.
-Make a KDE plot to compare the distribution of
+\begin{lstlisting}[style=output]
+-0.03111395525888838
+\end{lstlisting}
+
+\textbf{Exercise:} Use this function to run 1000 simulations of the null
+hypothesis and save the results as \passthrough{\lstinline!diff2!}. Make
+a KDE plot to compare the distribution of
 \passthrough{\lstinline!diff2!} to the results from the normal model,
 \passthrough{\lstinline!diff!}.
 
@@ -527,14 +570,14 @@ find out, we can use the birth weight data from the NSFG. The variables
 we need use special codes to represent missing data, so let's replace
 them with \passthrough{\lstinline!NaN!}.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 nsfg['BIRTHWGT_LB1'].replace([0, 98, 99], np.nan, inplace=True)
 nsfg['BIRTHWGT_OZ1'].replace([0, 98, 99], np.nan, inplace=True)
 \end{lstlisting}
 
 And combine pounds and ounces into a single variable.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 birthwgt = nsfg['BIRTHWGT_LB1'] + nsfg['BIRTHWGT_OZ1'] / 16
 \end{lstlisting}
 
@@ -542,7 +585,7 @@ We can use \passthrough{\lstinline!first!} and
 \passthrough{\lstinline!other!} to select birth weights for first babies
 and others, dropping the \passthrough{\lstinline!NaN!} values.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 birthwgt_first = birthwgt[first].dropna()
 birthwgt_other = birthwgt[other].dropna()
 \end{lstlisting}
@@ -550,10 +593,12 @@ birthwgt_other = birthwgt[other].dropna()
 In this dataset, it looks like first babies are a little lighter, on
 average.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 print(birthwgt_first.mean(), birthwgt_other.mean())
-(@\dashfill@)
-@@@7.3370276162790695 7.507115749525616@@@
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+7.3370276162790695 7.507115749525616
 \end{lstlisting}
 
 But as usual, we should wonder whether we are being fooled by
@@ -569,26 +614,28 @@ conclusion can you draw from this result?
 
 The method we used in the previous section is called a
 \textbf{permutation test} because we permuted the pregnancy lengths
-before dividing them into groups (``permute'' is another word for
+before splitting them into groups (``permute'' is another word for
 shuffle). As another example, in this section we'll use a permutation
-tests to check whether an observed correlation might be due to chance.
+test to check whether an observed correlation might be due to chance.
 
 As an example, let's look again at the correlations we computed in
 Chapter 9, using data from the Behavioral Risk Factor Surveillance
 System (BRFSS). The following cell reads the data.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 import pandas as pd
 
 brfss = pd.read_hdf('brfss.hdf', 'brfss')
 brfss.shape
-(@\dashfill@)
-@@@(418268, 9)@@@
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+(418268, 9)
 \end{lstlisting}
 
 The correlations we computed were between height, weight and age.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 columns = ['HTM4', 'WTKG3', 'AGE']
 subset = brfss[columns]
 corr_actual = subset.corr()
@@ -597,17 +644,17 @@ corr_actual
 
 \begin{tabular}{lrrr}
 \midrule
-{} &      HTM4 &     WTKG3 &       AGE \\
+ & HTM4 & WTKG3 & AGE \\
 \midrule
-HTM4  &  1.000000 &  0.477151 & -0.135980 \\
-WTKG3 &  0.477151 &  1.000000 & -0.064951 \\
-AGE   & -0.135980 & -0.064951 &  1.000000 \\
+HTM4 & 1.000000 & 0.477151 & -0.135980 \\
+WTKG3 & 0.477151 & 1.000000 & -0.064951 \\
+AGE & -0.135980 & -0.064951 & 1.000000 \\
 \midrule
 \end{tabular}
 
 The correlation between height and weight is about 0.48, which is
-moderately strong; if you know someone's height, you can make a better
-guess about their weight. The other correlations are weaker; for
+moderately strong -- if you know someone's height, you can make a better
+guess about their weight. The other correlations are weaker -- for
 example, knowing someone's age would not substantially improve your
 guesses about their height or weight.
 
@@ -620,59 +667,53 @@ But first we have to take a detour to figure out how to shuffle a Pandas
 \passthrough{\lstinline!Series!}. As an example, I'll extract the height
 data.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 series = brfss['HTM4']
 series.head()
 \end{lstlisting}
 
-\begin{tabular}{lr}
-\midrule
-{} &   HTM4 \\
-\midrule
-0 &  157.0 \\
-1 &  163.0 \\
-2 &  165.0 \\
-3 &  165.0 \\
-4 &  152.0 \\
-\midrule
-\end{tabular}
+\begin{lstlisting}[style=output]
+0    157.0
+1    163.0
+2    165.0
+3    165.0
+4    152.0
+Name: HTM4, dtype: float64
+\end{lstlisting}
 
 The idiomatic way to shuffle a \passthrough{\lstinline!Series!} is to
 use \passthrough{\lstinline!sample!} with the argument
 \passthrough{\lstinline!frac=1!}, which means that the fraction of the
-elements we want is \passthrough{\lstinline!1!}, that is, all of them
-(see
-\url{https://stackoverflow.com/questions/29576430/shuffle-dataframe-rows}).
+elements we want is \passthrough{\lstinline!1!}, that is, all of them.
 By default, \passthrough{\lstinline!sample!} chooses elements without
 replacement, so the result contains all of the elements in a random
 order.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 shuffled = series.sample(frac=1)
 shuffled.head()
 \end{lstlisting}
 
-\begin{tabular}{lr}
-\midrule
-{} &   HTM4 \\
-\midrule
-205593 &  170.0 \\
-292620 &  175.0 \\
-44585  &  185.0 \\
-13394  &  165.0 \\
-67403  &  173.0 \\
-\midrule
-\end{tabular}
+\begin{lstlisting}[style=output]
+205593    170.0
+292620    175.0
+44585     185.0
+13394     165.0
+67403     173.0
+Name: HTM4, dtype: float64
+\end{lstlisting}
 
 If we check the first few elements, it seems like a random sample, so
 that's good. But let's see what happens if we use the shuffled
 \passthrough{\lstinline!Series!} to compute a correlation.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 corr = shuffled.corr(brfss['WTKG3'])
 corr
-(@\dashfill@)
-@@@0.4771514628388126@@@
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+0.4771514628388126
 \end{lstlisting}
 
 That result looks familiar: it is the correlation of the unshuffled
@@ -689,18 +730,20 @@ gives the \passthrough{\lstinline!Series!} a new index, with the
 argument \passthrough{\lstinline!drop=True!}, which drops the old one.
 So we have to shuffle \passthrough{\lstinline!series!} like this.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 shuffled = series.sample(frac=1).reset_index(drop=True)
 \end{lstlisting}
 
 Now we can compute a correlation with the shuffled
 \passthrough{\lstinline!Series!}.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 corr = shuffled.corr(brfss['WTKG3'])
 corr
-(@\dashfill@)
-@@@0.003117718945752241@@@
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+0.003117718945752241
 \end{lstlisting}
 
 The result is small, as we expect it to be when the elements are aligned
@@ -709,7 +752,7 @@ at random.
 Rather than repeat this awful idiom, let's put it in a function and
 never speak of it again.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 def shuffle(series):
     return series.sample(frac=1).reset_index(drop=True)
 \end{lstlisting}
@@ -718,24 +761,24 @@ The following function takes a \passthrough{\lstinline!DataFrame!} and
 two column names, makes a shuffled copy of one column, and computes its
 correlation with the other.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 def simulate_correlation(df, var1, var2):
     corr = shuffle(df[var1]).corr(df[var2])
     return corr
 \end{lstlisting}
 
-We only have to shuffle one of the columns; it doesn't get any more
+We only have to shuffle one of the columns -- it doesn't get any more
 random if we shuffle both. Now we can use this function to generate a
 sample of correlations with shuffled columns.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 t = [simulate_correlation(brfss, 'HTM4', 'WTKG3')
      for i in range(200)]
 \end{lstlisting}
 
 Here's the distribution of the correlations.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 sns.kdeplot(t)
 
 plt.xlabel('Correlation')
@@ -744,7 +787,7 @@ plt.title('Correlation from simulations with permutation');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/13_hypothesis_files/13_hypothesis_107_0.pdf}
+\includegraphics[width=4in]{chapters/13_hypothesis_files/13_hypothesis_109_0.png}
 \end{center}
 
 The center of the distribution is near 0, and the largest values
@@ -779,7 +822,7 @@ And hypothesis testing can be a distraction from more important
 questions. In Chapter 9, we saw that the relationship between weight and
 age is nonlinear. But the coefficient of correlation only measures
 linear relationships, so it does not capture the real strength of the
-relationship. So testing a correlation might not be the more useful
+relationship. So testing a correlation might not be the most useful
 thing to do in the first place. We can do better by testing a regression
 model.
 
@@ -788,62 +831,60 @@ model.
 
 In the previous sections we used permutation to simulate a world where
 there is no correlation between two variables. In this section we'll
-apply the same method to regression models.
-
-As an example, we'll use NSFG data to explore the relationship between a
-mother's age and her baby's birth weight.
+apply the same method to regression models. As an example, we'll use
+NSFG data to explore the relationship between a mother's age and her
+baby's birth weight.
 
 In previous sections we computed birth weight and a Boolean variable
 that identifies first babies. Now we'll store them as columns in
 \passthrough{\lstinline!nsfg!}, so we can use them with StatsModels.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 nsfg['BIRTHWGT'] = birthwgt
 nsfg['FIRST'] = first
 \end{lstlisting}
 
-We can select the subset of the rows that represent live, full-term
+Next we'll select the subset of the rows that represent live, full-term
 births, and make a copy so we can modify the subset without affecting
 the original.
 
-\begin{lstlisting}[]
-subset = nsfg[live & fullterm].copy()
+\begin{lstlisting}[language=Python,style=source]
+data = nsfg[live & fullterm].copy()
 n = len(subset)
 n
-(@\dashfill@)
-@@@5839@@@
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+418268
 \end{lstlisting}
 
 To visualize the relationship between mother's age and birth weight,
-we'll use a box plot with mother's age grouped into 3-year bins. We can
+we'll use a box plot with mother's age grouped into 3-year bins. We'll
 use \passthrough{\lstinline!np.arange!} to make the bin boundaries, and
 \passthrough{\lstinline!pd.cut!} to put the values from
 \passthrough{\lstinline!AGECON!} into bins.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 bins = np.arange(15, 40, 3)
 labels = (bins + 1)[:-1]
 
-subset['AGEGRP'] = pd.cut(subset['AGECON'], 
+data['AGEGRP'] = pd.cut(data['AGECON'], 
                           bins, labels=labels)
 \end{lstlisting}
 
-The label for each bin is the midpoint of the range; I used a slice to
-remove the last label because the number of bins is one less than the
-number of bin boundaries.
+The label for each bin is the midpoint of the range. Now here's the box
+plot.
 
-Here's the box plot.
-
-\begin{lstlisting}[]
-sns.boxplot(x='AGEGRP', y='BIRTHWGT', data=subset, 
-            whis=None, color='plum')
+\begin{lstlisting}[language=Python,style=source]
+sns.boxplot(x='AGEGRP', y='BIRTHWGT', data=data, 
+            whis=10, color='plum')
 
 plt.xlabel("Mother's age (years)")
 plt.ylabel('Birthweight (pounds)');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/13_hypothesis_files/13_hypothesis_117_0.pdf}
+\includegraphics[width=4in]{chapters/13_hypothesis_files/13_hypothesis_119_0.png}
 \end{center}
 
 It looks like the average birth weight is highest if the mother is 25-31
@@ -852,130 +893,59 @@ might be nonlinear. Nevertheless, let's start with a linear model and
 work our way up. Here's a simple regression of birth weight as a
 function of the mother's age at conception.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 import statsmodels.formula.api as smf
 
-results = smf.ols('BIRTHWGT ~ AGECON', data=subset).fit()
+results = smf.ols('BIRTHWGT ~ AGECON', data=data).fit()
 results.params
 \end{lstlisting}
 
-\begin{tabular}{lr}
-\midrule
-{} &         0 \\
-\midrule
-Intercept &  7.025486 \\
-AGECON    &  0.016407 \\
-\midrule
-\end{tabular}
+\begin{lstlisting}[style=output]
+Intercept    7.025486
+AGECON       0.016407
+dtype: float64
+\end{lstlisting}
 
 The slope of the regression line is 0.016 pounds per year, which means
 that if one mother is a year older than another, we expect her baby to
-be about 0.016 pounds heavier, which is about a quarter of an ounce.
+be about 0.016 pounds heavier (about a quarter of an ounce).
 
 This parameter is small, so we might wonder whether the apparent effect
-is due to chance. To answer that question, we will use permutation to
+is due to chance. To answer that question, we'll use permutation to
 simulate a world where there is no relationship between mother's age and
 birth weight.
 
-As a test statistic, we'll use the coefficient of determination, denoted
-\(R^2\), which quantifies the predictive power of the model (see
-\url{https://en.wikipedia.org/wiki/Coefficient_of_determination}). The
-regression results include \(R^2\) in a variable called
-\passthrough{\lstinline!rsquared!}.
-
-\begin{lstlisting}[]
-results.rsquared
-(@\dashfill@)
-@@@0.007578923866134457@@@
-\end{lstlisting}
-
-The value of \(R^2\) for this model is very small, which means that our
-guesses about a baby's weight are barely improved if we know the
-mother's age (and use a linear model). So it seems possible that the
-apparent relationship between these variables is due to chance. We can
-test this possibility by using permutation to simulate a world where
-there is no such relationship.
-
 The following function takes a \passthrough{\lstinline!DataFrame!},
 shuffles the \passthrough{\lstinline!AGECON!} column, computes a linear
-regression model, and returns \(R^2\).
+regression model, and returns the estimated slope.
 
-\begin{lstlisting}[]
-def simulate_rsquared(df):
-    df['SHUFFLED'] = shuffle(df['AGECON'])
+\begin{lstlisting}[language=Python,style=source]
+def simulate_slope(data):
+    data['SHUFFLED'] = shuffle(data['AGECON'])
     formula = 'BIRTHWGT ~ SHUFFLED'
-    results = smf.ols(formula, data=df).fit()
-    return results.rsquared
+    results = smf.ols(formula, data=data).fit()
+    return results.params['SHUFFLED']
 \end{lstlisting}
 
 If we call it many times, we get a sample from the distribution of
-\(R^2\) under the null hypothesis.
+slopes under the null hypothesis.
 
-\begin{lstlisting}[]
-rsquared_null = [simulate_rsquared(subset)
+\begin{lstlisting}[language=Python,style=source]
+rsquared_null = [simulate_slope(data)
                  for i in range(200)]
 \end{lstlisting}
 
-After 200 attempts, the largest value of \(R^2\) is about 0.003, which
-is smaller than the observed value of \(R^2\), about 0.008. We conclude
-that the observed effect is bigger than we would expect to see by
-chance.
+After 200 attempts, the largest slope is about 0.009, which is smaller
+than the observed slope, about 0.016. We conclude that the observed
+effect is bigger than we would expect to see by chance.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 print(np.max(rsquared_null), results.rsquared)
-(@\dashfill@)
-@@@0.00336666951682707 0.007578923866134457@@@
 \end{lstlisting}
 
-\textbf{Exercise:} The box plot suggests that the relationship between
-mother's age and birth weight is nonlinear, so let's try a nonlinear
-model. I'll add a column to the \passthrough{\lstinline!DataFrame!} with
-the square of mother's age.
-
-\begin{lstlisting}[]
-subset['AGECON2'] = subset['AGECON']**2
+\begin{lstlisting}[style=output]
+0.009536120931481635 0.007578923866134457
 \end{lstlisting}
-
-And run the model again with both the linear and quadratic terms.
-
-\begin{lstlisting}[]
-formula = 'BIRTHWGT ~ AGECON + AGECON2'
-results2 = smf.ols(formula, data=subset).fit()
-results2.params
-\end{lstlisting}
-
-\begin{tabular}{lr}
-\midrule
-{} &         0 \\
-\midrule
-Intercept &  5.894125 \\
-AGECON    &  0.109487 \\
-AGECON2   & -0.001810 \\
-\midrule
-\end{tabular}
-
-The parameter of \passthrough{\lstinline!AGECON2!} is quite small, so we
-might wonder whether it actually improves the model, or might be the
-product of randomness. One way to answer this question is to look at the
-improvement in \(R^2\).
-
-\begin{lstlisting}[]
-results2.rsquared
-(@\dashfill@)
-@@@0.011861010196576371@@@
-\end{lstlisting}
-
-The value of \(R^2\) is about 0.012, compared to 0.008 with the linear
-model. By this criterion, the quadratic model is a better, but when we
-add variables to a model, we might get some improvement just by chance.
-To see how much, write a function called
-\passthrough{\lstinline!simulate\_rsquared2!} that takes a
-\passthrough{\lstinline!DataFrame!} as a parameter, shuffles
-\passthrough{\lstinline!AGECON2!}, runs a regression model with
-\passthrough{\lstinline!AGECON!} and the shuffled values, and returns
-\(R^2\). Run your function 200 times and count how often \(R^2\) from
-the model exceeds the observed value from the dataset. What conclusion
-can you draw?
 
 \hypertarget{controlling-for-age}{%
 \section{Controlling for Age}\label{controlling-for-age}}
@@ -989,77 +959,76 @@ unlikely.
 But that doesn't necessarily mean that there is anything special about
 first babies that makes them lighter than others. Rather, knowing a
 baby's birth order might provide information about some other factor
-that is related to birth weight. The mother's age could be that factor.
+that is related to birth weight.
 
-First babies are likely to have younger mothers than other babies, and
-younger mothers tend to have lighter babies. The difference we see in
-first babies might be explained by their mothers' ages. So let's see
-what happens if we control for age. Here's a simple regression of birth
-weight as a function of the Boolean variable
-\passthrough{\lstinline!FIRST!}.
+The mother's age could be that factor. First babies are likely to have
+younger mothers than other babies, and younger mothers tend to have
+lighter babies. The difference we see in first babies might be explained
+by their mothers' ages. So let's see what happens if we control for age.
+Here's a simple regression of birth weight as a function of the Boolean
+variable \passthrough{\lstinline!FIRST!}.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 formula = 'BIRTHWGT ~ FIRST'
-results = smf.ols(formula, data=subset).fit()
+results = smf.ols(formula, data=data).fit()
 results.params
 \end{lstlisting}
 
-\begin{tabular}{lr}
-\midrule
-{} &         0 \\
-\midrule
-Intercept     &  7.507116 \\
-FIRST[T.True] & -0.170088 \\
-\midrule
-\end{tabular}
+\begin{lstlisting}[style=output]
+Intercept        7.507116
+FIRST[T.True]   -0.170088
+dtype: float64
+\end{lstlisting}
 
 The parameter associated with \passthrough{\lstinline!FIRST!} is -0.17
 pounds, which is the same as the difference in means we computed. But
 now we can add \passthrough{\lstinline!AGECON!} as a control variable.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 formula = 'BIRTHWGT ~ FIRST + AGECON'
-results = smf.ols(formula, data=subset).fit()
+results = smf.ols(formula, data=data).fit()
 results.params
 \end{lstlisting}
 
-\begin{tabular}{lr}
-\midrule
-{} &         0 \\
-\midrule
-Intercept     &  7.163240 \\
-FIRST[T.True] & -0.121771 \\
-AGECON        &  0.013145 \\
-\midrule
-\end{tabular}
+\begin{lstlisting}[style=output]
+Intercept        7.163240
+FIRST[T.True]   -0.121771
+AGECON           0.013145
+dtype: float64
+\end{lstlisting}
 
 The age effect accounts for some of the difference between first babies
 and others. After controlling for age, the remaining difference is about
-0.12 pounds. Since the age effect is nonlinear, we can can control for
-age more effectively by adding \passthrough{\lstinline!AGECON2!}.
+0.12 pounds.
 
-\begin{lstlisting}[]
+Since the age effect is nonlinear, we can can control for age more
+effectively by adding \passthrough{\lstinline!AGECON2!}.
+
+\begin{lstlisting}[language=Python,style=source]
+data['AGECON2'] = data['AGECON'] ** 2
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python,style=source]
 formula = 'BIRTHWGT ~ FIRST + AGECON + AGECON2'
-results = smf.ols(formula, data=subset).fit()
+results = smf.ols(formula, data=data).fit()
 results.params
 \end{lstlisting}
 
-\begin{tabular}{lr}
-\midrule
-{} &         0 \\
-\midrule
-Intercept     &  6.128590 \\
-FIRST[T.True] & -0.099338 \\
-AGECON        &  0.096781 \\
-AGECON2       & -0.001615 \\
-\midrule
-\end{tabular}
+\begin{lstlisting}[style=output]
+Intercept        6.128590
+FIRST[T.True]   -0.099338
+AGECON           0.096781
+AGECON2         -0.001615
+dtype: float64
+\end{lstlisting}
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 slope_actual = results.params['FIRST[T.True]']
 slope_actual
-(@\dashfill@)
-@@@-0.09933806121560428@@@
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+-0.09933806121560428
 \end{lstlisting}
 
 When we use a quadratic model to control for the age effect, the
@@ -1076,39 +1045,42 @@ parameter, shuffles the \passthrough{\lstinline!FIRST!} column, runs the
 regression model with \passthrough{\lstinline!AGECON!} and
 \passthrough{\lstinline!AGECON2!}, and returns the estimated difference.
 
-\begin{lstlisting}[]
-def simulate_slope(df):
-    df['SHUFFLED'] = shuffle(df['FIRST'])
+\begin{lstlisting}[language=Python,style=source]
+def simulate_slope2(data):
+    data['SHUFFLED'] = shuffle(data['FIRST'])
     formula = 'BIRTHWGT ~ AGECON + AGECON2 + C(SHUFFLED)'
-    results = smf.ols(formula, data=df).fit()
+    results = smf.ols(formula, data=data).fit()
     return results.params['C(SHUFFLED)[T.True]']
 \end{lstlisting}
 
 If we run it many times, we get a sample from the distribution of the
 test statistic under the null hypothesis.
 
-\begin{lstlisting}[]
-slopes_null = [simulate_slope(subset)
+\begin{lstlisting}[language=Python,style=source]
+slopes_null = [simulate_slope2(data)
                for i in range(200)]
 \end{lstlisting}
 
 The range of values is wide enough that it occasionally exceeds the
 observed effect size.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 print(min(slopes_null), max(slopes_null))
-(@\dashfill@)
-@@@-0.10810723399823335 0.12738249958193174@@@
 \end{lstlisting}
 
-Our estimate of the p-value is only approximate, but it looks like it's
-between 1\% and 2\%.
+\begin{lstlisting}[style=output]
+-0.09842209405975708 0.11993351438646496
+\end{lstlisting}
 
-\begin{lstlisting}[]
+The p-value is between 1\% and 2\%.
+
+\begin{lstlisting}[language=Python,style=source]
 p_value = (np.abs(slopes_null) > np.abs(slope_actual)).mean()
 p_value
-(@\dashfill@)
-@@@0.015@@@
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+0.02
 \end{lstlisting}
 
 This result indicates that an observed difference of 0.1 pounds is
@@ -1117,11 +1089,9 @@ zero.
 
 So how should we interpret a result like this? In the tradition of
 statistical hypothesis testing, it is common to use 5\% as the threshold
-between results that are considered ``statistically significant'' or not
-(see
-\url{https://en.wikipedia.org/wiki/Statistical_hypothesis_testing}). By
-that standard, the weight difference between first babies and others is
-statistically significant.
+between results that are considered ``statistically significant'' or
+not. By that standard, the weight difference between first babies and
+others is statistically significant.
 
 However, there are several problems with this practice:
 
@@ -1173,10 +1143,10 @@ Let's review the examples in this chapter:
   sizes, observed effects are often ``statistically significant'', even
   if they are too small to matter in practice.
 \item
-  We used regression models to explore the maternal age effect on birth
-  weight. To see whether the effect might be due to chance, we used
-  permutation to model the null hypothesis and \(R^2\) as a test
-  statistic.
+  We used regression models to explore the effect of maternal age on
+  birth weight. To see whether the effect might be due to chance, we
+  used the slope of the regression line as the test statistic, and
+  permutation to model the null hypothesis.
 \item
   Finally, we explored the possibility that the first baby effect is
   actually an indirect maternal age effect. After controlling for the
@@ -1186,34 +1156,32 @@ Let's review the examples in this chapter:
 \end{enumerate}
 
 As a final exercise, below, you can use the same methods to explore the
-paternal age effect.
+effect of paternal age on birth weight.
 
 \textbf{Exercise:} A paternal age effect is a relationship between the
-age of a father and a variety of outcomes for their children (see
-\url{https://en.wikipedia.org/wiki/Paternal_age_effect}). There is some
-evidence that young fathers and old fathers tend to have lighter babies
-than fathers in the middle. Let's see if that's true for the babies in
-the NSFG dataset. The \passthrough{\lstinline!HPAGELB!} column encodes
-the father's age. Here are the values, after replacing the codes for
-missing data with \passthrough{\lstinline!NaN!}.
+age of a father and a variety of outcomes for his children. There is
+some evidence that young fathers and old fathers have lighter babies, on
+average, than fathers in the middle range of ages. Let's see if that's
+true for the babies in the NSFG dataset. The
+\passthrough{\lstinline!HPAGELB!} column encodes the father's age. Here
+are the values, after replacing the codes for missing data with
+\passthrough{\lstinline!NaN!}.
 
-\begin{lstlisting}[]
-subset['HPAGELB'].replace([98, 99], np.nan, inplace=True)
-subset['HPAGELB'].value_counts().sort_index()
+\begin{lstlisting}[language=Python,style=source]
+data['HPAGELB'].replace([98, 99], np.nan, inplace=True)
+data['HPAGELB'].value_counts().sort_index()
 \end{lstlisting}
 
-\begin{tabular}{lr}
-\midrule
-{} &  HPAGELB \\
-\midrule
-1.0 &      478 \\
-2.0 &     1391 \\
-3.0 &     1650 \\
-4.0 &     1225 \\
-5.0 &      592 \\
-6.0 &      411 \\
-\midrule
-\end{tabular}
+\begin{lstlisting}[style=output]
+HPAGELB
+1.0     478
+2.0    1391
+3.0    1650
+4.0    1225
+5.0     592
+6.0     411
+Name: count, dtype: int64
+\end{lstlisting}
 
 And here's what the codes mean:
 
@@ -1232,36 +1200,35 @@ Code & Age \\
 \end{longtable}
 
 Let's create a new column that's true for the fathers in the youngest
-and oldest groups.
+and oldest groups. The \passthrough{\lstinline!isin!} method checks
+whether the values in a \passthrough{\lstinline!Series!} are in the
+given list.
 
-\begin{lstlisting}[]
-subset['YO_DAD'] = subset['HPAGELB'].isin([1, 6])
+\begin{lstlisting}[language=Python,style=source]
+data['YO_DAD'] = data['HPAGELB'].isin([1, 6])
 \end{lstlisting}
 
-We can use this column in a regression model to compute the difference
-in birth weight for young and old fathers compared to the others.
+We can use the result in a regression model to compute the difference in
+birth weight for young and old fathers compared to the others.
 
-\begin{lstlisting}[]
+\begin{lstlisting}[language=Python,style=source]
 formula = 'BIRTHWGT ~ YO_DAD'
-results = smf.ols(formula, data=subset).fit()
+results = smf.ols(formula, data=data).fit()
 results.params
 \end{lstlisting}
 
-\begin{tabular}{lr}
-\midrule
-{} &         0 \\
-\midrule
-Intercept      &  7.447477 \\
-YO\_DAD[T.True] & -0.140045 \\
-\midrule
-\end{tabular}
+\begin{lstlisting}[style=output]
+Intercept         7.447477
+YO_DAD[T.True]   -0.140045
+dtype: float64
+\end{lstlisting}
 
 The difference is negative, which is consistent with the theory, and
 about 0.14 pounds, which is comparable in size to the (apparent) first
 baby effect. But there is a strong correlation between father's age and
-mother's age. So what seems like a paternal age effect might actually be
-an indirect maternal age effect. To find out, let's see what happens if
-we control for the mother's age. Run this model again with
+mother's age. So what seems like a paternal effect might actually be an
+indirect maternal effect. To find out, let's see what happens if we
+control for the mother's age. Run this model again with
 \passthrough{\lstinline!AGECON!} and \passthrough{\lstinline!AGECON2!}
 as predictors. Does the observed effect of paternal age get smaller?
 
