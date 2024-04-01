@@ -3,6 +3,7 @@
 
 # copy the figures
 rsync -a ~/ElementsOfDataScience/figs .
+rsync -a ~/ElementsOfDataScience/ElementsOfDataScienceSolutions/utils.py .
 
 for NOTEBOOK in $@
 do
@@ -70,4 +71,13 @@ do
     echo "python split.py $TEXFILE"
     python split.py $TEXFILE
 
+    cp $TEXFILE ../chapters
+    cp -r $FIGS ../chapters
+
+    cd ../chapters
+    git add $TEXFILE
+    # git add -f $FIGS
+    git commit -m "Updating $TEXFILE"
+    git push
+    cd ../convert
 done

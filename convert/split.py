@@ -2,17 +2,18 @@ import sys
 import re
 
 # replace figure URLs with references to local files
-# replace references to PNG and SVG with PDF
 # for source listings in Python, add `style=source`
 # for output listings, add `style=output`
 
 subs = {
-r'\\includegraphics(.*){https://.*/([^/]*)}': r'\\includegraphics\1{figs/\2}',
+r'\\includegraphics(.*){https://.*/([^/]*)}': r'\\includegraphics\1{chapters/figs/\2}',
+r'\\includegraphics(.*){figs/([^/]*)}': r'\\includegraphics\1{chapters/figs/\2}',
 #r'_0.png': '_0.pdf',
+#r'_1.png': '_1.pdf',
 #r'_0.svg': '_0.pdf',
-#r'language=Python': r'language=Python,style=source',
-#r'begin{lstlisting}$': r'begin{lstlisting}[style=output]',
-r'language=Python': '',
+#r'language=Python': '',
+r'language=Python': r'language=Python,style=source',
+r'begin{lstlisting}$': r'begin{lstlisting}[style=output]',
 '\ufeff': '',
 r'\\tightlist': '',
 r'\\toprule': r'\\midrule',
@@ -49,9 +50,9 @@ filename = sys.argv[1]
 lines = open(filename).read()
 
 # get the source code and output into shape
-pattern = r'\\end{lstlisting}\s*\\begin{lstlisting}\n([^\\]*)\n\\end'
-repl = r'(@\\dashfill@)\n@@@\1@@@\n\\end'
-lines = re.sub(pattern, repl, lines)
+#pattern = r'\\end{lstlisting}\s*\\begin{lstlisting}\n([^\\]*)\n\\end'
+#repl = r'(@\\dashfill@)\n@@@\1@@@\n\\end'
+#lines = re.sub(pattern, repl, lines)
 
 pattern = r"""\\begin{figure}
 \\centering
@@ -60,7 +61,7 @@ pattern = r"""\\begin{figure}
 \\end{figure}"""
 
 repl = r"""\\begin{center}
-\\includegraphics[width=4in]{\1}
+\\includegraphics[width=4in]{chapters/\1}
 \\end{center}"""
 
 lines = re.sub(pattern, repl, lines)
