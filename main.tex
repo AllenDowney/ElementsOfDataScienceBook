@@ -1,60 +1,57 @@
-\begin{filecontents*}{\jobname.mst}
-delim_0 "\\idxdelim"
-delim_1 "\\idxdelim"
-delim_2 "\\idxdelim"
-delim_n "\\nohyperpage{\\idxdelim}"
-delim_r "--"
-headings_flag 1
-heading_prefix "\\indexgroup{{"
-heading_suffix "}}\\nopagebreak\n"
-\end{filecontents*}
-\documentclass[cfonts]{nostarch}
+% LaTeX source for ``Elements of Data Science''
+% Copyright 2021  Allen B. Downey.
 
-\input{preamble}
+% License: Creative Commons Attribution-NonCommercial 4.0 Unported License.
+% https://creativecommons.org/licenses/by-nc/4.0/
+%
+
+\documentclass{book}
+
+\input{chapters/settings}
 
 \begin{document}
 
+% add row colors to tables
+% https://tex.stackexchange.com/questions/5363/how-to-create-alternating-rows-in-a-table
+\rowcolors{2}{white}{gray!10}
 
-%----------------------------
-% ---------- FRONT ----------
-%----------------------------
 \frontmatter
 
 \input{chapters/front_matter}
-\input{chapters/intro}
 
-%---------------------------
-% ---------- MAIN ----------
-%---------------------------
+% \input{chapters/preface}
+
 \mainmatter
+
 
 \part{From Python to Pandas}
 
-\input{chapters/01_variables}
+%\input{chapters/01_variables}
 
-\input{chapters/02_times}
+%\input{chapters/02_times}
 
-\input{chapters/03_arrays}
+%\input{chapters/03_arrays}
 
-\input{chapters/04_loops}
+%\input{chapters/04_loops}
 
-\input{chapters/05_dictionaries}
+%\input{chapters/05_dictionaries}
 
-\input{chapters/06_plotting}
-
-\input{chapters/07_dataframes}
+%\input{chapters/06_plotting}
 
 
-\part{Exploratory Data Analysis}
 
-\input{chapters/08_distributions}
+%\part{Exploratory Data Analysis}
 
-\input{chapters/09_relationships}
+%\input{chapters/07_dataframes}
 
-\input{chapters/10_regression}
+%\input{chapters/08_distributions}
+
+%\input{chapters/09_relationships}
+
+% \input{chapters/10_regression}
 
 
-\part{Statistical Inference}
+%\part{Statistical Inference}
 
 \input{chapters/11_resampling}
 
@@ -63,27 +60,24 @@ heading_suffix "}}\\nopagebreak\n"
 \input{chapters/13_hypothesis}
 
 
-\part{Case Study: Political Alignment}
+%\part{Case Study: Political Alignment}
 
-\input{chapters/02_polviews_soln}
+%\input{chapters/02_polviews_soln}
 
-\input{chapters/03_outlook}
-
-
-\part{Case Study: Algorithmic Fairness}
-
-\input{chapters/01_classification}
-
-\input{chapters/02_calibration}
+%\input{chapters/03_outlook}
 
 
-%----------------------------
-%----------- BACK -----------
-%----------------------------
-\backmatter
+%\part{Case Study: Algorithmic Fairness}
 
-\input{chapters/14_outro}
+% \input{chapters/01_classification}
 
-\input{chapters/back_matter}
+%\input{chapters/02_calibration}
+
+
+%\backmatter
+
+%\input{chapters/14_outro}
+
+%\input{chapters/back_matter}
 
 \end{document}
