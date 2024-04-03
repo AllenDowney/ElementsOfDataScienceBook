@@ -599,7 +599,48 @@ plotted as a function of time. The
 the figure.
 
 \begin{lstlisting}[language=Python,style=source]
+xtab_norm['Extremely liberal']
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+year
+1974    0.021908
+1975    0.040057
+1976    0.021877
+1977    0.025085
+1978    0.014463
+1980    0.028792
+1982    0.029176
+1983    0.027202
+1984    0.023961
+1985    0.026585
+1986    0.016937
+1987    0.038984
+1988    0.025281
+1989    0.027643
+1990    0.039544
+1991    0.024490
+1993    0.026065
+1994    0.019404
+1996    0.026007
+1998    0.021237
+2000    0.033534
+2002    0.031502
+2004    0.031603
+2006    0.030911
+2008    0.033661
+2010    0.038481
+2012    0.045769
+2014    0.037674
+2016    0.051487
+2018    0.039415
+2021    0.053644
+Name: Extremely liberal, dtype: float64
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python,style=source]
 for group in groups:
+    print(group)
     series = xtab_norm[group]
     plot_series_lowess(series, color_map[group])
 
@@ -613,6 +654,10 @@ plt.legend(bbox_to_anchor=(1.02, 1.02));
 \end{lstlisting}
 
 \begin{lstlisting}[style=output]
+Extremely liberal
+
+
+
 KeyError: 'Extremely liberal'
 \end{lstlisting}
 
