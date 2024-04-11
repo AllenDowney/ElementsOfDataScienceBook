@@ -90,6 +90,10 @@ decorate(
 )
 \end{lstlisting}
 
+\begin{center}
+\includegraphics[width=4in]{chapters/17_calibration_files/17_calibration_18_0.png}
+\end{center}
+
 This figure shows that people with higher risk scores are more likely to
 be charged with a new crime within two years. In that sense COMPAS works
 as intended.
@@ -127,10 +131,30 @@ matrix_white = make_matrix(cp[white])
 matrix_white
 \end{lstlisting}
 
+\begin{tabular}{lrr}
+\midrule
+ & Pred Positive & Pred Negative \\
+Actual &  &  \\
+\midrule
+Positive & 505 & 461 \\
+Negative & 349 & 1139 \\
+\midrule
+\end{tabular}
+
 \begin{lstlisting}[language=Python,style=source]
 matrix_black = make_matrix(cp[black])
 matrix_black
 \end{lstlisting}
+
+\begin{tabular}{lrr}
+\midrule
+ & Pred Positive & Pred Negative \\
+Actual &  &  \\
+\midrule
+Positive & 1369 & 532 \\
+Negative & 805 & 990 \\
+\midrule
+\end{tabular}
 
 And here are the metrics we computed from the confusion matrices:
 
@@ -139,10 +163,36 @@ metrics_white = compute_metrics(matrix_white, "White defendants")
 metrics_white
 \end{lstlisting}
 
+\begin{tabular}{lr}
+\midrule
+ & Percent \\
+White defendants &  \\
+\midrule
+FPR & 23.500000 \\
+FNR & 47.700000 \\
+PPV & 59.100000 \\
+NPV & 71.200000 \\
+Prevalence & 39.400000 \\
+\midrule
+\end{tabular}
+
 \begin{lstlisting}[language=Python,style=source]
 metrics_black = compute_metrics(matrix_black, "Black defendants")
 metrics_black
 \end{lstlisting}
+
+\begin{tabular}{lr}
+\midrule
+ & Percent \\
+Black defendants &  \\
+\midrule
+FPR & 44.800000 \\
+FNR & 28.000000 \\
+PPV & 63.000000 \\
+NPV & 65.000000 \\
+Prevalence & 51.400000 \\
+\midrule
+\end{tabular}
 
 If we look at the error rates (FPR and FNR), it seems like COMPAS is
 biased against Black defendants:
@@ -213,6 +263,18 @@ table_all = sweep_threshold(cp)
 table_all.head()
 \end{lstlisting}
 
+\begin{tabular}{lrrrrr}
+\midrule
+ & FPR & FNR & PPV & NPV & Prevalence \\
+\midrule
+0 & 100.000000 & 0.000000 & 45.100000 & NaN & 45.100000 \\
+1 & 71.400000 & 9.500000 & 51.000000 & 78.600000 & 45.100000 \\
+2 & 55.100000 & 18.500000 & 54.800000 & 74.800000 & 45.100000 \\
+3 & 43.300000 & 27.100000 & 58.000000 & 71.800000 & 45.100000 \\
+4 & 32.300000 & 37.400000 & 61.400000 & 68.800000 & 45.100000 \\
+\midrule
+\end{tabular}
+
 The following figure shows error rates as a function of threshold.
 
 \begin{lstlisting}[language=Python,style=source]
@@ -223,6 +285,10 @@ decorate(
     xlabel="Threshold", ylabel="Percent", title="Error rates for a range of thresholds"
 )
 \end{lstlisting}
+
+\begin{center}
+\includegraphics[width=4in]{chapters/17_calibration_files/17_calibration_34_0.png}
+\end{center}
 
 When the threshold is low, almost everyone is in the high risk group; in
 that case:
@@ -258,6 +324,10 @@ decorate(
     title="Predictive values for a range of thresholds",
 )
 \end{lstlisting}
+
+\begin{center}
+\includegraphics[width=4in]{chapters/17_calibration_files/17_calibration_36_0.png}
+\end{center}
 
 When the threshold is too low, PPV is low. When the threshold is too
 high, NPV is low.
@@ -320,8 +390,16 @@ fpr, fnr = error_rates(matrix_all)
 crossing(table_white["FPR"], fpr)
 \end{lstlisting}
 
+\begin{lstlisting}[style=output]
+array(3.23050171)
+\end{lstlisting}
+
 \begin{lstlisting}[language=Python,style=source]
 crossing(table_white["FNR"], fnr)
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+array(3.11998938)
 \end{lstlisting}
 
 With a threshold near 3.2, White defendants would have the same error
@@ -332,8 +410,16 @@ Black defendants.
 crossing(table_black["FPR"], fpr)
 \end{lstlisting}
 
+\begin{lstlisting}[style=output]
+array(5.20752868)
+\end{lstlisting}
+
 \begin{lstlisting}[language=Python,style=source]
 crossing(table_black["FNR"], fnr)
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+array(5.01788384)
 \end{lstlisting}
 
 To get the same error rates for Black and White defendants, we would
@@ -345,8 +431,16 @@ different thresholds for each group:
 interpolate(table_white["PPV"], 3.2)
 \end{lstlisting}
 
+\begin{lstlisting}[style=output]
+array(55.26)
+\end{lstlisting}
+
 \begin{lstlisting}[language=Python,style=source]
 interpolate(table_black["PPV"], 5.1)
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+array(66.17)
 \end{lstlisting}
 
 With equal error rates, we get different PPV:
@@ -366,8 +460,16 @@ Here's NPV with different thresholds for each group:
 interpolate(table_white["NPV"], 3.2)
 \end{lstlisting}
 
+\begin{lstlisting}[style=output]
+array(73.04)
+\end{lstlisting}
+
 \begin{lstlisting}[language=Python,style=source]
 interpolate(table_black["NPV"], 5.1)
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+array(62.19)
 \end{lstlisting}
 
 With equal error rates, the NPVs are substantially different:
@@ -437,6 +539,10 @@ Here's the ROC curve for all defendants.
 plot_roc(table_all, color="C2", label="All defendants")
 \end{lstlisting}
 
+\begin{center}
+\includegraphics[width=4in]{chapters/17_calibration_files/17_calibration_61_0.png}
+\end{center}
+
 The green line is the ROC curve. The gray dotted line shows the identity
 line for comparison.
 
@@ -459,6 +565,10 @@ Black defendants.
 plot_roc(table_white)
 plot_roc(table_black)
 \end{lstlisting}
+
+\begin{center}
+\includegraphics[width=4in]{chapters/17_calibration_files/17_calibration_63_0.png}
+\end{center}
 
 The ROC curves are similar for the two groups, which shows that we can
 achieve nearly the same error rates (FPR and FNR) for the two groups, as
@@ -523,14 +633,26 @@ The concordance for all respondents is about 70\%.
 compute_auc(table_all)
 \end{lstlisting}
 
+\begin{lstlisting}[style=output]
+0.7061166121516749
+\end{lstlisting}
+
 For the subgroups it is slightly lower, but also near 70\%.
 
 \begin{lstlisting}[language=Python,style=source]
 compute_auc(table_white)
 \end{lstlisting}
 
+\begin{lstlisting}[style=output]
+0.6996145234049567
+\end{lstlisting}
+
 \begin{lstlisting}[language=Python,style=source]
 compute_auc(table_black)
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+0.6946519102148443
 \end{lstlisting}
 
 Different ways of computing concordance handle ties differently, which
