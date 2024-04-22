@@ -180,9 +180,8 @@ value of \passthrough{\lstinline!count!}, adds
 \passthrough{\lstinline!-=!} and other update operators like
 \passthrough{\lstinline!*=!} and \passthrough{\lstinline!/=!}.
 
-\textbf{Exercise:} The following is a number trick from \emph{Learn With
-Math Games} at
-\url{https://www.learn-with-math-games.com/math-number-tricks.html}:
+\textbf{Exercise:} The following is a number trick from the website
+\emph{Learn With Math Games}:
 
 \begin{quote}
 \emph{Finding Someone's Age}
@@ -485,7 +484,7 @@ split(line)
 \end{lstlisting}
 
 \begin{lstlisting}[style=output]
-UsageError: Cell magic `%%expect` not found.
+NameError: name 'split' is not defined
 \end{lstlisting}
 
 The problem is that the \passthrough{\lstinline!split!} function belongs
@@ -508,6 +507,10 @@ for line in fp:
 
 \begin{lstlisting}[language=Python,style=source]
 count
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+566317
 \end{lstlisting}
 
 By this count, there are more than half a million words in \emph{War and
@@ -540,8 +543,16 @@ for line in fp:
     count += len(line.split())
 \end{lstlisting}
 
+\begin{lstlisting}[style=output]
+End of the Project Gutenberg EBook of War and Peace, by Leo Tolstoy
+\end{lstlisting}
+
 \begin{lstlisting}[language=Python,style=source]
 count
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+562482
 \end{lstlisting}
 
 Notice that the strings \passthrough{\lstinline!first\_line!} and
