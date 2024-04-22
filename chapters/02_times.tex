@@ -1,10 +1,9 @@
 \hypertarget{times-and-places}{%
 \chapter{Times and Places}\label{times-and-places}}
 
-In the previous chapter, you learned about variables and two kinds of
-values: integers and floating-point numbers.
-
-In this chapter, you'll see some additional types:
+The previous chapter introduces variables and two kinds of values:
+integers and floating-point numbers. This chapter presents these
+additional types:
 
 \begin{itemize}
 \item
@@ -45,9 +44,6 @@ And you can assign string values to variables.
 
 \begin{lstlisting}[language=Python,style=source]
 first = 'Data'
-\end{lstlisting}
-
-\begin{lstlisting}[language=Python,style=source]
 last = "Science"
 \end{lstlisting}
 
@@ -76,7 +72,6 @@ first + ' ' + last
 \end{lstlisting}
 
 Strings are used to store text data like names, addresses, titles, etc.
-
 When you read data from a file, you might see values that look like
 numbers, but they are actually strings, like this:
 
@@ -96,8 +91,8 @@ not_actually_a_number + 1
 TypeError: can only concatenate str (not "int") to str
 \end{lstlisting}
 
-But you don't always get an error message; instead, you might get a
-surprising result. For example:
+But you might not -- instead, you might get a surprising result. For
+example:
 
 \begin{lstlisting}[language=Python,style=source]
 not_actually_a_number * 3
@@ -125,11 +120,11 @@ Or you can convert it to a floating-point number using
 \passthrough{\lstinline!float!}:
 
 \begin{lstlisting}[language=Python,style=source]
-float('123')
+float('12.3')
 \end{lstlisting}
 
 \begin{lstlisting}[style=output]
-123.0
+12.3
 \end{lstlisting}
 
 But if the string contains a decimal point, you can't convert it to an
@@ -178,9 +173,8 @@ family = 'Gosset'
 But names are often displayed different ways in different contexts. For
 example, the first time you mention someone in a book, you might give
 all three names, like ``William Sealy Gosset''. But in the index, you
-might put the family name first, like ``Gosset, William Sealy''.
-
-Write Python expressions that use the variables
+might put the family name first, like ``Gosset, William Sealy''. Write
+Python expressions that use the variables
 \passthrough{\lstinline!given!}, \passthrough{\lstinline!middle!}, and
 \passthrough{\lstinline!family!} to display Gosset's name in these two
 formats.
@@ -223,21 +217,20 @@ str
 \end{lstlisting}
 
 Strings that represent dates and times are readable for people, but they
-are not useful for computation.
-
-Fortunately, Python provides libraries for working with date and time
-data -- the one we'll use is called Pandas. As always, we have to import
-a library before we use it. It is conventional to import Pandas with the
-abbreviated name \passthrough{\lstinline!pd!}:
+are not useful for computation. Fortunately, Python provides libraries
+for working with date and time data -- the one we'll use is called
+Pandas. As always, we have to import a library before we use it. It is
+conventional to import Pandas with the abbreviated name
+\passthrough{\lstinline!pd!}:
 
 \begin{lstlisting}[language=Python,style=source]
 import pandas as pd
 \end{lstlisting}
 
 Pandas provides a type called \passthrough{\lstinline!Timestamp!}, which
-represents a date and time. It also provides a function called
-\passthrough{\lstinline!Timestamp!}, which we can use to convert a
-string to a \passthrough{\lstinline!Timestamp!}:
+represents a date and time. If we have a string that contains a time or
+date, we can convert it to a \passthrough{\lstinline!Timestamp!} like
+this:
 
 \begin{lstlisting}[language=Python,style=source]
 pd.Timestamp('6:30:00')
@@ -258,10 +251,8 @@ Timestamp('2024-04-22 06:30:00')
 \end{lstlisting}
 
 In this example, the string specifies a time but no date, so Pandas
-fills in today's date.
-
-A \passthrough{\lstinline!Timestamp!} is a value, so you can assign it
-to a variable.
+fills in today's date. A \passthrough{\lstinline!Timestamp!} is a value,
+so you can assign it to a variable.
 
 \begin{lstlisting}[language=Python,style=source]
 date_of_birth = pd.Timestamp('May 11, 1967')
@@ -305,7 +296,7 @@ now
 \end{lstlisting}
 
 \begin{lstlisting}[style=output]
-Timestamp('2024-04-22 10:35:57.809483')
+Timestamp('2024-04-22 17:45:11.077775')
 \end{lstlisting}
 
 \textbf{Exercise:} Use the value of \passthrough{\lstinline!now!} to
@@ -324,7 +315,7 @@ age
 \end{lstlisting}
 
 \begin{lstlisting}[style=output]
-Timedelta('20801 days 10:35:57.809483')
+Timedelta('20801 days 17:45:11.077775')
 \end{lstlisting}
 
 The result is a \passthrough{\lstinline!Timedelta!} that represents the
@@ -335,15 +326,14 @@ current age of someone born on
 hours, etc. between the two \passthrough{\lstinline!Timestamp!} values.
 
 \begin{lstlisting}[language=Python,style=source]
-age.components
-\end{lstlisting}
+from utils import wrap
 
-\begin{lstlisting}[language=Python,style=source]
+wrap(age.components)
 \end{lstlisting}
 
 \begin{lstlisting}[style=output]
-Components(days=20801, hours=10, minutes=35, seconds=57,
-    milliseconds=809, microseconds=483, nanoseconds=0)
+Components(days=20801, hours=17, minutes=45, seconds=11,
+    milliseconds=77, microseconds=775, nanoseconds=0)
 \end{lstlisting}
 
 You can get one of the components like this:
@@ -363,7 +353,7 @@ defined. Most years are \passthrough{\lstinline!365!} days, but some are
 \passthrough{\lstinline!365.24!} days, which is a very good
 approximation of a solar year, but even that's not exact.
 
-So expressing a duration in days is more precise -- but it is not easy
+Expressing a duration in days is clearly defined -- but it is not easy
 to interpret. To express \passthrough{\lstinline!age!} in years, we can
 divide by \passthrough{\lstinline!365.24!}:
 
@@ -467,36 +457,32 @@ d2 = pd.Timestamp('2006-09-30')
 \section{Representing Location}\label{representing-location}}
 
 In addition to times and dates, we might also want to represent
-locations, especially if we are working with geographical data.
-
-There are many ways to represent locations, but the most common, at
-least for global data, is latitude and longitude. When stored as
-strings, latitude and longitude are expressed in degrees with compass
-directions N, S, E, and W. For example, this string represents the
-location of Boston, MA, USA:
+locations, especially if we are working with geographical data. There
+are many ways to represent locations, but the most common, at least for
+global data, is latitude and longitude. When stored in a string,
+latitude and longitude are expressed in degrees with compass directions
+N, S, E, and W. For example, this string represents the location of
+Boston, Massachusetts, USA:
 
 \begin{lstlisting}[language=Python,style=source]
 lat_lon_string = '42.3601° N, 71.0589° W'
 \end{lstlisting}
 
-When we compute with location information, we use floating-point
-numbers, with
+But for purposes of computation it is more common to represent longitude
+and latitude with two floating-point numbers, with
 
 \begin{itemize}
 \item
-  Positive latitude for the northern hemisphere, negative latitude for
-  the southern hemisphere, and
+  Positive latitude for locations in the northern hemisphere, negative
+  latitude for the southern hemisphere, and
 \item
-  Positive longitude for the eastern hemisphere and negative longitude
-  for the western hemisphere.
+  Positive longitude locations in the eastern hemisphere and negative
+  longitude for the western hemisphere.
 \end{itemize}
 
-Of course, the choice of the origin and the orientation of positive and
-negative are arbitrary choices that were made for historical reasons. We
-might not be able to change conventions like these, but we should be
-aware that they are conventions.
-
-Here's how we might represent the location of Boston with two variables.
+The location of the origin and the orientation of positive and negative
+are arbitrary choices that were made for historical reasons. Here's how
+we might represent the location of Boston with two variables.
 
 \begin{lstlisting}[language=Python,style=source]
 lat = 42.3601
@@ -518,7 +504,7 @@ boston
 The type of this variable is \passthrough{\lstinline!tuple!}, which is a
 mathematical term for a value that contains a sequence of elements. Math
 people pronounce it ``tuh' ple'', but computational people usually say
-``too' ple''. Take your pick.
+``too' ple''. Either is fine.
 
 \begin{lstlisting}[language=Python,style=source]
 type(boston)
@@ -583,7 +569,7 @@ np.sin(θ/2)**2
 
 You can use Greek letters in variable names, but there is currently no
 way to type them in Jupyter/Colab, so I usually copy them from a web
-page and paste them in. To avoid the inconvenience, it is more common to
+page and paste them in. To avoid the inconvenience, it is common to
 write out letter names, like this:
 
 \begin{lstlisting}[language=Python,style=source]
@@ -596,9 +582,9 @@ np.sin(theta/2)**2
 \end{lstlisting}
 
 Remember that the operator for exponentiation is
-\passthrough{\lstinline!**!}.\\
-In some other languages it's \passthrough{\lstinline!\^!}, which is also
-an operator in Python, but it performs another operation altogether.
+\passthrough{\lstinline!**!}. In some other languages it's
+\passthrough{\lstinline!\^!}, which is also an operator in Python, but
+it performs another operation altogether.
 
 \hypertarget{defining-functions}{%
 \section{Defining Functions}\label{defining-functions}}
@@ -614,14 +600,10 @@ def haversine(theta):
 \end{lstlisting}
 
 On the first line, \passthrough{\lstinline!def!} indicates that we are
-defining a function.
-
-The second line is a triple-quoted string, which is a \textbf{comment}:
-it describes what the function does, but has no effect when the program
-runs.
-
-On the third line, \passthrough{\lstinline!return!} indicates the result
-of the function.
+defining a function. The second line is a triple-quoted string, which is
+a \textbf{comment}: it describes what the function does, but has no
+effect when the program runs. On the third line,
+\passthrough{\lstinline!return!} indicates the result of the function.
 
 When you run the previous cell, it creates a new variable called
 \passthrough{\lstinline!haversine!}. You can display its value like
@@ -666,7 +648,7 @@ doesn't actually run until you call it.
 
 Now we can use \passthrough{\lstinline!haversine!} as part of a function
 that computes haversine distances. I won't explain this function in as
-much detail, but if you read through it, you might get a sense of how it
+much detail, but if you read through it, you can get a sense of how it
 works.
 
 \begin{lstlisting}[language=Python,style=source]
@@ -734,7 +716,8 @@ from shapely.geometry import Point, LineString
 
 We can use the tuples we defined in the previous section to create
 Shapely \passthrough{\lstinline!Point!} values, but we have to reverse
-the order of the coordinates, providing them in \(x\)-\(y\) order rather
+the order of the coordinates, providing them in
+\passthrough{\lstinline!x!}-\passthrough{\lstinline!y!} order rather
 than \passthrough{\lstinline!lat!}-\passthrough{\lstinline!lon!} order,
 because that's the order the \passthrough{\lstinline!Point!} function
 expects.
@@ -778,7 +761,7 @@ world.plot(color='white', edgecolor='gray');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/02_times_files/02_times_128_0.png}
+\includegraphics[width=4in]{chapters/02_times_files/02_times_127_0.png}
 \end{center}
 
 By default, Geopandas uses an equirectangular projection, which provides
@@ -807,11 +790,11 @@ series.plot();
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/02_times_files/02_times_132_0.png}
+\includegraphics[width=4in]{chapters/02_times_files/02_times_131_0.png}
 \end{center}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/02_times_files/02_times_132_1.png}
+\includegraphics[width=4in]{chapters/02_times_files/02_times_131_1.png}
 \end{center}
 
 The two plots are on different axes, which is not what we want in this
@@ -826,7 +809,7 @@ import matplotlib.pyplot as plt
 \end{lstlisting}
 
 From Matplotlib, we'll use the function \passthrough{\lstinline!gca!},
-which stands for ``get current axes''. Then we use the result to tell
+which stands for ``get current axes''. With the result we can tell
 \passthrough{\lstinline!plot!} to put the points and lines on the
 current axes, rather than create a new one.
 
@@ -837,7 +820,7 @@ series.plot(ax=ax);
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/02_times_files/02_times_136_0.png}
+\includegraphics[width=4in]{chapters/02_times_files/02_times_135_0.png}
 \end{center}
 
 \textbf{Exercise:} Modify the code in this section to plot a point that
@@ -849,9 +832,8 @@ there to Boston.
 
 This chapter presents three new data types: strings to represent letters
 and words, \passthrough{\lstinline!Timestamp!} objects to represent
-dates and times, and tuples to represent latitude, longitude pairs.
-
-It also introduces Geopandas, a library for working with location data.
+dates and times, and tuples to represent latitude, longitude pairs. It
+also introduces Geopandas, a library for working with location data.
 
 In the next chapter we'll see two ways to represent a collection of
 data, a Python list and a Numpy array.
