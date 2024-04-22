@@ -305,7 +305,7 @@ now
 \end{lstlisting}
 
 \begin{lstlisting}[style=output]
-Timestamp('2024-04-22 10:32:09.336865')
+Timestamp('2024-04-22 10:35:08.000554')
 \end{lstlisting}
 
 \textbf{Exercise:} Use the value of \passthrough{\lstinline!now!} to
@@ -324,7 +324,7 @@ age
 \end{lstlisting}
 
 \begin{lstlisting}[style=output]
-Timedelta('20801 days 10:32:09.336865')
+Timedelta('20801 days 10:35:08.000554')
 \end{lstlisting}
 
 The result is a \passthrough{\lstinline!Timedelta!} that represents the
@@ -342,8 +342,8 @@ age.components
 \end{lstlisting}
 
 \begin{lstlisting}[style=output]
-Components(days=20801, hours=10, minutes=32, seconds=9,
-    milliseconds=336, microseconds=865, nanoseconds=0)
+Components(days=20801, hours=10, minutes=35, seconds=8,
+    milliseconds=0, microseconds=554, nanoseconds=0)
 \end{lstlisting}
 
 You can get one of the components like this:
@@ -758,6 +758,16 @@ line = LineString([p1, p2])
 
 Now we can use Geopandas to show these points and lines on a map. The
 following cells load a map of the world and plot it.
+
+\begin{lstlisting}[language=Python,style=source]
+from geodatasets import fetch
+
+fetch('naturalearth.land')
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+ModuleNotFoundError: No module named 'geodatasets'
+\end{lstlisting}
 
 \begin{lstlisting}[language=Python,style=source]
 from geodatasets import get_path
