@@ -93,7 +93,7 @@ not_actually_a_number + 1
 \end{lstlisting}
 
 \begin{lstlisting}[style=output]
-UsageError: Cell magic `%%expect` not found.
+TypeError: can only concatenate str (not "int") to str
 \end{lstlisting}
 
 But you don't always get an error message; instead, you might get a
@@ -101,6 +101,10 @@ surprising result. For example:
 
 \begin{lstlisting}[language=Python,style=source]
 not_actually_a_number * 3
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+'123123123'
 \end{lstlisting}
 
 If you multiply a string by an integer, Python repeats the string the
@@ -113,11 +117,19 @@ integer using the \passthrough{\lstinline!int!} function:
 int('123')
 \end{lstlisting}
 
+\begin{lstlisting}[style=output]
+123
+\end{lstlisting}
+
 Or you can convert it to a floating-point number using
 \passthrough{\lstinline!float!}:
 
 \begin{lstlisting}[language=Python,style=source]
 float('123')
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+123.0
 \end{lstlisting}
 
 But if the string contains a decimal point, you can't convert it to an
@@ -129,6 +141,10 @@ But if the string contains a decimal point, you can't convert it to an
 int('12.3')
 \end{lstlisting}
 
+\begin{lstlisting}[style=output]
+ValueError: invalid literal for int() with base 10: '12.3'
+\end{lstlisting}
+
 Going in the other direction, you can convert any type of value to a
 string using \passthrough{\lstinline!str!}:
 
@@ -136,8 +152,16 @@ string using \passthrough{\lstinline!str!}:
 str(123)
 \end{lstlisting}
 
+\begin{lstlisting}[style=output]
+'123'
+\end{lstlisting}
+
 \begin{lstlisting}[language=Python,style=source]
 str(12.3)
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+'12.3'
 \end{lstlisting}
 
 \textbf{Exercise}: When personal names are stored in a database, they
@@ -179,6 +203,10 @@ To check the type of a value, we can use the
 type(not_really_a_date)
 \end{lstlisting}
 
+\begin{lstlisting}[style=output]
+str
+\end{lstlisting}
+
 The result indicates that the value of
 \passthrough{\lstinline!not\_really\_a\_date!} is a string.
 
@@ -188,6 +216,10 @@ We get the same result with
 \begin{lstlisting}[language=Python,style=source]
 not_really_a_time = '6:30:00'
 type(not_really_a_time)
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+str
 \end{lstlisting}
 
 Strings that represent dates and times are readable for people, but they
@@ -211,10 +243,18 @@ string to a \passthrough{\lstinline!Timestamp!}:
 pd.Timestamp('6:30:00')
 \end{lstlisting}
 
+\begin{lstlisting}[style=output]
+Timestamp('2024-04-22 06:30:00')
+\end{lstlisting}
+
 Or we can do the same thing using the variable defined above.
 
 \begin{lstlisting}[language=Python,style=source]
 pd.Timestamp(not_really_a_time)
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+Timestamp('2024-04-22 06:30:00')
 \end{lstlisting}
 
 In this example, the string specifies a time but no date, so Pandas
@@ -228,6 +268,10 @@ date_of_birth = pd.Timestamp('May 11, 1967')
 date_of_birth
 \end{lstlisting}
 
+\begin{lstlisting}[style=output]
+Timestamp('1967-05-11 00:00:00')
+\end{lstlisting}
+
 If the string specifies a date but no time, Pandas fills in midnight as
 the default time.
 
@@ -238,10 +282,18 @@ can use the variable name to get the year, month, and day, like this:
 date_of_birth.year, date_of_birth.month, date_of_birth.day
 \end{lstlisting}
 
+\begin{lstlisting}[style=output]
+(1967, 5, 11)
+\end{lstlisting}
+
 You can also get the name of the month and the day of the week.
 
 \begin{lstlisting}[language=Python,style=source]
 date_of_birth.day_name(), date_of_birth.month_name()
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+('Thursday', 'May')
 \end{lstlisting}
 
 \passthrough{\lstinline!Timestamp!} provides a function called
@@ -250,6 +302,10 @@ date_of_birth.day_name(), date_of_birth.month_name()
 \begin{lstlisting}[language=Python,style=source]
 now = pd.Timestamp.now()
 now
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+Timestamp('2024-04-22 10:25:33.119893')
 \end{lstlisting}
 
 \textbf{Exercise:} Use the value of \passthrough{\lstinline!now!} to
@@ -267,6 +323,10 @@ age = now - date_of_birth
 age
 \end{lstlisting}
 
+\begin{lstlisting}[style=output]
+Timedelta('20801 days 10:25:33.119893')
+\end{lstlisting}
+
 The result is a \passthrough{\lstinline!Timedelta!} that represents the
 current age of someone born on
 \passthrough{\lstinline!date\_of\_birth!}. The
@@ -279,18 +339,21 @@ age.components
 \end{lstlisting}
 
 \begin{lstlisting}[language=Python,style=source]
-# the output that appears in the book is split across two lines
+\end{lstlisting}
 
-from textwrap import wrap
-
-for line in  wrap(str(age.components), subsequent_indent='    '):
-    print(line)
+\begin{lstlisting}[style=output]
+Components(days=20801, hours=10, minutes=25, seconds=33,
+    milliseconds=119, microseconds=893, nanoseconds=0)
 \end{lstlisting}
 
 You can get one of the components like this:
 
 \begin{lstlisting}[language=Python,style=source]
 age.days
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+20801
 \end{lstlisting}
 
 It might seem strange to measure a large interval in days rather than
@@ -308,6 +371,10 @@ divide by \passthrough{\lstinline!365.24!}:
 age.days / 365.24
 \end{lstlisting}
 
+\begin{lstlisting}[style=output]
+56.951593472785014
+\end{lstlisting}
+
 But people usually report their ages in integer years. We can use the
 Numpy \passthrough{\lstinline!floor!} function to round down:
 
@@ -317,11 +384,19 @@ import numpy as np
 np.floor(age.days / 365.24)
 \end{lstlisting}
 
+\begin{lstlisting}[style=output]
+56.0
+\end{lstlisting}
+
 Or the \passthrough{\lstinline!ceil!} function (which stands for
 ``ceiling'') to round up:
 
 \begin{lstlisting}[language=Python,style=source]
 np.ceil(age.days / 365.24)
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+57.0
 \end{lstlisting}
 
 We can also compare \passthrough{\lstinline!Timestamp!} values to see
@@ -338,12 +413,20 @@ bday_this_year = pd.Timestamp(now.year,
 bday_this_year
 \end{lstlisting}
 
+\begin{lstlisting}[style=output]
+Timestamp('2024-05-11 00:00:00')
+\end{lstlisting}
+
 The result represents the person's birthday this year. Now we can use
 the ``greater than'' operator, \passthrough{\lstinline!>!}, to check
 whether \passthrough{\lstinline!now!} is later than the birthday:
 
 \begin{lstlisting}[language=Python,style=source]
 now > bday_this_year
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+False
 \end{lstlisting}
 
 The result is either \passthrough{\lstinline!True!} or
@@ -355,8 +438,16 @@ which is a branch of algebra where all values are either true or false.
 type(True)
 \end{lstlisting}
 
+\begin{lstlisting}[style=output]
+bool
+\end{lstlisting}
+
 \begin{lstlisting}[language=Python,style=source]
 type(False)
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+bool
 \end{lstlisting}
 
 \textbf{Exercise:} Any two people with different birthdays have a
@@ -420,6 +511,10 @@ boston = lat, lon
 boston
 \end{lstlisting}
 
+\begin{lstlisting}[style=output]
+(42.3601, -71.0589)
+\end{lstlisting}
+
 The type of this variable is \passthrough{\lstinline!tuple!}, which is a
 mathematical term for a value that contains a sequence of elements. Math
 people pronounce it ``tuh' ple'', but computational people usually say
@@ -427,6 +522,10 @@ people pronounce it ``tuh' ple'', but computational people usually say
 
 \begin{lstlisting}[language=Python,style=source]
 type(boston)
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+tuple
 \end{lstlisting}
 
 If you have a tuple with two elements, you can assign them to two
@@ -437,8 +536,16 @@ y, x = boston
 y
 \end{lstlisting}
 
+\begin{lstlisting}[style=output]
+42.3601
+\end{lstlisting}
+
 \begin{lstlisting}[language=Python,style=source]
 x
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+-71.0589
 \end{lstlisting}
 
 Notice that I assigned latitude to \passthrough{\lstinline!y!} and
@@ -470,6 +577,10 @@ import numpy as np
 np.sin(θ/2)**2
 \end{lstlisting}
 
+\begin{lstlisting}[style=output]
+0.22984884706593015
+\end{lstlisting}
+
 You can use Greek letters in variable names, but there is currently no
 way to type them in Jupyter/Colab, so I usually copy them from a web
 page and paste them in. To avoid the inconvenience, it is more common to
@@ -478,6 +589,10 @@ write out letter names, like this:
 \begin{lstlisting}[language=Python,style=source]
 theta = 1
 np.sin(theta/2)**2
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+0.22984884706593015
 \end{lstlisting}
 
 Remember that the operator for exponentiation is
@@ -516,10 +631,18 @@ this:
 haversine
 \end{lstlisting}
 
+\begin{lstlisting}[style=output]
+<function __main__.haversine(theta)>
+\end{lstlisting}
+
 And you can display its type like this:
 
 \begin{lstlisting}[language=Python,style=source]
 type(haversine)
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+function
 \end{lstlisting}
 
 So \passthrough{\lstinline!haversine!} is a variable that refers to a
@@ -529,6 +652,10 @@ function. To run the function and compute a result, we have to
 
 \begin{lstlisting}[language=Python,style=source]
 haversine(1)
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+0.22984884706593015
 \end{lstlisting}
 
 When you define a function, you create a new variable. But the function
@@ -579,6 +706,10 @@ And here's the haversine distance between Boston and London.
 
 \begin{lstlisting}[language=Python,style=source]
 haversine_distance(boston, london)
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+5265.656325981015
 \end{lstlisting}
 
 The actual geographic distance is slightly different because Earth is
