@@ -240,6 +240,10 @@ d['one'] = 1
 d
 \end{lstlisting}
 
+\begin{lstlisting}[style=output]
+{'one': 1, 'two': 2, 'three': 3}
+\end{lstlisting}
+
 But you can change the value associated with a key:
 
 \begin{lstlisting}[language=Python,style=source]
@@ -247,11 +251,21 @@ d['one'] = 100
 d
 \end{lstlisting}
 
+\begin{lstlisting}[style=output]
+{'one': 100, 'two': 2, 'three': 3}
+\end{lstlisting}
+
 You can loop through the keys in a dictionary like this:
 
 \begin{lstlisting}[language=Python,style=source]
 for key in d:
     print(key)
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+one
+two
+three
 \end{lstlisting}
 
 If you want the keys and the values, one way to get them is to loop
@@ -262,11 +276,23 @@ for key in d:
     print(key, d[key])
 \end{lstlisting}
 
+\begin{lstlisting}[style=output]
+one 100
+two 2
+three 3
+\end{lstlisting}
+
 Or you can loop through both at the same time, like this:
 
 \begin{lstlisting}[language=Python,style=source]
 for key, value in d.items():
     print(key, value)
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+one 100
+two 2
+three 3
 \end{lstlisting}
 
 The \passthrough{\lstinline!items!} method loops through the key-value
@@ -299,6 +325,10 @@ for line in fp:
     count += len(line.split())
     
 count
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+566317
 \end{lstlisting}
 
 To count the number of unique words, we'll loop through the words in
@@ -339,12 +369,29 @@ for key in unique_words:
         break
 \end{lstlisting}
 
+\begin{lstlisting}[style=output]
+
+The
+Project
+Gutenberg
+EBook
+of
+War
+and
+Peace,
+by
+\end{lstlisting}
+
 The dictionary contains all the words in the file, in order of first
 appearance. But each word only appears once, so the number of keys is
 the number of unique words:
 
 \begin{lstlisting}[language=Python,style=source]
 len(unique_words)
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+41991
 \end{lstlisting}
 
 It looks like there are about 42,000 different words in the book, which
@@ -377,11 +424,19 @@ word = 'The'
 word.lower()
 \end{lstlisting}
 
+\begin{lstlisting}[style=output]
+'the'
+\end{lstlisting}
+
 \passthrough{\lstinline!lower!} creates a new string; it does not modify
 the original string.
 
 \begin{lstlisting}[language=Python,style=source]
 word
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+'The'
 \end{lstlisting}
 
 However, you can assign the new string back to the existing variable,
@@ -396,6 +451,10 @@ we get the lowercase version:
 
 \begin{lstlisting}[language=Python,style=source]
 word
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+'the'
 \end{lstlisting}
 
 \textbf{Exercise:} Modify the previous loop so it makes a lowercase
@@ -415,6 +474,10 @@ word = 'abracadabra'
 word.strip('ab')
 \end{lstlisting}
 
+\begin{lstlisting}[style=output]
+'racadabr'
+\end{lstlisting}
+
 In this example, \passthrough{\lstinline!strip!} removes all instances
 of \passthrough{\lstinline!a!} and \passthrough{\lstinline!b!} from the
 beginning and end of the word, but not from the middle. Like
@@ -423,6 +486,10 @@ doesn't modify the original:
 
 \begin{lstlisting}[language=Python,style=source]
 word
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+'abracadabra'
 \end{lstlisting}
 
 To remove punctuation, we can use the \passthrough{\lstinline!string!}
@@ -435,6 +502,10 @@ import string
 string.punctuation
 \end{lstlisting}
 
+\begin{lstlisting}[style=output]
+'!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~'
+\end{lstlisting}
+
 \passthrough{\lstinline!string.punctuation!} contains the most common
 punctuation marks, but as we'll see, not all of them. Nevertheless, we
 can use it to handle most cases. Here's an example:
@@ -445,6 +516,20 @@ line = "It's not given to people to judge what's right or wrong."
 for word in line.split():
     word = word.strip(string.punctuation)
     print(word)
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+It's
+not
+given
+to
+people
+to
+judge
+what's
+right
+or
+wrong
 \end{lstlisting}
 
 \passthrough{\lstinline!strip!} removes the period at the end of
@@ -463,6 +548,18 @@ Here's what happens when we try to remove the punctuation.
 for word in line.split():
     word = word.strip(string.punctuation)
     print(word)
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+anyone
+and
+so
+you
+don’t
+deserve
+to
+have
+them.”
 \end{lstlisting}
 
 The comma after \passthrough{\lstinline!anyone!} is removed, but not the
@@ -501,6 +598,10 @@ all_punctuation = ''.join(punc_marks)
 print(all_punctuation)
 \end{lstlisting}
 
+\begin{lstlisting}[style=output]
+,.-:[#]*/“’—‘!?”;()%@
+\end{lstlisting}
+
 The result is a string containing all of the punctuation characters that
 appear in the document, in the order they first appear.
 
@@ -536,6 +637,10 @@ for x in word:
         letter_counts[x] = 1
         
 letter_counts
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+{'M': 1, 'i': 4, 's': 4, 'p': 2}
 \end{lstlisting}
 
 The \passthrough{\lstinline!if!} statement includes a feature we have
@@ -578,12 +683,20 @@ counter = collections.Counter(letter_counts)
 type(counter)
 \end{lstlisting}
 
+\begin{lstlisting}[style=output]
+collections.Counter
+\end{lstlisting}
+
 \passthrough{\lstinline!Counter!} provides a function called
 \passthrough{\lstinline!most\_common!} we can use to get the most common
 characters:
 
 \begin{lstlisting}[language=Python,style=source]
 counter.most_common(3)
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+[('i', 4), ('s', 4), ('p', 2)]
 \end{lstlisting}
 
 The result is a list of tuples, where each tuple contains a character
