@@ -93,7 +93,7 @@ t[3]
 \end{lstlisting}
 
 \begin{lstlisting}[style=output]
-UsageError: Cell magic `%%expect` not found.
+IndexError: tuple index out of range
 \end{lstlisting}
 
 Also, the index has to be an integer; if it is any other type, you get
@@ -105,10 +105,18 @@ an error.
 t[1.5]
 \end{lstlisting}
 
+\begin{lstlisting}[style=output]
+TypeError: tuple indices must be integers or slices, not float
+\end{lstlisting}
+
 \begin{lstlisting}[language=Python,style=source]
 %%expect TypeError
 
 t['1']
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+TypeError: tuple indices must be integers or slices, not str
 \end{lstlisting}
 
 \textbf{Exercise:} You can use negative integers as indices. Try using
@@ -142,12 +150,20 @@ value.
 d
 \end{lstlisting}
 
+\begin{lstlisting}[style=output]
+{'one': 1, 'two': 2}
+\end{lstlisting}
+
 Instead of creating an empty dictionary and then adding elements, you
 can create a dictionary and specify the elements at the same time:
 
 \begin{lstlisting}[language=Python,style=source]
 d = {'one': 1, 'two': 2, 'three': 3}
 d
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+{'one': 1, 'two': 2, 'three': 3}
 \end{lstlisting}
 
 When we are talking about dictionaries, an index is usually called a
@@ -164,6 +180,10 @@ like this:
 d['two']
 \end{lstlisting}
 
+\begin{lstlisting}[style=output]
+2
+\end{lstlisting}
+
 But don't forget the quotation marks. Without them, Python looks for a
 variable named \passthrough{\lstinline!two!} and doesn't find one.
 
@@ -173,6 +193,10 @@ variable named \passthrough{\lstinline!two!} and doesn't find one.
 d[two]
 \end{lstlisting}
 
+\begin{lstlisting}[style=output]
+NameError: name 'two' is not defined
+\end{lstlisting}
+
 To check whether a particular key is in a dictionary, you can use the
 special word \passthrough{\lstinline!in!}:
 
@@ -180,8 +204,16 @@ special word \passthrough{\lstinline!in!}:
 'one' in d
 \end{lstlisting}
 
+\begin{lstlisting}[style=output]
+True
+\end{lstlisting}
+
 \begin{lstlisting}[language=Python,style=source]
 'zero' in d
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+False
 \end{lstlisting}
 
 Because the word \passthrough{\lstinline!in!} is an operator in Python,
@@ -191,6 +223,13 @@ you can't use it as a variable name.
 %%expect SyntaxError
 
 in = 5
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+  Cell In[20], line 1
+    in = 5
+    ^
+SyntaxError: invalid syntax
 \end{lstlisting}
 
 Each key in a dictionary can only appear once. Adding the same key again
