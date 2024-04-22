@@ -305,7 +305,7 @@ now
 \end{lstlisting}
 
 \begin{lstlisting}[style=output]
-Timestamp('2024-04-22 10:35:08.000554')
+Timestamp('2024-04-22 10:35:57.809483')
 \end{lstlisting}
 
 \textbf{Exercise:} Use the value of \passthrough{\lstinline!now!} to
@@ -324,7 +324,7 @@ age
 \end{lstlisting}
 
 \begin{lstlisting}[style=output]
-Timedelta('20801 days 10:35:08.000554')
+Timedelta('20801 days 10:35:57.809483')
 \end{lstlisting}
 
 The result is a \passthrough{\lstinline!Timedelta!} that represents the
@@ -342,8 +342,8 @@ age.components
 \end{lstlisting}
 
 \begin{lstlisting}[style=output]
-Components(days=20801, hours=10, minutes=35, seconds=8,
-    milliseconds=0, microseconds=554, nanoseconds=0)
+Components(days=20801, hours=10, minutes=35, seconds=57,
+    milliseconds=809, microseconds=483, nanoseconds=0)
 \end{lstlisting}
 
 You can get one of the components like this:
@@ -765,10 +765,6 @@ from geodatasets import fetch
 fetch('naturalearth.land')
 \end{lstlisting}
 
-\begin{lstlisting}[style=output]
-ModuleNotFoundError: No module named 'geodatasets'
-\end{lstlisting}
-
 \begin{lstlisting}[language=Python,style=source]
 from geodatasets import get_path
 
@@ -780,6 +776,10 @@ import geopandas as gpd
 world = gpd.read_file(path)
 world.plot(color='white', edgecolor='gray');
 \end{lstlisting}
+
+\begin{center}
+\includegraphics[width=4in]{chapters/02_times_files/02_times_128_0.png}
+\end{center}
 
 By default, Geopandas uses an equirectangular projection, which provides
 a misleading picture of relative land areas. Other projections are
@@ -806,6 +806,14 @@ world.plot(color='white', edgecolor='gray')
 series.plot();
 \end{lstlisting}
 
+\begin{center}
+\includegraphics[width=4in]{chapters/02_times_files/02_times_132_0.png}
+\end{center}
+
+\begin{center}
+\includegraphics[width=4in]{chapters/02_times_files/02_times_132_1.png}
+\end{center}
+
 The two plots are on different axes, which is not what we want in this
 case.
 
@@ -827,6 +835,10 @@ ax = plt.gca()
 world.plot(color='white', edgecolor='gray', ax=ax)
 series.plot(ax=ax);
 \end{lstlisting}
+
+\begin{center}
+\includegraphics[width=4in]{chapters/02_times_files/02_times_136_0.png}
+\end{center}
 
 \textbf{Exercise:} Modify the code in this section to plot a point that
 shows the home town you chose in a previous exercise and a line from
