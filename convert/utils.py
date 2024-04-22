@@ -269,34 +269,57 @@ def legend(**options):
 
     ax = plt.gca()
     handles, labels = ax.get_legend_handles_labels()
-    #TODO: don't draw if there are none
-    ax.legend(handles, labels, **options)
+    if handles:
+        ax.legend(handles, labels, **options)
 
 
-def make_lowess(series):
+def make_lowess(series, frac=2/3):
     """Use LOWESS to compute a smooth line.
 
     series: pd.Series
 
     returns: pd.Series
     """
-    endog = series.values
-    exog = series.index.values
+    y = series.values
+    x = series.index.values
 
-    smooth = lowess(endog, exog)
+    smooth = lowess(y, x, frac=frac)
     index, data = np.transpose(smooth)
-
     return pd.Series(data, index=index)
 
-def plot_series_lowess(series, color):
+
+def plot_lowess(series, color, frac=0.7, **options):
+    """Plot a smooth line.
+
+    series: pd.Series
+    color: string or tuple
+    """
+    if "label" not in options:
+        options["label"] = series.name
+
+    smooth = make_lowess(series, frac=frac)
+    smooth.plot(color=color, **options)
+
+
+def plot_series_lowess(series, color, frac=0.7, **options):
     """Plots a series of data points and a smooth line.
 
     series: pd.Series
     color: string or tuple
     """
-    series.plot(lw=0, marker='o', color=color, alpha=0.5)
-    smooth = make_lowess(series)
-    smooth.plot(label='_', color=color)
+    if "label" not in options:
+        options["label"] = series.name
+
+    x = series.index
+    y = series.values
+
+    if len(series) == 1:
+        # just plot the point
+        plt.plot(x, y, "o", color=color, alpha=0.5, label=options["label"])
+    else:
+        # plot the points and line
+        plt.plot(x, y, "o", color=color, alpha=0.5, label="_")
+        plot_lowess(series, color, frac, **options)
 
 def plot_columns_lowess(df, columns, colors):
     """Plot the columns in a DataFrame.
