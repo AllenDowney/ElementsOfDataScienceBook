@@ -59,9 +59,6 @@
   hidelinks,
   pdfcreator={LaTeX via pandoc}}
 
-\usepackage{listings}
-\newcommand{\passthrough}[1]{#1}
-
 
 % Set default figure placement to h! (here)
 \makeatletter
@@ -72,11 +69,14 @@
 \usepackage{makeidx}
 \usepackage{upquote}
 \usepackage[listings]{tcolorbox}
+\newcommand{\passthrough}[1]{#1}
 
 
 % we need these because pandoc uses them
 \usepackage{booktabs}
 \usepackage{longtable}
+\usepackage{calc}             % https://github.com/jgm/pandoc/issues/8248
+
 
 % don't draw the top and bottom rules
 \renewcommand{\toprule}{}
