@@ -173,20 +173,11 @@ makes a line plot. It takes two sequences as arguments, the
 values. The sequences can be tuples, lists, or arrays.
 
 \begin{lstlisting}[language=Python,style=source]
-#TODO move this to utils
-
-import matplotlib.pyplot as plt
-
-plt.rcParams["figure.figsize"] = (4, 3)  
-plt.rcParams.update({'font.size': 9})
-\end{lstlisting}
-
-\begin{lstlisting}[language=Python,style=source]
 plt.plot(year, christian);
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/06_plotting_files/06_plotting_29_0.png}
+\includegraphics[width=4in]{chapters/06_plotting_files/06_plotting_28_0.png}
 \end{center}
 
 The semi-colon at the end of the line prevents the return value from
@@ -202,7 +193,7 @@ plt.plot(year, unaffiliated);
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/06_plotting_files/06_plotting_31_0.png}
+\includegraphics[width=4in]{chapters/06_plotting_files/06_plotting_30_0.png}
 \end{center}
 
 Plotting them on the same axes makes it possible to compare them
@@ -224,7 +215,7 @@ plt.ylim([0, 80]);
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/06_plotting_files/06_plotting_33_0.png}
+\includegraphics[width=4in]{chapters/06_plotting_files/06_plotting_32_0.png}
 \end{center}
 
 That's better, but this graph is missing some of the most important
@@ -248,7 +239,7 @@ plt.title('Religious affiliation of U.S adults');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/06_plotting_files/06_plotting_36_0.png}
+\includegraphics[width=4in]{chapters/06_plotting_files/06_plotting_35_0.png}
 \end{center}
 
 Now let's add another important element, a legend that indicates which
@@ -268,7 +259,7 @@ plt.legend();
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/06_plotting_files/06_plotting_38_0.png}
+\includegraphics[width=4in]{chapters/06_plotting_files/06_plotting_37_0.png}
 \end{center}
 
 The legend shows the labels we provided when we created the lines.
@@ -338,7 +329,7 @@ plt.xlabel('Price in USD');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/06_plotting_files/06_plotting_48_0.png}
+\includegraphics[width=4in]{chapters/06_plotting_files/06_plotting_47_0.png}
 \end{center}
 
 \passthrough{\lstinline!name\_list!} is a list of strings; Pyplot orders
@@ -358,7 +349,7 @@ plt.xlabel('Price in USD');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/06_plotting_files/06_plotting_50_0.png}
+\includegraphics[width=4in]{chapters/06_plotting_files/06_plotting_49_0.png}
 \end{center}
 
 Or we can do the same thing more concisely by providing a \textbf{format
@@ -379,7 +370,7 @@ plt.title('Pret a Manger prices in Boston and London');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/06_plotting_files/06_plotting_52_0.png}
+\includegraphics[width=4in]{chapters/06_plotting_files/06_plotting_51_0.png}
 \end{center}
 
 Now, to approximate the colors in the original figure, we can use the
@@ -397,7 +388,7 @@ plt.title('Pret a Manger prices in Boston and London');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/06_plotting_files/06_plotting_54_0.png}
+\includegraphics[width=4in]{chapters/06_plotting_files/06_plotting_53_0.png}
 \end{center}
 
 To connect the dots with lines, we'll use
@@ -418,7 +409,7 @@ plt.title('Pret a Manger prices in Boston and London');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/06_plotting_files/06_plotting_56_0.png}
+\includegraphics[width=4in]{chapters/06_plotting_files/06_plotting_55_0.png}
 \end{center}
 
 \textbf{Exercise:} To finish off this example, add a legend that
@@ -604,7 +595,7 @@ plt.title("War and Peace and Zipf's law");
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/06_plotting_files/06_plotting_84_0.png}
+\includegraphics[width=4in]{chapters/06_plotting_files/06_plotting_83_0.png}
 \end{center}
 
 The most common words are very common, but the great majority of words
@@ -640,7 +631,7 @@ plt.xscale('log')
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/06_plotting_files/06_plotting_87_0.png}
+\includegraphics[width=4in]{chapters/06_plotting_files/06_plotting_86_0.png}
 \end{center}
 
 And \passthrough{\lstinline!plt.yscale!} to plot the
@@ -657,7 +648,7 @@ plt.yscale('log')
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/06_plotting_files/06_plotting_89_0.png}
+\includegraphics[width=4in]{chapters/06_plotting_files/06_plotting_88_0.png}
 \end{center}
 
 The result is not quite a straight line, but it is close. We can get a
@@ -699,7 +690,7 @@ plt.yscale('log')
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/06_plotting_files/06_plotting_95_0.png}
+\includegraphics[width=4in]{chapters/06_plotting_files/06_plotting_94_0.png}
 \end{center}
 
 The slope of this line is the ``rise over run'', that is, the difference
