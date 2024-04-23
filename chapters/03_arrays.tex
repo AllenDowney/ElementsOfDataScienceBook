@@ -288,7 +288,8 @@ london_price_list = [7.5, 5, 4.4, 5, 3.75, 2.25]
 \end{lstlisting}
 
 Lists provide some arithmetic operators, but they might not do what you
-want. For example, you can ``add'' two lists:
+want. For example, the \passthrough{\lstinline!+!} operator works with
+lists:
 
 \begin{lstlisting}[language=Python]
 boston_price_list + london_price_list
@@ -300,8 +301,9 @@ boston_price_list + london_price_list
 
 But it concatenates the two lists, which is not very useful in this
 example. To compute differences between prices, you might try
-subtracting lists, but you would get an error. We can solve this problem
-with NumPy.
+subtracting lists, but it doesn't work.
+
+We can solve this problem with NumPy.
 
 \section{NumPy Arrays}\label{numpy-arrays}
 
@@ -440,9 +442,8 @@ By this measure, which set of prices is more variable?
 In the previous section we computed differences between prices. But
 often when we make this kind of comparison, we are interested in
 \textbf{relative differences}, which are differences expressed as a
-fraction or percentage of a quantity.
-
-Taking the lobster roll as an example, the difference in price is:
+fraction or percentage of a quantity. Taking the lobster roll as an
+example, the difference in price is:
 
 \begin{lstlisting}[language=Python]
 9.99 - 7.5
@@ -492,10 +493,8 @@ to think about why that choice was made. In this example, if you want to
 make the difference seem bigger, you might put London prices in the
 denominator.
 
-If we do the same calculation with the arrays
-\passthrough{\lstinline!boston\_price\_array!} and
-\passthrough{\lstinline!boston\_price\_array!}, we can compute the
-relative differences for all sandwiches:
+If we do the same calculation with the arrays of prices, we can compute
+the relative differences for all sandwiches:
 
 \begin{lstlisting}[language=Python]
 differences = boston_price_array - london_price_array
@@ -553,7 +552,7 @@ np.mean(percent_differences)
 65.4563973063973
 \end{lstlisting}
 
-So we might say sandwiches are 65\% more expensive in Boston, on
+So we might say that sandwiches are 65\% more expensive in Boston, on
 average. But another way to summarize the data is to compute the mean
 price in each city, and then compute the percentage difference of the
 means:
@@ -644,13 +643,10 @@ total_price
 Looking at the result, we see that it did not add the sandwich prices
 elementwise, as we intended. Because the arguments are lists, the
 \passthrough{\lstinline!+!} operator concatenates them rather than
-adding the elements. We can solve this problem by converting the lists
-to arrays.
+adding the elements. We can solve this problem by using the arrays
+rather than the lists.
 
 \begin{lstlisting}[language=Python]
-boston_price_array = np.array(boston_price_list)
-london_price_array = np.array(london_price_list)
-
 total_price_array = boston_price_array + london_price_array
 total_price_array
 \end{lstlisting}
@@ -674,7 +670,6 @@ As you gain experience, you will be able to write bigger chunks of code
 before testing. But while you are getting started, keep it simple! As a
 general rule, each line of code should perform a small number of
 operations, and each cell should contain a small number of statements.
-When you are getting started, that number should be one.
 
 \section{Summary}\label{summary}
 
