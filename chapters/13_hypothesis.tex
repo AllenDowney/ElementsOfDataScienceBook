@@ -1,22 +1,4 @@
-\hypertarget{hypothesis-testing}{%
-\chapter{Hypothesis Testing}\label{hypothesis-testing}}
-
-\begin{lstlisting}[language=Python,style=source]
-from os.path import basename, exists
-
-def download(url):
-    filename = basename(url)
-    if not exists(filename):
-        from urllib.request import urlretrieve
-
-        local, _ = urlretrieve(url, filename)
-        print("Downloaded " + str(local))
-    return filename
-
-download('https://raw.githubusercontent.com/AllenDowney/ElementsOfDataScience/v1/utils.py')
-
-import utils
-\end{lstlisting}
+\chapter{Hypothesis Testing}\label{hypothesis-testing}
 
 This chapter introduces statistical hypothesis testing, which is such a
 contentious topic in the history of statistics, it's hard to provide a
@@ -52,8 +34,7 @@ related to peanut allergies, and survey data from the National Survey of
 Family Growth (NSFG) and the Behavioral Risk Factor Surveillance System
 (BRFSS).
 
-\hypertarget{testing-medical-treatments}{%
-\section{Testing Medical Treatments}\label{testing-medical-treatments}}
+\section{Testing Medical Treatments}\label{testing-medical-treatments}
 
 The LEAP study was a randomized trial that tested the effect of eating
 peanut snacks on the development of peanut allergies. The subjects were
@@ -223,8 +204,7 @@ see a result as small as that in the simulated experiment. We can
 conclude that the relative risk we saw is unlikely if the risk is
 actually the same in both groups.
 
-\hypertarget{computing-p-values}{%
-\section{Computing p-values}\label{computing-p-values}}
+\section{Computing p-values}\label{computing-p-values}
 
 Now suppose that in addition to the treatment and control groups, the
 experiment included a placebo group that was given a snack that
@@ -286,9 +266,8 @@ see a relative risk as low as 0.77 about 14\% of the time. So, for this
 imagined experiment, we can't rule out the possibility that the apparent
 difference is due to chance.
 
-\hypertarget{are-first-babies-more-likely-to-be-late}{%
 \section{Are First Babies More Likely To Be
-Late?}\label{are-first-babies-more-likely-to-be-late}}
+Late?}\label{are-first-babies-more-likely-to-be-late}
 
 In the previous example, we computed relative risk, which is a ratio of
 two proportions. As a second example, let's consider a difference
@@ -309,15 +288,15 @@ nsfg = pd.read_hdf('nsfg.hdf', 'nsfg')
 nsfg.head()
 \end{lstlisting}
 
-\begin{tabular}{lrrrrrrrrrrr}
+\begin{tabular}{lrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr}
 \midrule
- & CASEID & OUTCOME & BIRTHWGT\_LB1 & BIRTHWGT\_OZ1 & PRGLNGTH & NBRNALIV & AGECON & AGEPREG & BIRTHORD & HPAGELB & WGT2015\_2017 \\
+ & CASEID & PREGORDR & HOWPREG\_N & HOWPREG\_P & MOSCURRP & NOWPRGDK & PREGEND1 & PREGEND2 & HOWENDDK & NBRNALIV & MULTBRTH & BORNALIV & DATPRGEN\_Y & AGEATEND & HPAGEEND & GESTASUN\_M & GESTASUN\_W & WKSGEST & MOSGEST & DK1GEST & DK2GEST & DK3GEST & BABYSEX1 & BIRTHWGT\_LB1 & BIRTHWGT\_OZ1 & LOBTHWGT1 & BABYSEX2 & BIRTHWGT\_LB2 & BIRTHWGT\_OZ2 & LOBTHWGT2 & BABYSEX3 & BIRTHWGT\_LB3 & BIRTHWGT\_OZ3 & LOBTHWGT3 & BABYDOB\_Y & KIDAGE & HPAGELB & BIRTHPLC & PAYBIRTH1 & PAYBIRTH2 & PAYBIRTH3 & CSECPRIM & CSECMED1 & CSECMED2 & CSECMED3 & CSECMED4 & CSECMED5 & CSECMED6 & CSECPLAN & KNEWPREG & TRIMESTR & LTRIMEST & PRIORSMK & POSTSMKS & NPOSTSMK & GETPRENA & BGNPRENA & PNCTRIM & LPNCTRI & LIVEHERE1 & ALIVENOW1 & WHENDIED\_Y1 & WHENLEFT\_Y1 & LASTAGE1 & WHERENOW1 & LEGAGREE1 & PARENEND1 & ANYNURSE1 & FEDSOLID1 & FRSTEATD\_N1 & FRSTEATD\_P1 & FRSTEATD1 & QUITNURS1 & AGEQTNUR\_N1 & AGEQTNUR\_P1 & AGEQTNUR1 & LIVEHERE2 & ALIVENOW2 & WHENDIED\_Y2 & WHENLEFT\_Y2 & LASTAGE2 & WHERENOW2 & LEGAGREE2 & PARENEND2 & ANYNURSE2 & FEDSOLID2 & FRSTEATD\_N2 & FRSTEATD\_P2 & FRSTEATD2 & QUITNURS2 & AGEQTNUR\_N2 & AGEQTNUR\_P2 & AGEQTNUR2 & LIVEHERE3 & ALIVENOW3 & WHENDIED\_Y3 & WHENLEFT\_Y3 & LASTAGE3 & WHERENOW3 & LEGAGREE3 & PARENEND3 & ANYNURSE3 & FEDSOLID3 & FRSTEATD\_N3 & FRSTEATD\_P3 & FRSTEATD3 & QUITNURS3 & AGEQTNUR\_N3 & AGEQTNUR\_P3 & AGEQTNUR3 & PRGOUTCOME & OUTCOM\_S & NBRNLV\_S & ANYUSINT & EVUSEINT & STOPDUSE & WHYSTOPD & WHATMETH01 & WHATMETH02 & WHATMETH03 & WHATMETH04 & RESNOUSE & WANTBOLD & PROBBABE & CNFRMNO & WANTBLD2 & TIMINGOK & TOOSOON\_N & TOOSOON\_P & WTHPART1 & WTHPART2 & FEELINPG & HPWNOLD & TIMOKHP & COHPBEG & COHPEND & TELLFATH & WHENTELL & TRYSCALE & WANTSCAL & WHYPRG1 & WHYPRG2 & WHYNOUSE1 & WHYNOUSE2 & WHYNOUSE3 & WHYNOUSE4 & WHYNOUSE5 & WHYNOPG1 & WHYNOPG2 & MAINOUSE & PRGLNGTH & OUTCOME & BIRTHORD & DATEND & AGEPREG & DATECON & AGECON & FMAROUT5 & PMARPREG & RMAROUT6 & FMARCON5 & RMARCON6 & LEARNPRG & PNCAREWK & PAYDELIV & LBW1 & LIVCHILD & BFEEDWKS & OLDWANTR & OLDWANTP & WANTRESP & WANTPART & TOOSOON & NEWWANTR & AGER & AGESCRN & FMARITAL & RMARITAL & EDUCAT & HIEDUC & RACE & HISPANIC & HISPRACE & HISPRACE2 & RCURPREG & PREGNUM & PARITY & CURR\_INS & PUBASSIS & POVERTY & LABORFOR & RELIGION & METRO & BRNOUT & YRSTRUS & PRGLNGTH\_I & OUTCOME\_I & BIRTHORD\_I & DATEND\_I & AGEPREG\_I & DATECON\_I & AGECON\_I & FMAROUT5\_I & PMARPREG\_I & RMAROUT6\_I & FMARCON5\_I & RMARCON6\_I & LEARNPRG\_I & PNCAREWK\_I & PAYDELIV\_I & LBW1\_I & LIVCHILD\_I & BFEEDWKS\_I & OLDWANTR\_I & OLDWANTP\_I & WANTRESP\_I & WANTPART\_I & TOOSOON\_I & NEWWANTR\_I & AGER\_I & FMARITAL\_I & RMARITAL\_I & EDUCAT\_I & HIEDUC\_I & RACE\_I & HISPANIC\_I & HISPRACE\_I & HISPRACE2\_I & RCURPREG\_I & PREGNUM\_I & PARITY\_I & CURR\_INS\_I & PUBASSIS\_I & POVERTY\_I & LABORFOR\_I & RELIGION\_I & METRO\_I & WGT2015\_2017 & SECU & SEST & CMINTVW & CMLSTYR & CMJAN3YR & CMJAN4YR & CMJAN5YR & QUARTER & PHASE & INTVWYEAR \\
 \midrule
-0 & 70627 & 1 & 7.000000 & 8.000000 & 40 & 1.000000 & 28 & 29.000000 & 1.000000 & 5.000000 & 19877.457610 \\
-1 & 70627 & 4 & NaN & NaN & 14 & NaN & 32 & 32.000000 & NaN & NaN & 19877.457610 \\
-2 & 70627 & 1 & 9.000000 & 2.000000 & 39 & 1.000000 & 33 & 33.000000 & 2.000000 & 5.000000 & 19877.457610 \\
-3 & 70628 & 1 & 6.000000 & 9.000000 & 39 & 1.000000 & 17 & 18.000000 & 1.000000 & 1.000000 & 4221.017695 \\
-4 & 70628 & 1 & 7.000000 & 0.000000 & 39 & 1.000000 & 19 & 20.000000 & 2.000000 & 2.000000 & 4221.017695 \\
+0 & 70627 & 1 & NaN & NaN & NaN & NaN & 6.000000 & NaN & NaN & 1.000000 & NaN & 1.000000 & NaN & NaN & NaN & 0.000000 & 40.000000 & 40.000000 & 9.000000 & NaN & NaN & NaN & 2.000000 & 7.000000 & 8.000000 & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & 2009.000000 & 6.000000 & 5.000000 & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & 1.000000 & NaN & 6.000000 & 2.000000 & 1.000000 & NaN & 5.000000 & 1.000000 & 5.000000 & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & 1.000000 & 1 & 1.000000 & 1 & 1.000000 & 1.000000 & 1.000000 & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & 3.000000 & NaN & NaN & 1.000000 & NaN & NaN & 1 & 2.000000 & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & 40 & 1 & 1.000000 & 2009.000000 & 29.000000 & 2009 & 28 & 1.000000 & 2.000000 & 1.000000 & 1 & 1 & NaN & NaN & NaN & 2.000000 & 1.000000 & 22.000000 & 1 & 2 & 1 & 2 & NaN & 1 & 35 & 35 & 1 & 1 & 16 & 12 & 2 & 2 & 2 & 2 & 2 & 3 & 2 & 1 & 2 & 500 & 1 & 2 & 1 & 5 & NaN & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 19877.457610 & 3 & 322 & 1394 & 1382 & 1357 & 1345 & 1333 & 18 & 1 & 2016 \\
+1 & 70627 & 2 & NaN & NaN & NaN & NaN & 1.000000 & NaN & NaN & NaN & NaN & NaN & 2013.000000 & NaN & 5.000000 & 0.000000 & 14.000000 & 14.000000 & 3.000000 & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & 5.000000 & NaN & NaN & 0.000000 & 5.000000 & NaN & 1.000000 & 10.000000 & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & 2.000000 & 2 & NaN & 5 & NaN & NaN & NaN & NaN & NaN & NaN & NaN & 1.000000 & NaN & NaN & NaN & NaN & 3.000000 & NaN & NaN & 1.000000 & NaN & 10.000000 & 1 & 3.000000 & NaN & NaN & NaN & NaN & 8.000000 & 10.000000 & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & 14 & 4 & NaN & 2013.000000 & 32.000000 & 2013 & 32 & 1.000000 & 2.000000 & 1.000000 & 1 & 1 & 5.000000 & 10.000000 & NaN & NaN & NaN & NaN & 1 & 1 & 1 & 1 & NaN & 1 & 35 & 35 & 1 & 1 & 16 & 12 & 2 & 2 & 2 & 2 & 2 & 3 & 2 & 1 & 2 & 500 & 1 & 2 & 1 & 5 & NaN & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 19877.457610 & 3 & 322 & 1394 & 1382 & 1357 & 1345 & 1333 & 18 & 1 & 2016 \\
+2 & 70627 & 3 & NaN & NaN & NaN & NaN & 6.000000 & NaN & NaN & 1.000000 & NaN & 1.000000 & NaN & NaN & NaN & 0.000000 & 39.000000 & 39.000000 & 9.000000 & NaN & NaN & NaN & 1.000000 & 9.000000 & 2.000000 & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & 2014.000000 & 1.000000 & 5.000000 & 1.000000 & 1.000000 & 2.000000 & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & 5.000000 & NaN & NaN & 0.000000 & 5.000000 & NaN & 1.000000 & 10.000000 & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & 1.000000 & NaN & 3.000000 & 1.000000 & 3.000000 & 1.000000 & 12.000000 & 1.000000 & 12.000000 & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & 1.000000 & 1 & 1.000000 & 5 & NaN & NaN & NaN & NaN & NaN & NaN & NaN & 1.000000 & NaN & NaN & NaN & NaN & 2.000000 & NaN & NaN & 1.000000 & NaN & 10.000000 & 1 & 2.000000 & NaN & NaN & NaN & NaN & 10.000000 & 10.000000 & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & 39 & 1 & 2.000000 & 2014.000000 & 33.000000 & 2013 & 33 & 1.000000 & 2.000000 & 1.000000 & 1 & 1 & 5.000000 & 10.000000 & 3.000000 & 2.000000 & 1.000000 & 52.000000 & 2 & 2 & 2 & 2 & NaN & 2 & 35 & 35 & 1 & 1 & 16 & 12 & 2 & 2 & 2 & 2 & 2 & 3 & 2 & 1 & 2 & 500 & 1 & 2 & 1 & 5 & NaN & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 19877.457610 & 3 & 322 & 1394 & 1382 & 1357 & 1345 & 1333 & 18 & 1 & 2016 \\
+3 & 70628 & 1 & NaN & NaN & NaN & NaN & 6.000000 & NaN & NaN & 1.000000 & NaN & 1.000000 & NaN & NaN & NaN & 9.000000 & 0.000000 & 39.000000 & 9.000000 & NaN & NaN & NaN & 2.000000 & 6.000000 & 9.000000 & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & 2007.000000 & 6.000000 & 1.000000 & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & 5.000000 & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & 1.000000 & 1 & 1.000000 & 1 & 1.000000 & 5.000000 & NaN & 3.000000 & 4.000000 & NaN & NaN & NaN & 5.000000 & NaN & NaN & NaN & NaN & NaN & NaN & NaN & 4.000000 & NaN & 6 & NaN & 5.000000 & 5.000000 & 1.000000 & 1.000000 & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & 39 & 1 & 1.000000 & 2007.000000 & 18.000000 & 2006 & 17 & 5.000000 & 1.000000 & 6.000000 & 5 & 6 & NaN & NaN & NaN & 2.000000 & 1.000000 & 995.000000 & 5 & 6 & 5 & 6 & NaN & 6 & 28 & 28 & 1 & 1 & 15 & 11 & 1 & 2 & 3 & 3 & 2 & 3 & 3 & 1 & 2 & 189 & 1 & 3 & 1 & 5 & NaN & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 4221.017695 & 2 & 366 & 1409 & 1397 & 1369 & 1357 & 1345 & 23 & 1 & 2017 \\
+4 & 70628 & 2 & NaN & NaN & NaN & NaN & 6.000000 & NaN & NaN & 1.000000 & NaN & 1.000000 & NaN & NaN & NaN & 9.000000 & 0.000000 & 39.000000 & 9.000000 & NaN & NaN & NaN & 2.000000 & 7.000000 & 0.000000 & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & 2008.000000 & 6.000000 & 2.000000 & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & 1.000000 & NaN & 3.000000 & 1.000000 & 3.000000 & NaN & 3.000000 & 1.000000 & 3.000000 & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & 1.000000 & 1 & 1.000000 & 5 & 1.000000 & 5.000000 & NaN & 3.000000 & NaN & NaN & NaN & NaN & 1.000000 & NaN & NaN & NaN & 1.000000 & 2.000000 & 2.000000 & NaN & 2.000000 & NaN & 6 & NaN & 1.000000 & 1.000000 & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & NaN & 39 & 1 & 2.000000 & 2008.000000 & 20.000000 & 2008 & 19 & 5.000000 & 1.000000 & 5.000000 & 5 & 5 & NaN & NaN & NaN & 2.000000 & 1.000000 & 13.000000 & 3 & 6 & 3 & 6 & 24.000000 & 4 & 28 & 28 & 1 & 1 & 15 & 11 & 1 & 2 & 3 & 3 & 2 & 3 & 3 & 1 & 2 & 189 & 1 & 3 & 1 & 5 & NaN & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 4221.017695 & 2 & 366 & 1409 & 1397 & 1369 & 1357 & 1345 & 23 & 1 & 2017 \\
 \midrule
 \end{tabular}
 
@@ -487,9 +466,8 @@ In summary, the results in this section suggest that the observed
 difference is unlikely to be due to chance, but there are other possible
 explanations.
 
-\hypertarget{the-hypothesis-testing-framework}{%
 \section{The Hypothesis Testing
-Framework}\label{the-hypothesis-testing-framework}}
+Framework}\label{the-hypothesis-testing-framework}
 
 The examples we've done so far fit into the framework shown in this
 diagram:
@@ -609,8 +587,7 @@ same distribution. Under the null hypothesis, how often does the
 difference in means exceed the actual difference in the dataset? What
 conclusion can you draw from this result?
 
-\hypertarget{testing-correlation}{%
-\section{Testing Correlation}\label{testing-correlation}}
+\section{Testing Correlation}\label{testing-correlation}
 
 The method we used in the previous section is called a
 \textbf{permutation test} because we permuted the pregnancy lengths
@@ -826,8 +803,7 @@ relationship. So testing a correlation might not be the most useful
 thing to do in the first place. We can do better by testing a regression
 model.
 
-\hypertarget{testing-regression-models}{%
-\section{Testing Regression Models}\label{testing-regression-models}}
+\section{Testing Regression Models}\label{testing-regression-models}
 
 In the previous sections we used permutation to simulate a world where
 there is no correlation between two variables. In this section we'll
@@ -947,8 +923,7 @@ print(np.max(rsquared_null), results.rsquared)
 0.009536120931481635 0.007578923866134457
 \end{lstlisting}
 
-\hypertarget{controlling-for-age}{%
-\section{Controlling for Age}\label{controlling-for-age}}
+\section{Controlling for Age}\label{controlling-for-age}
 
 In a previous exercise, you computed the difference in birth weight
 between first babies and others, which is about 0.17 pounds, and you
@@ -1119,8 +1094,7 @@ with the BRFSS dataset, where the correlations we tested were \emph{all}
 statistically significant, even the ones that are too small to matter in
 practice.
 
-\hypertarget{summary}{%
-\section{Summary}\label{summary}}
+\section{Summary}\label{summary}
 
 Let's review the examples in this chapter:
 
@@ -1163,46 +1137,7 @@ age of a father and a variety of outcomes for his children. There is
 some evidence that young fathers and old fathers have lighter babies, on
 average, than fathers in the middle range of ages. Let's see if that's
 true for the babies in the NSFG dataset. The
-\passthrough{\lstinline!HPAGELB!} column encodes the father's age. Here
-are the values, after replacing the codes for missing data with
-\passthrough{\lstinline!NaN!}.
-
-\begin{lstlisting}[language=Python,style=source]
-data['HPAGELB'].replace([98, 99], np.nan, inplace=True)
-data['HPAGELB'].value_counts().sort_index()
-\end{lstlisting}
-
-\begin{lstlisting}[style=output]
-HPAGELB
-1.0     478
-2.0    1391
-3.0    1650
-4.0    1225
-5.0     592
-6.0     411
-Name: count, dtype: int64
-\end{lstlisting}
-
-And here's what the codes mean:
-
-\begin{longtable}[]{@{}ll@{}}
-\midrule()
-Code & Age \\
-\midrule()
-\endhead
-1 & Under 20 years \\
-2 & 20-24 years \\
-3 & 25-29 years \\
-4 & 30-34 years \\
-5 & 35-39 years \\
-6 & 40 years or older \\
-\midrule()
-\end{longtable}
-
-Let's create a new column that's true for the fathers in the youngest
-and oldest groups. The \passthrough{\lstinline!isin!} method checks
-whether the values in a \passthrough{\lstinline!Series!} are in the
-given list.
+\passthrough{\lstinline!HPAGELB!} column encodes the father's age.
 
 \begin{lstlisting}[language=Python,style=source]
 data['YO_DAD'] = data['HPAGELB'].isin([1, 6])
