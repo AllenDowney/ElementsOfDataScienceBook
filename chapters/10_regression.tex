@@ -1,5 +1,4 @@
-\hypertarget{regression}{%
-\chapter{Regression}\label{regression}}
+\chapter{Regression}\label{regression}
 
 In the previous chapter we used simple linear regression to quantify the
 relationship between two variables. In this chapter we'll get farther
@@ -68,9 +67,7 @@ The estimated slope is about \passthrough{\lstinline!3450!}, which means
 that each additional year of education is associated with an additional
 \$3450 of income.
 
-\hypertarget{regression-with-statsmodels}{%
-\section{Regression with
-StatsModels}\label{regression-with-statsmodels}}
+\section{Regression with StatsModels}\label{regression-with-statsmodels}
 
 SciPy doesn't do multiple regression, so we'll to switch to a new
 library, StatsModels. Here's the import statement.
@@ -123,8 +120,7 @@ of \passthrough{\lstinline!realinc!} as a function of
 are the same. Remember to use \passthrough{\lstinline!dropna!} to select
 the rows with valid data in both columns.
 
-\hypertarget{multiple-regression}{%
-\section{Multiple Regression}\label{multiple-regression}}
+\section{Multiple Regression}\label{multiple-regression}
 
 In the previous section, we saw that income depends on education, and in
 the exercise we saw that it also depends on
@@ -172,8 +168,7 @@ constant.
 In this model, the contribution of age is quite small, but as we'll see
 in the next section that might be misleading.
 
-\hypertarget{grouping-by-age}{%
-\section{Grouping by Age}\label{grouping-by-age}}
+\section{Grouping by Age}\label{grouping-by-age}
 
 Let's look more closely at the relationship between income and age.
 We'll use a Pandas method we have not seen before, called
@@ -287,9 +282,8 @@ fitting a non-linear model.
   \passthrough{\lstinline!realinc!}.
 \end{itemize}
 
-\hypertarget{visualizing-regression-results}{%
 \section{Visualizing regression
-results}\label{visualizing-regression-results}}
+results}\label{visualizing-regression-results}
 
 In the previous section we ran a multiple regression model to
 characterize the relationships between income, age, and education.
@@ -465,8 +459,7 @@ exercise.
 
 How do the predictions compare with the data?
 
-\hypertarget{categorical-variables}{%
-\section{Categorical Variables}\label{categorical-variables}}
+\section{Categorical Variables}\label{categorical-variables}
 
 Most of the variables we have used so far -- like income, age, and
 education -- are numerical. But variables like sex and race are
@@ -505,8 +498,7 @@ respondent is married, it includes both their own income and their
 spouse's. So we cannot interpret this result as an estimate of a gender
 gap in income.
 
-\hypertarget{logistic-regression}{%
-\section{Logistic Regression}\label{logistic-regression}}
+\section{Logistic Regression}\label{logistic-regression}
 
 In the previous section, we added a categorical variables on the right
 side of a regression formula -- that is, we used it as a predictive
@@ -695,8 +687,7 @@ age, sex, and education level.
   support predicted for women as a function of age.
 \end{enumerate}
 
-\hypertarget{summary}{%
-\section{Summary}\label{summary}}
+\section{Summary}\label{summary}
 
 At this point, I'd like to summarize the topics we've covered so far,
 and make some connections that might clarify the big picture. A central
