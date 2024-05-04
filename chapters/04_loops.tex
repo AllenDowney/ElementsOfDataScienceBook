@@ -1,35 +1,16 @@
-\hypertarget{loops-and-files}{%
-\chapter{Loops and Files}\label{loops-and-files}}
+\chapter{Loops and Files}\label{loops-and-files}
 
-\begin{lstlisting}[language=Python,style=source]
-from os.path import basename, exists
-
-def download(url):
-    filename = basename(url)
-    if not exists(filename):
-        from urllib.request import urlretrieve
-
-        local, _ = urlretrieve(url, filename)
-        print("Downloaded " + str(local))
-    return filename
-
-download('https://raw.githubusercontent.com/AllenDowney/ElementsOfDataScience/v1/utils.py')
-
-import utils
-\end{lstlisting}
-
-This chapter presents loops, which are used to represent repeated
+This chapter presents loops, which are used to perform repeated
 computation, and files, which are used to store data. As an example, we
 will download the famous book \emph{War and Peace} and write a loop that
 reads the book and counts the words. This example presents some new
 computational tools -- it is also an introduction to working with
 textual data.
 
-\hypertarget{loops}{%
-\section{Loops}\label{loops}}
+\section{Loops}\label{loops}
 
 One of the most important elements of computation is repetition, and the
-most common way to represent repetition is a
+most common way to perform repetitive computations is a
 \passthrough{\lstinline!for!} loop. As a simple example, suppose we want
 to display the elements of a tuple. Here's a tuple of three integers:
 
@@ -116,15 +97,11 @@ letter
 a \passthrough{\lstinline!for!} loop that prints the elements. Call the
 loop variable \passthrough{\lstinline!element!}.
 
-\hypertarget{counting-with-loops}{%
-\section{Counting with Loops}\label{counting-with-loops}}
+\section{Counting with Loops}\label{counting-with-loops}
 
-\emph{War and Peace} is a famously long book -- let's see how long it
-is. To count the words we need two elements: looping through the words
-in a text, and counting. We'll start with counting.
-
-We've already seen that you can create a variable and give it a value,
-like this:
+Inside a loop, it is common to use a variable to count the number of
+times something happens. We've already seen that you can create a
+variable and give it a value, like this:
 
 \begin{lstlisting}[language=Python,style=source]
 count = 0
@@ -204,13 +181,13 @@ value of \passthrough{\lstinline!count!}, adds
 Test this algorithm using your age. Use a single variable and update it
 using \passthrough{\lstinline!+=!} and other update operators.
 
-\hypertarget{files}{%
-\section{Files}\label{files}}
+\section{Files}\label{files}
 
 Now that we know how to count, let's see how to read words from a file.
 As an example, we'll read a file that contains the text of Tolstoy's
 famous novel, \emph{War and Peace}. We can download it from Project
-Gutenberg, which is a repository of free books.
+Gutenberg, which is a repository of free books. Instructions are in the
+notebook for this chapter.
 
 In order to read the contents of the file, you have to \textbf{open} it,
 which you can do with the \passthrough{\lstinline!open!} function.
@@ -254,14 +231,11 @@ count
 
 There are about 66,000 lines in this file.
 
-\hypertarget{if-statements}{%
-\section{if Statements}\label{if-statements}}
+\section{if Statements}\label{if-statements}
 
 \passthrough{\lstinline!if!} statements are used to check whether a
 condition is true and, depending on the result, perform different
-computations.
-
-A condition is an expression whose value is either
+computations. A condition is an expression whose value is either
 \passthrough{\lstinline!True!} or \passthrough{\lstinline!False!}. For
 example, the following expression compares the final value of
 \passthrough{\lstinline!count!} to a number:
@@ -341,9 +315,8 @@ in assignment statements. Also, notice the indentation in this example:
 It is legal in Python to use spaces or tabs for indentation, but the
 most common convention is to use four spaces, never tabs.
 
-\hypertarget{the-break-statement}{%
 \section{\texorpdfstring{The \texttt{break}
-Statement}{The break Statement}}\label{the-break-statement}}
+Statement}{The break Statement}}\label{the-break-statement}
 
 If we display the final value of \passthrough{\lstinline!count!}, we see
 that the loop reads the entire file, but only prints one line:
@@ -374,8 +347,8 @@ The Project Gutenberg EBook of War and Peace, by Leo Tolstoy
 \end{lstlisting}
 
 The \passthrough{\lstinline!break!} statement ends the loop immediately,
-skipping the rest of the file. We can confirm that by checking the final
-value of \passthrough{\lstinline!count!}:
+skipping the rest of the file, as we can confirm that by checking the
+final value of \passthrough{\lstinline!count!}:
 
 \begin{lstlisting}[language=Python,style=source]
 count
@@ -388,8 +361,7 @@ count
 \textbf{Exercise:} Write a loop that prints the first 5 lines of the
 file and then breaks out of the loop.
 
-\hypertarget{whitespace}{%
-\section{Whitespace}\label{whitespace}}
+\section{Whitespace}\label{whitespace}
 
 If we run the loop again and display the final value of
 \passthrough{\lstinline!line!}, we see the special sequence
@@ -430,12 +402,12 @@ you print a tab character, it adds enough space to make the next
 character appear in a column that is a multiple of 8.
 
 \begin{lstlisting}[language=Python,style=source]
-print('01234567' * 6)
+print('|       ' * 6)
 print('a\tbc\tdef\tghij\tklmno\tpqrstu')
 \end{lstlisting}
 
 \begin{lstlisting}[style=output]
-012345670123456701234567012345670123456701234567
+|       |       |       |       |       |       
 a   bc  def ghij    klmno   pqrstu
 \end{lstlisting}
 
@@ -443,15 +415,14 @@ Newline characters, tabs, and spaces are called \textbf{whitespace}
 because when they are printed they leave white space on the page
 (assuming that the background color is white).
 
-\hypertarget{counting-words}{%
-\section{Counting Words}\label{counting-words}}
+\section{Counting Words}\label{counting-words}
 
 So far we've counted the lines in a file -- now let's count the words.
 To split a line into words, we can use a function called
 \passthrough{\lstinline!split!} that takes a string and returns a list
 of words. To be more precise, \passthrough{\lstinline!split!} doesn't
-actually know what a word is; it just splits the line wherever there's a
-space or other whitespace character.
+actually know what a word is -- it just splits the line wherever there's
+a space or other whitespace character.
 
 \begin{lstlisting}[language=Python,style=source]
 line.split()
@@ -503,9 +474,7 @@ fp = open('2600-0.txt')
 count = 0
 for line in fp:
     count += len(line.split())
-\end{lstlisting}
 
-\begin{lstlisting}[language=Python,style=source]
 count
 \end{lstlisting}
 
@@ -514,89 +483,66 @@ count
 \end{lstlisting}
 
 By this count, there are more than half a million words in \emph{War and
-Peace}. Actually, there aren't quite that many, because the file we got
-from Project Gutenberg has some introductory text and a table of
-contents before the text. And it has some license information at the
-end. To skip this ``front matter'', we can use one loop to read lines
-until we get to \passthrough{\lstinline!CHAPTER I!}, and then a second
-loop to count the words in the remaining lines.
+Peace}.
 
-The file pointer, \passthrough{\lstinline!fp!}, keeps track of where it
-is in the file, so the second loop picks up where the first loop leaves
-off. In the second loop, we check for the end of the book and stop, so
-we ignore the ``back matter'' at the end of the file.
+Actually, there aren't quite that many, because the file we got from
+Project Gutenberg has some introductory material before the text and
+some license information at the end. To mark the beginning and end of
+the text, the file includes special lines that begin with
+\passthrough{\lstinline!'***'!}. We can identify these lines with the
+\passthrough{\lstinline!startswith!} function, which checks whether a
+string begins with a particular sequence of characters.
 
 \begin{lstlisting}[language=Python,style=source]
-first_line = "CHAPTER I\n"
-last_line = "End of the Project Gutenberg EBook of War and Peace, by Leo Tolstoy\n"
+line = '*** START OF THIS PROJECT GUTENBERG EBOOK WAR AND PEACE ***'
+line.startswith('***')
+\end{lstlisting}
 
+\begin{lstlisting}[style=output]
+True
+\end{lstlisting}
+
+To skip the front matter, we can use a loop to read lines until it finds
+the first line that starts with this sequence.
+
+Then we can use a second loop to read lines and count words until it
+finds the second line that starts with this sequence.
+
+\begin{lstlisting}[language=Python,style=source]
 fp = open('2600-0.txt')
 for line in fp:
-    if line == first_line:
+    if line.startswith('***'):
+        print(line)
         break
 
 count = 0
 for line in fp:
-    if line == last_line:
+    if line.startswith('***'):
         print(line)
         break
     count += len(line.split())
 \end{lstlisting}
 
 \begin{lstlisting}[style=output]
-End of the Project Gutenberg EBook of War and Peace, by Leo Tolstoy
+*** START OF THIS PROJECT GUTENBERG EBOOK WAR AND PEACE ***
+
+
+
+*** END OF THIS PROJECT GUTENBERG EBOOK WAR AND PEACE ***
 \end{lstlisting}
+
+When the second loop exits, \passthrough{\lstinline!count!} contains the
+number of words in the text.
 
 \begin{lstlisting}[language=Python,style=source]
 count
 \end{lstlisting}
 
 \begin{lstlisting}[style=output]
-562482
+563305
 \end{lstlisting}
 
-Notice that the strings \passthrough{\lstinline!first\_line!} and
-\passthrough{\lstinline!last\_line!} each have a newline at the end. If
-we leave that out, the program doesn't work, because the lines from the
-file each have a newline at the end, and when strings are compared,
-whitespace counts.
-
-\textbf{Exercise:}
-
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\item
-  In the previous program, replace \passthrough{\lstinline!==!} with
-  \passthrough{\lstinline!=!} and see what happens. This is a common
-  error, so it is good to see what the error message looks like.
-\item
-  Correct the previous error, then remove the newline character after
-  \passthrough{\lstinline!CHAPTER I!}, and see what happens.
-\end{enumerate}
-
-The first error is a \textbf{syntax error}, which means that the program
-violates the rules of Python. If your program has a syntax error, an
-error message is displayed, and the program is never run.
-
-The second error is a \textbf{logic error}, which means that there is
-something wrong with the logic of the program. The syntax is legal, and
-the program runs, but it doesn't do what we wanted. Logic errors can be
-hard to find because they don't display error messages.
-
-If you have a logic error, here are two strategies for debugging:
-
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\item
-  Add \passthrough{\lstinline!print!} statements so the program displays
-  additional information while it runs.
-\item
-  Simplify the program until it does what you expect, and then gradually
-  add more code, testing as you go.
-\end{enumerate}
-
-\hypertarget{summary}{%
-\section{Summary}\label{summary}}
+\section{Summary}\label{summary}
 
 This chapter presents loops, \passthrough{\lstinline!if!} statements,
 and the \passthrough{\lstinline!break!} statement. It also introduces
