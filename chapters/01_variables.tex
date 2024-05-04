@@ -1,112 +1,3 @@
-% Options for packages loaded elsewhere
-\PassOptionsToPackage{unicode}{hyperref}
-\PassOptionsToPackage{hyphens}{url}
-%
-\documentclass[
-]{book}
-\usepackage{amsmath,amssymb}
-\usepackage{iftex}
-\ifPDFTeX
-  \usepackage[T1]{fontenc}
-  \usepackage[utf8]{inputenc}
-  \usepackage{textcomp} % provide euro and other symbols
-\else % if luatex or xetex
-  \usepackage{unicode-math} % this also loads fontspec
-  \defaultfontfeatures{Scale=MatchLowercase}
-  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
-\fi
-\usepackage{lmodern}
-\ifPDFTeX\else
-  % xetex/luatex font selection
-\fi
-% Use upquote if available, for straight quotes in verbatim environments
-\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
-\IfFileExists{microtype.sty}{% use microtype if available
-  \usepackage[]{microtype}
-  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
-}{}
-\makeatletter
-\@ifundefined{KOMAClassName}{% if non-KOMA class
-  \IfFileExists{parskip.sty}{%
-    \usepackage{parskip}
-  }{% else
-    \setlength{\parindent}{0pt}
-    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
-}{% if KOMA class
-  \KOMAoptions{parskip=half}}
-\makeatother
-\usepackage{xcolor}
-\usepackage{listings}
-\newcommand{\passthrough}[1]{#1}
-\lstset{defaultdialect=[5.3]Lua}
-\lstset{defaultdialect=[x86masm]Assembler}
-\setlength{\emergencystretch}{3em} % prevent overfull lines
-\providecommand{\tightlist}{%
-  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
-\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
-\ifLuaTeX
-  \usepackage{selnolig}  % disable illegal ligatures
-\fi
-\usepackage{bookmark}
-\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
-\urlstyle{same}
-\hypersetup{
-  hidelinks,
-  pdfcreator={LaTeX via pandoc}}
-
-\author{}
-\date{}
-
-\begin{document}
-\frontmatter
-
-{
-\setcounter{tocdepth}{2}
-\tableofcontents
-}
-\mainmatter
-\begin{lstlisting}[language=Python]
-from os.path import basename, exists
-
-def download(url):
-    filename = basename(url)
-    if not exists(filename):
-        from urllib.request import urlretrieve
-
-        local, _ = urlretrieve(url, filename)
-        print("Downloaded " + str(local))
-    return filename
-
-download('https://raw.githubusercontent.com/AllenDowney/ElementsOfDataScience/v1/utils.py')
-
-import utils
-
-import pandas as pd
-
-# pd.set_option('display.latex.repr', True)
-
-def to_latex(df, *args, **options):
-    return df.to_latex(escape=True)
-
-pd.DataFrame._repr_html_ = to_latex
-
-import warnings
-warnings.simplefilter(action='ignore', category=FutureWarning)
-warnings.simplefilter(action='ignore', category=SyntaxWarning)
-
-import matplotlib.pyplot as plt
-
-# see https://matplotlib.org/stable/users/prev_whats_new/dflt_style_changes.html#figure-size-font-size-and-screen-dpi
-plt.rcParams['figure.dpi'] = 300
-
-#plt.rcParams['figure.figsize'] = (6.4, 4.0)
-#plt.rcParams['font.size'] = 14
-#plt.rcParams['legend.fontsize'] = 14
-#plt.rcParams['axes.titlesize'] = 16
-
-# %config InlineBackend.figure_format = 'pdf'
-\end{lstlisting}
-
 \chapter{Variables and Values}\label{variables-and-values}
 
 The topics in this chapter are:
@@ -141,22 +32,22 @@ Most often, we use \passthrough{\lstinline!int!} to represent counts and
 \passthrough{\lstinline!float!} to represent measurements. Here's an
 example of an \passthrough{\lstinline!int!}:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 3
 \end{lstlisting}
 
-\begin{lstlisting}
+\begin{lstlisting}[style=output]
 3
 \end{lstlisting}
 
 When you run a cell that contains a value like this, Jupyter displays
 the value. Here's an example of a \passthrough{\lstinline!float!}:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 3.14159
 \end{lstlisting}
 
-\begin{lstlisting}
+\begin{lstlisting}[style=output]
 3.14159
 \end{lstlisting}
 
@@ -164,11 +55,11 @@ the value. Here's an example of a \passthrough{\lstinline!float!}:
 is the name for the way these numbers are stored. Floating-point numbers
 can also be written in a format similar to scientific notation:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 1.2345e3
 \end{lstlisting}
 
-\begin{lstlisting}
+\begin{lstlisting}[style=output]
 1234.5
 \end{lstlisting}
 
@@ -182,40 +73,40 @@ Python provides operators that perform arithmetic. The operators that
 perform addition and subtraction are \passthrough{\lstinline!+!} and
 \passthrough{\lstinline!-!}:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 3 + 2 - 1
 \end{lstlisting}
 
-\begin{lstlisting}
+\begin{lstlisting}[style=output]
 4
 \end{lstlisting}
 
 The operators that perform multiplication and division are
 \passthrough{\lstinline!*!} and \passthrough{\lstinline!/!}:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 2 * 3
 \end{lstlisting}
 
-\begin{lstlisting}
+\begin{lstlisting}[style=output]
 6
 \end{lstlisting}
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 2 / 3
 \end{lstlisting}
 
-\begin{lstlisting}
+\begin{lstlisting}[style=output]
 0.6666666666666666
 \end{lstlisting}
 
 And the operator for exponentiation is \passthrough{\lstinline!**!}:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 2 ** 3
 \end{lstlisting}
 
-\begin{lstlisting}
+\begin{lstlisting}[style=output]
 8
 \end{lstlisting}
 
@@ -227,13 +118,13 @@ NOTE: The following cell uses \passthrough{\lstinline!\%\%expect!},
 which is a Jupyter ``magic command'' that means we expect the code in
 this cell to produce an error.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 %%expect TypeError
 
 3 (2 + 1)
 \end{lstlisting}
 
-\begin{lstlisting}
+\begin{lstlisting}[style=output]
 TypeError: 'int' object is not callable
 \end{lstlisting}
 
@@ -245,7 +136,7 @@ The arithmetic operators follow the rules of precedence you might have
 learned as ``PEMDAS'':
 
 \begin{itemize}
-\tightlist
+
 \item
   Parentheses before
 \item
@@ -258,22 +149,22 @@ learned as ``PEMDAS'':
 
 So in this expression:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 1 + 2 * 3
 \end{lstlisting}
 
-\begin{lstlisting}
+\begin{lstlisting}[style=output]
 7
 \end{lstlisting}
 
 The multiplication happens first. If that's not what you want, you can
 use parentheses to make the order of operations explicit:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 (1 + 2) * 3
 \end{lstlisting}
 
-\begin{lstlisting}
+\begin{lstlisting}[style=output]
 9
 \end{lstlisting}
 
@@ -295,7 +186,7 @@ one we'll use is called NumPy, which stands for ``Numerical Python'',
 and is pronounced ``num pie''. Before you can use a library, you have to
 \textbf{import} it. Here's how we import NumPy:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 import numpy as np
 \end{lstlisting}
 
@@ -308,13 +199,13 @@ which means that \passthrough{\lstinline!numpy!} is not the same as
 is NumPy, when we import it we have to call it
 \passthrough{\lstinline!numpy!}.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 %%expect ModuleNotFoundError
 
 import NumPy as np
 \end{lstlisting}
 
-\begin{lstlisting}
+\begin{lstlisting}[style=output]
 ModuleNotFoundError: No module named 'NumPy'
 \end{lstlisting}
 
@@ -324,11 +215,11 @@ difference between uppercase and lowercase. But assuming we import
 \passthrough{\lstinline!pi!}, which represents the mathematical constant
 \(\pi\).
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 np.pi
 \end{lstlisting}
 
-\begin{lstlisting}
+\begin{lstlisting}[style=output]
 3.141592653589793
 \end{lstlisting}
 
@@ -339,22 +230,22 @@ so this result is only approximate.
 NumPy provides \passthrough{\lstinline!log!}, which computes the natural
 logarithm
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 np.log(100)
 \end{lstlisting}
 
-\begin{lstlisting}
+\begin{lstlisting}[style=output]
 4.605170185988092
 \end{lstlisting}
 
 NumPy also provides \passthrough{\lstinline!exp!}, which raises the
 constant \passthrough{\lstinline!e!} to a power.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 np.exp(1)
 \end{lstlisting}
 
-\begin{lstlisting}
+\begin{lstlisting}[style=output]
 2.718281828459045
 \end{lstlisting}
 
@@ -370,11 +261,11 @@ Floating-point numbers are finite approximations, which means they don't
 always behave like math. As another example, let's see what happens if
 we add up \passthrough{\lstinline!0.1!} three times:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 0.1 + 0.1 + 0.1
 \end{lstlisting}
 
-\begin{lstlisting}
+\begin{lstlisting}[style=output]
 0.30000000000000004
 \end{lstlisting}
 
@@ -388,7 +279,7 @@ A \textbf{variable} is a name that refers to a value. The following
 statement assigns the value \passthrough{\lstinline!5!} to a variable
 named \passthrough{\lstinline!x!}:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 x = 5
 \end{lstlisting}
 
@@ -398,29 +289,29 @@ and the value \passthrough{\lstinline!5!}.
 If we use \passthrough{\lstinline!x!} as part of an arithmetic
 operation, it represents the value \passthrough{\lstinline!5!}:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 x + 1
 \end{lstlisting}
 
-\begin{lstlisting}
+\begin{lstlisting}[style=output]
 6
 \end{lstlisting}
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 x**2
 \end{lstlisting}
 
-\begin{lstlisting}
+\begin{lstlisting}[style=output]
 25
 \end{lstlisting}
 
 We can also use a variable when we call a function:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 np.exp(x)
 \end{lstlisting}
 
-\begin{lstlisting}
+\begin{lstlisting}[style=output]
 148.4131591025766
 \end{lstlisting}
 
@@ -440,7 +331,7 @@ as long as the meaning is clear, as in \(\sin \omega t\). In Python,
 every character counts. For example, the following are all different,
 and only the first one works:
 
-\begin{lstlisting}
+\begin{lstlisting}[style=output]
 np.exp(x)
 np.Exp(x)
 np.exp[x]
@@ -476,7 +367,7 @@ frequency. For example, if you deposit \$2,100 in a bank paying an
 annual interest rate of 3.4\% compounded four times a year, we can
 compute the balance after 7 years by defining these variables:
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 P = 2100
 r = 0.034
 n = 4
@@ -485,11 +376,11 @@ t = 7
 
 And computing the total accumulated value like this.
 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[language=Python,style=source]
 P * (1 + r/n)**(n*t)
 \end{lstlisting}
 
-\begin{lstlisting}
+\begin{lstlisting}[style=output]
 2661.6108980682593
 \end{lstlisting}
 
@@ -519,5 +410,3 @@ and \passthrough{\lstinline!exp!} for raising
 In the next chapter, we'll see additional data types for representing
 letters and words, dates and times, and latitude and longitude.
 
-\backmatter
-\end{document}
