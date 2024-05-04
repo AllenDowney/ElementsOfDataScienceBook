@@ -1,6 +1,5 @@
-\hypertarget{political-alignment-and-outlook}{%
 \chapter{Political Alignment and
-Outlook}\label{political-alignment-and-outlook}}
+Outlook}\label{political-alignment-and-outlook}
 
 In the previous chapter, we used data from the General Social Survey
 (GSS) to plot changes in political alignment over time. In this
@@ -58,11 +57,10 @@ gss.shape
 \end{lstlisting}
 
 \begin{lstlisting}[style=output]
-(68846, 204)
+(72390, 207)
 \end{lstlisting}
 
-\hypertarget{are-people-fair}{%
-\section{Are People Fair?}\label{are-people-fair}}
+\section{Are People Fair?}\label{are-people-fair}
 
 In the GSS data, the variable \passthrough{\lstinline!fair!} contains
 responses to this question:
@@ -75,14 +73,15 @@ a chance, or would they try to be fair?
 The possible responses are:
 
 \begin{longtable}[]{@{}ll@{}}
-\midrule()
+\midrule\noalign{}
 Code & Response \\
-\midrule()
+\midrule\noalign{}
 \endhead
+\midrule\noalign{}
+\endlastfoot
 1 & Take advantage \\
 2 & Fair \\
 3 & Depends \\
-\midrule()
 \end{longtable}
 
 As always, we start by looking at the distribution of responses, that
@@ -94,9 +93,10 @@ values(gss["fair"])
 
 \begin{lstlisting}[style=output]
 fair
-1.0    15435
-2.0    22806
-3.0     2755
+1.0    16089
+2.0    23417
+3.0     2897
+NaN    29987
 Name: count, dtype: int64
 \end{lstlisting}
 
@@ -109,7 +109,7 @@ gss["fair"].isna().sum()
 \end{lstlisting}
 
 \begin{lstlisting}[style=output]
-27850
+29987
 \end{lstlisting}
 
 To count the number of people who chose option
@@ -141,15 +141,15 @@ values(gss["fair2"])
 
 \begin{lstlisting}[style=output]
 fair2
-0.0    18190
-1.0    22806
+0.0    18986
+1.0    23417
+NaN    29987
 Name: count, dtype: int64
 \end{lstlisting}
 
 Now let's see how the responses have changed over time.
 
-\hypertarget{fairness-over-time}{%
-\section{Fairness Over Time}\label{fairness-over-time}}
+\section{Fairness Over Time}\label{fairness-over-time}
 
 As we saw in the previous chapter, we can use
 \passthrough{\lstinline!groupby!} to group responses by year.
@@ -188,31 +188,13 @@ Sadly, it looks like faith in humanity has declined, at least by this
 measure. Let's see what this trend looks like if we group the
 respondents by political alignment.
 
-\hypertarget{political-views-on-a-3-point-scale}{%
 \section{Political Views on a 3-point
-Scale}\label{political-views-on-a-3-point-scale}}
+Scale}\label{political-views-on-a-3-point-scale}
 
 In the previous notebook, we looked at responses to
 \passthrough{\lstinline!polviews!}, which asks about political
-alignment. The valid responses are:
-
-\begin{longtable}[]{@{}ll@{}}
-\midrule()
-Code & Response \\
-\midrule()
-\endhead
-1 & Extremely liberal \\
-2 & Liberal \\
-3 & Slightly liberal \\
-4 & Moderate \\
-5 & Slightly conservative \\
-6 & Conservative \\
-7 & Extremely conservative \\
-\midrule()
-\end{longtable}
-
-To make it easier to visualize groups, we'll lump the 7-point scale into
-a 3-point scale.
+alignment. To make it easier to visualize groups, we'll lump the 7-point
+scale into a 3-point scale.
 
 \begin{lstlisting}[language=Python,style=source]
 recode_polviews = {
@@ -236,20 +218,7 @@ gss["polviews3"] = gss["polviews"].replace(recode_polviews)
 With this scale, there are roughly the same number of people in each
 group.
 
-\begin{lstlisting}[language=Python,style=source]
-values(gss["polviews3"])
-\end{lstlisting}
-
-\begin{lstlisting}[style=output]
-polviews3
-Conservative    20359
-Liberal         16195
-Moderate        22950
-Name: count, dtype: int64
-\end{lstlisting}
-
-\hypertarget{fairness-by-group}{%
-\section{Fairness by Group}\label{fairness-by-group}}
+\section{Fairness by Group}\label{fairness-by-group}
 
 Now let's see who thinks people are more fair, conservatives or
 liberals. We'll group the respondents by
@@ -267,9 +236,9 @@ by_polviews["fair2"].mean()
 
 \begin{lstlisting}[style=output]
 polviews3
-Conservative    0.582789
-Liberal         0.553916
-Moderate        0.542407
+Conservative    0.577879
+Liberal         0.550849
+Moderate        0.537621
 Name: fair2, dtype: float64
 \end{lstlisting}
 
@@ -277,9 +246,7 @@ It looks like conservatives are a little more optimistic, in this sense,
 than liberals and moderates. But this result is averaged over the last
 50 years. Let's see how things have changed over time.
 
-\hypertarget{fairness-over-time-by-group}{%
-\section{Fairness over Time by
-Group}\label{fairness-over-time-by-group}}
+\section{Fairness over Time by Group}\label{fairness-over-time-by-group}
 
 So far, we have grouped by \passthrough{\lstinline!polviews3!} and
 computed the mean of \passthrough{\lstinline!fair2!} in each group. Then
@@ -350,8 +317,7 @@ column, we can see that the estimated mean of
 year. It is hard to tell looking at these numbers whether it is trending
 up or down -- we can get a better view by plotting the results.
 
-\hypertarget{plotting-the-results}{%
-\section{Plotting the Results}\label{plotting-the-results}}
+\section{Plotting the Results}\label{plotting-the-results}
 
 Before we plot the results, I'll make a dictionary that maps from each
 group to a color. Seaborn provide a palette called
@@ -400,9 +366,8 @@ should not be too confident about these conclusions.
 We can get a sense of how reliable they are by running the resampling
 process a few times and checking how much the results vary.
 
-\hypertarget{simulating-possible-datasets}{%
 \section{Simulating Possible
-Datasets}\label{simulating-possible-datasets}}
+Datasets}\label{simulating-possible-datasets}
 
 The figures we have generated so far in this notebook are based on a
 single resampling of the GSS data. Some of the features we see in these
@@ -468,7 +433,7 @@ substantially between the figures are more likely to be due to random
 sampling.
 
 \textbf{Exercise:} As an exercise, you can run the same analysis with
-one of the other variables related to outlook including
+one of the other variables related to outlook:
 \passthrough{\lstinline!happy!}, \passthrough{\lstinline!trust!},
 \passthrough{\lstinline!helpful!}, and maybe
 \passthrough{\lstinline!fear!} and \passthrough{\lstinline!hapmar!}.
@@ -478,8 +443,7 @@ responses and how they are encoded, then think about which responses to
 report. In the notebook for this chapter, there are some suggestions to
 get you started.
 
-\hypertarget{summary}{%
-\section{Summary}\label{summary}}
+\section{Summary}\label{summary}
 
 The case study in this chapter and the previous one demonstrates a
 process for exploring a dataset and finding relationships among the
