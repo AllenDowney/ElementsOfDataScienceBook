@@ -1,5 +1,4 @@
-\hypertarget{algorithmic-fairness}{%
-\chapter{Algorithmic Fairness}\label{algorithmic-fairness}}
+\chapter{Algorithmic Fairness}\label{algorithmic-fairness}
 
 In the previous chapter, we replicated the analysis reported in
 ``Machine Bias'', by Julia Angwin, Jeff Larson, Surya Mattu and Lauren
@@ -14,8 +13,7 @@ I encourage you to read both of those articles before you go on. In this
 chapter, I explain some of the arguments presented in the Washington
 Post (WaPo) article, and we will replicate their analysis.
 
-\hypertarget{the-response}{%
-\section{The Response}\label{the-response}}
+\section{The Response}\label{the-response}
 
 The Washington Post article summarizes the ProPublica article and the
 response from Northpointe, the company that makes COMPAS, like this:
@@ -41,8 +39,7 @@ error rates (false positive and false negative) for White and Black
 defendants. In this chapter, we'll explore the second definition, which
 is called ``calibration''.
 
-\hypertarget{calibration}{%
-\section{Calibration}\label{calibration}}
+\section{Calibration}\label{calibration}
 
 The WaPo article includes this figure, which shows ``White and Black
 defendants with the same risk score are roughly equally likely to
@@ -120,8 +117,7 @@ definitions at the same time.
 
 To see why, let's go back to the confusion matrix.
 
-\hypertarget{matrices-and-metrics}{%
-\section{Matrices and Metrics}\label{matrices-and-metrics}}
+\section{Matrices and Metrics}\label{matrices-and-metrics}
 
 In the previous chapter, we computed confusion matrices for White and
 Black defendants. Here they are again:
@@ -223,8 +219,7 @@ COMPAS is biased in favor of Black defendants:
 It seems like we should be able to fix these problems, but it turns out
 that we can't. We'll see why in the next section.
 
-\hypertarget{what-would-it-take}{%
-\section{What Would It Take?}\label{what-would-it-take}}
+\section{What Would It Take?}\label{what-would-it-take}
 
 Suppose we want to fix COMPAS so that predictive values are the same for
 Black and White defendants. We could do that by using different
@@ -505,8 +500,7 @@ That's the argument the Washington Post article presented. In the next
 section, we'll take the argument one step farther by introducing one
 more metric, the area under the ROC curve.
 
-\hypertarget{roc-curve}{%
-\section{ROC Curve}\label{roc-curve}}
+\section{ROC Curve}\label{roc-curve}
 
 In the previous section we plotted various metrics as as function of
 threshold. Another common and useful way to visualize these results is
@@ -576,8 +570,7 @@ we did in the previous section. It also shows that the test has nearly
 the same ``concordance'' for both groups, which I explain in the next
 section.
 
-\hypertarget{concordance}{%
-\section{Concordance}\label{concordance}}
+\section{Concordance}\label{concordance}
 
 The authors of the ProPublica article published a supplementary article,
 ``How We Analyzed the COMPAS Recidivism Algorithm'', which describes
@@ -661,8 +654,7 @@ estimates. But qualitatively they all tell the same story; as a binary
 classifier, COMPAS is only moderately accurate. However, it seems to be
 equally accurate, by this metric, for White and Black defendants.
 
-\hypertarget{summary}{%
-\section{Summary}\label{summary}}
+\section{Summary}\label{summary}
 
 In this chapter, we replicated the analysis reported in the Washington
 Post article and confirmed two of the arguments they presented:
@@ -697,8 +689,7 @@ And we showed:
 Finally, we derived the ROC curve and computed AUC, which shows that
 COMPAS has nearly the same concordance for White and Black defendants.
 
-\hypertarget{discussion}{%
-\section{Discussion}\label{discussion}}
+\section{Discussion}\label{discussion}
 
 If it is impossible to make a classification algorithm fair for all
 groups, what should we do?
