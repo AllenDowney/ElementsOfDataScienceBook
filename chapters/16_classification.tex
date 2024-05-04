@@ -1,5 +1,4 @@
-\hypertarget{predicting-crime}{%
-\chapter{Predicting Crime}\label{predicting-crime}}
+\chapter{Predicting Crime}\label{predicting-crime}
 
 This chapter and the next make up a case study related to ``Machine
 Bias'', an article published by ProPublica in 2016 (see
@@ -20,8 +19,7 @@ justice system.
   value and error rates.
 \end{itemize}
 
-\hypertarget{machine-bias}{%
-\section{Machine Bias}\label{machine-bias}}
+\section{Machine Bias}\label{machine-bias}
 
 We'll start by replicating the analysis reported in ``Machine Bias'', by
 Julia Angwin, Jeff Larson, Surya Mattu and Lauren Kirchner, and
@@ -105,8 +103,7 @@ there are some technical issues you need to understand. The goal of this
 case study is to help you analyze the arguments and interpret the
 statistics they are based on.
 
-\hypertarget{replicating-the-analysis}{%
-\section{Replicating the Analysis}\label{replicating-the-analysis}}
+\section{Replicating the Analysis}\label{replicating-the-analysis}
 
 The data used in ``Machine Bias'' is available from ProPublica.
 Instructions for downloading it are in the notebook for this chapter.
@@ -136,9 +133,6 @@ results they report:
 
 \includegraphics{chapters/figs/machine_bias_table.png}
 
-The supplemental article is available from
-\url{https://www.propublica.org/article/how-we-analyzed-the-compas-recidivism-algorithm}.
-
 The table summarizes results for all defendants and two subgroups:
 defendants classified as White (``Caucasian'' in the original dataset)
 and Black (``African-American''). For each group, the summary includes
@@ -162,26 +156,15 @@ several metrics, including:
 
 I will explain what these metrics mean and how to compute them, and
 we'll replicate the results in this table. But first let's examine and
-clean the data. The following function displays the values in a
-\passthrough{\lstinline!Series!} and the number of times each value
-appears.
-
-\begin{lstlisting}[language=Python,style=source]
-def values(series):
-    """Count the values and sort.
-
-    series: pd.Series
-
-    returns: series mapping from values to frequencies
-    """
-    return series.value_counts(dropna=False).sort_index()
-\end{lstlisting}
+clean the data.
 
 Here are the values of \passthrough{\lstinline!decile\_score!}, which is
 the output of the COMPAS algorithm. \passthrough{\lstinline!1!} is the
 lowest risk category; \passthrough{\lstinline!10!} is the highest.
 
 \begin{lstlisting}[language=Python,style=source]
+from rcs_utils import values
+
 values(cp["decile_score"])
 \end{lstlisting}
 
@@ -395,8 +378,7 @@ All of these results are consistent with the ProPublica article.
 However, before we go on, I want to address an important issue with this
 dataset: data bias.
 
-\hypertarget{data-bias}{%
-\section{Data Bias}\label{data-bias}}
+\section{Data Bias}\label{data-bias}
 
 Systems like COMPAS are trying to predict whether a defendant will
 \emph{commit} another crime if released. But the dataset reports whether
@@ -423,37 +405,30 @@ metrics they are based on. For the rest of this chapter I will take the
 ``recidivism rates'' in the dataset at face value; but I will try to be
 clear about that they mean and don't mean.
 
-\hypertarget{arranging-the-confusion-matrix}{%
 \section{Arranging the confusion
-matrix}\label{arranging-the-confusion-matrix}}
+matrix}\label{arranging-the-confusion-matrix}
 
 In the previous section I arranged the confusion matrix to be consistent
 with the ProPublica article, to make it easy to check for consistency.
-
-In general, there are many ways to arrange a confusion matrix: you can
-put the predictions along the columns and the actual conditions along
-the rows, or the other way around, and you can sort the rows and columns
-in either order.
-
-There is no universal standard arrangement, but the most common one
-looks like this:
+But it is more common to arrange the matrix like this:
 
 \begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3043}}
   >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3478}}
   >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3478}}@{}}
-\midrule()
+\midrule\noalign{}
 \begin{minipage}[b]{\linewidth}\raggedright
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
 \textbf{Predicted positive}
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
 \textbf{Predicted negative}
 \end{minipage} \\
-\midrule()
+\midrule\noalign{}
 \endhead
+\midrule\noalign{}
+\endlastfoot
 \textbf{Actual positive} & True positive (TP) & False negative (FN) \\
 \textbf{Actual negative} & False positive (FP) & True negative (TN) \\
-\midrule()
 \end{longtable}
 
 In this arrangement:
@@ -476,10 +451,10 @@ In the context of the ProPublica article:
 \item
   ``Predicted negative'' means low risk.
 \item
-  ``Actual positive'' means the defendant was charged with a new crime
-  (recidivated).
+  ``Actual positive'' means the defendant was charged with a new crime.
 \item
-  ``Actual negative'' means they were not charged (survived).
+  ``Actual negative'' means they were not charged with a new crime
+  during the follow-up period.
 \end{itemize}
 
 Going forward, we'll present confusion matrices in this format.
@@ -501,8 +476,7 @@ Negative & 1282 & 2681 \\
 \midrule
 \end{tabular}
 
-\hypertarget{accuracy}{%
-\section{Accuracy}\label{accuracy}}
+\section{Accuracy}\label{accuracy}
 
 Based on these results, how accurate is COMPAS as a binary classifier?
 Well, it turns out that there are a \emph{lot} of ways to answer that
@@ -540,8 +514,7 @@ negatives. But it is often important to make these distinctions, because
 the benefits of true predictions and true negatives might be different,
 and the costs of false positives and false negatives might be different.
 
-\hypertarget{predictive-value}{%
-\section{Predictive Value}\label{predictive-value}}
+\section{Predictive Value}\label{predictive-value}
 
 One way to make these distinctions is to compute the ``predictive
 value'' of positive and negative tests:
@@ -588,9 +561,7 @@ ppv, npv
 Among all defendants, a positive test is correct about 61\% of the time;
 a negative test result is correct about 69\% of the time.
 
-\hypertarget{sensitivity-and-specificity}{%
-\section{Sensitivity and
-Specificity}\label{sensitivity-and-specificity}}
+\section{Sensitivity and Specificity}\label{sensitivity-and-specificity}
 
 Another way to characterize the accuracy of a test is to compute
 
@@ -657,7 +628,7 @@ might help:
   >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.2229}}
   >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.1928}}
   >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.1807}}@{}}
-\midrule()
+\midrule\noalign{}
 \begin{minipage}[b]{\linewidth}\raggedright
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
 \textbf{Pred positive (PP)}
@@ -666,15 +637,16 @@ might help:
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
 \end{minipage} \\
-\midrule()
+\midrule\noalign{}
 \endhead
+\midrule\noalign{}
+\endlastfoot
 \textbf{Actual positive (P)} & True positive (TP) & False negative (FN)
 & Sensitivity = TP / P & FN rate = FN / P \\
 \textbf{Actual negative (N)} & False positive (FP) & True negative (TN)
 & FP rate = FP / N & Specificity = TN / N \\
 Prevalence = P / (P + N) & PPV = TP / PP & NPV = TN / PN & & Acc = (TP +
 TN) / (P + N) \\
-\midrule()
 \end{longtable}
 
 PPV and sensitivity are similar in the sense that they both have true
@@ -703,9 +675,8 @@ numerator, but:
   correctly?''
 \end{itemize}
 
-\hypertarget{false-positive-and-negative-rates}{%
 \section{False Positive and Negative
-Rates}\label{false-positive-and-negative-rates}}
+Rates}\label{false-positive-and-negative-rates}
 
 The ProPublica article reports PPV and NPV, but instead of sensitivity
 and specificity, it reports their complements:
@@ -845,8 +816,7 @@ prev
 About 45\% of the defendants in this dataset were charged with another
 crime within two years of their release.
 
-\hypertarget{all-metrics}{%
-\section{All Metrics}\label{all-metrics}}
+\section{All Metrics}\label{all-metrics}
 
 The following function takes a confusion matrix, computes all the
 metrics, and puts them in a DataFrame.
