@@ -1,5 +1,4 @@
-\hypertarget{times-and-places}{%
-\chapter{Times and Places}\label{times-and-places}}
+\chapter{Times and Places}\label{times-and-places}
 
 The previous chapter introduces variables and two kinds of values:
 integers and floating-point numbers. This chapter presents these
@@ -17,8 +16,7 @@ additional types:
 Not every data science project uses all of these types, but many
 projects use at least one.
 
-\hypertarget{strings}{%
-\section{Strings}\label{strings}}
+\section{Strings}\label{strings}
 
 A \textbf{string} is a sequence of letters, numbers, and punctuation
 marks. In Python you can create a string by enclosing text between
@@ -179,9 +177,8 @@ Python expressions that use the variables
 \passthrough{\lstinline!family!} to display Gosset's name in these two
 formats.
 
-\hypertarget{representing-dates-and-times}{%
 \section{Representing Dates and
-Times}\label{representing-dates-and-times}}
+Times}\label{representing-dates-and-times}
 
 When you read data from a file, you might find that dates and times are
 represented with strings.
@@ -237,7 +234,7 @@ pd.Timestamp('6:30:00')
 \end{lstlisting}
 
 \begin{lstlisting}[style=output]
-Timestamp('2024-04-22 06:30:00')
+Timestamp('2024-05-04 06:30:00')
 \end{lstlisting}
 
 Or we can do the same thing using the variable defined above.
@@ -247,7 +244,7 @@ pd.Timestamp(not_really_a_time)
 \end{lstlisting}
 
 \begin{lstlisting}[style=output]
-Timestamp('2024-04-22 06:30:00')
+Timestamp('2024-05-04 06:30:00')
 \end{lstlisting}
 
 In this example, the string specifies a time but no date, so Pandas
@@ -296,14 +293,13 @@ now
 \end{lstlisting}
 
 \begin{lstlisting}[style=output]
-Timestamp('2024-04-22 17:45:11.077775')
+Timestamp('2024-05-04 18:48:23.501632')
 \end{lstlisting}
 
 \textbf{Exercise:} Use the value of \passthrough{\lstinline!now!} to
 display the name of the current month and day of the week.
 
-\hypertarget{timedelta}{%
-\section{Timedelta}\label{timedelta}}
+\section{Timedelta}\label{timedelta}
 
 \passthrough{\lstinline!Timestamp!} values support some arithmetic
 operations. For example, you can compute the difference between two
@@ -315,7 +311,7 @@ age
 \end{lstlisting}
 
 \begin{lstlisting}[style=output]
-Timedelta('20801 days 17:45:11.077775')
+Timedelta('20813 days 18:48:23.501632')
 \end{lstlisting}
 
 The result is a \passthrough{\lstinline!Timedelta!} that represents the
@@ -332,8 +328,8 @@ wrap(age.components)
 \end{lstlisting}
 
 \begin{lstlisting}[style=output]
-Components(days=20801, hours=17, minutes=45, seconds=11,
-    milliseconds=77, microseconds=775, nanoseconds=0)
+Components(days=20813, hours=18, minutes=48, seconds=23,
+    milliseconds=501, microseconds=632, nanoseconds=0)
 \end{lstlisting}
 
 You can get one of the components like this:
@@ -343,7 +339,7 @@ age.days
 \end{lstlisting}
 
 \begin{lstlisting}[style=output]
-20801
+20813
 \end{lstlisting}
 
 It might seem strange to measure a large interval in days rather than
@@ -362,7 +358,7 @@ age.days / 365.24
 \end{lstlisting}
 
 \begin{lstlisting}[style=output]
-56.951593472785014
+56.984448581754464
 \end{lstlisting}
 
 But people usually report their ages in integer years. We can use the
@@ -453,8 +449,7 @@ d1 = pd.Timestamp('2003-07-12')
 d2 = pd.Timestamp('2006-09-30')
 \end{lstlisting}
 
-\hypertarget{representing-location}{%
-\section{Representing Location}\label{representing-location}}
+\section{Representing Location}\label{representing-location}
 
 In addition to times and dates, we might also want to represent
 locations, especially if we are working with geographical data. There
@@ -544,8 +539,7 @@ side-to-side like longitude.
 born or someplace you think of as your ``home town''. Make a tuple of
 floating-point numbers that represents that location.
 
-\hypertarget{calculating-distance}{%
-\section{Calculating Distance}\label{calculating-distance}}
+\section{Calculating Distance}\label{calculating-distance}
 
 If you are given two tuples that represent locations, you can compute
 the approximate distance between them, along the surface of the globe,
@@ -586,8 +580,7 @@ Remember that the operator for exponentiation is
 \passthrough{\lstinline!\^!}, which is also an operator in Python, but
 it performs another operation altogether.
 
-\hypertarget{defining-functions}{%
-\section{Defining Functions}\label{defining-functions}}
+\section{Defining Functions}\label{defining-functions}
 
 If we are planning to use an expression like
 \passthrough{\lstinline!np.sin(theta/2)**2!} more than a few times, we
@@ -643,8 +636,7 @@ haversine(1)
 When you define a function, you create a new variable. But the function
 doesn't actually run until you call it.
 
-\hypertarget{haversine-distance}{%
-\section{Haversine Distance}\label{haversine-distance}}
+\section{Haversine Distance}\label{haversine-distance}
 
 Now we can use \passthrough{\lstinline!haversine!} as part of a function
 that computes haversine distances. I won't explain this function in as
@@ -701,8 +693,7 @@ not a perfect sphere. But the error of this estimate is less than 1\%.
 compute the distance between Boston and your home town from the previous
 exercise. If possible, use an online map to check the result.
 
-\hypertarget{geopandas}{%
-\section{Geopandas}\label{geopandas}}
+\section{Geopandas}\label{geopandas}
 
 Python provides libraries for working with geographical data. One of the
 most popular is Geopandas, which is based on Pandas and another library
@@ -827,8 +818,7 @@ series.plot(ax=ax);
 shows the home town you chose in a previous exercise and a line from
 there to Boston.
 
-\hypertarget{summary}{%
-\section{Summary}\label{summary}}
+\section{Summary}\label{summary}
 
 This chapter presents three new data types: strings to represent letters
 and words, \passthrough{\lstinline!Timestamp!} objects to represent
