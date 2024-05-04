@@ -1,5 +1,132 @@
-\hypertarget{distributions}{%
-\chapter{Distributions}\label{distributions}}
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{book}
+\usepackage{amsmath,amssymb}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage{listings}
+\newcommand{\passthrough}[1]{#1}
+\lstset{defaultdialect=[5.3]Lua}
+\lstset{defaultdialect=[x86masm]Assembler}
+\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\author{}
+\date{}
+
+\begin{document}
+\frontmatter
+
+\mainmatter
+\begin{lstlisting}[language=Python]
+from os.path import basename, exists
+
+def download(url):
+    filename = basename(url)
+    if not exists(filename):
+        from urllib.request import urlretrieve
+
+        local, _ = urlretrieve(url, filename)
+        print("Downloaded " + str(local))
+    return filename
+
+download('https://raw.githubusercontent.com/AllenDowney/ElementsOfDataScience/v1/utils.py')
+
+import utils
+
+import pandas as pd
+
+# pd.set_option('display.latex.repr', True)
+
+def to_latex(df, *args, **options):
+    return df.to_latex(escape=True)
+
+pd.DataFrame._repr_html_ = to_latex
+
+import warnings
+warnings.simplefilter(action='ignore', category=FutureWarning)
+warnings.simplefilter(action='ignore', category=SyntaxWarning)
+
+import matplotlib.pyplot as plt
+
+# see https://matplotlib.org/stable/users/prev_whats_new/dflt_style_changes.html#figure-size-font-size-and-screen-dpi
+plt.rcParams['figure.dpi'] = 300
+
+#plt.rcParams['figure.figsize'] = (6.4, 4.0)
+#plt.rcParams['font.size'] = 14
+#plt.rcParams['legend.fontsize'] = 14
+#plt.rcParams['axes.titlesize'] = 16
+
+# %config InlineBackend.figure_format = 'pdf'
+\end{lstlisting}
+
+\chapter{Distributions}\label{distributions}
 
 In this chapter we'll see three ways to describe a distribution:
 
@@ -21,75 +148,71 @@ at distributions of age and income, and to explore the relationship
 between income and education. But we'll start with one of the most
 important ideas in statistics, the distribution.
 
-\hypertarget{distributions-1}{%
-\section{Distributions}\label{distributions-1}}
+\section{Distributions}\label{distributions-1}
 
 A distribution is a set of values and their corresponding probabilities.
 For example, if you roll a six-sided die, there are six possible
-outcomes -- the numbers \passthrough{\lstinline!1!} through
-\passthrough{\lstinline!6!} -- and they all have the same probability,
-\passthrough{\lstinline!1/6!}. We can represent this distribution of
-outcomes with a table, like this:
+outcomes -- the numbers 1 through 6 -- and they all have the same
+probability, \(1/6\). We can represent this distribution of outcomes
+with a table, like this:
 
-\begin{longtable}[]{@{}ll@{}}
-\midrule()
-Value & Probability \\
-\midrule()
+\begin{longtable}[]{@{}lllllll@{}}
+\toprule\noalign{}
+Outcome & 1 & 2 & 3 & 4 & 5 & 6 \\
+\midrule\noalign{}
 \endhead
-1 & 1/6 \\
-2 & 1/6 \\
-3 & 1/6 \\
-4 & 1/6 \\
-5 & 1/6 \\
-6 & 1/6 \\
-\midrule()
+\bottomrule\noalign{}
+\endlastfoot
+Probability & 1/6 & 1/6 & 1/6 & 1/6 & 1/6 & 1/6 \\
 \end{longtable}
 
 More generally, a distribution can have any number of values, the values
 can be any type, and the probabilities do not have to be equal. To
 represent distributions in Python, we'll use a library called
-\passthrough{\lstinline!empiricaldist!}, for ``empirical distribution'',
-where ``empirical'' means it is based on data rather than a mathematical
-formula.
+\passthrough{\lstinline!empiricaldist!}, which stands for ``empirical
+distribution'', where ``empirical'' means it is based on data rather
+than a mathematical formula.
 
-\passthrough{\lstinline!empiricaldist!} provides an object called
+\passthrough{\lstinline!empiricaldist!} provides an object type called
 \passthrough{\lstinline!Pmf!}, which stands for ``probability mass
 function''. A \passthrough{\lstinline!Pmf!} object contains a set of
 possible outcomes and their probabilities. For example, here's a
 \passthrough{\lstinline!Pmf!} that represents the outcome of rolling a
 six-sided die:
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[language=Python]
 from empiricaldist import Pmf
 
 outcomes = [1,2,3,4,5,6]
 die = Pmf(1/6, outcomes)
 \end{lstlisting}
 
-The first argument is the probability of each outcome; the second
+The first argument is the probability of the outcomes; the second
 argument is the list of outcomes. We can display the result like this.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[language=Python]
 die
 \end{lstlisting}
 
-\begin{lstlisting}[style=output]
-1    0.166667
-2    0.166667
-3    0.166667
-4    0.166667
-5    0.166667
-6    0.166667
-dtype: float64
-\end{lstlisting}
+\begin{tabular}{lr}
+\toprule
+ & probs \\
+\midrule
+1 & 0.166667 \\
+2 & 0.166667 \\
+3 & 0.166667 \\
+4 & 0.166667 \\
+5 & 0.166667 \\
+6 & 0.166667 \\
+\bottomrule
+\end{tabular}
 
 A \passthrough{\lstinline!Pmf!} object is a specialized version of a
 Pandas \passthrough{\lstinline!Series!}, so it provides all of the
 methods of a \passthrough{\lstinline!Series!}, plus some additional
 methods we'll see soon.
 
-\hypertarget{the-general-social-survey}{%
-\section{The General Social Survey}\label{the-general-social-survey}}
+\section{The General Social Survey}\label{the-general-social-survey}
 
 We'll use \passthrough{\lstinline!Pmf!} objects to represent
 distributions of values from a new dataset, the General Social Survey
@@ -99,45 +222,47 @@ beliefs about social and political issues. It is widely used by
 politicians, policy makers, and researchers.
 
 The GSS dataset contains hundreds of columns. I've selected just a few
-and created a subset of the data, called an \textbf{extract}. The
-extract is in an HDF file, which is more compact than the original
-fixed-width file, and faster to read. Instructions for downloading the
-file are in the notebook for this chapter.
+and save the extract in an HDF file, which is more compact than the
+original fixed-width file, and faster to read. Instructions for
+downloading the file are in the notebook for this chapter.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[language=Python]
 data_file = 'gss_extract_2022.hdf'
 \end{lstlisting}
 
-We'll use \passthrough{\lstinline!pd.read\_hdf!} to read the data file
-and load \passthrough{\lstinline!gss!}, which is a
+We'll use the Pandas \passthrough{\lstinline!read\_hdf!} function to
+read the data file and load \passthrough{\lstinline!gss!}, which is a
 \passthrough{\lstinline!DataFrame!}.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[language=Python]
 import pandas as pd
 
 gss = pd.read_hdf(data_file, 'gss')
 gss.shape
 \end{lstlisting}
 
-\begin{lstlisting}[style=output]
+\begin{lstlisting}
 (72390, 9)
 \end{lstlisting}
 
 \passthrough{\lstinline!gss!} has one row for each respondent and one
 column for each question in the extract. Here are the first few rows.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[language=Python]
 gss.head()
 \end{lstlisting}
 
-\begin{lstlisting}[style=output]
-   year  id   age  educ  degree  sex  gunlaw  grass  realinc
-0  1972   1  23.0  16.0     3.0  2.0     1.0    NaN  18951.0
-1  1972   2  70.0  10.0     0.0  1.0     1.0    NaN  24366.0
-2  1972   3  48.0  12.0     1.0  2.0     1.0    NaN  24366.0
-3  1972   4  27.0  17.0     3.0  2.0     1.0    NaN  30458.0
-4  1972   5  61.0  12.0     1.0  2.0     1.0    NaN  50763.0
-\end{lstlisting}
+\begin{tabular}{lrrrrrrrrr}
+\toprule
+ & year & id & age & educ & degree & sex & gunlaw & grass & realinc \\
+\midrule
+0 & 1972 & 1 & 23.000000 & 16.000000 & 3.000000 & 2.000000 & 1.000000 & NaN & 18951.000000 \\
+1 & 1972 & 2 & 70.000000 & 10.000000 & 0.000000 & 1.000000 & 1.000000 & NaN & 24366.000000 \\
+2 & 1972 & 3 & 48.000000 & 12.000000 & 1.000000 & 2.000000 & 1.000000 & NaN & 24366.000000 \\
+3 & 1972 & 4 & 27.000000 & 17.000000 & 3.000000 & 2.000000 & 1.000000 & NaN & 30458.000000 \\
+4 & 1972 & 5 & 61.000000 & 12.000000 & 1.000000 & 2.000000 & 1.000000 & NaN & 50763.000000 \\
+\bottomrule
+\end{tabular}
 
 I'll explain these columns as we go along, but if you want more
 information, you can read the online documentation at
@@ -145,65 +270,21 @@ information, you can read the online documentation at
 see that they use the term ``variable'' for a column that contains
 answers to survey questions.
 
-\hypertarget{distribution-of-education}{%
-\section{Distribution of Education}\label{distribution-of-education}}
+\section{Distribution of Education}\label{distribution-of-education}
 
-To get started with this dataset, let's look at the distribution of
-\passthrough{\lstinline!educ!}, which records the number of years of
-education for each respondent. First we'll select a column from the
-\passthrough{\lstinline!DataFrame!} and use
-\passthrough{\lstinline!value\_counts!} to see what values are in it.
+To get started with this dataset, let's look at the
+\passthrough{\lstinline!educ!} column, which records the number of years
+of education for each respondent. We can select this column from the
+\passthrough{\lstinline!DataFrame!} like this:
 
-\begin{lstlisting}[language=Python,style=source]
-gss['educ'].value_counts().sort_index()
+\begin{lstlisting}[language=Python]
+educ = gss['educ']
 \end{lstlisting}
 
-\begin{lstlisting}[style=output]
-educ
-0.0       177
-1.0        49
-2.0       158
-3.0       268
-4.0       326
-5.0       410
-6.0       866
-7.0       896
-8.0      2786
-9.0      2172
-10.0     3010
-11.0     3942
-12.0    21401
-13.0     5905
-14.0     8208
-15.0     3307
-16.0     9994
-17.0     2392
-18.0     2945
-19.0     1112
-20.0     1803
-Name: count, dtype: int64
-\end{lstlisting}
+To see what the distribution of the responses looks like, we can use the
+\passthrough{\lstinline!hist!} method to plot a histogram.
 
-The result from \passthrough{\lstinline!value\_counts!} is a set of
-possible values and the number of times each one appears, so it is a
-kind of distribution. The values \passthrough{\lstinline!98!} and
-\passthrough{\lstinline!99!} are special codes for ``Don't know'' and
-``No answer''. We'll use \passthrough{\lstinline!replace!} to replace
-these codes with \passthrough{\lstinline!np.nan!}, which is commonly
-used to indicate missing data.
-
-\begin{lstlisting}[language=Python,style=source]
-import numpy as np
-
-educ = gss['educ'].replace([98, 99], np.nan)
-\end{lstlisting}
-
-\passthrough{\lstinline!replace!} creates a new
-\passthrough{\lstinline!Series!} -- it does not modify the column in the
-\passthrough{\lstinline!DataFrame!}. Here's a histogram of the values in
-this \passthrough{\lstinline!Series!}.
-
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[language=Python]
 import matplotlib.pyplot as plt
 
 educ.hist(grid=False)
@@ -212,110 +293,131 @@ plt.ylabel('Number of respondents')
 plt.title('Histogram of education level');
 \end{lstlisting}
 
-\begin{center}
-\includegraphics[width=4in]{chapters/08_distributions_files/08_distributions_27_0.png}
-\end{center}
+\begin{figure}
+\centering
+\includegraphics{08_distributions_files/08_distributions_25_0.png}
+\caption{png}
+\end{figure}
 
 Based on the histogram, we can see the general shape of the distribution
 and the central tendency -- it looks like the peak is near 12 years of
 education. But a histogram is not the best way to visualize this
-distribution because it obscures some important details. An alternative
-is to use a \passthrough{\lstinline!Pmf!}. The function
-\passthrough{\lstinline!Pmf.from\_seq!} takes any kind of sequence --
-like a list, tuple, or Pandas \passthrough{\lstinline!Series!} -- and
-computes the distribution of the values.
+distribution because it obscures some important details.
 
-\begin{lstlisting}[language=Python,style=source]
+An alternative is to use a \passthrough{\lstinline!Pmf!} object. The
+function \passthrough{\lstinline!Pmf.from\_seq!} takes any kind of
+sequence -- like a list, tuple, or Pandas
+\passthrough{\lstinline!Series!} -- and computes the distribution of the
+values.
+
+\begin{lstlisting}[language=Python]
 pmf_educ = Pmf.from_seq(educ, normalize=False)
 type(pmf_educ)
 \end{lstlisting}
 
-\begin{lstlisting}[style=output]
+\begin{lstlisting}
 empiricaldist.empiricaldist.Pmf
 \end{lstlisting}
 
-The keyword argument \passthrough{\lstinline!normalize=False!} indicates
-that we don't want to normalize this PMF. I'll explain what that means
-soon. Here are the first few rows.
+With the keyword argument \passthrough{\lstinline!normalize=False!}, the
+result contains counts rather than probabilities. Here are the first few
+values in \passthrough{\lstinline!educ!} and their counts.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[language=Python]
 pmf_educ.head()
 \end{lstlisting}
 
-\begin{lstlisting}[style=output]
-educ
-0.0    177
-1.0     49
-2.0    158
-Name: count, dtype: int64
-\end{lstlisting}
+\begin{tabular}{lr}
+\toprule
+ & probs \\
+educ &  \\
+\midrule
+0.000000 & 177 \\
+1.000000 & 49 \\
+2.000000 & 158 \\
+\bottomrule
+\end{tabular}
 
-In this dataset, there are \passthrough{\lstinline!177!} respondents who
-report that they have had no formal education, and
-\passthrough{\lstinline!49!} who have only one year. Here the last few
-rows.
+In this dataset, there are 177 respondents who report that they have no
+formal education, and 49 who have only one year. Here are the last few
+values.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[language=Python]
 pmf_educ.tail()
 \end{lstlisting}
 
-\begin{lstlisting}[style=output]
-educ
-18.0    2945
-19.0    1112
-20.0    1803
-Name: count, dtype: int64
-\end{lstlisting}
+\begin{tabular}{lr}
+\toprule
+ & probs \\
+educ &  \\
+\midrule
+18.000000 & 2945 \\
+19.000000 & 1112 \\
+20.000000 & 1803 \\
+\bottomrule
+\end{tabular}
 
-There are \passthrough{\lstinline!1803!} respondents who report that
-they have 20 or more years of formal education, which probably means
-they attended college and graduate school. You can use the bracket
-operator to look up a value in a \passthrough{\lstinline!Pmf!} and get
-the corresponding count:
+There are 1803 respondents who report that they have 20 or more years of
+formal education, which probably means they attended college and
+graduate school. We can use the bracket operator to look up a value in
+\passthrough{\lstinline!pmf\_educ!} and get the corresponding count.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[language=Python]
 pmf_educ[20]
 \end{lstlisting}
 
-\begin{lstlisting}[style=output]
+\begin{lstlisting}
 1803
 \end{lstlisting}
 
-Usually when we make a PMF, we want to know the \emph{fraction} of
-respondents with each value, rather than the counts. We can do that by
-setting \passthrough{\lstinline!normalize=True!}. Then we get a
-\textbf{normalized} PMF, that is, a PMF where the values in the second
-column add up to 1.
+Often when we make a \passthrough{\lstinline!Pmf!}, we want to know the
+\emph{fraction} of respondents with each value, rather than the counts.
+We can do that by setting \passthrough{\lstinline!normalize=True!}. Then
+we get a \textbf{normalized} \passthrough{\lstinline!Pmf!}, which means
+that the fractions add up to 1.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[language=Python]
 pmf_educ_norm = Pmf.from_seq(educ, normalize=True)
 pmf_educ_norm.head()
 \end{lstlisting}
 
-\begin{lstlisting}[style=output]
-educ
-0.0    0.002454
-1.0    0.000679
-2.0    0.002191
-Name: proportion, dtype: float64
-\end{lstlisting}
+\begin{tabular}{lr}
+\toprule
+ & probs \\
+educ &  \\
+\midrule
+0.000000 & 0.002454 \\
+1.000000 & 0.000679 \\
+2.000000 & 0.002191 \\
+\bottomrule
+\end{tabular}
 
 Now if we use the bracket operator to look up a value, the result is a
-fraction rather than a count. For example, the fraction of people with
-\passthrough{\lstinline!12!} years of education is about \(30\%\):
+fraction rather than a count.
 
-\begin{lstlisting}[language=Python,style=source]
-pmf_educ_norm[12]
+\begin{lstlisting}[language=Python]
+pmf_educ_norm[20]
 \end{lstlisting}
 
-\begin{lstlisting}[style=output]
-0.2967127428008929
+\begin{lstlisting}
+0.0249975737241255
 \end{lstlisting}
+
+The result indicates that about 2.5\% of the respondents have 20 years
+of education. But we can also interpret this result as a probability --
+if we choose a random respondent, the probability is 2.5\% that they
+have 20 years of education.
+
+When a \passthrough{\lstinline!Pmf!} contains probabilities, we can say
+that it represents a proper probability mass function, or PMF. With
+apologies for confusing notation, I'll use \passthrough{\lstinline!Pmf!}
+to mean a kind of Python object, and PMF to mean the concept of a
+probability mass function.
 
 \passthrough{\lstinline!Pmf!} provides a \passthrough{\lstinline!bar!}
 method that plots the values and their probabilities as a bar chart.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[language=Python]
 pmf_educ_norm.bar(label='educ')
 
 plt.xlabel('Years of education')
@@ -325,60 +427,55 @@ plt.title('Distribution of years of education')
 plt.legend();
 \end{lstlisting}
 
-\begin{center}
-\includegraphics[width=4in]{chapters/08_distributions_files/08_distributions_41_0.png}
-\end{center}
+\begin{figure}
+\centering
+\includegraphics{08_distributions_files/08_distributions_39_0.png}
+\caption{png}
+\end{figure}
 
-In this figure, we can see that the most common value is
-\passthrough{\lstinline!12!} years, but there are also peaks at
-\passthrough{\lstinline!14!} and \passthrough{\lstinline!16!}, which
-correspond to two and four years of college. For this data, the PMF is
-probably a better choice than the histogram. The PMF shows all unique
-values, so we can see where the peaks are. Because the histogram puts
-values into bins, it obscures these details. In a histogram with the
-default number of bins, we couldn't see the peaks at
-\passthrough{\lstinline!14!} and \passthrough{\lstinline!16!} years. But
-PMFs have limitations, too, as we'll see.
+In this figure, we can see that the most common value is 12 years, but
+there are also peaks at 14 and 16, which correspond to two and four
+years of college. For this data, plotting the
+\passthrough{\lstinline!Pmf!} is probably a better choice than the
+histogram. The \passthrough{\lstinline!Pmf!} shows all unique values, so
+we can see where the peaks are.
 
 \textbf{Exercise:} Let's look at the \passthrough{\lstinline!year!}
 column in the \passthrough{\lstinline!DataFrame!}, which represents the
 year each respondent was interviewed. Make an unnormalized
 \passthrough{\lstinline!Pmf!} for \passthrough{\lstinline!year!} and
-display the result. Use the bracket operator to look up the number of
-respondents interviewed in 2022.
+plot the result as a bar chart. Use the bracket operator to look up the
+number of respondents interviewed in 2022.
 
-\hypertarget{cumulative-distribution-functions}{%
 \section{Cumulative Distribution
-Functions}\label{cumulative-distribution-functions}}
+Functions}\label{cumulative-distribution-functions}
 
-Now we'll see another way to represent a distribution, the cumulative
-distribution function or CDF. \passthrough{\lstinline!empiricaldist!}
-provides a \passthrough{\lstinline!Cdf!} object that represents a CDF.
-We can import it like this:
+If we compute the cumulative sum of a PMF, the result is a cumulative
+distribution function (CDF). To see what that means, and why it is
+useful, let's look at a simple example. Suppose we have a sequence of
+five values.
 
-\begin{lstlisting}[language=Python,style=source]
-from empiricaldist import Cdf
-\end{lstlisting}
-
-As an example, suppose we have a sequence of five values:
-
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[language=Python]
 values = 1, 2, 2, 3, 5  
 \end{lstlisting}
 
 Here's the \passthrough{\lstinline!Pmf!} of these values.
 
-\begin{lstlisting}[language=Python,style=source]
-Pmf.from_seq(values)
+\begin{lstlisting}[language=Python]
+pmf = Pmf.from_seq(values)
+pmf
 \end{lstlisting}
 
-\begin{lstlisting}[style=output]
-1    0.2
-2    0.4
-3    0.2
-5    0.2
-Name: proportion, dtype: float64
-\end{lstlisting}
+\begin{tabular}{lr}
+\toprule
+ & probs \\
+\midrule
+1 & 0.200000 \\
+2 & 0.400000 \\
+3 & 0.200000 \\
+5 & 0.200000 \\
+\bottomrule
+\end{tabular}
 
 If you draw a random value from \passthrough{\lstinline!values!}, the
 \passthrough{\lstinline!Pmf!} tells you the chance of getting
@@ -397,24 +494,28 @@ If you draw a random value from \passthrough{\lstinline!values!}, the
   \passthrough{\lstinline!5!} are \passthrough{\lstinline!0.2!} each.
 \end{itemize}
 
-A CDF is similar to a PMF in the sense that it contains values and their
-probabilities -- the difference is that the probabilities in the CDF are
-the cumulative sum of the probabilities in the PMF. Here's a
-\passthrough{\lstinline!Cdf!} object for the same five values.
+The \passthrough{\lstinline!Pmf!} object has a method called
+\passthrough{\lstinline!make\_cdf!} that computes the cumulative sum of
+the probabilities in the \passthrough{\lstinline!Pmf!} and returns a
+\passthrough{\lstinline!Cdf!} object.
 
-\begin{lstlisting}[language=Python,style=source]
-Cdf.from_seq(values)
+\begin{lstlisting}[language=Python]
+cdf = pmf.make_cdf()
+cdf
 \end{lstlisting}
 
-\begin{lstlisting}[style=output]
-1    0.2
-2    0.6
-3    0.8
-5    1.0
-Name: count, dtype: float64
-\end{lstlisting}
+\begin{tabular}{lr}
+\toprule
+ & probs \\
+\midrule
+1 & 0.200000 \\
+2 & 0.600000 \\
+3 & 0.800000 \\
+5 & 1.000000 \\
+\bottomrule
+\end{tabular}
 
-If you draw a random value from \passthrough{\lstinline!values!},
+If you draw a random value from \passthrough{\lstinline!values!}, the
 \passthrough{\lstinline!Cdf!} tells you the chance of getting a value
 \emph{less than or equal to} \passthrough{\lstinline!x!}, for any given
 \passthrough{\lstinline!x!}.
@@ -422,8 +523,8 @@ If you draw a random value from \passthrough{\lstinline!values!},
 \begin{itemize}
 \item
   The \passthrough{\lstinline!Cdf!} of \passthrough{\lstinline!1!} is
-  \passthrough{\lstinline!0.2!} because one of the five values in the
-  sequence is less than or equal to 1,
+  \passthrough{\lstinline!0.2!} because one of the five values is less
+  than or equal to 1,
 \item
   The \passthrough{\lstinline!Cdf!} of \passthrough{\lstinline!2!} is
   \passthrough{\lstinline!0.6!} because three of the five values are
@@ -438,14 +539,15 @@ If you draw a random value from \passthrough{\lstinline!values!},
   or equal to \passthrough{\lstinline!5!}.
 \end{itemize}
 
-If you are given a PMF, you can compute the CDF by adding up the
-probabilities. If you are given a CDF, you can compute the PMF by
-subtracting successive probabilities.
+If we make a \passthrough{\lstinline!Cdf!} from a proper
+\passthrough{\lstinline!Pmf!}, where the probabilities add up to 1, the
+result represents a proper CDF. As with \passthrough{\lstinline!Pmf!}
+and PMF, I'll use \passthrough{\lstinline!Cdf!} to refer to a Python
+object and CDF to refer to the concept.
 
-\hypertarget{cdf-of-age}{%
-\section{CDF of Age}\label{cdf-of-age}}
+\section{CDF of Age}\label{cdf-of-age}
 
-Now let's look at a more substantial CDF, the distribution of ages for
+To see why CDFs are useful, let's consider the distribution of ages for
 respondents in the General Social Survey. The column we'll use is
 \passthrough{\lstinline!age!}.
 
@@ -457,22 +559,25 @@ According to the codebook, the range of the values is from
 \passthrough{\lstinline!replace!} to replace the special codes with
 \passthrough{\lstinline!NaN!}.
 
-\begin{lstlisting}[language=Python,style=source]
-age = gss['age'].replace([98, 99], np.nan)
+\begin{lstlisting}[language=Python]
+age = gss['age']
 \end{lstlisting}
 
-We can compute the \passthrough{\lstinline!Cdf!} of these values like
-this:
+\passthrough{\lstinline!empiricaldist!} provides a
+\passthrough{\lstinline!Cdf.from\_seq!} function that takes any kind of
+sequence and computes the CDF of the values.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[language=Python]
+from empiricaldist import Cdf
+
 cdf_age = Cdf.from_seq(age)
 \end{lstlisting}
 
-\passthrough{\lstinline!Cdf!} provides a method called
-\passthrough{\lstinline!plot!} that plots the CDF as a line. Here's what
-it looks like.
+The result is a \passthrough{\lstinline!Cdf!} object, which provides a
+method called \passthrough{\lstinline!plot!} that plots the CDF as a
+line.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[language=Python]
 cdf_age.plot()
 
 plt.xlabel('Age (years)')
@@ -480,52 +585,43 @@ plt.ylabel('CDF')
 plt.title('Distribution of age');
 \end{lstlisting}
 
-\begin{center}
-\includegraphics[width=4in]{chapters/08_distributions_files/08_distributions_60_0.png}
-\end{center}
+\begin{figure}
+\centering
+\includegraphics{08_distributions_files/08_distributions_56_0.png}
+\caption{png}
+\end{figure}
 
-The \(x\)-axis is the ages, from 18 to 89. The \(y\)-axis is the
-cumulative probabilities, from 0 to 1.
+The x-axis is the ages, from 18 to 89. The y-axis is the cumulative
+probabilities, from 0 to 1. The \passthrough{\lstinline!Cdf!} object can
+be used as a function, so if you give it an age, it returns the
+corresponding probability in a NumPy array.
 
-The \passthrough{\lstinline!Cdf!} object can be used as a function, so
-if you give it an age, it returns the corresponding probability in a
-NumPy array.
-
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[language=Python]
 q = 51
 p = cdf_age(q)
 p
 \end{lstlisting}
 
-\begin{lstlisting}[style=output]
+\begin{lstlisting}
 array(0.62121445)
 \end{lstlisting}
 
 \passthrough{\lstinline!q!} stands for ``quantity'', which is another
 name for a value in a distribution. \passthrough{\lstinline!p!} stands
 for probability, which is the result. In this example, the quantity is
-age \passthrough{\lstinline!51!}, and the corresponding probability is
-about \passthrough{\lstinline!0.62!}. That means that about \(62\%\) of
-the respondents are age \passthrough{\lstinline!51!} or younger. The
-arrow in the following figure shows how you could read this value from
-the CDF, at least approximately.
+age 51, and the corresponding probability is about 0.62. That means that
+about 62\% of the respondents are age 51 or younger. The arrow in the
+following figure shows how you could read this value from the CDF, at
+least approximately.
 
-\begin{lstlisting}[language=Python,style=source]
-cdf_age.plot()
-
-x = 17
-draw_line(p, q, x)
-draw_arrow_left(p, q, x)
-
-plt.xlabel('Age (years)')
-plt.xlim(x-1, 91)
-plt.ylabel('CDF')
-plt.title('Distribution of age');
+\begin{lstlisting}[language=Python]
 \end{lstlisting}
 
-\begin{center}
-\includegraphics[width=4in]{chapters/08_distributions_files/08_distributions_65_0.png}
-\end{center}
+\begin{figure}
+\centering
+\includegraphics{08_distributions_files/08_distributions_61_0.png}
+\caption{png}
+\end{figure}
 
 The CDF is an invertible function, which means that if you have a
 probability, \passthrough{\lstinline!p!}, you can look up the
@@ -534,41 +630,38 @@ corresponding quantity, \passthrough{\lstinline!q!}. The
 \passthrough{\lstinline!inverse!} that computes the inverse of the
 cumulative distribution function.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[language=Python]
 p1 = 0.25
 q1 = cdf_age.inverse(p1)
 q1
 \end{lstlisting}
 
-\begin{lstlisting}[style=output]
+\begin{lstlisting}
 array(32.)
 \end{lstlisting}
 
-In this example, we look up the probability
-\passthrough{\lstinline!0.25!} and the result is
-\passthrough{\lstinline!32!}.\\
+In this example, we look up the probability 0.25 and the result is 32.
 That means that 25\% of the respondents are age 32 or less. Another way
 to say the same thing is ``age 32 is the 25th percentile of this
 distribution''.
 
-If we look up probability \passthrough{\lstinline!0.75!}, it returns
-\passthrough{\lstinline!60!}, so 75\% of the respondents are 60 or
-younger.
+If we look up probability 0.75, it returns 60, so 75\% of the
+respondents are 60 or younger.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[language=Python]
 p2 = 0.75
 q2 = cdf_age.inverse(p2)
 q2
 \end{lstlisting}
 
-\begin{lstlisting}[style=output]
+\begin{lstlisting}
 array(60.)
 \end{lstlisting}
 
 In the following figure, the arrows show how you could read these values
 from the CDF.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[language=Python]
 cdf_age.plot()
 
 x = 17
@@ -584,15 +677,17 @@ plt.ylabel('CDF')
 plt.title('Distribution of age');
 \end{lstlisting}
 
-\begin{center}
-\includegraphics[width=4in]{chapters/08_distributions_files/08_distributions_71_0.png}
-\end{center}
+\begin{figure}
+\centering
+\includegraphics{08_distributions_files/08_distributions_67_0.png}
+\caption{png}
+\end{figure}
 
 The distance from the 25th to the 75th percentile is called the
 \textbf{interquartile range} or IQR. It measures the spread of the
 distribution, so it is similar to standard deviation or variance.
-Because it is based on percentiles, it doesn't get thrown off by extreme
-values or outliers, the way standard deviation does. So IQR is more
+Because it is based on percentiles, it doesn't get thrown off by
+outliers as much as standard deviation does. So IQR is more
 \textbf{robust} than variance, which means it works well even if there
 are errors in the data or extreme values.
 
@@ -604,12 +699,12 @@ who exceed a value.
 
 \textbf{Exercise:} The distribution of income in almost every country is
 long-tailed, which means there are a small number of people with very
-high incomes. In the GSS dataset, the column
-\passthrough{\lstinline!realinc!} represents total household income,
-converted to 1986 dollars. We can get a sense of the shape of this
-distribution by plotting the CDF. Select
-\passthrough{\lstinline!realinc!} from the \passthrough{\lstinline!gss!}
-dataset, make a \passthrough{\lstinline!Cdf!} called
+high incomes. In the GSS dataset, the \passthrough{\lstinline!realinc!}
+column represents total household income, converted to 1986 dollars. We
+can get a sense of the shape of this distribution by plotting the CDF.
+Select \passthrough{\lstinline!realinc!} from the
+\passthrough{\lstinline!gss!} dataset, make a
+\passthrough{\lstinline!Cdf!} called
 \passthrough{\lstinline!cdf\_income!}, and plot it. Remember to label
 the axes!
 
@@ -618,8 +713,7 @@ greater than the median. Use the \passthrough{\lstinline!Cdf!} object to
 compute the fraction of respondents whose income is at or below the
 mean.
 
-\hypertarget{comparing-distributions}{%
-\section{Comparing Distributions}\label{comparing-distributions}}
+\section{Comparing Distributions}\label{comparing-distributions}
 
 So far we've seen two ways to represent distributions, PMFs and CDFs.
 Now we'll use PMFs and CDFs to compare distributions, and we'll see the
@@ -629,21 +723,22 @@ the distribution of age for male and female respondents. First we'll
 create a Boolean \passthrough{\lstinline!Series!} that's true for male
 respondents and another that's true for female respondents.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[language=Python]
 male = (gss['sex'] == 1)
 female = (gss['sex'] == 2)
 \end{lstlisting}
 
-Now we can select ages for male and female respondents.
+We can use these \passthrough{\lstinline!Series!} to select ages for
+male and female respondents.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[language=Python]
 male_age = age[male]
 female_age = age[female]
 \end{lstlisting}
 
 And plot a PMF for each.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[language=Python]
 pmf_male_age = Pmf.from_seq(male_age)
 pmf_male_age.plot(label='Male')
 
@@ -656,20 +751,22 @@ plt.title('Distribution of age by sex')
 plt.legend();
 \end{lstlisting}
 
-\begin{center}
-\includegraphics[width=4in]{chapters/08_distributions_files/08_distributions_80_0.png}
-\end{center}
+\begin{figure}
+\centering
+\includegraphics{08_distributions_files/08_distributions_76_0.png}
+\caption{png}
+\end{figure}
 
-A plot like this, which is highly variable, is often described as
-\textbf{noisy}. If we ignore the noise, it looks like the PMF is higher
-for men between ages 40 and 50, and higher for women between ages 70 and
-80. But both of those differences might be due to randomness.
+A plot as variable as this is often described as \textbf{noisy}. If we
+ignore the noise, it looks like the PMF is higher for men between ages
+40 and 50, and higher for women between ages 70 and 80. But both of
+those differences might be due to randomness.
 
 Now let's do the same thing with CDFs -- everything is the same except
 we replace \passthrough{\lstinline!Pmf!} with
 \passthrough{\lstinline!Cdf!}.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[language=Python]
 cdf_male_age = Cdf.from_seq(male_age)
 cdf_male_age.plot(label='Male')
 
@@ -682,44 +779,45 @@ plt.title('Distribution of age by sex')
 plt.legend();
 \end{lstlisting}
 
-\begin{center}
-\includegraphics[width=4in]{chapters/08_distributions_files/08_distributions_82_0.png}
-\end{center}
+\begin{figure}
+\centering
+\includegraphics{08_distributions_files/08_distributions_78_0.png}
+\caption{png}
+\end{figure}
 
-In general, CDFs are smoother than PMFs. Because they smooth out
-randomness, we can often get a better view of real differences between
-distributions. In this case, the lines are close together until age 40
--- after that, the CDF is higher for men than women.
+Because CDFs smooth out randomness, they provide a better view of real
+differences between distributions. In this case, the lines are close
+together until age 40 -- after that, the CDF is higher for men than
+women.
 
 So what does that mean? One way to interpret the difference is that the
 fraction of men below a given age is generally more than the fraction of
-women below the same age. For example, about 79\% of men are
-\passthrough{\lstinline!60!} or less, compared to 76\% of women.
+women below the same age. For example, about 79\% of men are 60 or less,
+compared to 76\% of women.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[language=Python]
 cdf_male_age(60), cdf_female_age(60)
 \end{lstlisting}
 
-\begin{lstlisting}[style=output]
+\begin{lstlisting}
 (array(0.7721998), array(0.7474241))
 \end{lstlisting}
 
 Going the other way, we could also compare percentiles. For example, the
 median age woman is older than the median age man, by about one year.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[language=Python]
 cdf_male_age.inverse(0.5), cdf_female_age.inverse(0.5)
 \end{lstlisting}
 
-\begin{lstlisting}[style=output]
+\begin{lstlisting}
 (array(44.), array(45.))
 \end{lstlisting}
 
 \textbf{Exercise:} What fraction of men are over 80? What fraction of
 women?
 
-\hypertarget{comparing-incomes}{%
-\section{Comparing Incomes}\label{comparing-incomes}}
+\section{Comparing Incomes}\label{comparing-incomes}
 
 As another example, let's look at household income and compare the
 distribution before and after 1995 (I chose 1995 because it's roughly
@@ -727,14 +825,15 @@ the midpoint of the survey). We'll make two Boolean
 \passthrough{\lstinline!Series!} objects to select respondents
 interviewed before and after 1995.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[language=Python]
 pre95 = (gss['year'] < 1995)
 post95 = (gss['year'] >= 1995)
 \end{lstlisting}
 
-Now we can plot the PMFs of \passthrough{\lstinline!realinc!}
+Now we can plot the PMFs of \passthrough{\lstinline!realinc!}, which
+records household income converted to 1986 dollars.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[language=Python]
 realinc = gss['realinc']
 
 Pmf.from_seq(realinc[pre95]).plot(label='Before 1995')
@@ -746,9 +845,11 @@ plt.title('Distribution of income')
 plt.legend();
 \end{lstlisting}
 
-\begin{center}
-\includegraphics[width=4in]{chapters/08_distributions_files/08_distributions_91_0.png}
-\end{center}
+\begin{figure}
+\centering
+\includegraphics{08_distributions_files/08_distributions_87_0.png}
+\caption{png}
+\end{figure}
 
 There are a lot of unique values in this distribution, and none of them
 appear very often. As a result, the PMF is so noisy and we can't really
@@ -757,7 +858,7 @@ distributions. It looks like there are more people with high incomes
 after 1995, but it's hard to tell. We can get a clearer picture with a
 CDF.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[language=Python]
 Cdf.from_seq(realinc[pre95]).plot(label='Before 1995')
 Cdf.from_seq(realinc[post95]).plot(label='After 1995')
 
@@ -767,9 +868,11 @@ plt.title('Distribution of income')
 plt.legend();
 \end{lstlisting}
 
-\begin{center}
-\includegraphics[width=4in]{chapters/08_distributions_files/08_distributions_93_0.png}
-\end{center}
+\begin{figure}
+\centering
+\includegraphics{08_distributions_files/08_distributions_89_0.png}
+\caption{png}
+\end{figure}
 
 Below \$30,000 the CDFs are almost identical; above that, we can see
 that the post-1995 distribution is shifted to the right. In other words,
@@ -778,8 +881,7 @@ income of high earners has increased.
 
 In general, I recommend CDFs for exploratory analysis. They give you a
 clear view of the distribution, without too much noise, and they are
-good for comparing distributions -- especially if you have more than
-two.
+good for comparing distributions.
 
 \textbf{Exercise:} Let's compare incomes for different levels of
 education in the GSS dataset. We'll use the
@@ -793,8 +895,7 @@ Compute and plot the distribution of income for each group. Remember to
 label the CDFs, display a legend, and label the axes. Write a few
 sentences that describe and interpret the results.
 
-\hypertarget{modeling-distributions}{%
-\section{Modeling Distributions}\label{modeling-distributions}}
+\section{Modeling Distributions}\label{modeling-distributions}
 
 Some distributions have names. For example, you might be familiar with
 the normal distribution, also called the Gaussian distribution or the
@@ -804,27 +905,29 @@ These ``distributions with names'' are called \textbf{theoretical}
 because they are based on mathematical functions, as contrasted with
 empirical distributions, which are based on data.
 
-It turns out that many things we measure have distributions that are
-well approximated by theoretical distributions, so these distributions
-are sometimes good models for the real world. In this context, what I
-mean by a \textbf{model} is a simplified description of the world that
-is accurate enough for its intended purpose. In this section, we'll
-compute the CDF of a normal distribution and compare it to an empirical
-distribution of data. But before we get to real data, we'll start with
-fake data.
+Many things we measure have distributions that are well approximated by
+theoretical distributions, so these distributions are sometimes good
+models for the real world. In this context, what I mean by a
+\textbf{model} is a simplified description of the world that is accurate
+enough for its intended purpose.
+
+To check whether a theoretical distribution is a good model for a
+dataset, we can compare the CDF of the data to the CDF of a normal
+distribution with the same mean and standard deviation. I'll demonstrate
+with a sample from a normal distribution, then we'll try it with real
+data.
 
 The following statement uses NumPy's \passthrough{\lstinline!random!}
-library to generate 1000 values from a normal distribution with mean
-\passthrough{\lstinline!0!} and standard deviation
-\passthrough{\lstinline!1!}.
+library to generate 1000 values from a normal distribution with mean 10
+and standard deviation 1.
 
-\begin{lstlisting}[language=Python,style=source]
-sample = np.random.normal(size=1000)
+\begin{lstlisting}[language=Python]
+sample = np.random.normal(10, 1, size=1000)
 \end{lstlisting}
 
 Here's what the empirical distribution of the sample looks like.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[language=Python]
 cdf_sample = Cdf.from_seq(sample)
 cdf_sample.plot(label='Random sample')
 
@@ -833,49 +936,38 @@ plt.ylabel('CDF')
 plt.legend();
 \end{lstlisting}
 
-\begin{center}
-\includegraphics[width=4in]{chapters/08_distributions_files/08_distributions_101_0.png}
-\end{center}
+Now let's compute the CDF of a normal distribution with the actual
+values of the mean and standard deviation.
 
-If we did not know that this sample was drawn from a normal
-distribution, and we wanted to check, we could compare the CDF of the
-data to the CDF of an ideal normal distribution, which we can use the
-SciPy library to compute.
-
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[language=Python]
 from scipy.stats import norm
 
-xs = np.linspace(-3, 3)
-ys = norm(0, 1).cdf(xs)
+qs = np.linspace(10-3, 10+3)
+ps = norm(10, 1).cdf(qs)
 \end{lstlisting}
 
 First we import \passthrough{\lstinline!norm!} from
 \passthrough{\lstinline!scipy.stats!}, which is a collection of
 functions related to statistics. Then we use
 \passthrough{\lstinline!linspace()!} to create an array of
-equally-spaced quantities from \passthrough{\lstinline!-3!} to
-\passthrough{\lstinline!3!} -- those are the \passthrough{\lstinline!x!}
-values where we will evaluate the normal CDF. Next,
-\passthrough{\lstinline!norm(0, 1)!} creates an object that represents a
-normal distribution with mean \passthrough{\lstinline!0!} and standard
-deviation \passthrough{\lstinline!1!}. Finally,
-\passthrough{\lstinline!cdf!} computes the CDF of the normal
-distribution, evaluated at each of the \passthrough{\lstinline!xs!}.
+equally-spaced values from -3 to 3 -- those are the
+\passthrough{\lstinline!qs!} where we will evaluate the normal CDF.
+Next, \passthrough{\lstinline!norm(10, 1)!} creates an object that
+represents a normal distribution with mean 10 and standard deviation 1.
+Finally, \passthrough{\lstinline!cdf!} computes the CDF of the normal
+distribution, evaluated at each of the \passthrough{\lstinline!qs!}.
+
 I'll plot the normal CDF with a gray line and then plot the CDF of the
 data again.
 
-\begin{lstlisting}[language=Python,style=source]
-plt.plot(xs, ys, color='gray', label='Normal CDF')
+\begin{lstlisting}[language=Python]
+plt.plot(qs, ps, color='gray', label='Normal CDF')
 cdf_sample.plot(label='Random sample')
 
 plt.xlabel('x')
 plt.ylabel('CDF')
 plt.legend();
 \end{lstlisting}
-
-\begin{center}
-\includegraphics[width=4in]{chapters/08_distributions_files/08_distributions_105_0.png}
-\end{center}
 
 The CDF of the random sample agrees with the normal model -- which is
 not surprising because the data were actually sampled from a normal
@@ -891,8 +983,8 @@ GSS data.
 \begin{itemize}
 \item
   Extract \passthrough{\lstinline!realinc!} from
-  \passthrough{\lstinline!gss!} and compute its logarithm using
-  \passthrough{\lstinline!np.log10()!}.
+  \passthrough{\lstinline!gss!} and compute the logarithms of the
+  incomes using \passthrough{\lstinline!np.log10()!}.
 \item
   Compute the mean and standard deviation of the log-transformed
   incomes.
@@ -908,22 +1000,21 @@ GSS data.
 How similar are the CDFs of the log-transformed incomes and the normal
 distribution?
 
-\hypertarget{kernel-density-estimation}{%
-\section{Kernel Density Estimation}\label{kernel-density-estimation}}
+\section{Kernel Density Estimation}\label{kernel-density-estimation}
 
 We have seen two ways to represent distributions, PMFs and CDFs. Now
 we'll learn another way: a probability density function, or PDF. The
 \passthrough{\lstinline!norm!} function, which we used to compute the
 normal CDF, can also compute the normal PDF.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[language=Python]
 xs = np.linspace(-3, 3)
 ys = norm(0,1).pdf(xs)
 \end{lstlisting}
 
 Here's what it looks like.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[language=Python]
 plt.plot(xs, ys, color='gray', label='Normal PDF')
 
 plt.xlabel('x')
@@ -932,15 +1023,11 @@ plt.title('Normal density function')
 plt.legend();
 \end{lstlisting}
 
-\begin{center}
-\includegraphics[width=4in]{chapters/08_distributions_files/08_distributions_112_0.png}
-\end{center}
-
 The normal PDF is the classic ``bell curve''. Now, it is tempting to
 compare the PMF of the data to the PDF of the normal distribution, but
 that doesn't work. Let's see what happens if we try:
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[language=Python]
 plt.plot(xs, ys, color='gray', label='Normal PDF')
 
 pmf_sample = Pmf.from_seq(sample)
@@ -952,21 +1039,18 @@ plt.title('Normal density function')
 plt.legend();
 \end{lstlisting}
 
-\begin{center}
-\includegraphics[width=4in]{chapters/08_distributions_files/08_distributions_114_0.png}
-\end{center}
-
 The PMF of the sample is a flat line across the bottom. In the random
 sample, every value is unique, so they all have the same probability,
-one in 1000. However, we can use the points in the sample to estimate
-the PDF of the distribution they came from. This process is called
-\textbf{kernel density estimation}, or KDE. To generate a KDE plot,
-we'll use the Seaborn library, imported as
-\passthrough{\lstinline!sns!}. Seaborn provides
-\passthrough{\lstinline!kdeplot!}, which takes the sample, estimates the
-PDF, and plots it.
+one in 1000.
 
-\begin{lstlisting}[language=Python,style=source]
+However, we can use the points in the sample to estimate the PDF of the
+distribution they came from. This process is called \textbf{kernel
+density estimation}, or KDE. To generate a KDE plot, we'll use the
+Seaborn library, imported as \passthrough{\lstinline!sns!}. Seaborn
+provides \passthrough{\lstinline!kdeplot!}, which takes the sample,
+estimates the PDF, and plots it.
+
+\begin{lstlisting}[language=Python]
 import seaborn as sns
 
 sns.kdeplot(sample, label='Estimated sample PDF')
@@ -977,13 +1061,9 @@ plt.title('Normal density function')
 plt.legend();
 \end{lstlisting}
 
-\begin{center}
-\includegraphics[width=4in]{chapters/08_distributions_files/08_distributions_116_0.png}
-\end{center}
-
 Now we can compare the KDE plot and the normal PDF.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[language=Python]
 plt.plot(xs, ys, color='gray', label='Normal PDF')
 sns.kdeplot(sample, label='Estimated sample PDF')
 
@@ -993,16 +1073,14 @@ plt.title('Normal density function')
 plt.legend();
 \end{lstlisting}
 
-\begin{center}
-\includegraphics[width=4in]{chapters/08_distributions_files/08_distributions_118_0.png}
-\end{center}
+The KDE plot matches the normal PDF well. We can see places where the
+data deviate from the model, but because we know the data really came
+from a normal distribution, we know those deviations are due to random
+sampling.
 
-The KDE plot matches the normal PDF pretty well, although the
-differences look bigger when we compare PDFs than they did with the
-CDFs. That means that the PDF is a more sensitive way to look for
-differences, but often it is too sensitive.\\
-It's hard to tell whether apparent differences mean anything, or if they
-are just random, as in this case.
+Comparing PDFs is a sensitive way to look for differences, but often it
+is too sensitive -- it can be hard to tell whether apparent differences
+mean anything, or if they are just random, as in this case.
 
 \textbf{Exercise:} In a previous exercise, we used CDFs to see if the
 distribution of income fits a lognormal distribution. We can make the
@@ -1026,8 +1104,7 @@ same comparison using a PDF and KDE.
   density of the log-transformed incomes.
 \end{itemize}
 
-\hypertarget{summary}{%
-\section{Summary}\label{summary}}
+\section{Summary}\label{summary}
 
 In this chapter, we've seen three ways to visualize distributions: PMFs,
 CDFs, and KDE plots. In general, I use CDFs when I am exploring data --
@@ -1036,3 +1113,5 @@ distracted by noise. Then, if I am presenting results to an audience
 unfamiliar with CDFs, I might use a PMF if the dataset contains a small
 number of unique values, or KDE if there are many unique values.
 
+\backmatter
+\end{document}
