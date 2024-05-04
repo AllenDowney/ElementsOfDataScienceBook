@@ -1,5 +1,122 @@
-\hypertarget{plotting}{%
-\chapter{Plotting}\label{plotting}}
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{book}
+\usepackage{amsmath,amssymb}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage{listings}
+\newcommand{\passthrough}[1]{#1}
+\lstset{defaultdialect=[5.3]Lua}
+\lstset{defaultdialect=[x86masm]Assembler}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\author{}
+\date{}
+
+\begin{document}
+\frontmatter
+
+\mainmatter
+\begin{lstlisting}[language=Python]
+from os.path import basename, exists
+
+def download(url):
+    filename = basename(url)
+    if not exists(filename):
+        from urllib.request import urlretrieve
+
+        local, _ = urlretrieve(url, filename)
+        print("Downloaded " + str(local))
+    return filename
+
+download('https://raw.githubusercontent.com/AllenDowney/ElementsOfDataScience/v1/utils.py')
+
+import utils
+
+import pandas as pd
+
+# pd.set_option('display.latex.repr', True)
+
+def to_latex(df, *args, **options):
+    return df.to_latex(escape=True)
+
+pd.DataFrame._repr_html_ = to_latex
+
+import warnings
+warnings.simplefilter(action='ignore', category=FutureWarning)
+warnings.simplefilter(action='ignore', category=SyntaxWarning)
+
+import matplotlib.pyplot as plt
+
+# see https://matplotlib.org/stable/users/prev_whats_new/dflt_style_changes.html#figure-size-font-size-and-screen-dpi
+plt.rcParams['figure.dpi'] = 300
+
+#plt.rcParams['figure.figsize'] = (6.4, 4.0)
+#plt.rcParams['font.size'] = 14
+#plt.rcParams['legend.fontsize'] = 14
+#plt.rcParams['axes.titlesize'] = 16
+
+# %config InlineBackend.figure_format = 'pdf'
+\end{lstlisting}
+
+\chapter{Plotting}\label{plotting}
 
 This chapter presents ways to create figures and graphs, more generally
 called \textbf{data visualizations}. As examples, we'll generate three
@@ -10,7 +127,7 @@ figures:
   We'll replicate a figure from the Pew Research Center that shows
   changes in religious affiliation in the United States over time.
 \item
-  We'll replicate the figure from \emph{The Economist} that shows the
+  We'll replicate a figure from \emph{The Economist} that shows the
   prices of sandwiches in Boston and London (we saw this data back in
   Chapter 3).
 \item
@@ -20,34 +137,32 @@ figures:
 
 With the tools in this chapter, you can generate a variety of simple
 graphs. We will see more visualization tools in later chapters. But
-before we get started with plotting, we need a new language feature:
-keyword arguments.
+before we get started with plotting, we need a new feature: keyword
+arguments.
 
-\hypertarget{keyword-arguments}{%
-\section{Keyword Arguments}\label{keyword-arguments}}
+\section{Keyword Arguments}\label{keyword-arguments}
 
 When you call most functions, you have to provide values. For example,
-when you call \passthrough{\lstinline!np.exp!}, which raises \(e\) to a
-given power, the value you provide is a number:
+when you call \passthrough{\lstinline!np.exp!}, you provide a number.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[language=Python]
 import numpy as np
 
 np.exp(1)
 \end{lstlisting}
 
-\begin{lstlisting}[style=output]
+\begin{lstlisting}
 2.718281828459045
 \end{lstlisting}
 
-When you call \passthrough{\lstinline!np.power!}, you have to provide
-two numbers:
+When you call \passthrough{\lstinline!np.power!}, you provide two
+numbers.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[language=Python]
 np.power(10, 6)
 \end{lstlisting}
 
-\begin{lstlisting}[style=output]
+\begin{lstlisting}
 1000000
 \end{lstlisting}
 
@@ -63,11 +178,11 @@ identified by name. For example, we have previously used
 \passthrough{\lstinline!int!} to convert a string to an integer. Here's
 how we use it with a string as a positional argument:
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[language=Python]
 int('21')
 \end{lstlisting}
 
-\begin{lstlisting}[style=output]
+\begin{lstlisting}
 21
 \end{lstlisting}
 
@@ -78,31 +193,28 @@ interpreted in base 8, represents the number
 \passthrough{\lstinline!2 * 8 + 1 = 17!}. Here's how we do this
 conversion using \passthrough{\lstinline!int!}.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[language=Python]
 int('21', base=8)
 \end{lstlisting}
 
-\begin{lstlisting}[style=output]
+\begin{lstlisting}
 17
 \end{lstlisting}
 
 The integer value \passthrough{\lstinline!8!} is a keyword argument,
-with the keyword \passthrough{\lstinline!base!}.
+with the keyword \passthrough{\lstinline!base!}. Specifying a keyword
+argument looks like an assignment statement, but it does not create a
+new variable. And when you provide a keyword argument, you don't choose
+the variable name -- it is specified by the function. If you provide a
+name that is not specified by the function, you get an error.
 
-Specifying a keyword argument looks like an assignment statement, but it
-does not create a new variable. And when you specify a keyword argument,
-you don't choose the variable name. In this example, the keyword name,
-\passthrough{\lstinline!base!}, is part of the definition of the
-\passthrough{\lstinline!int!} function. If you specify another keyword
-name, you get an error.
-
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[language=Python]
 %%expect TypeError
 
 int('123', bass=11)
 \end{lstlisting}
 
-\begin{lstlisting}[style=output]
+\begin{lstlisting}
 TypeError: 'bass' is an invalid keyword argument for int()
 \end{lstlisting}
 
@@ -111,27 +223,26 @@ keyword argument called \passthrough{\lstinline!end!} that specifies the
 character it prints at the end of the line. By default,
 \passthrough{\lstinline!end!} is the newline character,
 \passthrough{\lstinline!\\n!}. So if you call
-\passthrough{\lstinline!print!} more than once, the results normally
+\passthrough{\lstinline!print!} more than once, the outputs normally
 appear on separate lines, like this:
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[language=Python]
 for x in [1, 2, 3]:
     print(x)
 \end{lstlisting}
 
-\begin{lstlisting}[style=output]
+\begin{lstlisting}
 1
 2
 3
 \end{lstlisting}
 
-Modify the previous example so it prints the elements of the list, all
-on one line, with spaces between them. Then modify it to print an open
-bracket at the beginning and a close bracket and newline at the end.
+Modify the previous example so the outputs appear on one line with
+spaces between them. Then modify it to print an open bracket at the
+beginning and a close bracket and newline at the end.
 
-\hypertarget{graphing-religious-affiliation}{%
 \section{Graphing Religious
-Affiliation}\label{graphing-religious-affiliation}}
+Affiliation}\label{graphing-religious-affiliation}
 
 Now we're ready to make some graphs. In October 2019 the Pew Research
 Center published ``In U.S., Decline of Christianity Continues at Rapid
@@ -147,23 +258,23 @@ The data from the figure are available from Pew Research, but they are
 in a PDF document. It is sometimes possible to extract data from PDF
 documents, but for now we'll enter the data by hand.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[language=Python]
 year = [2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018]
 \end{lstlisting}
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[language=Python]
 christian = [77, 76, 75, 73, 73, 71, 69, 68, 67, 65]
 \end{lstlisting}
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[language=Python]
 unaffiliated = [17, 17, 19, 19, 20, 21, 24, 23, 25, 26]
 \end{lstlisting}
 
 The library we'll use for plotting is Matplotlib -- more specifically,
 we'll use a part of it called Pyplot, which we'll import with the
-nickname \passthrough{\lstinline!plt!}.
+shortened name \passthrough{\lstinline!plt!}.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[language=Python]
 import matplotlib.pyplot as plt
 \end{lstlisting}
 
@@ -172,13 +283,15 @@ makes a line plot. It takes two sequences as arguments, the
 \passthrough{\lstinline!x!} values and the \passthrough{\lstinline!y!}
 values. The sequences can be tuples, lists, or arrays.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[language=Python]
 plt.plot(year, christian);
 \end{lstlisting}
 
-\begin{center}
-\includegraphics[width=4in]{chapters/06_plotting_files/06_plotting_28_0.png}
-\end{center}
+\begin{figure}
+\centering
+\includegraphics{06_plotting_files/06_plotting_28_0.png}
+\caption{png}
+\end{figure}
 
 The semi-colon at the end of the line prevents the return value from
 \passthrough{\lstinline!plot!}, which is an object representing the
@@ -187,87 +300,91 @@ line, from being displayed.
 If you plot multiple lines in a single cell, they appear on the same
 axes.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[language=Python]
 plt.plot(year, christian)
 plt.plot(year, unaffiliated);
 \end{lstlisting}
 
-\begin{center}
-\includegraphics[width=4in]{chapters/06_plotting_files/06_plotting_30_0.png}
-\end{center}
+\begin{figure}
+\centering
+\includegraphics{06_plotting_files/06_plotting_30_0.png}
+\caption{png}
+\end{figure}
 
 Plotting them on the same axes makes it possible to compare them
 directly. However, notice that Pyplot chooses the range for the axes
-automatically. In this example the \passthrough{\lstinline!y!} axis
-starts around \passthrough{\lstinline!15!}, not zero.
+automatically. In this example the y-axis starts around 15, not zero.
 
 As a result, it provides a misleading picture, making the ratio of the
 two lines look bigger than it really is. We can set the limits of the
-\passthrough{\lstinline!y!} axis using the function
-\passthrough{\lstinline!plt.ylim!}. The argument is a list with two
-values, the lower bound and the upper bound.
+y-axis using the function \passthrough{\lstinline!plt.ylim!} -- the
+arguments are the lower bound and the upper bounds.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[language=Python]
 plt.plot(year, christian)
 plt.plot(year, unaffiliated)
 
-plt.ylim([0, 80]);
+plt.ylim(0, 80);
 \end{lstlisting}
 
-\begin{center}
-\includegraphics[width=4in]{chapters/06_plotting_files/06_plotting_32_0.png}
-\end{center}
+\begin{figure}
+\centering
+\includegraphics{06_plotting_files/06_plotting_32_0.png}
+\caption{png}
+\end{figure}
 
-That's better, but this graph is missing some of the most important
-elements: labels for the axes and a title.
+That's better, but this graph is missing some important elements: labels
+for the axes, a title, and a legend.
 
-\hypertarget{decorating-the-axes}{%
-\section{Decorating the Axes}\label{decorating-the-axes}}
+\section{Decorating the Axes}\label{decorating-the-axes}
 
 To label the axes and add a title, we'll use Pyplot functions
 \passthrough{\lstinline!xlabel!}, \passthrough{\lstinline!ylabel!}, and
 \passthrough{\lstinline!title!}. All of them take strings as arguments.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[language=Python]
 plt.plot(year, christian)
 plt.plot(year, unaffiliated)
 
-plt.ylim([0, 80])
+plt.ylim(0, 80)
 plt.xlabel('Year')
 plt.ylabel('% of adults')
 plt.title('Religious affiliation of U.S adults');
 \end{lstlisting}
 
-\begin{center}
-\includegraphics[width=4in]{chapters/06_plotting_files/06_plotting_35_0.png}
-\end{center}
+\begin{figure}
+\centering
+\includegraphics{06_plotting_files/06_plotting_35_0.png}
+\caption{png}
+\end{figure}
 
-Now let's add another important element, a legend that indicates which
-line is which. To do that, we add a label to each line, using the
-keyword argument \passthrough{\lstinline!label!}. Then we call
+To add a legend, first we add a label to each line, using the keyword
+argument \passthrough{\lstinline!label!}. Then we call
 \passthrough{\lstinline!plt.legend!} to create the legend.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[language=Python]
 plt.plot(year, christian, label='Christian')
 plt.plot(year, unaffiliated, label='Unaffiliated')
 
-plt.ylim([0, 80])
+plt.ylim(0, 80)
 plt.xlabel('Year')
 plt.ylabel('% of adults')
 plt.title('Religious affiliation of U.S adults')
 plt.legend();
 \end{lstlisting}
 
-\begin{center}
-\includegraphics[width=4in]{chapters/06_plotting_files/06_plotting_37_0.png}
-\end{center}
+\begin{figure}
+\centering
+\includegraphics{06_plotting_files/06_plotting_37_0.png}
+\caption{png}
+\end{figure}
 
 The legend shows the labels we provided when we created the lines.
 
 \textbf{Exercise:} The original figure plots lines between the data
 points, but it also plots markers showing the location of each data
-point. It is generally good practice to include markers, especially if
-data are not available for every year.
+point. It is good practice to include these markers, especially if data
+are not available for every year.
 
 Modify the previous example to include a keyword argument
 \passthrough{\lstinline!marker!} with the string value
@@ -287,8 +404,7 @@ The \passthrough{\lstinline!legend!} function takes a keyword argument
 that specifies the location of the legend. Read the documentation of
 this function and move the legend to the center left of the figure.
 
-\hypertarget{plotting-sandwich-prices}{%
-\section{Plotting Sandwich Prices}\label{plotting-sandwich-prices}}
+\section{Plotting Sandwich Prices}\label{plotting-sandwich-prices}
 
 In Chapter 3 we used data from an article in \emph{The Economist}
 comparing sandwich prices in Boston and London: ``Why Americans pay more
@@ -298,10 +414,9 @@ The article includes this graph showing prices of several sandwiches in
 the two cities:
 
 As an exercise, let's see if we can replicate this figure. Here's the
-data from the article again: the names of the sandwiches and the price
-list for each city.
+data from the article again.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[language=Python]
 name_list = [
     'Lobster roll',
     'Chicken caesar',
@@ -312,56 +427,52 @@ name_list = [
 ]
 \end{lstlisting}
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[language=Python]
 boston_price_list = [9.99, 7.99, 7.49, 7, 6.29, 4.99]
 london_price_list = [7.5, 5, 4.4, 5, 3.75, 2.25]
 \end{lstlisting}
 
-In the previous section we plotted percentages on the
-\passthrough{\lstinline!y!} axis versus time on the
-\passthrough{\lstinline!x!} axis. Now we want to plot the sandwich names
-on the \passthrough{\lstinline!y!} axis and the prices on the
-\passthrough{\lstinline!x!} axis. Here's how:
+In the previous section we plotted percentages on the y-axis versus time
+on the x-axis. Now we want to plot the sandwich names on the y-axis and
+the prices on the x-axis. Here's how:
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[language=Python]
 plt.plot(boston_price_list, name_list)
 plt.xlabel('Price in USD');
 \end{lstlisting}
 
-\begin{center}
-\includegraphics[width=4in]{chapters/06_plotting_files/06_plotting_47_0.png}
-\end{center}
-
-\passthrough{\lstinline!name\_list!} is a list of strings; Pyplot orders
-them from top to bottom, equally spaced.
+\begin{figure}
+\centering
+\includegraphics{06_plotting_files/06_plotting_47_0.png}
+\caption{png}
+\end{figure}
 
 By default Pyplot connects the points with lines, but in this example
-the lines don't make sense because the sandwich names are discrete;
-there are no intermediate points between an egg sandwich and a tuna
-sandwich.
+the lines don't make sense because the sandwich names are discrete --
+that is, there are no intermediate points between an egg sandwich and a
+tuna sandwich. We can remove the lines and add markers with the keywords
+\passthrough{\lstinline!linestyle!} and
+\passthrough{\lstinline!marker!}.
 
-We can turn on markers and turn off lines with keyword arguments.
-
-\begin{lstlisting}[language=Python,style=source]
-plt.plot(boston_price_list, name_list, 
-         marker='o', linestyle='')
+\begin{lstlisting}[language=Python]
+plt.plot(boston_price_list, name_list, linestyle='', marker='o')
 plt.xlabel('Price in USD');
 \end{lstlisting}
 
-\begin{center}
-\includegraphics[width=4in]{chapters/06_plotting_files/06_plotting_49_0.png}
-\end{center}
+\begin{figure}
+\centering
+\includegraphics{06_plotting_files/06_plotting_49_0.png}
+\caption{png}
+\end{figure}
 
 Or we can do the same thing more concisely by providing a \textbf{format
-string} as a positional argument. In this example,
+string} as a positional argument. In the following examples,
 \passthrough{\lstinline!'o'!} indicates a circle marker and
 \passthrough{\lstinline!'s'!} indicates a square. You can read the
 documentation of \passthrough{\lstinline!plt.plot!} to learn more about
 format strings.
 
-And let's add a title while we're at it:
-
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[language=Python]
 plt.plot(boston_price_list, name_list, 'o')
 plt.plot(london_price_list, name_list, 's')
 
@@ -369,17 +480,18 @@ plt.xlabel('Price in USD')
 plt.title('Pret a Manger prices in Boston and London');
 \end{lstlisting}
 
-\begin{center}
-\includegraphics[width=4in]{chapters/06_plotting_files/06_plotting_51_0.png}
-\end{center}
+\begin{figure}
+\centering
+\includegraphics{06_plotting_files/06_plotting_51_0.png}
+\caption{png}
+\end{figure}
 
 Now, to approximate the colors in the original figure, we can use the
 strings \passthrough{\lstinline!'C3'!} and
 \passthrough{\lstinline!'C0'!}, which specify colors from the default
-color sequence. You can read more about specifying colors in the Pyplot
-documentation.
+color sequence.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[language=Python]
 plt.plot(boston_price_list, name_list, 'o', color='C3')
 plt.plot(london_price_list, name_list, 's', color='C0')
 
@@ -387,18 +499,19 @@ plt.xlabel('Price in USD')
 plt.title('Pret a Manger prices in Boston and London');
 \end{lstlisting}
 
-\begin{center}
-\includegraphics[width=4in]{chapters/06_plotting_files/06_plotting_53_0.png}
-\end{center}
+\begin{figure}
+\centering
+\includegraphics{06_plotting_files/06_plotting_53_0.png}
+\caption{png}
+\end{figure}
 
 To connect the dots with lines, we'll use
 \passthrough{\lstinline!plt.hlines!}, which draws horizontal lines. It
-takes three arguments: a sequence of values on the
-\passthrough{\lstinline!y!} axis, which are the sandwich names in this
-example, and two sequences of values on the \passthrough{\lstinline!x!}
-axis, which are the London prices and Boston prices.
+takes three arguments: a sequence of values on the y-axis, which are the
+sandwich names in this example, and two sequences of values on the
+x-axis, which are the London prices and Boston prices.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[language=Python]
 plt.hlines(name_list, london_price_list, boston_price_list, color='gray')
 
 plt.plot(boston_price_list, name_list, 'o', color='C3')
@@ -408,9 +521,11 @@ plt.xlabel('Price in USD')
 plt.title('Pret a Manger prices in Boston and London');
 \end{lstlisting}
 
-\begin{center}
-\includegraphics[width=4in]{chapters/06_plotting_files/06_plotting_55_0.png}
-\end{center}
+\begin{figure}
+\centering
+\includegraphics{06_plotting_files/06_plotting_55_0.png}
+\caption{png}
+\end{figure}
 
 \textbf{Exercise:} To finish off this example, add a legend that
 identifies the London and Boston prices. Remember that you have to add a
@@ -420,11 +535,10 @@ identifies the London and Boston prices. Remember that you have to add a
 
 Notice that the sandwiches in our figure are in the opposite order of
 the sandwiches in the original figure. There is a Pyplot function that
-inverts the \passthrough{\lstinline!y!} axis; see if you can find it and
-use it to reverse the order of the sandwich list.
+inverts the y-axis; see if you can find it and use it to reverse the
+order of the sandwich list.
 
-\hypertarget{zipfs-law}{%
-\section{Zipf's Law}\label{zipfs-law}}
+\section{Zipf's Law}\label{zipfs-law}
 
 In almost any book, in almost any language, if you count the number of
 unique words and the number of times each word appears, you will find a
@@ -443,36 +557,31 @@ make a Zipf plot, which shows:
 
 \begin{itemize}
 \item
-  The frequency of each word on the \passthrough{\lstinline!y!} axis,
-  and
+  The frequency of each word on the y-axis, and
 \item
-  The rank of each word on the \passthrough{\lstinline!x!} axis,
-  starting from 1.
+  The rank of each word on the x-axis, starting from 1.
 \end{itemize}
 
 In the previous chapter, we looped through the book and made a string
 that contains all punctuation characters. Here are the results, which we
 will need again.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[language=Python]
 all_punctuation = ',.-:[#]*/“’—‘!?”;()%@'
 \end{lstlisting}
 
-The following code loops through the book and makes a dictionary that
+The following program reads through the book and makes a dictionary that
 maps from each word to the number of times it appears.
 
-\begin{lstlisting}[language=Python,style=source]
-first_line = "CHAPTER I\n"
-last_line = "*** END OF THE PROJECT GUTENBERG EBOOK WAR AND PEACE ***\n"
-
+\begin{lstlisting}[language=Python]
 fp = open('2600-0.txt')
 for line in fp:
-    if line == first_line:
+    if line.startswith('***'):
         break
 
 unique_words = {}
 for line in fp:
-    if line == last_line:
+    if line.startswith('***'):
         break
         
     for word in line.split():
@@ -490,12 +599,12 @@ values are their frequencies. We can use the
 dictionary. The result has the type
 \passthrough{\lstinline!dict\_values!}:
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[language=Python]
 freqs = unique_words.values()
 type(freqs)
 \end{lstlisting}
 
-\begin{lstlisting}[style=output]
+\begin{lstlisting}
 dict_values
 \end{lstlisting}
 
@@ -503,24 +612,24 @@ Before we plot them, we have to sort them, but the
 \passthrough{\lstinline!sort!} function doesn't work with
 \passthrough{\lstinline!dict\_values!}.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[language=Python]
 %%expect AttributeError
 
 freqs.sort()
 \end{lstlisting}
 
-\begin{lstlisting}[style=output]
+\begin{lstlisting}
 AttributeError: 'dict_values' object has no attribute 'sort'
 \end{lstlisting}
 
 We can use \passthrough{\lstinline!list!} to make a list of frequencies:
 
-\begin{lstlisting}[language=Python,style=source]
-freqs = list(unique_words.values())
-type(freqs)
+\begin{lstlisting}[language=Python]
+freq_list = list(unique_words.values())
+type(freq_list)
 \end{lstlisting}
 
-\begin{lstlisting}[style=output]
+\begin{lstlisting}
 list
 \end{lstlisting}
 
@@ -528,33 +637,33 @@ And now we can use \passthrough{\lstinline!sort!}. By default it sorts
 in ascending order, but we can pass a keyword argument to reverse the
 order.
 
-\begin{lstlisting}[language=Python,style=source]
-freqs.sort(reverse=True)
+\begin{lstlisting}[language=Python]
+freq_list.sort(reverse=True)
 \end{lstlisting}
 
 Now, for the ranks, we need a sequence that counts from 1 to
 \passthrough{\lstinline!n!}, where \passthrough{\lstinline!n!} is the
-number of elements in \passthrough{\lstinline!freqs!}. We can use the
-\passthrough{\lstinline!range!} function, which returns a value with
+number of elements in \passthrough{\lstinline!freq\_list!}. We can use
+the \passthrough{\lstinline!range!} function, which returns a value with
 type \passthrough{\lstinline!range!}. As a small example, here's the
 range from 1 to 5.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[language=Python]
 range(1, 5)
 \end{lstlisting}
 
-\begin{lstlisting}[style=output]
+\begin{lstlisting}
 range(1, 5)
 \end{lstlisting}
 
 However, there's a catch. If we use the range to make a list, we see
 that ``the range from 1 to 5'' includes 1, but it doesn't include 5.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[language=Python]
 list(range(1, 5))
 \end{lstlisting}
 
-\begin{lstlisting}[style=output]
+\begin{lstlisting}
 [1, 2, 3, 4]
 \end{lstlisting}
 
@@ -563,45 +672,45 @@ That might seem strange, but it is often more convenient to use
 what might seem like the more natural way. Anyway, we can get what we
 want by increasing the second argument by one:
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[language=Python]
 list(range(1, 6))
 \end{lstlisting}
 
-\begin{lstlisting}[style=output]
+\begin{lstlisting}
 [1, 2, 3, 4, 5]
 \end{lstlisting}
 
 So, finally, we can make a range that represents the ranks from
 \passthrough{\lstinline!1!} to \passthrough{\lstinline!n!}:
 
-\begin{lstlisting}[language=Python,style=source]
-n = len(freqs)
+\begin{lstlisting}[language=Python]
+n = len(freq_list)
 ranks = range(1, n+1)
 ranks
 \end{lstlisting}
 
-\begin{lstlisting}[style=output]
-range(1, 20683)
+\begin{lstlisting}
+range(1, 20485)
 \end{lstlisting}
 
 And now we can plot the frequencies versus the ranks:
 
-\begin{lstlisting}[language=Python,style=source]
-plt.plot(ranks, freqs)
+\begin{lstlisting}[language=Python]
+plt.plot(ranks, freq_list)
 
 plt.xlabel('Rank')
 plt.ylabel('Frequency')
 plt.title("War and Peace and Zipf's law");
 \end{lstlisting}
 
-\begin{center}
-\includegraphics[width=4in]{chapters/06_plotting_files/06_plotting_83_0.png}
-\end{center}
+\begin{figure}
+\centering
+\includegraphics{06_plotting_files/06_plotting_83_0.png}
+\caption{png}
+\end{figure}
 
-The most common words are very common, but the great majority of words
-are rare. But Zipf's law is more specific. It claims that the
-frequencies should be inversely proportional to the ranks. If that's
-true, we can write:
+According to Zipf's law, these frequencies should be inversely
+proportional to the ranks. If that's true, we can write:
 
 \(f = k / r\)
 
@@ -615,14 +724,13 @@ This equation implies that if we plot \(f\) versus \(r\) on a log-log
 scale, we expect to see a straight line with intercept at \(\log k\) and
 slope \(-1\).
 
-\hypertarget{logarithmic-scales}{%
-\section{Logarithmic Scales}\label{logarithmic-scales}}
+\section{Logarithmic Scales}\label{logarithmic-scales}
 
-We can use \passthrough{\lstinline!plt.xscale!} to plot the
-\passthrough{\lstinline!x!} axis on a log scale.
+We can use \passthrough{\lstinline!plt.xscale!} to plot the x-axis on a
+log scale.
 
-\begin{lstlisting}[language=Python,style=source]
-plt.plot(ranks, freqs)
+\begin{lstlisting}[language=Python]
+plt.plot(ranks, freq_list)
 
 plt.xlabel('Rank')
 plt.ylabel('Frequency')
@@ -630,15 +738,17 @@ plt.title("War and Peace and Zipf's law")
 plt.xscale('log')
 \end{lstlisting}
 
-\begin{center}
-\includegraphics[width=4in]{chapters/06_plotting_files/06_plotting_86_0.png}
-\end{center}
+\begin{figure}
+\centering
+\includegraphics{06_plotting_files/06_plotting_86_0.png}
+\caption{png}
+\end{figure}
 
-And \passthrough{\lstinline!plt.yscale!} to plot the
-\passthrough{\lstinline!y!} axis on a log scale.
+And \passthrough{\lstinline!plt.yscale!} to plot the y-axis on a log
+scale.
 
-\begin{lstlisting}[language=Python,style=source]
-plt.plot(ranks, freqs)
+\begin{lstlisting}[language=Python]
+plt.plot(ranks, freq_list)
 
 plt.xlabel('Rank')
 plt.ylabel('Frequency')
@@ -647,40 +757,42 @@ plt.xscale('log')
 plt.yscale('log')
 \end{lstlisting}
 
-\begin{center}
-\includegraphics[width=4in]{chapters/06_plotting_files/06_plotting_88_0.png}
-\end{center}
+\begin{figure}
+\centering
+\includegraphics{06_plotting_files/06_plotting_88_0.png}
+\caption{png}
+\end{figure}
 
 The result is not quite a straight line, but it is close. We can get a
 sense of the slope by connecting the end points with a line. First,
 we'll select the first and last elements from
 \passthrough{\lstinline!xs!}.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[language=Python]
 xs = ranks[0], ranks[-1]
 xs
 \end{lstlisting}
 
-\begin{lstlisting}[style=output]
-(1, 20682)
+\begin{lstlisting}
+(1, 20484)
 \end{lstlisting}
 
 And the first and last elements from \passthrough{\lstinline!ys!}.
 
-\begin{lstlisting}[language=Python,style=source]
-ys = freqs[0], freqs[-1]
+\begin{lstlisting}[language=Python]
+ys = freq_list[0], freq_list[-1]
 ys
 \end{lstlisting}
 
-\begin{lstlisting}[style=output]
-(34559, 1)
+\begin{lstlisting}
+(34389, 1)
 \end{lstlisting}
 
 And plot a line between them.
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[language=Python]
 plt.plot(xs, ys, color='gray')
-plt.plot(ranks, freqs)
+plt.plot(ranks, freq_list)
 
 plt.xlabel('Rank')
 plt.ylabel('Frequency')
@@ -689,47 +801,43 @@ plt.xscale('log')
 plt.yscale('log')
 \end{lstlisting}
 
-\begin{center}
-\includegraphics[width=4in]{chapters/06_plotting_files/06_plotting_94_0.png}
-\end{center}
+\begin{figure}
+\centering
+\includegraphics{06_plotting_files/06_plotting_94_0.png}
+\caption{png}
+\end{figure}
 
 The slope of this line is the ``rise over run'', that is, the difference
-on the \passthrough{\lstinline!y!} axis divided by the difference on the
-\passthrough{\lstinline!x!} axis. We can compute the rise using
-\passthrough{\lstinline!np.log10!} to compute the log base 10 of the
-first and last values:
+on the y-axis divided by the difference on the x-axis. We can compute
+the rise using \passthrough{\lstinline!np.log10!} to compute the log
+base 10 of the first and last values:
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[language=Python]
 np.log10(ys)
 \end{lstlisting}
 
-\begin{lstlisting}[style=output]
-array([4.53856117, 0.        ])
+\begin{lstlisting}
+array([4.53641955, 0.        ])
 \end{lstlisting}
 
 Then we can use \passthrough{\lstinline!np.diff!} to compute the
 difference between the elements:
 
-\begin{lstlisting}[language=Python,style=source]
+\begin{lstlisting}[language=Python]
 rise = np.diff(np.log10(ys))
 rise
 \end{lstlisting}
 
-\begin{lstlisting}[style=output]
-array([-4.53856117])
+\begin{lstlisting}
+array([-4.53641955])
 \end{lstlisting}
-
-In the following exercise, you'll compute the run and the slope of the
-gray line.
 
 \textbf{Exercise:} Use \passthrough{\lstinline!log10!} and
 \passthrough{\lstinline!diff!} to compute the run, that is, the
-difference on the \passthrough{\lstinline!x!} axis. Then divide the rise
-by the run to get the slope of the grey line. Is it close to \(-1\), as
-Zipf's law predicts?
+difference on the x-axis. Then divide the rise by the run to get the
+slope of the grey line. Is it close to \(-1\), as Zipf's law predicts?
 
-\hypertarget{summary}{%
-\section{Summary}\label{summary}}
+\section{Summary}\label{summary}
 
 This chapter introduces Pyplot, which is part of the Matplotlib library.
 We used to replicate two figures and make a Zipf plot. These examples
@@ -738,3 +846,5 @@ lines and markers, values and labels on the axes, a legend and a title.
 The Zipf plot also shows the power of plotting data on logarithmic
 scales.
 
+\backmatter
+\end{document}
