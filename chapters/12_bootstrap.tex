@@ -1,5 +1,4 @@
-\hypertarget{bootstrap-sampling}{%
-\chapter{Bootstrap Sampling}\label{bootstrap-sampling}}
+\chapter{Bootstrap Sampling}\label{bootstrap-sampling}
 
 In the previous chapter we used resampling to compute standard errors
 and confidence intervals, which quantify the variability in an estimate
@@ -18,8 +17,7 @@ of linear regression. Finally, I'll point out a problem with bootstrap
 resampling when there are not enough different values in a dataset, and
 a way to solve it with KDE resampling.
 
-\hypertarget{estimating-average-income}{%
-\section{Estimating Average Income}\label{estimating-average-income}}
+\section{Estimating Average Income}\label{estimating-average-income}
 
 As a first example, we'll use data from the General Social Survey to
 estimate average family income. We'll work with an extract that contains
@@ -190,8 +188,7 @@ and the results are reasonable. In the next section we'll see an example
 where the normal distribution is not good enough and the results are not
 reasonable. Then we'll see how to fix the problem.
 
-\hypertarget{estimating-percentiles}{%
-\section{Estimating Percentiles}\label{estimating-percentiles}}
+\section{Estimating Percentiles}\label{estimating-percentiles}
 
 Suppose that, instead of estimating the average income, we want to
 estimate the 10th percentile. Computing percentiles of income is often
@@ -289,8 +286,7 @@ The problem is that the normal model extends past the lower bound of the
 observed values, so it doesn't produce sensible results. Fortunately
 there is a simple alternative that is more robust: bootstrapping.
 
-\hypertarget{bootstrapping}{%
-\section{Bootstrapping}\label{bootstrapping}}
+\section{Bootstrapping}\label{bootstrapping}
 
 Bootstrapping is a kind of resampling, based on the framework we saw in
 the previous chapter:
@@ -441,8 +437,7 @@ In general, bootstrapping is robust -- that is, it works well with many
 different distributions and many different statistics. However, at the
 end of the chapter, we'll see one example where it fails.
 
-\hypertarget{working-with-bigger-data}{%
-\section{Working with Bigger Data}\label{working-with-bigger-data}}
+\section{Working with Bigger Data}\label{working-with-bigger-data}
 
 As sample size increases, errors due to random sampling get smaller. To
 demonstrate this effect, we'll use data from the Behavioral Risk Factor
@@ -576,8 +571,7 @@ that are bigger. So we can't be sure that the estimate is accurate.
 In fact, there is another source of error in this example that we have
 not taken into account: oversampling.
 
-\hypertarget{weighted-bootstrapping}{%
-\section{Weighted Bootstrapping}\label{weighted-bootstrapping}}
+\section{Weighted Bootstrapping}\label{weighted-bootstrapping}
 
 By design, the BRFSS oversamples some demographic groups -- that is,
 people in some groups are more likely than others to appear in the
@@ -733,8 +727,7 @@ than the width of the confidence interval. So in this example the error
 if we fail to correct for oversampling is bigger than variability due to
 random sampling.
 
-\hypertarget{correlation-and-regression}{%
-\section{Correlation and Regression}\label{correlation-and-regression}}
+\section{Correlation and Regression}\label{correlation-and-regression}
 
 Bootstrap resampling can be used to estimate other statistics and their
 sampling distributions. For example, in Chapter 9 we computed the
@@ -798,9 +791,8 @@ Run it 101 times and collect the results. Use the sampling distribution
 to compute the mean of the slope estimates, standard error, and a 90\%
 confidence interval.
 
-\hypertarget{limitations-of-bootstrapping}{%
 \section{Limitations of
-Bootstrapping}\label{limitations-of-bootstrapping}}
+Bootstrapping}\label{limitations-of-bootstrapping}
 
 One limitation of bootstrapping is that it can be computationally
 expensive. With small datasets, it is usually fast enough that we can
@@ -893,8 +885,7 @@ that the data have been discretized excessively, so the solution is to
 smooth it. Jittering is one option. Another is to use kernel density
 estimation (KDE).
 
-\hypertarget{resampling-with-kde}{%
-\section{Resampling with KDE}\label{resampling-with-kde}}
+\section{Resampling with KDE}\label{resampling-with-kde}
 
 We have used KDE several times to estimate and plot a probability
 density based on a sample. We can also use it to smooth data that have
@@ -999,8 +990,7 @@ The means and standard errors are about the same with either method. But
 the confidence interval we get from KDE resampling is much more
 reasonable.
 
-\hypertarget{summary}{%
-\section{Summary}\label{summary}}
+\section{Summary}\label{summary}
 
 There are ten examples in this chapter, so let's review them:
 
