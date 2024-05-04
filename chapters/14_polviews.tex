@@ -1,6 +1,5 @@
-\hypertarget{political-alignment-and-polarization}{%
 \chapter{Political Alignment and
-Polarization}\label{political-alignment-and-polarization}}
+Polarization}\label{political-alignment-and-polarization}
 
 This chapter and the next make up a case study that uses data from the
 General Social Survey (GSS) to explore political beliefs and political
@@ -43,8 +42,7 @@ gss.shape
 (72390, 207)
 \end{lstlisting}
 
-\hypertarget{political-alignment}{%
-\section{Political Alignment}\label{political-alignment}}
+\section{Political Alignment}\label{political-alignment}
 
 The people surveyed for the GSS were asked about their ``political
 alignment'', which is where they place themselves on a spectrum from
@@ -62,10 +60,12 @@ scale?
 Here are the valid responses:
 
 \begin{longtable}[]{@{}ll@{}}
-\midrule()
+\midrule\noalign{}
 Code & Response \\
-\midrule()
+\midrule\noalign{}
 \endhead
+\midrule\noalign{}
+\endlastfoot
 1 & Extremely liberal \\
 2 & Liberal \\
 3 & Slightly liberal \\
@@ -73,7 +73,6 @@ Code & Response \\
 5 & Slightly conservative \\
 6 & Conservative \\
 7 & Extremely conservative \\
-\midrule()
 \end{longtable}
 
 To see how the responses have changed over time, we'll inspect them at
@@ -153,8 +152,7 @@ Looking at these counts, we can get an idea of what the distributions
 look like, but in the next section we'll get a clearer picture by
 plotting them.
 
-\hypertarget{visualizing-distributions}{%
-\section{Visualizing Distributions}\label{visualizing-distributions}}
+\section{Visualizing Distributions}\label{visualizing-distributions}
 
 To visualize these distributions, we'll use a Probability Mass Function
 (PMF), which is similar to a histogram, but there are two differences:
@@ -221,7 +219,7 @@ And from 2022:
 
 \begin{lstlisting}[language=Python,style=source]
 pmf22 = Pmf.from_seq(polviews22)
-pmf22.bar(label="2021", color="C1", alpha=0.7)
+pmf22.bar(label="2022", color="C1", alpha=0.7)
 
 decorate(
     xlabel="Political view on a 7-point scale",
@@ -253,8 +251,7 @@ Compute the mean and standard deviation of
 \passthrough{\lstinline!polviews22!}. What do they indicate about
 changes over this interval?
 
-\hypertarget{plotting-a-time-series}{%
-\section{Plotting a Time Series}\label{plotting-a-time-series}}
+\section{Plotting a Time Series}\label{plotting-a-time-series}
 
 At this point we have looked at the endpoints, 1974 and 2022, but we
 don't know what happened in between. To see how the distribution changed
@@ -327,8 +324,7 @@ deviation of \passthrough{\lstinline!polviews!} for each year of the
 survey from 1972 to 2022. Does it show evidence of increasing
 polarization?
 
-\hypertarget{smoothing-the-curve}{%
-\section{Smoothing the Curve}\label{smoothing-the-curve}}
+\section{Smoothing the Curve}\label{smoothing-the-curve}
 
 In the previous section we plotted mean and standard deviation of
 \passthrough{\lstinline!polviews!} over time. In both plots, the values
@@ -396,8 +392,7 @@ people describe themselves.
 plot the standard deviation of \passthrough{\lstinline!polviews!} with a
 smooth line.
 
-\hypertarget{cross-tabulation}{%
-\section{Cross Tabulation}\label{cross-tabulation}}
+\section{Cross Tabulation}\label{cross-tabulation}
 
 In the previous sections, we treated \passthrough{\lstinline!polviews!}
 as a numerical quantity, so we were able to compute means and standard
@@ -544,18 +539,16 @@ year &  &  &  &  &  &  &  \\
 
 We are almost ready to plot the results, but first we need some colors.
 
-\hypertarget{color-palettes}{%
-\section{Color Palettes}\label{color-palettes}}
+\section{Color Palettes}\label{color-palettes}
 
 To represent political views, we'll use a color palette from blue to
 purple to red. Seaborn provides a variety of color palettes -- we'll
-start with this one, which includes shades of blue and red.
-
-\href{https://seaborn.pydata.org/tutorial/color_palettes.html}{You can
-read more about Seaborn's color palettes here}.
+start with this one, which includes shades of blue and red. To represent
+moderates, we'll replace the middle color with purple.
 
 \begin{lstlisting}[language=Python,style=source]
 palette = sns.color_palette("RdBu_r", 7)
+palette[3] = "purple"
 sns.palplot(palette)
 \end{lstlisting}
 
@@ -563,18 +556,7 @@ sns.palplot(palette)
 \includegraphics[width=4in]{chapters/14_polviews_files/14_polviews_83_0.png}
 \end{center}
 
-To represent moderates, we'll replace the middle color with purple.
-
-\begin{lstlisting}[language=Python,style=source]
-palette[3] = "purple"
-sns.palplot(palette)
-\end{lstlisting}
-
-\begin{center}
-\includegraphics[width=4in]{chapters/14_polviews_files/14_polviews_85_0.png}
-\end{center}
-
-Now I'll make a dictionary that maps from the responses to the
+Now we'll make a dictionary that maps from the responses to the
 corresponding colors.
 
 \begin{lstlisting}[language=Python,style=source]
@@ -593,9 +575,7 @@ color_map = dict(zip(groups, palette))
 
 Now we're ready to plot.
 
-\hypertarget{plotting-a-cross-tabulation}{%
-\section{Plotting a Cross
-Tabulation}\label{plotting-a-cross-tabulation}}
+\section{Plotting a Cross Tabulation}\label{plotting-a-cross-tabulation}
 
 To see how the fraction of people with each political alignment has
 changed over time, we'll use
@@ -621,7 +601,7 @@ plt.legend(bbox_to_anchor=(1.02, 1.02));
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/14_polviews_files/14_polviews_91_0.png}
+\includegraphics[width=4in]{chapters/14_polviews_files/14_polviews_89_0.png}
 \end{center}
 
 This way of looking at the results suggests that changes in political
@@ -650,7 +630,7 @@ decorate(
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[width=4in]{chapters/14_polviews_files/14_polviews_93_0.png}
+\includegraphics[width=4in]{chapters/14_polviews_files/14_polviews_91_0.png}
 \end{center}
 
 I used \passthrough{\lstinline!ylim!} to set the limits of the y-axis so
@@ -672,10 +652,12 @@ Democrat, Independent, or what?
 The valid responses are:
 
 \begin{longtable}[]{@{}ll@{}}
-\midrule()
+\midrule\noalign{}
 Code & Response \\
-\midrule()
+\midrule\noalign{}
 \endhead
+\midrule\noalign{}
+\endlastfoot
 0 & Strong democrat \\
 1 & Not str democrat \\
 2 & Ind, near dem \\
@@ -684,14 +666,12 @@ Code & Response \\
 5 & Not str republican \\
 6 & Strong republican \\
 7 & Other party \\
-\midrule()
 \end{longtable}
 
 In the notebook for this chapter, there are some suggestions to get you
 started.
 
-\hypertarget{summary}{%
-\section{Summary}\label{summary}}
+\section{Summary}\label{summary}
 
 This chapter introduces two new tools: local regression for computing a
 smooth curve through noisy data, and cross tabulation for counting the
