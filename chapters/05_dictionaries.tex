@@ -1,9 +1,8 @@
-\hypertarget{dictionaries}{%
-\chapter{Dictionaries}\label{dictionaries}}
+\chapter{Dictionaries}\label{dictionaries}
 
 In the previous chapter we used a \passthrough{\lstinline!for!} loop to
-read a file and count the words. In this chapter count the number of
-\emph{unique} words and the number of times each one appears. To do
+read a file and count the words. In this chapter we'll count the number
+of \emph{unique} words and the number of times each one appears. To do
 that, we'll use one of Python's most useful features, a
 \textbf{dictionary}.
 
@@ -12,8 +11,7 @@ or array). And you will learn a little about Unicode, which is used to
 represent letters, numbers, and punctuation for almost every language in
 the world.
 
-\hypertarget{indexing}{%
-\section{Indexing}\label{indexing}}
+\section{Indexing}\label{indexing}
 
 Suppose you have a variable named \passthrough{\lstinline!t!} that
 refers to a list or tuple. You can select an element using the
@@ -83,8 +81,7 @@ t[i+1]
 'two'
 \end{lstlisting}
 
-But if the index goes past the end of the list or tuple, you get an
-error.
+But if the index goes past the end of the sequence, you get an error.
 
 \begin{lstlisting}[language=Python,style=source]
 %%expect IndexError
@@ -96,7 +93,7 @@ t[3]
 IndexError: tuple index out of range
 \end{lstlisting}
 
-Also, the index has to be an integer; if it is any other type, you get
+Also, the index has to be an integer -- if it is any other type, you get
 an error.
 
 \begin{lstlisting}[language=Python,style=source]
@@ -123,8 +120,7 @@ TypeError: tuple indices must be integers or slices, not str
 \passthrough{\lstinline!-1!} and \passthrough{\lstinline!-2!} as
 indices, and see if you can figure out what they do.
 
-\hypertarget{dictionaries-1}{%
-\section{Dictionaries}\label{dictionaries-1}}
+\section{Dictionaries}\label{dictionaries-1}
 
 A dictionary is similar to a tuple or list, but in a dictionary, the
 index can be almost any type, not just an integer. We can create an
@@ -198,7 +194,7 @@ NameError: name 'two' is not defined
 \end{lstlisting}
 
 To check whether a particular key is in a dictionary, you can use the
-special word \passthrough{\lstinline!in!}:
+\passthrough{\lstinline!in!} operator:
 
 \begin{lstlisting}[language=Python,style=source]
 'one' in d
@@ -307,8 +303,7 @@ in any language you know.
 
 Write a loop that prints just the values from the dictionary.
 
-\hypertarget{counting-unique-words}{%
-\section{Counting Unique Words}\label{counting-unique-words}}
+\section{Counting Unique Words}\label{counting-unique-words}
 
 In the previous chapter we downloaded \emph{War and Peace} from Project
 Gutenberg and counted the number of lines and words. Now that we have
@@ -354,37 +349,26 @@ inside another.
 
 Each time through the inner loop, we add a word as a key in the
 dictionary, with the value \passthrough{\lstinline!1!}. If a word that
-is already in the dictionary appears again, it gets added to the
-dictionary again, which has no effect. So the dictionary contains only
-one copy of each unique word in the file.
-
-At the end of the loop, we can display the first 10 keys:
+is already in the dictionary appears again, adding it to the dictionary
+again has no effect. So the dictionary gets only one copy of each unique
+word in the file. At the end of the loop, we can display the first eight
+keys like this.
 
 \begin{lstlisting}[language=Python,style=source]
-i = 0
-for key in unique_words:
-    print(key)
-    i += 1
-    if i == 10:
-        break
+list(unique_words)[:8]
 \end{lstlisting}
 
 \begin{lstlisting}[style=output]
-
-The
-Project
-Gutenberg
-EBook
-of
-War
-and
-Peace,
-by
+['\ufeff', 'The', 'Project', 'Gutenberg', 'EBook', 'of', 'War', 'and']
 \end{lstlisting}
 
-The dictionary contains all the words in the file, in order of first
-appearance. But each word only appears once, so the number of keys is
-the number of unique words:
+The \passthrough{\lstinline!list!} function puts the keys from the
+dictionary in a list. In the bracket operator,
+\passthrough{\lstinline!:8!} is a special index called a \emph{slice}
+that selects the first eight elements.
+
+Each word only appears once, so the number of keys is the number of
+unique words.
 
 \begin{lstlisting}[language=Python,style=source]
 len(unique_words)
@@ -394,14 +378,15 @@ len(unique_words)
 41991
 \end{lstlisting}
 
-It looks like there are about 42,000 different words in the book, which
-is substantially less than the total number of words, about 560,000. But
-that's not quite right, because we have not taken into account
-capitalization and punctuation.
+There are about 42,000 different words in the book, which is
+substantially less than the total number of words, about 560,000.
 
-\textbf{Exercise:} Before we deal with that problem, let's practice with
-nested loops, that is, one loop inside another. Suppose you have a list
-of words, like this:
+But this count is not correct yet, because we have not taken into
+account capitalization and punctuation.
+
+\textbf{Exercise:} Before we deal with those problems, let's practice
+with nested loops -- that is, one loop inside another. Suppose you have
+a list of words, like this:
 
 \begin{lstlisting}[language=Python,style=source]
 line = ['War', 'and', 'Peace']
@@ -410,9 +395,7 @@ line = ['War', 'and', 'Peace']
 Write a nested loop that iterates through each word in the list, and
 each letter in each word, and prints the letters on separate lines.
 
-\hypertarget{dealing-with-capitalization}{%
-\section{Dealing with
-Capitalization}\label{dealing-with-capitalization}}
+\section{Dealing with Capitalization}\label{dealing-with-capitalization}
 
 When we count unique words, we probably want to treat
 \passthrough{\lstinline!The!} and \passthrough{\lstinline!the!} as the
@@ -462,12 +445,11 @@ version of each word before adding it to the dictionary. How many unique
 words are there, if we ignore the difference between uppercase and
 lowercase?
 
-\hypertarget{removing-punctuation}{%
-\section{Removing Punctuation}\label{removing-punctuation}}
+\section{Removing Punctuation}\label{removing-punctuation}
 
 To remove punctuation from the words, we can use
-\passthrough{\lstinline!strip!}, which removes specified characters from
-the beginning and end of a string. Here's an example:
+\passthrough{\lstinline!strip!}, which removes characters from the
+beginning and end of a string. Here's an example:
 
 \begin{lstlisting}[language=Python,style=source]
 word = 'abracadabra'
@@ -566,9 +548,8 @@ The comma after \passthrough{\lstinline!anyone!} is removed, but not the
 quotation mark at the end of the last word. The problem is that this
 kind of quotation mark is not in
 \passthrough{\lstinline!string.punctuation!}, so
-\passthrough{\lstinline!strip!} doesn't recognize it as punctuation.
-
-To fix this problem, we'll use the following loop, which
+\passthrough{\lstinline!strip!} doesn't remove it. To fix this problem,
+we'll use the following loop, which
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
@@ -610,12 +591,7 @@ section to convert words to lower case \emph{and} strip punctuation
 before adding them to the dictionary. Now how many unique words are
 there?
 
-To get you started, here's the code from the previous chapter that skips
-over the front matter at the beginning and the license at the end, as we
-did in the previous chapter.
-
-\hypertarget{counting-word-frequencies}{%
-\section{Counting Word Frequencies}\label{counting-word-frequencies}}
+\section{Counting Word Frequencies}\label{counting-word-frequencies}
 
 In the previous section we counted the number of unique words, but we
 might also want to know how often each word appears. Then we can find
@@ -743,14 +719,13 @@ function that takes a \passthrough{\lstinline!Counter!} and a frequency
 as arguments, prints all words with that frequency, and returns the
 number of words with that frequency.
 
-\hypertarget{summary}{%
-\section{Summary}\label{summary}}
+\section{Summary}\label{summary}
 
-This chapter introduced dictionaries, which are collections of keys and
+This chapter introduces dictionaries, which are collections of keys and
 corresponding values. We used a dictionary to count the number of unique
 words in a file and the number of times each one appears.
 
-It also introduced the bracket operator, which selects an element from a
+It also introduces the bracket operator, which selects an element from a
 list or tuple, or looks up a key in a dictionary and finds the
 corresponding value.
 
