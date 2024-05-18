@@ -1,0 +1,736 @@
+\chapter{Dictionaries}\label{dictionaries}
+
+In the previous chapter we used a \passthrough{\lstinline!for!} loop to
+read a file and count the words. In this chapter we'll count the number
+of \emph{unique} words and the number of times each one appears. To do
+that, we'll use one of Python's most useful features, a
+\textbf{dictionary}.
+
+You will also see how to select an element from a sequence (tuple, list,
+or array). And you will learn a little about Unicode, which is used to
+represent letters, numbers, and punctuation for almost every language in
+the world.
+
+\section{Indexing}\label{indexing}
+
+Suppose you have a variable named \passthrough{\lstinline!t!} that
+refers to a list or tuple. You can select an element using the
+\textbf{bracket operator}, \passthrough{\lstinline![]!}. For example,
+here's a tuple of strings:
+
+\begin{lstlisting}[language=Python,style=source]
+t = ('zero', 'one', 'two')
+\end{lstlisting}
+
+To select the first element, we put \passthrough{\lstinline!0!} in
+brackets:
+
+\begin{lstlisting}[language=Python,style=source]
+t[0]
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+'zero'
+\end{lstlisting}
+
+To select the second element, we put \passthrough{\lstinline!1!} in
+brackets:
+
+\begin{lstlisting}[language=Python,style=source]
+t[1]
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+'one'
+\end{lstlisting}
+
+To select the third element, we put \passthrough{\lstinline!2!} in
+brackets:
+
+\begin{lstlisting}[language=Python,style=source]
+t[2]
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+'two'
+\end{lstlisting}
+
+The number in brackets is called an \textbf{index} because it indicates
+which element we want. Tuples and lists use zero-based numbering -- that
+is, the index of the first element is 0. Some other programming
+languages use one-based numbering.
+
+The index in brackets can also be a variable:
+
+\begin{lstlisting}[language=Python,style=source]
+i = 1
+t[i]
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+'one'
+\end{lstlisting}
+
+Or an expression with variables, values, and operators:
+
+\begin{lstlisting}[language=Python,style=source]
+t[i+1]
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+'two'
+\end{lstlisting}
+
+But if the index goes past the end of the sequence, you get an error.
+
+\begin{lstlisting}[language=Python,style=source]
+%%expect IndexError
+
+t[3]
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+IndexError: tuple index out of range
+\end{lstlisting}
+
+Also, the index has to be an integer -- if it is any other type, you get
+an error.
+
+\begin{lstlisting}[language=Python,style=source]
+%%expect TypeError
+
+t[1.5]
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+TypeError: tuple indices must be integers or slices, not float
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python,style=source]
+%%expect TypeError
+
+t['1']
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+TypeError: tuple indices must be integers or slices, not str
+\end{lstlisting}
+
+\textbf{Exercise:} You can use negative integers as indices. Try using
+\passthrough{\lstinline!-1!} and \passthrough{\lstinline!-2!} as
+indices, and see if you can figure out what they do.
+
+\section{Dictionaries}\label{dictionaries-1}
+
+A dictionary is similar to a tuple or list, but in a dictionary, the
+index can be almost any type, not just an integer. We can create an
+empty dictionary like this:
+
+\begin{lstlisting}[language=Python,style=source]
+d = {}
+\end{lstlisting}
+
+Then we can add elements like this:
+
+\begin{lstlisting}[language=Python,style=source]
+d['one'] = 1
+d['two'] = 2
+\end{lstlisting}
+
+In this example, the indices are the strings,
+\passthrough{\lstinline!'one'!} and \passthrough{\lstinline!'two'!}. If
+you display the dictionary, it shows each index and the corresponding
+value.
+
+\begin{lstlisting}[language=Python,style=source]
+d
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+{'one': 1, 'two': 2}
+\end{lstlisting}
+
+Instead of creating an empty dictionary and then adding elements, you
+can create a dictionary and specify the elements at the same time:
+
+\begin{lstlisting}[language=Python,style=source]
+d = {'one': 1, 'two': 2, 'three': 3}
+d
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+{'one': 1, 'two': 2, 'three': 3}
+\end{lstlisting}
+
+When we are talking about dictionaries, an index is usually called a
+\textbf{key}. In this example, the keys are strings and the
+corresponding values are integers. A dictionary is also called a
+\textbf{map}, because it represents a correspondence or ``mapping'',
+between keys and values. So we might say that this dictionary maps from
+English number names to the corresponding integers.
+
+You can use the bracket operator to select an element from a dictionary,
+like this:
+
+\begin{lstlisting}[language=Python,style=source]
+d['two']
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+2
+\end{lstlisting}
+
+But don't forget the quotation marks. Without them, Python looks for a
+variable named \passthrough{\lstinline!two!} and doesn't find one.
+
+\begin{lstlisting}[language=Python,style=source]
+%%expect NameError
+
+d[two]
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+NameError: name 'two' is not defined
+\end{lstlisting}
+
+To check whether a particular key is in a dictionary, you can use the
+\passthrough{\lstinline!in!} operator:
+
+\begin{lstlisting}[language=Python,style=source]
+'one' in d
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+True
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python,style=source]
+'zero' in d
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+False
+\end{lstlisting}
+
+Because the word \passthrough{\lstinline!in!} is an operator in Python,
+you can't use it as a variable name.
+
+\begin{lstlisting}[language=Python,style=source]
+%%expect SyntaxError
+
+in = 5
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+  Cell In[22], line 1
+    in = 5
+    ^
+SyntaxError: invalid syntax
+\end{lstlisting}
+
+Each key in a dictionary can only appear once. Adding the same key again
+has no effect:
+
+\begin{lstlisting}[language=Python,style=source]
+d['one'] = 1
+d
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+{'one': 1, 'two': 2, 'three': 3}
+\end{lstlisting}
+
+But you can change the value associated with a key:
+
+\begin{lstlisting}[language=Python,style=source]
+d['one'] = 100
+d
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+{'one': 100, 'two': 2, 'three': 3}
+\end{lstlisting}
+
+You can loop through the keys in a dictionary like this:
+
+\begin{lstlisting}[language=Python,style=source]
+for key in d:
+    print(key)
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+one
+two
+three
+\end{lstlisting}
+
+If you want the keys and the values, one way to get them is to loop
+through the keys and look up the values:
+
+\begin{lstlisting}[language=Python,style=source]
+for key in d:
+    print(key, d[key])
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+one 100
+two 2
+three 3
+\end{lstlisting}
+
+Or you can loop through both at the same time, like this:
+
+\begin{lstlisting}[language=Python,style=source]
+for key, value in d.items():
+    print(key, value)
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+one 100
+two 2
+three 3
+\end{lstlisting}
+
+The \passthrough{\lstinline!items!} method loops through the key-value
+pairs in the dictionary. Each time through the loop, they are assigned
+to \passthrough{\lstinline!key!} and \passthrough{\lstinline!value!}.
+
+\textbf{Exercise:} Make a dictionary with the integers
+\passthrough{\lstinline!1!}, \passthrough{\lstinline!2!}, and
+\passthrough{\lstinline!3!} as keys and strings as values. The strings
+should be the words ``one'', ``two'', and ``three'' or their equivalents
+in any language you know.
+
+Write a loop that prints just the values from the dictionary.
+
+\section{Counting Unique Words}\label{counting-unique-words}
+
+In the previous chapter we downloaded \emph{War and Peace} from Project
+Gutenberg and counted the number of lines and words. Now that we have
+dictionaries, we can also count the number of unique words and the
+number of times each one appears.
+
+As we did in the previous chapter, we can read the text of \emph{War and
+Peace} and count the number of words.
+
+\begin{lstlisting}[language=Python,style=source]
+fp = open('2600-0.txt')
+count = 0
+for line in fp:
+    count += len(line.split())
+    
+count
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+566316
+\end{lstlisting}
+
+To count the number of unique words, we'll loop through the words in
+each line and add them as keys in a dictionary:
+
+\begin{lstlisting}[language=Python,style=source]
+fp = open('2600-0.txt')
+unique_words = {}
+for line in fp:
+    for word in line.split():
+        unique_words[word] = 1
+\end{lstlisting}
+
+This is the first example we've seen with one loop \textbf{nested}
+inside another.
+
+\begin{itemize}
+\item
+  The outer loop runs through the lines in the file.
+\item
+  The inner loops runs through the words in each line.
+\end{itemize}
+
+Each time through the inner loop, we add a word as a key in the
+dictionary, with the value \passthrough{\lstinline!1!}. If a word that
+is already in the dictionary appears again, adding it to the dictionary
+again has no effect. So the dictionary gets only one copy of each unique
+word in the file. At the end of the loop, we can display the first eight
+keys like this.
+
+\begin{lstlisting}[language=Python,style=source]
+list(unique_words)[:8]
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+['The', 'Project', 'Gutenberg', 'EBook', 'of', 'War', 'and', 'Peace,']
+\end{lstlisting}
+
+The \passthrough{\lstinline!list!} function puts the keys from the
+dictionary in a list. In the bracket operator,
+\passthrough{\lstinline!:8!} is a special index called a \emph{slice}
+that selects the first eight elements.
+
+Each word only appears once, so the number of keys is the number of
+unique words.
+
+\begin{lstlisting}[language=Python,style=source]
+len(unique_words)
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+41990
+\end{lstlisting}
+
+There are about 42,000 different words in the book, which is
+substantially less than the total number of words, about 560,000.
+
+But this count is not correct yet, because we have not taken into
+account capitalization and punctuation.
+
+\textbf{Exercise:} Before we deal with those problems, let's practice
+with nested loops -- that is, one loop inside another. Suppose you have
+a list of words, like this:
+
+\begin{lstlisting}[language=Python,style=source]
+line = ['War', 'and', 'Peace']
+\end{lstlisting}
+
+Write a nested loop that iterates through each word in the list, and
+each letter in each word, and prints the letters on separate lines.
+
+\section{Dealing with Capitalization}\label{dealing-with-capitalization}
+
+When we count unique words, we probably want to treat
+\passthrough{\lstinline!The!} and \passthrough{\lstinline!the!} as the
+same word. We can do that by converting all words to lower case, using
+the \passthrough{\lstinline!lower!} function:
+
+\begin{lstlisting}[language=Python,style=source]
+word = 'The'
+word.lower()
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+'the'
+\end{lstlisting}
+
+\passthrough{\lstinline!lower!} creates a new string; it does not modify
+the original string.
+
+\begin{lstlisting}[language=Python,style=source]
+word
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+'The'
+\end{lstlisting}
+
+However, you can assign the new string back to the existing variable,
+like this:
+
+\begin{lstlisting}[language=Python,style=source]
+word = word.lower()
+\end{lstlisting}
+
+Now if we can display the new value of \passthrough{\lstinline!word!},
+we get the lowercase version:
+
+\begin{lstlisting}[language=Python,style=source]
+word
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+'the'
+\end{lstlisting}
+
+\textbf{Exercise:} Modify the previous loop so it makes a lowercase
+version of each word before adding it to the dictionary. How many unique
+words are there, if we ignore the difference between uppercase and
+lowercase?
+
+\section{Removing Punctuation}\label{removing-punctuation}
+
+To remove punctuation from the words, we can use
+\passthrough{\lstinline!strip!}, which removes characters from the
+beginning and end of a string. Here's an example:
+
+\begin{lstlisting}[language=Python,style=source]
+word = 'abracadabra'
+word.strip('ab')
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+'racadabr'
+\end{lstlisting}
+
+In this example, \passthrough{\lstinline!strip!} removes all instances
+of \passthrough{\lstinline!a!} and \passthrough{\lstinline!b!} from the
+beginning and end of the word, but not from the middle. Like
+\passthrough{\lstinline!lower!}, this function makes a new word -- it
+doesn't modify the original:
+
+\begin{lstlisting}[language=Python,style=source]
+word
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+'abracadabra'
+\end{lstlisting}
+
+To remove punctuation, we can use the \passthrough{\lstinline!string!}
+library, which provides a variable named
+\passthrough{\lstinline!punctuation!}.
+
+\begin{lstlisting}[language=Python,style=source]
+import string
+
+string.punctuation
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+'!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~'
+\end{lstlisting}
+
+\passthrough{\lstinline!string.punctuation!} contains the most common
+punctuation marks, but as we'll see, not all of them. Nevertheless, we
+can use it to handle most cases. Here's an example:
+
+\begin{lstlisting}[language=Python,style=source]
+line = "It's not given to people to judge what's right or wrong."
+
+for word in line.split():
+    word = word.strip(string.punctuation)
+    print(word)
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+It's
+not
+given
+to
+people
+to
+judge
+what's
+right
+or
+wrong
+\end{lstlisting}
+
+\passthrough{\lstinline!strip!} removes the period at the end of
+\passthrough{\lstinline!wrong!}, but not the apostrophes in
+\passthrough{\lstinline!It's!}, \passthrough{\lstinline!don't!} and
+\passthrough{\lstinline!what's!}. So that's good, but we have one more
+problem to solve. Here's another line from the book.
+
+\begin{lstlisting}[language=Python,style=source]
+line = 'anyone, and so you don’t deserve to have them.”'
+\end{lstlisting}
+
+Here's what happens when we try to remove the punctuation.
+
+\begin{lstlisting}[language=Python,style=source]
+for word in line.split():
+    word = word.strip(string.punctuation)
+    print(word)
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+anyone
+and
+so
+you
+don’t
+deserve
+to
+have
+them.”
+\end{lstlisting}
+
+The comma after \passthrough{\lstinline!anyone!} is removed, but not the
+quotation mark at the end of the last word. The problem is that this
+kind of quotation mark is not in
+\passthrough{\lstinline!string.punctuation!}, so
+\passthrough{\lstinline!strip!} doesn't remove it. To fix this problem,
+we'll use the following loop, which
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  Reads the file and builds a dictionary that contains all punctuation
+  marks that appear in the book, then
+\item
+  It uses the \passthrough{\lstinline!join!} function to concatenate the
+  keys of the dictionary in a single string.
+\end{enumerate}
+
+You don't have to understand everything about how it works, but I
+suggest you read it and see how much you can figure out.
+
+\begin{lstlisting}[language=Python,style=source]
+import unicodedata
+
+fp = open('2600-0.txt')
+punc_marks = {}
+for line in fp:
+    for x in line:
+        category = unicodedata.category(x)
+        if category[0] == 'P':
+            punc_marks[x] = 1
+        
+all_punctuation = ''.join(punc_marks)
+print(all_punctuation)
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+,.-:[#]*/“’—‘!?”;()%@
+\end{lstlisting}
+
+The result is a string containing all of the punctuation characters that
+appear in the document, in the order they first appear.
+
+\textbf{Exercise:} Modify the word-counting loop from the previous
+section to convert words to lower case \emph{and} strip punctuation
+before adding them to the dictionary. Now how many unique words are
+there?
+
+\section{Counting Word Frequencies}\label{counting-word-frequencies}
+
+In the previous section we counted the number of unique words, but we
+might also want to know how often each word appears. Then we can find
+the most common and least common words in the book. To count the
+frequency of each word, we'll make a dictionary that maps from each word
+to the number of times it appears.
+
+Here's an example that loops through a string and counts the number of
+times each letter appears.
+
+\begin{lstlisting}[language=Python,style=source]
+word = 'Mississippi'
+
+letter_counts = {}
+for x in word:
+    if x in letter_counts:
+        letter_counts[x] += 1
+    else:
+        letter_counts[x] = 1
+        
+letter_counts
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+{'M': 1, 'i': 4, 's': 4, 'p': 2}
+\end{lstlisting}
+
+The \passthrough{\lstinline!if!} statement includes a feature we have
+not seen before, an \passthrough{\lstinline!else!} clause. Here's how it
+works.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  First, it checks whether the letter, \passthrough{\lstinline!x!}, is
+  already a key in the dictionary,
+  \passthrough{\lstinline!letter\_counts!}.
+\item
+  If so, it runs the first statement,
+  \passthrough{\lstinline!letter\_counts[x] += 1!}, which increments the
+  value associated with the letter.
+\item
+  Otherwise, it runs the second statement,
+  \passthrough{\lstinline!letter\_counts[x] = 1!}, which adds
+  \passthrough{\lstinline!x!} as a new key, with the value
+  \passthrough{\lstinline!1!} indicating that we have seen the new
+  letter once.
+\end{enumerate}
+
+The result is a dictionary that maps from each letter to the number of
+times it appears. To get the most common letters, we can use a
+\passthrough{\lstinline!Counter!}, which is similar to a dictionary. To
+use it, we have to import a library called
+\passthrough{\lstinline!collections!}:
+
+\begin{lstlisting}[language=Python,style=source]
+import collections
+\end{lstlisting}
+
+Then we use \passthrough{\lstinline!collections.Counter!} to convert the
+dictionary to a \passthrough{\lstinline!Counter!}:
+
+\begin{lstlisting}[language=Python,style=source]
+counter = collections.Counter(letter_counts)
+type(counter)
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+collections.Counter
+\end{lstlisting}
+
+\passthrough{\lstinline!Counter!} provides a function called
+\passthrough{\lstinline!most\_common!} we can use to get the most common
+characters:
+
+\begin{lstlisting}[language=Python,style=source]
+counter.most_common(3)
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+[('i', 4), ('s', 4), ('p', 2)]
+\end{lstlisting}
+
+The result is a list of tuples, where each tuple contains a character
+and count, sorted by count.
+
+\textbf{Exercise:} Modify the loop from the previous exercise to count
+the frequency of the words in \emph{War and Peace}. Then print the 20
+most common words and the number of times each one appears.
+
+\textbf{Exercise:} You can run \passthrough{\lstinline!most\_common!}
+with no value in parentheses, like this:
+
+\begin{lstlisting}[style=output]
+word_freq_pairs = counter.most_common()
+\end{lstlisting}
+
+The result is a list of tuples, with one tuple for every unique word in
+the book. Use it to answer the following questions:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  How many times does the \#1 ranked word appear (that is, the first
+  element of the list)?
+\item
+  How many times does the \#10 ranked word appear?
+\item
+  How many times does the \#100 ranked word appear?
+\item
+  How many times does the \#1000 ranked word appear?
+\item
+  How many times does the \#10000 ranked word appear?
+\end{enumerate}
+
+Do you see a pattern in the results? We will explore this pattern more
+in the next chapter.
+
+\textbf{Exercise:} Write a loop that counts how many words appear 200
+times. What are they? How many words appear 100 times, 50 times, and 20
+times?
+
+\textbf{Optional:} If you know how to define a function, write a
+function that takes a \passthrough{\lstinline!Counter!} and a frequency
+as arguments, prints all words with that frequency, and returns the
+number of words with that frequency.
+
+\section{Summary}\label{summary}
+
+This chapter introduces dictionaries, which are collections of keys and
+corresponding values. We used a dictionary to count the number of unique
+words in a file and the number of times each one appears.
+
+It also introduces the bracket operator, which selects an element from a
+list or tuple, or looks up a key in a dictionary and finds the
+corresponding value.
+
+We saw some new methods for working with strings, including
+\passthrough{\lstinline!lower!} and \passthrough{\lstinline!strip!}.
+Also, we used the \passthrough{\lstinline!unicodedata!} library to
+identify characters that are considered punctuation.
+

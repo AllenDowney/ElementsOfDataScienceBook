@@ -1,0 +1,420 @@
+\chapter{Variables and Values}\label{variables-and-values}
+
+The topics in this chapter are:
+
+\begin{itemize}
+\item
+  Basic programming features in Python: variables and values.
+\item
+  Translating formulas from math notation to Python.
+\end{itemize}
+
+You don't need a lot of math to do data science, but and the end of this
+chapter I'll review one topic that comes up a lot: logarithms.
+
+\section{Numbers}\label{numbers}
+
+Python provides tools for working with many kinds of data, including
+numbers, words, dates, times, and locations (latitude and longitude).
+Let's start with numbers. Python can work with several types of numbers,
+but the two most common are:
+
+\begin{itemize}
+\item
+  \passthrough{\lstinline!int!}, which represents integer values like
+  \passthrough{\lstinline!3!}, and
+\item
+  \passthrough{\lstinline!float!}, which represents numbers that have a
+  fraction part, like \passthrough{\lstinline!3.14159!}.
+\end{itemize}
+
+Most often, we use \passthrough{\lstinline!int!} to represent counts and
+\passthrough{\lstinline!float!} to represent measurements.
+
+Here's an example of an \passthrough{\lstinline!int!}:
+
+\begin{lstlisting}[language=Python,style=source]
+3
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+3
+\end{lstlisting}
+
+When you run a cell that contains a value like this, Jupyter displays
+the value.
+
+\pagebreak
+
+Here's an example of a \passthrough{\lstinline!float!}:
+
+\begin{lstlisting}[language=Python,style=source]
+3.14159
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+3.14159
+\end{lstlisting}
+
+\passthrough{\lstinline!float!} is short for ``floating-point'', which
+is the name for the way these numbers are stored. Floating-point numbers
+can also be written in a format similar to scientific notation:
+
+\begin{lstlisting}[language=Python,style=source]
+1.2345e3
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+1234.5
+\end{lstlisting}
+
+This value is equivalent to \(1.2345 \times 10^{3}\), so the result is
+\passthrough{\lstinline!1234.5!}. The \passthrough{\lstinline!e!} in
+\passthrough{\lstinline!1.2345e3!} stands for ``exponent''.
+
+\section{Arithmetic}\label{arithmetic}
+
+Python provides operators that perform arithmetic. The operators that
+perform addition and subtraction are \passthrough{\lstinline!+!} and
+\passthrough{\lstinline!-!}:
+
+\begin{lstlisting}[language=Python,style=source]
+3 + 2 - 1
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+4
+\end{lstlisting}
+
+The operators that perform multiplication and division are
+\passthrough{\lstinline!*!} and \passthrough{\lstinline!/!}:
+
+\begin{lstlisting}[language=Python,style=source]
+2 * 3
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+6
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python,style=source]
+2 / 3
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+0.6666666666666666
+\end{lstlisting}
+
+And the operator for exponentiation is \passthrough{\lstinline!**!}:
+
+\begin{lstlisting}[language=Python,style=source]
+2 ** 3
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+8
+\end{lstlisting}
+
+Unlike math notation, Python does not allow implicit multiplication. For
+example, in math notation, if you write \(3 (2 + 1)\), that's understood
+to be the same as \(3 \times (2+ 1)\). In Python, that's an error.
+
+\pagebreak
+
+NOTE: The following cell uses \passthrough{\lstinline!\%\%expect!},
+which is a Jupyter ``magic command'' that means we expect the code in
+this cell to produce an error.
+
+\begin{lstlisting}[language=Python,style=source]
+%%expect TypeError
+
+3 (2 + 1)
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+TypeError: 'int' object is not callable
+\end{lstlisting}
+
+In this example, the error message is not very helpful, which is why I
+am warning you now. If you want to multiply, you have to use the
+\passthrough{\lstinline!*!} operator.
+
+The arithmetic operators follow the rules of precedence you might have
+learned as ``PEMDAS'':
+
+\begin{itemize}
+
+\item
+  Parentheses before
+\item
+  Exponentiation before
+\item
+  Multiplication and division before
+\item
+  Addition and subtraction.
+\end{itemize}
+
+So in this expression:
+
+\begin{lstlisting}[language=Python,style=source]
+1 + 2 * 3
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+7
+\end{lstlisting}
+
+The multiplication happens first. If that's not what you want, you can
+use parentheses to make the order of operations explicit:
+
+\begin{lstlisting}[language=Python,style=source]
+(1 + 2) * 3
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+9
+\end{lstlisting}
+
+\textbf{Exercise:} Write a Python expression that raises
+\passthrough{\lstinline!1+2!} to the power
+\passthrough{\lstinline!3*4!}. The answer should be
+\passthrough{\lstinline!531441!}.
+
+\section{Math Functions}\label{math-functions}
+
+Python provides functions that compute mathematical functions like
+\passthrough{\lstinline!sin!} and \passthrough{\lstinline!cos!},
+\passthrough{\lstinline!exp!} and \passthrough{\lstinline!log!}.
+However, they are not part of Python itself, but they are available from
+a \textbf{library}, which is a collection of values and functions. The
+one we'll use is called NumPy, which stands for ``Numerical Python'',
+and is pronounced ``num pie''. Before you can use a library, you have to
+\textbf{import} it.
+
+\pagebreak
+
+Here's how we import NumPy:
+
+\begin{lstlisting}[language=Python,style=source]
+import numpy as np
+\end{lstlisting}
+
+This line of code imports \passthrough{\lstinline!numpy!} as
+\passthrough{\lstinline!np!}, which means we can refer to it by the
+short name \passthrough{\lstinline!np!} rather than the longer name
+\passthrough{\lstinline!numpy!}. Names like this are case-sensitive,
+which means that \passthrough{\lstinline!numpy!} is not the same as
+\passthrough{\lstinline!NumPy!}. So even though the name of the library
+is NumPy, when we import it we have to call it
+\passthrough{\lstinline!numpy!}.
+
+\begin{lstlisting}[language=Python,style=source]
+%%expect ModuleNotFoundError
+
+import NumPy as np
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+ModuleNotFoundError: No module named 'NumPy'
+\end{lstlisting}
+
+This error message might be confusing if you don't pay attention to the
+difference between uppercase and lowercase. But assuming we import
+\passthrough{\lstinline!np!} correctly, we can use it to read the value
+\passthrough{\lstinline!pi!}, which represents the mathematical constant
+\(\pi\).
+
+\begin{lstlisting}[language=Python,style=source]
+np.pi
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+3.141592653589793
+\end{lstlisting}
+
+The result is a \passthrough{\lstinline!float!} with 16 digits. As you
+might know, we can't represent \(\pi\) with a finite number of digits,
+so this result is only approximate.
+
+NumPy provides \passthrough{\lstinline!log!}, which computes the natural
+logarithm
+
+\begin{lstlisting}[language=Python,style=source]
+np.log(100)
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+4.605170185988092
+\end{lstlisting}
+
+NumPy also provides \passthrough{\lstinline!exp!}, which raises the
+constant \passthrough{\lstinline!e!} to a power.
+
+\begin{lstlisting}[language=Python,style=source]
+np.exp(1)
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+2.718281828459045
+\end{lstlisting}
+
+\textbf{Exercise:} Use these functions to check the identity
+\(\log(e^x) = x\). Mathematically, it is true for any value of \(x\).
+With floating-point values, it only holds for values of \(x\) between
+-700 and 700. What happens when you try it with larger and smaller
+values?
+
+\pagebreak
+
+Floating-point numbers are finite approximations, which means they don't
+always behave like math. As another example, let's see what happens if
+we add up \passthrough{\lstinline!0.1!} three times:
+
+\begin{lstlisting}[language=Python,style=source]
+0.1 + 0.1 + 0.1
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+0.30000000000000004
+\end{lstlisting}
+
+The result is close to \passthrough{\lstinline!0.3!}, but not exact.
+When you work with floating-point numbers, remember that they are only
+approximately correct.
+
+\section{Variables}\label{variables}
+
+A \textbf{variable} is a name that refers to a value. The following
+statement assigns the value \passthrough{\lstinline!5!} to a variable
+named \passthrough{\lstinline!x!}:
+
+\begin{lstlisting}[language=Python,style=source]
+x = 5
+\end{lstlisting}
+
+The variable we just created has the name \passthrough{\lstinline!x!}
+and the value \passthrough{\lstinline!5!}.
+
+If we use \passthrough{\lstinline!x!} as part of an arithmetic
+operation, it represents the value \passthrough{\lstinline!5!}:
+
+\begin{lstlisting}[language=Python,style=source]
+x + 1
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+6
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python,style=source]
+x ** 2
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+25
+\end{lstlisting}
+
+We can also use a variable when we call a function:
+
+\begin{lstlisting}[language=Python,style=source]
+np.exp(x)
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+148.4131591025766
+\end{lstlisting}
+
+Notice that the result from \passthrough{\lstinline!exp!} is a
+\passthrough{\lstinline!float!}, even though the value of
+\passthrough{\lstinline!x!} is an \passthrough{\lstinline!int!}.
+
+\textbf{Exercise:} If you have not programmed before, one of the things
+you have to get used to is that programming languages are picky about
+details. Natural languages, like English, and semi-formal languages,
+like math notation, are more forgiving.
+
+As an example, in math notation, parentheses and square brackets mean
+the same thing, you can write \(\sin (\omega t)\) or \(\sin [\omega t]\)
+-- either one is fine. And you can leave out the parentheses altogether,
+as long as the meaning is clear, as in \(\sin \omega t\). In Python,
+every character counts. For example, the following are all different,
+and only the first one works:
+
+\begin{lstlisting}[style=output]
+np.exp(x)
+np.Exp(x)
+np.exp[x]
+np.exp x
+\end{lstlisting}
+
+While you are learning, I encourage you to make mistakes on purpose to
+see what goes wrong. Read the error messages carefully. Sometimes they
+are helpful and tell you exactly what's wrong. Other times they can be
+misleading. But if you have seen the message before, you might remember
+some likely causes.
+
+\textbf{Exercise:} The NumPy function that computes square roots is
+\passthrough{\lstinline!sqrt!}. Use it to compute a floating-point
+approximation of the golden ratio, \(\phi = \frac{1}{2}(1 + \sqrt{5})\).
+Hint: The result should be close to \passthrough{\lstinline!1.618!}.
+
+\section{Calculating with Variables}\label{calculating-with-variables}
+
+Now we'll use variables to solve a problem involving compound interest.
+It might not be the most exciting example, but it uses everything we
+have done so far, and it reviews exponentiation and logarithms, which we
+are going to need.
+
+If we invest an amount of money, \(P\), in an account that earns
+compounded interest, the total accumulated value, \(V\), after an
+interval of time, \(t\), is:
+
+\(V=P\left(1+{\frac {r}{n}}\right)^{nt}\)
+
+where \(r\) is the annual interest rate and \(n\) is the compounding
+frequency. For example, if you deposit \$2,100 in a bank paying an
+annual interest rate of 3.4\% compounded four times a year, we can
+compute the balance after 7 years by defining these variables:
+
+\begin{lstlisting}[language=Python,style=source]
+P = 2100
+r = 0.034
+n = 4
+t = 7
+\end{lstlisting}
+
+And computing the total accumulated value like this.
+
+\begin{lstlisting}[language=Python,style=source]
+P * (1 + r/n)**(n*t)
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+2661.6108980682593
+\end{lstlisting}
+
+\textbf{Exercise:} Continuing the previous example, suppose you start
+with the same principle and the same interest rate, but interest is
+compounded twice per year, so \passthrough{\lstinline!n = 2!}. What
+would the total value be after 7 years? Hint: we expect the answer to be
+a bit less than the previous answer.
+
+\textbf{Exercise:} If interest is compounded continuously, the value
+after time \(t\) is \(V=P~e^{rt}\). Translate this equation into Python
+and use it compute the value of the investment in the previous example
+with continuous compounding. Hint: we expect the answer to be a bit more
+than the previous answers.
+
+\section{Summary}\label{summary}
+
+This chapter introduces variables, which are names that refer to values,
+and two kinds of values, integers and floating-point numbers.
+
+It presents mathematical operators, like \passthrough{\lstinline!+!} for
+addition and \passthrough{\lstinline!*!} for multiplication, and
+mathematical functions like \passthrough{\lstinline!log!} for logarithms
+and \passthrough{\lstinline!exp!} for raising
+\passthrough{\lstinline!e!} to a power.
+
+In the next chapter, we'll see additional data types for representing
+letters and words, dates and times, and latitude and longitude.

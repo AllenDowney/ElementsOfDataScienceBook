@@ -1,0 +1,674 @@
+\chapter{Resampling}\label{resampling}
+
+This chapter introduces \textbf{resampling methods}, which are used to
+quantify the precision of an estimate. As a first example, we'll use
+results from a medical trial to estimate the efficacy of the vaccine.
+
+\section{Vaccine Testing}\label{vaccine-testing}
+
+Suppose you read a report about a new vaccine and the manufacturer says
+it is 67\% effective at preventing disease. You might wonder where that
+number comes from, what it means, and how confident we should be that it
+is correct. Results like this often come from a randomized controlled
+trial (RCT), which works like this:
+
+\begin{itemize}
+\item
+  You recruit a large group of volunteers and divide them into two
+  groups at random: the ``treatment group'' receives the vaccine; the
+  ``control group'' does not.
+\item
+  Then you follow both groups for a period of time and record the number
+  of people in each group who are diagnosed with the disease.
+\end{itemize}
+
+As an example, suppose you recruit 43,783 participants and they are
+assigned to groups with approximately the same size.
+
+\begin{lstlisting}[language=Python,style=source]
+n_control = 21885
+n_treatment = 21911
+\end{lstlisting}
+
+During the observation period, 468 people are diagnosed with the
+disease: 352 in the control group and 116 in the treatment group.
+
+\begin{lstlisting}[language=Python,style=source]
+k_control = 352
+k_treatment = 116
+\end{lstlisting}
+
+We can use these results to compute the risk of getting the disease for
+each group, in cases per 1000 people
+
+\begin{lstlisting}[language=Python,style=source]
+risk_control = k_control / n_control * 1000
+risk_control
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+16.084075851039522
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python,style=source]
+risk_treatment = k_treatment / n_treatment * 1000
+risk_treatment
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+5.294144493633334
+\end{lstlisting}
+
+The risk is substantially lower in the treatment group -- about 5 per
+1000, compared to 16 -- which suggests that the vaccine is effective. We
+can summarize these results by computing relative risk, which is the
+ratio of the two risks:
+
+\begin{lstlisting}[language=Python,style=source]
+relative_risk = risk_treatment / risk_control
+relative_risk
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+0.3291544097817203
+\end{lstlisting}
+
+The relative risk is about 0.33, which means that the risk of disease in
+the treatment group is 33\% of the risk in the control group.
+Equivalently, we could report the complement of relative risk, which is
+\textbf{efficacy}:
+
+\begin{lstlisting}[language=Python,style=source]
+efficacy = 1 - relative_risk
+efficacy
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+0.6708455902182797
+\end{lstlisting}
+
+In this example the efficacy is 0.67, which means that the vaccine
+reduces the risk of disease by 67\%. That's good news, but as skeptical
+data scientists, we should not assume that it is perfectly accurate.
+There are any number of things that might have gone wrong.
+
+For example, if people in the treatment group know they have been
+vaccinated, they might take fewer precautions to prevent disease, and
+people in the control group might be more careful. That would affect the
+estimated efficacy, which is why a lot of trials are ``blinded'',
+meaning that the subjects don't know which group they are in.
+
+The estimate would also be less accurate if people in either group don't
+follow the protocol. For example, someone in the treatment group might
+not complete treatment, or someone in the control group might receive
+treatment from another source. And there are many other possible sources
+of error, including honest mistakes and deliberate fraud.
+
+In general it is hard to know whether estimates like this are accurate;
+nevertheless, there are things we can do to assess their quality. When
+estimates are reported in scientific journals, they almost always
+include one of two measurements of uncertainty: a standard error or a
+confidence interval. In the next section, I'll explain what they mean
+and show how to compute them.
+
+\section{Simulating One Group}\label{simulating-one-group}
+
+In the example, there are 21,911 people in the treatment group and 116
+of them got the disease, so the estimated risk is about 5 cases per 1000
+people.
+
+\begin{lstlisting}[language=Python,style=source]
+n_treatment, k_treatment, risk_treatment
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+(21911, 116, 5.294144493633334)
+\end{lstlisting}
+
+But it's easy to imagine that there might have been a few more cases, or
+fewer, just by chance. For example, if there had been 10 more cases, the
+estimated risk would be 5.8 per 1000, and if there had been 10 fewer, it
+would be 4.8.
+
+\begin{lstlisting}[language=Python,style=source]
+(k_treatment + 10) / n_treatment * 1000
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+5.750536260325863
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python,style=source]
+(k_treatment - 10) / n_treatment * 1000
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+4.837752726940806
+\end{lstlisting}
+
+That's a big enough difference that we should wonder how much
+variability there is in the estimate due to random variation. We'll
+answer that question in three steps:
+
+\begin{itemize}
+\item
+  We'll write a function that uses a random number generator to simulate
+  the trial.
+\item
+  Then we'll run the function many times to see how much the estimate
+  varies.
+\item
+  And we'll summarize the results.
+\end{itemize}
+
+To simulate the trial, we'll use the \passthrough{\lstinline!bernoulli!}
+object from SciPy, which provides a function called
+\passthrough{\lstinline!rvs!} that simulates what we can think of as
+biased coin tosses. For example, suppose we flip 10 coins where the
+probability is 70\% that each coin comes up heads. We can simulate that
+scenario like this.
+
+\begin{lstlisting}[language=Python,style=source]
+from scipy.stats import bernoulli
+
+bernoulli.rvs(p=0.7, size=10)
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+array([1, 1, 0, 1, 1, 1, 1, 1, 1, 0])
+\end{lstlisting}
+
+The result is an array where \passthrough{\lstinline!1!} represents
+heads and \passthrough{\lstinline!0!} represents tails.
+
+We can use this function to simulate a group of
+\passthrough{\lstinline!n!} patients, where the probability is
+\passthrough{\lstinline!p!} that each of them gets the disease.
+
+\begin{lstlisting}[language=Python,style=source]
+def simulate_group(n, p):
+    k = bernoulli.rvs(p, size=n).sum()
+    risk = k / n * 1000
+    return risk
+\end{lstlisting}
+
+This function uses \passthrough{\lstinline!rvs!} to generate an array of
+\passthrough{\lstinline!1!}s and \passthrough{\lstinline!0!}s, adds them
+up the number of cases, and returns the risk in cases per 1000 people.
+Here's how we call this function, passing as arguments the size of the
+treatment group and the estimated risk as a proportion:
+
+\begin{lstlisting}[language=Python,style=source]
+p = k_treatment / n_treatment
+simulate_group(n_treatment, p)
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+5.202866140294829
+\end{lstlisting}
+
+The result is a risk from a single simulated trial. If we run this
+function many times, it's like running the trial over and over.
+
+\begin{lstlisting}[language=Python,style=source]
+t = [simulate_group(n_treatment, p) 
+     for i in range(1001)]
+\end{lstlisting}
+
+The result is a list of risks that shows how much we expect the results
+of the trial to vary due to randomness. We can use a KDE plot to
+visualize the distribution of these results.
+
+\begin{lstlisting}[language=Python,style=source]
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+sns.kdeplot(t, label='control')
+
+plt.xlabel('Risk of disease (cases per 1000)')
+plt.ylabel('Probability density')
+plt.title('Risks from Simulations');
+\end{lstlisting}
+
+\begin{center}
+\includegraphics[scale=0.6666666]{11_resampling_files/11_resampling_33_0.png}
+\end{center}
+
+The mean of this distribution is about 5.3, which is close to the
+observed risk, as we should expect.
+
+\begin{lstlisting}[language=Python,style=source]
+np.mean(t), risk_treatment
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+(5.284478654019068, 5.294144493633334)
+\end{lstlisting}
+
+The width of this distribution indicates how much variation there is in
+the estimate due to randomness. One way to quantify the width of the
+distribution is the standard deviation.
+
+\begin{lstlisting}[language=Python,style=source]
+standard_error = np.std(t)
+standard_error
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+0.48237692869481597
+\end{lstlisting}
+
+This result is called the \textbf{standard error}.
+
+Another way to quantify the width of the distribution is an interval
+between two percentiles. For example, if we compute the 5th and 95th
+percentiles, the interval we get contains 90\% of the simulated results.
+
+\begin{lstlisting}[language=Python,style=source]
+confidence_interval = np.percentile(t, [5, 95])
+confidence_interval
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+array([4.51827849, 6.11564967])
+\end{lstlisting}
+
+This result is called a \textbf{confidence interval}; specifically, this
+one is a ``90\% confidence interval'', or 90\% CI. If we assume that the
+observed risk is correct, and we run the same trial many times, we
+expect 90\% of the results to fall in this interval.
+
+Standard errors and confidence intervals quantify our uncertainty about
+the estimate due to random variation from one trial to another.
+
+\section{Simulating the Trial}\label{simulating-the-trial}
+
+In the previous section we simulated one group and estimated their risk.
+Now we'll simulate both groups and estimate the efficacy of the vaccine.
+
+The following function takes four parameters: the sizes of the two
+groups and their actual risks.
+
+\begin{lstlisting}[language=Python,style=source]
+def simulate_trial(n1, p1, n2, p2):
+    risk1 = simulate_group(n1, p1)
+    risk2 = simulate_group(n2, p2)
+    efficacy = 1 - risk2 / risk1
+    return efficacy
+\end{lstlisting}
+
+If we call this function once, it simulates both groups, computes the
+risks in each group, and uses the results to compute the efficacy of the
+treatment (assuming that the first group is the control).
+
+\begin{lstlisting}[language=Python,style=source]
+p1 = k_control / n_control
+p2 = k_treatment / n_treatment
+simulate_trial(n_control, p1, n_treatment, p2)
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+0.7022507535102278
+\end{lstlisting}
+
+If we call it many times, the result is a list of efficacies from
+multiple simulated trials.
+
+\begin{lstlisting}[language=Python,style=source]
+t2 = [simulate_trial(n_control, p1, n_treatment, p2)
+      for i in range(1001)]
+\end{lstlisting}
+
+We can use a KDE plot to visualize the distribution of the results.
+
+\begin{lstlisting}[language=Python,style=source]
+sns.kdeplot(t2)
+
+plt.xlabel('Efficacy')
+plt.ylabel('Probability density')
+plt.title('Efficacies from Simulations');
+\end{lstlisting}
+
+\begin{center}
+\includegraphics[scale=0.6666666]{11_resampling_files/11_resampling_48_0.png}
+\end{center}
+
+The mean of this distribution is close to the efficacy we computed with
+the results of the actual trial.
+
+\begin{lstlisting}[language=Python,style=source]
+np.mean(t2), efficacy
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+(0.6697923695446464, 0.6708455902182797)
+\end{lstlisting}
+
+The standard deviation of this distribution is the standard error of the
+estimate.
+
+\begin{lstlisting}[language=Python,style=source]
+np.std(t2)
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+0.03654909244711291
+\end{lstlisting}
+
+In a scientific paper, we could report the estimated efficacy and
+standard error as 0.67 (SE 0.035). As an alternative, we can use
+percentiles to compute a 90\% confidence interval.
+
+\begin{lstlisting}[language=Python,style=source]
+np.percentile(t2, [5, 95])
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+array([0.60861545, 0.7251222 ])
+\end{lstlisting}
+
+We could report these results as 0.67, 90\% CI {[}0.61, 0.72{]}.
+
+The standard error and confidence interval represent nearly the same
+information. In general, I prefer to report a confidence interval
+because it is easier to interpret:
+
+\begin{itemize}
+\item
+  Formally, the confidence interval means that if we run the same
+  experiment again, we expect 90\% of the results to fall between 61\%
+  and 72\% (assuming that the estimated risks are correct).
+\item
+  More casually, it means that it is plausible that the actually
+  efficacy is as low as 61\%, or as high as 72\% (assuming there are no
+  sources of error other than random variation).
+\end{itemize}
+
+\section{Estimating Means}\label{estimating-means}
+
+In the previous examples, we estimated risk, which is a proportion, and
+efficacy, which is a ratio of two proportions. As a third example, let's
+estimate a mean.
+
+Suppose we want to estimate the average height of men in the United
+States. It would be impractical to measure everyone in the country, but
+if we choose a random sample of the population and measure the people in
+the sample, we can use the mean of the measurements to estimate the
+actual average in the population.
+
+Ideally, the sample should be \textbf{representative}, which means that
+everyone in the population has an equal chance of appearing in the
+sample. In general, that's not easy to do. Depending on how you recruit
+people, your sample might have too many tall people or too many short
+people.
+
+But let's suppose we have a representative sample of 103 adult male
+residents of the United States, the average height in the sample is 177
+cm, and the standard deviation is 8.4 cm.
+
+If someone asks for your best guess about the height of men in the U.S.,
+you would report 177 cm. But how accurate do you think this estimate is?
+If you only measure 103 people from a population of about 100 million
+adult males, it seems like the actual average in the population might be
+substantially higher or lower.
+
+Again, we can use random simulation to quantify the uncertainty of this
+estimate. As we did in the previous examples, we'll assume for purposes
+of simulation that the estimates are correct, and simulate the sampling
+process many times.
+
+The following function takes as parameters the size of the sample,
+\passthrough{\lstinline!n!}, the presumed average height in the
+population, \passthrough{\lstinline!mu!}, and the presumed standard
+deviation, \passthrough{\lstinline!sigma!}.
+
+\begin{lstlisting}[language=Python,style=source]
+def simulate_sample_mean(n, mu, sigma):
+    sample = np.random.normal(mu, sigma, size=n)
+    return sample.mean()
+\end{lstlisting}
+
+This function generates \passthrough{\lstinline!n!} random values from a
+normal distribution with the given mean and standard deviation, and
+returns their mean. We can run it like this, using the observed mean and
+standard deviation from the sample as the presumed mean and standard
+deviation of the population.
+
+\begin{lstlisting}[language=Python,style=source]
+n_height = 103
+mean_height = 177
+std_height = 8.4
+
+simulate_sample_mean(n_height, mean_height, std_height)
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+177.0925279328183
+\end{lstlisting}
+
+If we run it many times, it simulates the sampling and measurement
+process and returns a list of results from many simulated experiments.
+
+\begin{lstlisting}[language=Python,style=source]
+t3 = [simulate_sample_mean(n_height, mean_height, std_height)
+      for i in range(1001)]
+\end{lstlisting}
+
+We can use a KDE plot to visualize the distribution of these values.
+
+\begin{lstlisting}[language=Python,style=source]
+sns.kdeplot(t3)
+
+plt.xlabel('Average height (cm)')
+plt.ylabel('Probability density')
+plt.title('Sampling Distribution of the Mean');
+\end{lstlisting}
+
+\begin{center}
+\includegraphics[scale=0.6666666]{11_resampling_files/11_resampling_64_0.png}
+\end{center}
+
+This result is called a \textbf{sampling distribution} because it
+represents the variation in the results due to the random sampling
+process. If we recruit 103 people and compute the mean of their heights,
+the result might be as low as 176 cm, or as high as 180 cm, due to
+chance.
+
+The average of the sampling distribution is close to the presumed mean
+of the population.
+
+\begin{lstlisting}[language=Python,style=source]
+np.mean(t3), mean_height
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+(176.97693409905207, 177)
+\end{lstlisting}
+
+The standard deviation of the sampling distribution is the standard
+error of the estimate.
+
+\begin{lstlisting}[language=Python,style=source]
+standard_error = np.std(t3)
+standard_error
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+0.8255649832811274
+\end{lstlisting}
+
+The interval between the 5th and 95th percentiles is a 90\% confidence
+interval.
+
+\begin{lstlisting}[language=Python,style=source]
+ci90 = np.percentile(t3, [5, 95])
+ci90
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+array([175.57572755, 178.34974372])
+\end{lstlisting}
+
+If I reported this result in a paper, I would say that the estimated
+height of adult male residents of the U.S. is 177 cm, 90\% CI {[}176,
+178{]} cm.
+
+Informally, that means that the estimate could plausibly be off by about
+a centimeter either way, due to random sampling. But we should remember
+that there are other possible sources of error, so we might be off by
+more than that.
+
+\section{The Resampling Framework}\label{the-resampling-framework}
+
+The examples in this chapter fit into the framework shown in this
+diagram:
+
+\includegraphics{figs/resampling.png}
+
+Using data from an experiment, we compute a sample statistic. In the
+vaccine example, we computed risks for each group and efficacy. In the
+height example, we computed the average height in the sample.
+
+Then we build a model of the sampling process. In the vaccine example,
+the model assumes that everyone in each group has the same probability
+of getting sick, and we use the data to choose the probability. In the
+height example, the model assumes that heights are drawn from a normal
+distribution, and we use the data to choose the parameters
+\passthrough{\lstinline!mu!} and \passthrough{\lstinline!sigma!}.
+
+We use the model to simulate the experiment many times. Each simulation
+generates a dataset which we use to compute the sample statistic.
+
+Finally, we collect the sample statistics from the simulations, plot the
+sampling distribution, and compute standard error and a confidence
+interval.
+
+I emphasize the role of the model in this framework because for a given
+experiment there might be several possible models, each including some
+elements of the real world and ignoring others. For example, our model
+of the vaccine experiment assumes that everyone in each group has the
+same risk, but that's probably not true. Here's another version of
+\passthrough{\lstinline!simulate\_group!} that includes variation in
+risk within each group.
+
+\begin{lstlisting}[language=Python,style=source]
+def simulate_variable_group(n, p):
+    ps = np.random.uniform(0, 2*p, size=n)
+    k = bernoulli.rvs(ps).sum()
+    return k / n * 1000
+\end{lstlisting}
+
+This version of the function assumes that each person has a different
+probability of getting sick, drawn from a uniform distribution between
+\passthrough{\lstinline!0!} and \passthrough{\lstinline!2*p!}. Of
+course, that's just a guess about how the probabilities might be
+distributed, but we can use it to get a sense of what effect this
+distribution has on the results.
+
+The rest of the function is the same as the previous version: it uses
+\passthrough{\lstinline!bernoulli!} to simulate
+\passthrough{\lstinline!n!} patients, where each element of
+\passthrough{\lstinline!ps!} is the probability that one patient gets
+the disease. Here's how we call this function, simulating the treatment
+group.
+
+\begin{lstlisting}[language=Python,style=source]
+p = k_treatment / n_treatment
+simulate_variable_group(n_treatment, p)
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+4.290082606909771
+\end{lstlisting}
+
+The return value is the number of cases per 1000.
+
+\textbf{Exercise:} Use this function to run 1001 simulations of the
+treatment group. Compute the mean of the results and confirm that it is
+close to the observed \passthrough{\lstinline!risk\_treatment!}. To
+quantify the spread of the sampling distribution, compute the standard
+error. How does it compare to the standard error we computed with the
+original model, where everyone in the group has the same risk?
+
+\textbf{Exercise:} The following is a version of
+\passthrough{\lstinline!simulate\_trial!} that uses
+\passthrough{\lstinline!simulate\_variable\_group!}, from the previous
+exercise, to simulate the vaccine trial using the modified model, which
+includes variation in risk within the groups.
+
+Use this function to simulate 1001 trials. Compute the mean of the
+sampling distribution and confirm that it is close to the observed
+\passthrough{\lstinline!efficacy!}. Compute the standard error and
+compare it to the standard error we computed for the original model.
+
+\begin{lstlisting}[language=Python,style=source]
+def simulate_variable_trial(n1, p1, n2, p2):
+    risk1 = simulate_variable_group(n1, p1)
+    risk2 = simulate_variable_group(n2, p2)
+    efficacy = 1 - risk2 / risk1
+    return efficacy
+\end{lstlisting}
+
+\textbf{Exercise:} One nice thing about the resampling framework is that
+it is easy to compute the sampling distribution for other statistics.
+For example, suppose we want to estimate the coefficient of variation
+(standard deviation as a fraction of the mean) for adult male height.
+Here's how we can compute it.
+
+\begin{lstlisting}[language=Python,style=source]
+cv = std_height / mean_height
+cv
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+0.04745762711864407
+\end{lstlisting}
+
+In this example, the standard deviation is about 4.5\% of the mean. The
+following is a version of \passthrough{\lstinline!simulate\_sample!}
+that generates a random sample of heights and returns the coefficient of
+variation, rather than the mean.
+
+\begin{lstlisting}[language=Python,style=source]
+def simulate_sample_cv(n, mu, sigma):
+    sample = np.random.normal(mu, sigma, size=n)
+    return sample.std() / sample.mean()
+\end{lstlisting}
+
+Use this function to simulate 1001 samples with size
+\passthrough{\lstinline!n=103!}, using
+\passthrough{\lstinline!mean\_height!} for \passthrough{\lstinline!mu!}
+and \passthrough{\lstinline!std\_height!} for
+\passthrough{\lstinline!sigma!}. Plot the sampling distribution of the
+coefficient of variation, and compute a 90\% confidence interval.
+
+\section{Summary}\label{summary}
+
+Let's review the examples in this chapter:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  We started with results from a vaccine trial. We estimated the
+  effectiveness of the vaccine and used simulation to draw a random
+  sample from the sampling distribution of effectiveness. We used that
+  sample to compute a standard error and a 90\% confidence interval,
+  which measure the variability we would expect if we ran the experiment
+  again (assuming that the observed efficacy is correct).
+\item
+  As a second example, we estimated the height of adult males in the
+  U.S. and used simulation based on a normal model to compute the
+  sampling distribution of the mean, standard error, and a confidence
+  interval.
+\item
+  We implemented a second model of the vaccine trial, based on the
+  assumption that there is variation in risk within the groups. The
+  results from the two models are similar, which suggests that the
+  simple model is good enough for practical purposes.
+\item
+  One of the advantages of resampling, compared to mathematical
+  analysis, is that it is easy to compute the sampling distribution of
+  almost any statistic. As an exercise, you computed the sampling
+  distribution of the coefficient of variation.
+\end{enumerate}
+

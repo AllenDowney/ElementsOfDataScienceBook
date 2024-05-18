@@ -1,0 +1,481 @@
+\chapter{Political Alignment and
+Outlook}\label{political-alignment-and-outlook}
+
+In the previous chapter, we used data from the General Social Survey
+(GSS) to plot changes in political alignment over time. In this chapter,
+we'll explore the relationship between political alignment and
+respondents' beliefs about themselves and other people. We'll use the
+following variables from the GSS dataset:
+
+\begin{itemize}
+\item
+  \passthrough{\lstinline!happy!}: Taken all together, how would you say
+  things are these days--would you say that you are very happy, pretty
+  happy, or not too happy?
+\item
+  \passthrough{\lstinline!trust!}: Generally speaking, would you say
+  that most people can be trusted or that you can't be too careful in
+  dealing with people?
+\item
+  \passthrough{\lstinline!helpful!}: Would you say that most of the time
+  people try to be helpful, or that they are mostly just looking out for
+  themselves?
+\item
+  \passthrough{\lstinline!fair!}: Do you think most people would try to
+  take advantage of you if they got a chance, or would they try to be
+  fair?
+\end{itemize}
+
+We'll start with the last question -- then as an exercise you can look
+at one of the others. Here's the plan:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  First we'll use \passthrough{\lstinline!groupby!} to compare responses
+  between groups and plot changes over time.
+\item
+  We'll use the Pandas function \passthrough{\lstinline!pivot\_table!}
+  to explore differences between groups over time.
+\item
+  Finally, we'll use resampling to see whether the features we see in
+  the results might be due to randomness, or whether they are likely to
+  reflect actual changes in the world.
+\end{enumerate}
+
+We'll use an extract of the data that I have cleaned and resampled to
+correct for stratified sampling. Instructions for downloading the file
+are in the notebook for this chapter. It contains three resamplings --
+we'll use the first, \passthrough{\lstinline!gss0!}, to get started. At
+the end of the chapter, we'll use the other two as well.
+
+\begin{lstlisting}[language=Python,style=source]
+datafile = 'gss_pacs_resampled.hdf'
+gss = pd.read_hdf(datafile, key='gss0')
+gss.shape
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+(72390, 207)
+\end{lstlisting}
+
+\section{Are People Fair?}\label{are-people-fair}
+
+In the GSS data, the variable \passthrough{\lstinline!fair!} contains
+responses to this question:
+
+\begin{quote}
+Do you think most people would try to take advantage of you if they got
+a chance, or would they try to be fair?
+\end{quote}
+
+The possible responses are:
+
+\begin{longtable}[]{ll}
+\midrule
+Code & Response \\
+\midrule
+\endhead
+\midrule
+\endlastfoot
+1 & Take advantage \\
+2 & Fair \\
+3 & Depends \\
+\end{longtable}
+
+We can use \passthrough{\lstinline!values!}, from the previous chapter,
+to see how many people gave each response.
+
+\begin{lstlisting}[language=Python,style=source]
+values(gss['fair'])
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+fair
+1.0    16089
+2.0    23417
+3.0     2897
+NaN    29987
+Name: count, dtype: int64
+\end{lstlisting}
+
+The plurality think people try to be fair (2), but a substantial
+minority think people would take advantage (1). There are also a number
+of NaNs, mostly respondents who were not asked this question.
+
+To count the number of people who chose a positive response, we'll use a
+dictionary to recode option \passthrough{\lstinline!2!} as
+\passthrough{\lstinline!1!} and the other options as
+\passthrough{\lstinline!0!}.
+
+\begin{lstlisting}[language=Python,style=source]
+fair_map = {1: 0, 2: 1, 3: 0}
+\end{lstlisting}
+
+We can use \passthrough{\lstinline!replace!} to recode the values and
+store the result as a new column in the
+\passthrough{\lstinline!DataFrame!}.
+
+\begin{lstlisting}[language=Python,style=source]
+gss['fair2'] = gss['fair'].replace(fair_map)
+\end{lstlisting}
+
+Now let's see how the responses have changed over time.
+
+\section{Fairness Over Time}\label{fairness-over-time}
+
+As we saw in the previous chapter, we can use
+\passthrough{\lstinline!groupby!} to group responses by year.
+
+\begin{lstlisting}[language=Python,style=source]
+gss_by_year = gss.groupby('year')
+\end{lstlisting}
+
+From the result we can select \passthrough{\lstinline!fair2!} and
+compute the mean.
+
+\begin{lstlisting}[language=Python,style=source]
+fair_by_year = gss_by_year['fair2'].mean()
+\end{lstlisting}
+
+Here's the result, which shows the fraction of people who say people try
+to be fair, plotted over time. As in the previous chapter, we plot the
+data points themselves with circles and a local regression model as a
+line.
+
+\begin{lstlisting}[language=Python,style=source]
+plot_series_lowess(fair_by_year, 'C1')
+
+decorate(
+    xlabel='Year',
+    ylabel='Fraction saying yes',
+    title='Would most people try to be fair?',
+)
+\end{lstlisting}
+
+\begin{center}
+\includegraphics[scale=0.6666666]{15_outlook_files/15_outlook_27_0.png}
+\end{center}
+
+Sadly, it looks like faith in humanity has declined, at least by this
+measure. Let's see what this trend looks like if we group the
+respondents by political alignment.
+
+\section{Political Views on a 3-point
+Scale}\label{political-views-on-a-3-point-scale}
+
+In the previous notebook, we looked at responses to
+\passthrough{\lstinline!polviews!}, which asks about political
+alignment. To make it easier to visualize groups, we'll lump the 7-point
+scale into a 3-point scale.
+
+\begin{lstlisting}[language=Python,style=source]
+polviews_map = {
+    1: 'Liberal',
+    2: 'Liberal',
+    3: 'Liberal',
+    4: 'Moderate',
+    5: 'Conservative',
+    6: 'Conservative',
+    7: 'Conservative',
+}
+\end{lstlisting}
+
+We'll use \passthrough{\lstinline!replace!} again, and store the result
+as a new column in the \passthrough{\lstinline!DataFrame!}.
+
+\begin{lstlisting}[language=Python,style=source]
+gss['polviews3'] = gss['polviews'].replace(polviews_map)
+\end{lstlisting}
+
+With this scale, there are roughly the same number of people in each
+group.
+
+\begin{lstlisting}[language=Python,style=source]
+values(gss['polviews3'])
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+polviews3
+Conservative    21573
+Liberal         17203
+Moderate        24157
+NaN              9457
+Name: count, dtype: int64
+\end{lstlisting}
+
+\section{Fairness by Group}\label{fairness-by-group}
+
+Now let's see who thinks people are more fair, conservatives or
+liberals. We'll group the respondents by
+\passthrough{\lstinline!polviews3!}.
+
+\begin{lstlisting}[language=Python,style=source]
+by_polviews = gss.groupby('polviews3')
+\end{lstlisting}
+
+And compute the mean of \passthrough{\lstinline!fair2!} in each group.
+
+\begin{lstlisting}[language=Python,style=source]
+by_polviews['fair2'].mean()
+\end{lstlisting}
+
+\begin{lstlisting}[style=output]
+polviews3
+Conservative    0.577879
+Liberal         0.550849
+Moderate        0.537621
+Name: fair2, dtype: float64
+\end{lstlisting}
+
+It looks like conservatives are a little more optimistic, in this sense,
+than liberals and moderates. But this result is averaged over the last
+50 years. Let's see how things have changed over time.
+
+\section{Fairness over Time by Group}\label{fairness-over-time-by-group}
+
+So far, we have grouped by \passthrough{\lstinline!polviews3!} and
+computed the mean of \passthrough{\lstinline!fair2!} in each group. Then
+we grouped by \passthrough{\lstinline!year!} and computed the mean of
+\passthrough{\lstinline!fair2!} for each year. Now we'll group by
+\passthrough{\lstinline!polviews3!} and \passthrough{\lstinline!year!},
+and compute the mean of \passthrough{\lstinline!fair2!} in each group
+over time.
+
+We could do that computation using the tools we already have, but it is
+so common and useful that it has a name. It is called a \textbf{pivot
+table}, and Pandas provides a function called
+\passthrough{\lstinline!pivot\_table!} that computes it. It takes the
+following arguments:
+
+\begin{itemize}
+\item
+  \passthrough{\lstinline!index!}, which is the name of the variable
+  that will provide the row labels: \passthrough{\lstinline!year!} in
+  this example.
+\item
+  \passthrough{\lstinline!columns!}, which is the name of the variable
+  that will provide the column labels:
+  \passthrough{\lstinline!polviews3!} in this example.
+\item
+  \passthrough{\lstinline!values!}, which is the name of the variable we
+  want to summarize: \passthrough{\lstinline!fair2!} in this example.
+\item
+  \passthrough{\lstinline!aggfunc!}, which is the function used to
+  ``aggregate'', or summarize, the values:
+  \passthrough{\lstinline!mean!} in this example.
+\end{itemize}
+
+Here's how we run it.
+
+\begin{lstlisting}[language=Python,style=source]
+table = gss.pivot_table(
+    index='year', columns='polviews3', values='fair2', aggfunc='mean'
+)
+\end{lstlisting}
+
+The result is a \passthrough{\lstinline!DataFrame!} that has years
+running down the rows and political alignment running across the
+columns. Each entry in the table is the mean of
+\passthrough{\lstinline!fair2!} for a given group in a given year.
+
+\begin{lstlisting}[language=Python,style=source]
+table.head()
+\end{lstlisting}
+
+\begin{tabular}{lrrr}
+\midrule
+polviews3 & Conservative & Liberal & Moderate \\
+year &  &  &  \\
+\midrule
+1975 & 0.625616 & 0.617117 & 0.64728 \\
+1976 & 0.631696 & 0.571782 & 0.6121 \\
+1978 & 0.694915 & 0.65942 & 0.665455 \\
+1980 & 0.6 & 0.554945 & 0.640264 \\
+1983 & 0.572438 & 0.585366 & 0.463492 \\
+\midrule
+\end{tabular}
+
+Reading across the first row, we can see that in 1975, moderates were
+slightly more optimistic than the other groups. Reading down the first
+column, we can see that the estimated mean of
+\passthrough{\lstinline!fair2!} among conservatives varies from year to
+year. It is hard to tell by looking at these numbers whether it is
+trending up or down -- we can get a better view by plotting the results.
+
+\section{Plotting the Results}\label{plotting-the-results}
+
+Before we plot the results, I'll make a dictionary that maps from each
+group to a color. Seaborn provide a palette called
+\passthrough{\lstinline!muted!} that contains the colors we'll use.
+
+\begin{lstlisting}[language=Python,style=source]
+muted = sns.color_palette('muted', 5)
+sns.palplot(muted)
+\end{lstlisting}
+
+\begin{center}
+\includegraphics[scale=0.6666666]{15_outlook_files/15_outlook_47_0.png}
+\end{center}
+
+And here's the dictionary.
+
+\begin{lstlisting}[language=Python,style=source]
+color_map = {'Conservative': muted[3], 
+             'Moderate': muted[4], 
+             'Liberal': muted[0]}
+\end{lstlisting}
+
+Now we can plot the results.
+
+\begin{lstlisting}[language=Python,style=source]
+groups = ['Conservative', 'Liberal', 'Moderate']
+
+for group in groups:
+    plot_series_lowess(table[group], color_map[group])
+
+decorate(
+    xlabel='Year',
+    ylabel='Fraction saying yes',
+    title='Would most people try to be fair?',
+)
+\end{lstlisting}
+
+\begin{center}
+\includegraphics[scale=0.6666666]{15_outlook_files/15_outlook_51_0.png}
+\end{center}
+
+The fraction of respondents who think people try to be fair has dropped
+in all three groups, although liberals and moderates might have leveled
+off. In 1975, liberals were the least optimistic group. In 2022, they
+might be the most optimistic. But the responses are quite noisy, so we
+should not be too confident about these conclusions.
+
+We can get a sense of how reliable they are by running the resampling
+process a few times and checking how much the results vary.
+
+\section{Simulating Possible
+Datasets}\label{simulating-possible-datasets}
+
+The figures we have generated so far are based on a single resampling of
+the GSS data. Some of the features we see in these figures might be due
+to random sampling rather than actual changes in the world. By
+generating the same figures with different resampled datasets, we can
+get a sense of how much variation there is due to random sampling.
+
+To make that easier, the following function contains the code from the
+previous analysis all in one place.
+
+\begin{lstlisting}[language=Python,style=source]
+def plot_by_polviews(gss):
+    '''Plot mean response by polviews and year.
+
+    gss: DataFrame
+    '''
+    gss['polviews3'] = gss['polviews'].replace(polviews_map)
+    gss['fair2'] = gss['fair'].replace(fair_map)
+
+    table = gss.pivot_table(
+        index='year', columns='polviews3', values='fair2', aggfunc='mean'
+    )
+
+    for group in groups:
+        plot_series_lowess(table[group], color_map[group])
+
+    decorate(
+        xlabel='Year',
+        ylabel='Fraction saying yes',
+        title='Would most people try to be fair?',
+    )
+\end{lstlisting}
+
+Now we can loop through the three resampled datasets in the data file
+and generate a figure for each one.
+
+\begin{lstlisting}[language=Python,style=source]
+datafile = 'gss_pacs_resampled.hdf'
+
+for key in ['gss0', 'gss1', 'gss2']:
+    df = pd.read_hdf(datafile, key)
+    plt.figure()
+    plot_by_polviews(df)
+\end{lstlisting}
+
+\begin{center}
+\includegraphics[scale=0.6666666]{15_outlook_files/15_outlook_56_0.png}
+\end{center}
+
+\begin{center}
+\includegraphics[scale=0.6666666]{15_outlook_files/15_outlook_56_1.png}
+\end{center}
+
+\begin{center}
+\includegraphics[scale=0.6666666]{15_outlook_files/15_outlook_56_2.png}
+\end{center}
+
+Features that are the same in all three figures are more likely to
+reflect things actually happening in the world. Features that differ
+substantially between the figures are more likely to be due to random
+sampling.
+
+\textbf{Exercise:} You can run the same analysis with one of the other
+variables related to outlook: \passthrough{\lstinline!happy!},
+\passthrough{\lstinline!trust!}, \passthrough{\lstinline!helpful!}, and
+maybe \passthrough{\lstinline!fear!} and
+\passthrough{\lstinline!hapmar!}.
+
+For these variables, you will have to read the codebook to see the
+responses and how they are encoded, then think about which responses to
+report. In the notebook for this chapter, there are some suggestions to
+get you started.
+
+Here are the steps I suggest:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi})}
+\item
+  If you have not already saved this notebook, you might want to do that
+  first. If you are running on Colab, select ``Save a copy in Drive''
+  from the File menu.
+\item
+  Now, before you modify this notebook, make another copy and give it an
+  appropriate name.
+\item
+  Search and replace \passthrough{\lstinline!fair!} with the name of the
+  variable you select (use ``Edit-\textgreater Find and replace'').
+\item
+  Run the notebook from the beginning and see what other changes you
+  have to make.
+\end{enumerate}
+
+Write a few sentences to describe the relationships you find between
+political alignment and outlook.
+
+\section{Summary}\label{summary}
+
+The case study in this chapter and the previous one demonstrates a
+process for exploring a dataset and finding relationships among the
+variables.
+
+In the previous chapter, we started with a single variable,
+\passthrough{\lstinline!polviews!}, and visualized its distribution at
+the beginning and end of the observation interval. Then we used
+\passthrough{\lstinline!groupby!} to see how the mean and standard
+deviation changed over time. Looking more closely, we used cross
+tabulation to see how the fraction of people in each group changed.
+
+In this chapter, we added a second variable,
+\passthrough{\lstinline!fair!}, which is one of several questions in the
+GSS related to respondents' beliefs about other people. We used
+\passthrough{\lstinline!groupby!} again to see how the responses have
+changed over time. Then we used a pivot table to show how the responses
+within each political group have changed. Finally, we used multiple
+resamplings of the original dataset to check whether the patterns we
+identified might be due to random sampling rather than real changes in
+the world.
+
+The tools we used in this case study are versatile -- they are useful
+for exploring other variables in the GSS dataset, and other datasets as
+well. And the process we followed is one I recommend whenever you are
+exploring a new dataset.
+
