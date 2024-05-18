@@ -38,6 +38,8 @@ tuple, \passthrough{\lstinline!t!}, and a variable name,
 \passthrough{\lstinline!x!} does not, the loop will create it. Note that
 the header ends with a colon, \passthrough{\lstinline!:!}.
 
+\pagebreak
+
 Inside the loop is a \passthrough{\lstinline!print!} statement, which
 displays the value of \passthrough{\lstinline!x!}. So here's what
 happens:
@@ -111,6 +113,8 @@ count
 \begin{lstlisting}[style=output]
 0
 \end{lstlisting}
+
+\pagebreak
 
 If you assign a different value to the same variable, the new value
 replaces the old one.
@@ -226,7 +230,7 @@ count
 \end{lstlisting}
 
 \begin{lstlisting}[style=output]
-66054
+66050
 \end{lstlisting}
 
 There are about 66,000 lines in this file.
@@ -249,6 +253,9 @@ True
 \end{lstlisting}
 
 For \emph{War and Peace}, the result is \passthrough{\lstinline!True!}.
+
+\pagebreak
+
 We can use this condition in an \passthrough{\lstinline!if!} statement
 to display a message, or not, depending on the result.
 
@@ -279,14 +286,14 @@ if count < 1000:
 We can put an \passthrough{\lstinline!if!} statement inside a
 \passthrough{\lstinline!for!} loop. The following example only prints a
 line from the book when \passthrough{\lstinline!count!} is
-\passthrough{\lstinline!1!}. The other lines are read, but not
+\passthrough{\lstinline!0!}. The other lines are read, but not
 displayed.
 
 \begin{lstlisting}[language=Python,style=source]
 fp = open('2600-0.txt')
 count = 0
 for line in fp:
-    if count == 1:
+    if count == 0:
         print(line)
     count += 1
 \end{lstlisting}
@@ -326,7 +333,7 @@ count
 \end{lstlisting}
 
 \begin{lstlisting}[style=output]
-66054
+66050
 \end{lstlisting}
 
 We can avoid reading the whole file by using a
@@ -336,10 +343,10 @@ We can avoid reading the whole file by using a
 fp = open('2600-0.txt')
 count = 0
 for line in fp:
-    if count == 1:
-        print(line)
-        break
+    print(line)
     count += 1
+    if count == 1:
+        break
 \end{lstlisting}
 
 \begin{lstlisting}[style=output]
@@ -347,8 +354,8 @@ The Project Gutenberg EBook of War and Peace, by Leo Tolstoy
 \end{lstlisting}
 
 The \passthrough{\lstinline!break!} statement ends the loop immediately,
-skipping the rest of the file, as we can confirm that by checking the
-final value of \passthrough{\lstinline!count!}:
+skipping the rest of the file, as we can confirm by checking the final
+value of \passthrough{\lstinline!count!}.
 
 \begin{lstlisting}[language=Python,style=source]
 count
@@ -371,9 +378,9 @@ If we run the loop again and display the final value of
 fp = open('2600-0.txt')
 count = 0
 for line in fp:
+    count += 1
     if count == 1:
         break
-    count += 1
 
 line
 \end{lstlisting}
@@ -394,7 +401,7 @@ print(line)
 
 \begin{lstlisting}[style=output]
 The Project Gutenberg EBook of War and Peace, by Leo Tolstoy
-	
+
 \end{lstlisting}
 
 In other strings, you might see the sequence
@@ -446,8 +453,11 @@ line.split()
 Notice that the syntax for \passthrough{\lstinline!split!} is different
 from other functions we have seen. Normally when we call a function, we
 name the function and provide values in parentheses. So you might have
-expected to write \passthrough{\lstinline!split(line)!}. Sadly, that
-doesn't work.
+expected to write \passthrough{\lstinline!split(line)!}.
+
+\pagebreak
+
+Sadly, that doesn't work.
 
 \begin{lstlisting}[language=Python,style=source]
 %%expect NameError
@@ -480,7 +490,7 @@ count
 \end{lstlisting}
 
 \begin{lstlisting}[style=output]
-566317
+566316
 \end{lstlisting}
 
 By this count, there are more than half a million words in \emph{War and
@@ -506,6 +516,8 @@ True
 To skip the front matter, we can use a loop to read lines until it finds
 the first line that starts with this sequence.
 
+\pagebreak
+
 Then we can use a second loop to read lines and count words until it
 finds the second line that starts with this sequence.
 
@@ -528,6 +540,7 @@ for line in fp:
 *** START OF THIS PROJECT GUTENBERG EBOOK WAR AND PEACE ***
 
 *** END OF THIS PROJECT GUTENBERG EBOOK WAR AND PEACE ***
+
 \end{lstlisting}
 
 When the second loop exits, \passthrough{\lstinline!count!} contains the
@@ -538,7 +551,7 @@ count
 \end{lstlisting}
 
 \begin{lstlisting}[style=output]
-563305
+563299
 \end{lstlisting}
 
 \section{Summary}\label{summary}

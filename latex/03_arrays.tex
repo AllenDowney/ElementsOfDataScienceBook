@@ -110,6 +110,8 @@ be the same type. The difference is that you can modify a list and you
 can't modify a tuple -- that is, tuples are \textbf{immutable}. This
 difference will matter later, but for now we can ignore it.
 
+\pagebreak
+
 When you make a list, the brackets are required, but if there is a
 single element, you don't need a comma. So you can make a list like
 this:
@@ -151,6 +153,10 @@ for lunch than Britons do''.
 
 It includes this graph showing prices of several sandwiches in the two
 cities:
+
+\includegraphics[scale=0.2]{figs/20190907_FNC941.png}
+
+\pagebreak
 
 Here are the sandwich names from the graph, as a list of strings.
 
@@ -210,6 +216,8 @@ import numpy as np
 boston_price_array = np.array(boston_price_list)
 london_price_array = np.array(london_price_list)
 \end{lstlisting}
+
+\pagebreak
 
 The type of the result is \passthrough{\lstinline!numpy.ndarray!}.
 
@@ -311,7 +319,9 @@ np.mean(boston_price_array) - np.mean(london_price_array)
 \end{lstlisting}
 
 And that turns out to be the same thing -- the difference in means is
-the same as the mean of the differences. As an aside, many of the NumPy
+the same as the mean of the differences.
+
+As an aside, many of the NumPy
 functions also work with lists, so we could also do this:
 
 \begin{lstlisting}[language=Python,style=source]
@@ -445,7 +455,9 @@ np.mean(percent_differences)
 \end{lstlisting}
 
 So we might say that sandwiches are 65\% more expensive in Boston, on
-average. But another way to summarize the data is to compute the mean
+average.
+
+Another way to summarize the data is to compute the mean
 price in each city, and then compute the percentage difference of the
 means:
 
@@ -483,9 +495,12 @@ price between ``baskets of goods'' that include one of each sandwich.
 
 So far, most of the exercises have only required a few lines of code. If
 you made errors along the way, you probably found them quickly.
-
 As we go along, the exercises will be more substantial, and you may find
-yourself spending more time debugging. Here are a couple of suggestions
+yourself spending more time debugging.
+
+\pagebreak
+
+Here are a couple of suggestions
 to help you find errors quickly -- and avoid them in the first place.
 
 \begin{itemize}
@@ -500,7 +515,9 @@ to help you find errors quickly -- and avoid them in the first place.
 \end{itemize}
 
 For example, suppose you want to compute, for each sandwich in the
-sandwich list, the midpoint of the Boston and London prices. As a first
+sandwich list, the midpoint of the Boston and London prices.
+
+As a first
 draft, you might write something like this:
 
 \begin{lstlisting}[language=Python,style=source]
@@ -547,6 +564,8 @@ total_price_array
 array([17.49, 12.99, 11.89, 12.  , 10.04,  7.24])
 \end{lstlisting}
 
+\pagebreak
+
 And then computing the midpoint of each pair of prices, like this:
 
 \begin{lstlisting}[language=Python,style=source]
@@ -575,4 +594,3 @@ values: minimum, maximum, mean, and standard deviation.
 
 In the next chapter we'll start working with data files, and we'll use
 loops to process letters and words.
-
