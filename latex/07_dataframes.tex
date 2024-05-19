@@ -81,6 +81,8 @@ fixed-width format, but it cannot read the data dictionary, which is in
 Stata format. For that, we'll use a Python library called
 \passthrough{\lstinline!statadict!}.
 
+\pagebreak
+
 From \passthrough{\lstinline!statadict!}, we'll import
 \passthrough{\lstinline!parse\_stata\_dict!}, which reads the data
 dictionary.
@@ -93,7 +95,7 @@ stata_dict
 \end{lstlisting}
 
 \begin{lstlisting}[style=output]
-<statadict.base.StataDict at 0x7f84bdc25210>
+<statadict.base.StataDict at 0x7f0727940ad0>
 \end{lstlisting}
 
 The result is an object that contains
@@ -113,8 +115,8 @@ reads a file in fixed-width format.
 \begin{lstlisting}[language=Python,style=source]
 import pandas as pd
 
-nsfg = pd.read_fwf(data_file, 
-                   names=stata_dict.names, 
+nsfg = pd.read_fwf(data_file,
+                   names=stata_dict.names,
                    colspecs=stata_dict.colspecs)
 type(nsfg)
 \end{lstlisting}
@@ -135,7 +137,7 @@ nsfg.head()
 
 
 \begin{tabular}{lrrrrrrr}
-\midrule
+\toprule
  & CASEID & PREGORDR & HOWPREG\_N & HOWPREG\_P & MOSCURRP & NOWPRGDK & PREGEND1 \\
 \midrule
 0 & 70627 & 1 & NaN & NaN & NaN & NaN & 6 \\
@@ -143,7 +145,7 @@ nsfg.head()
 2 & 70627 & 3 & NaN & NaN & NaN & NaN & 6 \\
 3 & 70628 & 1 & NaN & NaN & NaN & NaN & 6 \\
 4 & 70628 & 2 & NaN & NaN & NaN & NaN & 6 \\
-\midrule
+\bottomrule
 \end{tabular}
 
 The first two columns are \passthrough{\lstinline!CASEID!} and
@@ -279,6 +281,9 @@ ounces = nsfg['BIRTHWGT_OZ1']
 
 Before we do anything with this data, we have to validate it. One part
 of validation is confirming that we are interpreting the data correctly.
+
+\pagebreak
+
 We can use the \passthrough{\lstinline!value\_counts!} method to see
 what values appear in \passthrough{\lstinline!pounds!} and how many
 times each value appears. With \passthrough{\lstinline!dropna=False!},
@@ -320,15 +325,17 @@ light babies, a few very heavy babies, and two special values, 98, and
 99. According to the codebook, these values indicate that the respondent
 declined to answer the question (98) or did not know (99).
 
+\pagebreak
+
 We can validate the results by comparing them to the codebook, which
 lists the values and their frequencies.
 
 \begin{longtable}[]{rlr}
-\midrule
+\toprule
 Value & Label & Total \\
 \midrule
 \endhead
-\midrule
+\bottomrule
 \endlastfoot
 . & INAPPLICABLE & 2863 \\
 0-5 & UNDER 6 POUNDS & 901 \\
@@ -350,11 +357,11 @@ the data correctly.
 pregnancy as shown below:
 
 \begin{longtable}[]{rl}
-\midrule
+\toprule
 Value & Meaning \\
 \midrule
 \endhead
-\midrule
+\bottomrule
 \endlastfoot
 1 & Live birth \\
 2 & Induced abortion \\
@@ -367,6 +374,8 @@ Value & Meaning \\
 Use \passthrough{\lstinline!value\_counts!} to display the values in
 this column and how many times each value appears. Are the results
 consistent with the codebook?
+
+\pagebreak
 
 \section{Summary Statistics}\label{summary-statistics}
 
@@ -498,7 +507,11 @@ But it is risky to compute a summary statistic, like the mean, before we
 look at the whole distribution of values. A \textbf{distribution} is a
 set of possible values and their frequencies. One way to visualize a
 distribution is a \textbf{histogram}, which shows values on the x-axis
-and their frequencies on the y-axis. \passthrough{\lstinline!Series!}
+and their frequencies on the y-axis.
+
+\pagebreak
+
+\passthrough{\lstinline!Series!}
 provides a \passthrough{\lstinline!hist!} method that makes histograms,
 and we can use Pyplot to label the axes.
 
@@ -537,6 +550,9 @@ with 20 bins. Label the axes and add a title.
 We have seen that the distribution of birth weights is \textbf{skewed}
 to the left -- that is, the left tail extends farther from the center
 than the right tail. That's because preterm babies tend to be lighter.
+
+\pagebreak
+
 To see which babies are preterm, we can use the
 \passthrough{\lstinline!PRGLNGTH!} column, which records pregnancy
 length in weeks. A baby is considered preterm if it is born prior to the
@@ -613,6 +629,8 @@ live.mean()
 \begin{lstlisting}[style=output]
 0.7006176070344394
 \end{lstlisting}
+
+\pagebreak
 
 Now we can use the \passthrough{\lstinline!\&!} operator, which
 represents the logical AND operation, to identify pregnancies where the
@@ -752,8 +770,11 @@ complicated.
 Each pregnancy in the dataset has a \textbf{sampling weight} that
 indicates how many pregnancies it represents. In
 \passthrough{\lstinline!nsfg!}, the sampling weight is stored in a
-column named \passthrough{\lstinline!wgt2015\_2017!}. Here's what it
-looks like.
+column named \passthrough{\lstinline!wgt2015\_2017!}.
+
+\pagebreak
+
+Here's what it looks like.
 
 \begin{lstlisting}[language=Python,style=source]
 sampling_weight = nsfg['WGT2015_2017']
@@ -824,6 +845,8 @@ valid.sum()
 6540
 \end{lstlisting}
 
+\pagebreak
+
 We can combine \passthrough{\lstinline!valid!} with the other Boolean
 \passthrough{\lstinline!Series!} we have computed to identify single,
 full term, live births with valid birth weights.
@@ -886,7 +909,11 @@ nsfg.to_hdf(filename, key='nsfg', complevel=6)
 \end{lstlisting}
 
 The result is much smaller than the original fixed-width file, and
-faster to read. We can read it back like this.
+faster to read.
+
+\pagebreak
+
+We can read it back like this.
 
 \begin{lstlisting}[language=Python,style=source]
 nsfg = pd.read_hdf(filename, key='nsfg')
@@ -922,4 +949,3 @@ use of the term because it might be confusing to say that we select a
 ``variable'' from a \passthrough{\lstinline!DataFrame!} and assign it to
 a Python variable. But you might see this use of the term elsewhere, so
 I thought I would mention it.
-
