@@ -36,6 +36,8 @@ brfss.shape
 (438693, 10)
 \end{lstlisting}
 
+\pagebreak
+
 Here are the first few rows.
 
 \begin{lstlisting}[language=Python,style=source]
@@ -45,7 +47,7 @@ brfss.head()
 
 
 \begin{tabular}{lrrrrrrrrr}
-\midrule
+\toprule
  & HTM4 & WTKG3 & \_SEX & \_AGEG5YR & \_VEGESU1 & \_INCOMG1 & \_LLCPWT & \_HTM4G10 & AGE \\
 \midrule
 0 & 150 & 32.66 & 2 & 11 & 2.14 & 3 & 744.746 & 140 & 72 \\
@@ -53,7 +55,7 @@ brfss.head()
 2 & 165 & 77.11 & 2 & 11 & 0.71 & 2 & 587.863 & 160 & 72 \\
 3 & 163 & 88.45 & 2 & 9 & 1.65 & 5 & 1099.62 & 160 & 62 \\
 4 & 180 & 93.44 & 1 & 12 & 2.58 & 2 & 1711.83 & 170 & 77 \\
-\midrule
+\bottomrule
 \end{tabular}
 
 The BRFSS includes hundreds of variables. For the examples in this
@@ -170,7 +172,7 @@ weight_jitter = weight + noise
 Here's what it looks like.
 
 \begin{lstlisting}[language=Python,style=source]
-plt.plot(height_jitter, weight_jitter, 'o', 
+plt.plot(height_jitter, weight_jitter, 'o',
          alpha=0.01, markersize=0.5)
 
 plt.xlabel('Height in cm')
@@ -466,13 +468,13 @@ subset.corr()
 \end{lstlisting}
 
 \begin{tabular}{lrrr}
-\midrule
+\toprule
  & HTM4 & WTKG3 & AGE \\
 \midrule
 HTM4 & 1 & 0.469398 & -0.122187 \\
 WTKG3 & 0.469398 & 1 & -0.0679024 \\
 AGE & -0.122187 & -0.0679024 & 1 \\
-\midrule
+\bottomrule
 \end{tabular}
 
 The result is a \textbf{correlation matrix}. Reading across the first
@@ -521,6 +523,8 @@ xs = np.linspace(-1, 1)
 ys = xs**2 + np.random.normal(0, 0.05, len(xs))
 \end{lstlisting}
 
+\pagebreak
+
 Here's the scatter plot of these values.
 
 \begin{lstlisting}[language=Python,style=source]
@@ -543,8 +547,8 @@ np.corrcoef(xs, ys)
 \end{lstlisting}
 
 \begin{lstlisting}[style=output]
-array([[1.        , 0.00754791],
-       [0.00754791, 1.        ]])
+array([[1.        , 0.00993964],
+       [0.00993964, 1.        ]])
 \end{lstlisting}
 
 Even though there is a strong non-linear relationship, the computed
@@ -790,7 +794,7 @@ Now let's look at an example of regression with real data. Here's the
 scatter plot of height and weight one more time.
 
 \begin{lstlisting}[language=Python,style=source]
-plt.plot(height_jitter, weight_jitter, 'o', 
+plt.plot(height_jitter, weight_jitter, 'o',
          alpha=0.01, markersize=0.5)
 
 plt.xlim([140, 200])
@@ -862,7 +866,7 @@ another example, here's the scatter plot of weight versus age, which we
 saw earlier.
 
 \begin{lstlisting}[language=Python,style=source]
-plt.plot(age_jitter, weight_jitter, 'o', 
+plt.plot(age_jitter, weight_jitter, 'o',
          alpha=0.01, markersize=0.5)
 
 plt.ylim([0, 160])
@@ -879,7 +883,7 @@ As we have seen before, the relationship is nonlinear. Let's see what we
 get if we compute a linear regression.
 
 \begin{lstlisting}[language=Python,style=source]
-subset = brfss.dropna(subset=['WTKG3', 'AGE']) 
+subset = brfss.dropna(subset=['WTKG3', 'AGE'])
 res_aw = linregress(subset['AGE'], subset['WTKG3'])
 res_aw._asdict()
 \end{lstlisting}
@@ -897,7 +901,7 @@ The estimated slope is close to zero. Here's what the line of best fit
 looks like.
 
 \begin{lstlisting}[language=Python,style=source]
-plt.plot(age_jitter, weight_jitter, 'o', 
+plt.plot(age_jitter, weight_jitter, 'o',
          alpha=0.01, markersize=0.5)
 
 low, high = data['AGE'].min(), data['AGE'].max()
@@ -953,6 +957,8 @@ vegetable consumption and income.
 What is the slope of the regression line? What does this slope means in
 the context of the question we are exploring?
 
+\pagebreak
+
 \section{Summary}\label{summary}
 
 This chapter presents three ways to visualize the relationship between
@@ -970,4 +976,3 @@ predict one variable, given the other. The slope of the regression line
 indicates how much difference we expect in one variable as we vary the
 other. One or the other might be more relevant, depending on the
 context.
-
