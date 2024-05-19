@@ -37,6 +37,8 @@ np.exp(1)
 2.718281828459045
 \end{lstlisting}
 
+\pagebreak
+
 When you call \passthrough{\lstinline!np.power!}, you provide two
 numbers.
 
@@ -104,9 +106,11 @@ TypeError: 'bass' is an invalid keyword argument for int()
 keyword argument called \passthrough{\lstinline!end!} that specifies the
 character it prints at the end of the line. By default,
 \passthrough{\lstinline!end!} is the newline character,
-\passthrough{\lstinline!\\n!}. So if you call
-\passthrough{\lstinline!print!} more than once, the outputs normally
-appear on separate lines, like this:
+\passthrough{\lstinline!\\n!}.
+
+\pagebreak
+
+So if you call \passthrough{\lstinline!print!} more than once, the outputs normally appear on separate lines, like this:
 
 \begin{lstlisting}[language=Python,style=source]
 for x in [1, 2, 3]:
@@ -135,6 +139,8 @@ As an exercise, we'll replicate this figure. It shows results from two
 sources, Religious Landscape Studies and Pew Research Political Surveys.
 The political surveys provide data from more years, so we'll focus on
 that.
+
+\includegraphics[scale=0.3]{figs/pew_religion_figure1.png}
 
 The data from the figure are available from Pew Research, but they are
 in a PDF document. It is sometimes possible to extract data from PDF
@@ -176,6 +182,8 @@ plt.plot(year, christian);
 The semi-colon at the end of the line prevents the return value from
 \passthrough{\lstinline!plot!}, which is an object representing the
 line, from being displayed.
+
+\pagebreak
 
 If you plot multiple lines in a single cell, they appear on the same
 axes.
@@ -282,8 +290,12 @@ In Chapter 3 we used data from an article in \emph{The Economist}
 comparing sandwich prices in Boston and London: ``Why Americans pay more
 for lunch than Britons do''.
 
+\pagebreak
+
 The article includes this graph showing prices of several sandwiches in
 the two cities:
+
+\includegraphics[scale=0.2]{figs/20190907_FNC941.png}
 
 As an exercise, let's see if we can replicate this figure. Here's the
 data from the article again.
@@ -375,6 +387,8 @@ takes three arguments: a sequence of values on the y-axis, which are the
 sandwich names in this example, and two sequences of values on the
 x-axis, which are the London prices and Boston prices.
 
+\pagebreak
+
 \begin{lstlisting}[language=Python,style=source]
 plt.hlines(name_list, london_price_list, boston_price_list, color='gray')
 
@@ -414,6 +428,8 @@ second, third, etc. -- and the number of times they appear. This
 observation was most famously made by George Kingsley Zipf, so it is
 called Zipf's law.
 
+\pagebreak
+
 To see if this law holds for the words in \emph{War and Peace}, we'll
 make a Zipf plot, which shows:
 
@@ -445,7 +461,7 @@ unique_words = {}
 for line in fp:
     if line.startswith('***'):
         break
-        
+
     for word in line.split():
         word = word.lower()
         word = word.strip(all_punctuation)
@@ -469,6 +485,8 @@ type(freqs)
 \begin{lstlisting}[style=output]
 dict_values
 \end{lstlisting}
+
+\pagebreak
 
 Before we plot them, we have to sort them, but the
 \passthrough{\lstinline!sort!} function doesn't work with
@@ -541,6 +559,8 @@ list(range(1, 6))
 \begin{lstlisting}[style=output]
 [1, 2, 3, 4, 5]
 \end{lstlisting}
+
+\pagebreak
 
 So, finally, we can make a range that represents the ranks from
 \passthrough{\lstinline!1!} to \passthrough{\lstinline!n!}:
@@ -699,4 +719,3 @@ demonstrate the most common elements of data visualization, including
 lines and markers, values and labels on the axes, a legend and a title.
 The Zipf plot also shows the power of plotting data on logarithmic
 scales.
-
