@@ -29,11 +29,11 @@ probability, \(1/6\). We can represent this distribution of outcomes
 with a table, like this:
 
 \begin{longtable}[]{lllllll}
-\midrule
+\toprule
 Outcome & 1 & 2 & 3 & 4 & 5 & 6 \\
 \midrule
 \endhead
-\midrule
+\bottomrule
 \endlastfoot
 Probability & 1/6 & 1/6 & 1/6 & 1/6 & 1/6 & 1/6 \\
 \end{longtable}
@@ -67,7 +67,7 @@ die
 \end{lstlisting}
 
 \begin{tabular}{lr}
-\midrule
+\toprule
  & probs \\
 \midrule
 1 & 0.166667 \\
@@ -76,7 +76,7 @@ die
 4 & 0.166667 \\
 5 & 0.166667 \\
 6 & 0.166667 \\
-\midrule
+\bottomrule
 \end{tabular}
 
 A \passthrough{\lstinline!Pmf!} object is a specialized version of a
@@ -125,7 +125,7 @@ gss.head()
 \end{lstlisting}
 
 \begin{tabular}{lrrrrrrrrr}
-\midrule
+\toprule
  & year & id & age & educ & degree & sex & gunlaw & grass & realinc \\
 \midrule
 0 & 1972 & 1 & 23 & 16 & 3 & 2 & 1 & NaN & 18951 \\
@@ -133,7 +133,7 @@ gss.head()
 2 & 1972 & 3 & 48 & 12 & 1 & 2 & 1 & NaN & 24366 \\
 3 & 1972 & 4 & 27 & 17 & 3 & 2 & 1 & NaN & 30458 \\
 4 & 1972 & 5 & 61 & 12 & 1 & 2 & 1 & NaN & 50763 \\
-\midrule
+\bottomrule
 \end{tabular}
 
 I'll explain these columns as we go along, but if you want more
@@ -198,33 +198,36 @@ pmf_educ.head()
 \end{lstlisting}
 
 \begin{tabular}{lr}
-\midrule
+\toprule
  & probs \\
 educ &  \\
 \midrule
 0.000000 & 177 \\
 1.000000 & 49 \\
 2.000000 & 158 \\
-\midrule
+\bottomrule
 \end{tabular}
 
 In this dataset, there are 177 respondents who report that they have no
-formal education, and 49 who have only one year. Here are the last few
-values.
+formal education, and 49 who have only one year.
+
+\pagebreak
+
+Here are the last few values.
 
 \begin{lstlisting}[language=Python,style=source]
 pmf_educ.tail()
 \end{lstlisting}
 
 \begin{tabular}{lr}
-\midrule
+\toprule
  & probs \\
 educ &  \\
 \midrule
 18.000000 & 2945 \\
 19.000000 & 1112 \\
 20.000000 & 1803 \\
-\midrule
+\bottomrule
 \end{tabular}
 
 There are 1803 respondents who report that they have 20 or more years of
@@ -252,14 +255,14 @@ pmf_educ_norm.head()
 \end{lstlisting}
 
 \begin{tabular}{lr}
-\midrule
+\toprule
  & probs \\
 educ &  \\
 \midrule
 0.000000 & 0.002454 \\
 1.000000 & 0.000679357 \\
 2.000000 & 0.00219058 \\
-\midrule
+\bottomrule
 \end{tabular}
 
 Now if we use the bracket operator to look up a value, the result is a
@@ -324,8 +327,10 @@ useful, let's look at a simple example. Suppose we have a sequence of
 five values.
 
 \begin{lstlisting}[language=Python,style=source]
-values = 1, 2, 2, 3, 5  
+values = 1, 2, 2, 3, 5
 \end{lstlisting}
+
+\pagebreak
 
 Here's the \passthrough{\lstinline!Pmf!} of these values.
 
@@ -335,14 +340,14 @@ pmf
 \end{lstlisting}
 
 \begin{tabular}{lr}
-\midrule
+\toprule
  & probs \\
 \midrule
 1 & 0.2 \\
 2 & 0.4 \\
 3 & 0.2 \\
 5 & 0.2 \\
-\midrule
+\bottomrule
 \end{tabular}
 
 If you draw a random value from \passthrough{\lstinline!values!}, the
@@ -373,14 +378,14 @@ cdf
 \end{lstlisting}
 
 \begin{tabular}{lr}
-\midrule
+\toprule
  & probs \\
 \midrule
 1 & 0.2 \\
 2 & 0.6 \\
 3 & 0.8 \\
 5 & 1 \\
-\midrule
+\bottomrule
 \end{tabular}
 
 If you draw a random value from \passthrough{\lstinline!values!}, the
@@ -458,7 +463,11 @@ plt.title('Distribution of age');
 \end{center}
 
 The x-axis is the ages, from 18 to 89. The y-axis is the cumulative
-probabilities, from 0 to 1. The \passthrough{\lstinline!Cdf!} object can
+probabilities, from 0 to 1.
+
+\pagebreak
+
+The \passthrough{\lstinline!Cdf!} object can
 be used as a function, so if you give it an age, it returns the
 corresponding probability in a NumPy array.
 
@@ -507,6 +516,8 @@ In this example, we look up the probability 0.25 and the result is 32.
 That means that 25\% of the respondents are age 32 or less. Another way
 to say the same thing is ``age 32 is the 25th percentile of this
 distribution''.
+
+\pagebreak
 
 If we look up probability 0.75, it returns 60, so 75\% of the
 respondents are 60 or younger.
@@ -592,7 +603,7 @@ pmf_male_age.plot(label='Male')
 pmf_female_age = Pmf.from_seq(female_age)
 pmf_female_age.plot(label='Female')
 
-plt.xlabel('Age (years)') 
+plt.xlabel('Age (years)')
 plt.ylabel('PMF')
 plt.title('Distribution of age by sex')
 plt.legend();
@@ -618,7 +629,7 @@ cdf_male_age.plot(label='Male')
 cdf_female_age = Cdf.from_seq(female_age)
 cdf_female_age.plot(label='Female')
 
-plt.xlabel('Age (years)') 
+plt.xlabel('Age (years)')
 plt.ylabel('CDF')
 plt.title('Distribution of age by sex')
 plt.legend();
@@ -635,8 +646,8 @@ women.
 
 So what does that mean? One way to interpret the difference is that the
 fraction of men below a given age is generally more than the fraction of
-women below the same age. For example, about 79\% of men are 60 or less,
-compared to 76\% of women.
+women below the same age. For example, about 77\% of men are 60 or less,
+compared to 75\% of women.
 
 \begin{lstlisting}[language=Python,style=source]
 cdf_male_age(60), cdf_female_age(60)
@@ -645,6 +656,8 @@ cdf_male_age(60), cdf_female_age(60)
 \begin{lstlisting}[style=output]
 (array(0.7721998), array(0.7474241))
 \end{lstlisting}
+
+\pagebreak
 
 Going the other way, we could also compare percentiles. For example, the
 median age woman is older than the median age man, by about one year.
@@ -975,4 +988,3 @@ that way, I get the best view of what's going on without getting
 distracted by noise. Then, if I am presenting results to an audience
 unfamiliar with CDFs, I might use a PMF if the dataset contains a small
 number of unique values, or KDE if there are many unique values.
-
