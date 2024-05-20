@@ -24,7 +24,7 @@ gss.head()
 \end{lstlisting}
 
 \begin{tabular}{lrrrrrrrrr}
-\midrule
+\toprule
  & year & id & age & educ & degree & sex & gunlaw & grass & realinc \\
 \midrule
 0 & 1972 & 1 & 23 & 16 & 3 & 2 & 1 & NaN & 18951 \\
@@ -32,12 +32,15 @@ gss.head()
 2 & 1972 & 3 & 48 & 12 & 1 & 2 & 1 & NaN & 24366 \\
 3 & 1972 & 4 & 27 & 17 & 3 & 2 & 1 & NaN & 30458 \\
 4 & 1972 & 5 & 61 & 12 & 1 & 2 & 1 & NaN & 50763 \\
-\midrule
+\bottomrule
 \end{tabular}
 
 We'll start with a simple regression, estimating the parameters of real
-income as a function of years of education. First we'll select the
-subset of the data where both variables are valid.
+income as a function of years of education.
+
+\pagebreak
+
+First we'll select the subset of the data where both variables are valid.
 
 \begin{lstlisting}[language=Python,style=source]
 data = gss.dropna(subset=['realinc', 'educ'])
@@ -93,7 +96,9 @@ The result from \passthrough{\lstinline!ols!} is an object that
 represents the model -- it provides a function called
 \passthrough{\lstinline!fit!} that does the actual computation.
 
-The result is a \passthrough{\lstinline!RegressionResultsWrapper!},
+\pagebreak
+
+The result from \passthrough{\lstinline!fit!} is a \passthrough{\lstinline!RegressionResultsWrapper!},
 which contains a \passthrough{\lstinline!Series!} called
 \passthrough{\lstinline!params!}, which contains the estimated intercept
 and the slope associated with \passthrough{\lstinline!educ!}.
@@ -212,7 +217,11 @@ plt.title('Average income, grouped by age');
 
 Average income increases from age 20 to age 50, then starts to fall. And
 that explains why the estimated slope is so small, because the
-relationship is non-linear. To describe a non-linear relationship, we'll
+relationship is non-linear.
+
+\pagebreak
+
+To describe a non-linear relationship, we'll
 create a new variable called \passthrough{\lstinline!age2!} that equals
 \passthrough{\lstinline!age!} squared -- so it is called a
 \textbf{quadratic term}.
@@ -283,6 +292,8 @@ lower income. But the parameter for \passthrough{\lstinline!educ2!} is
 positive, and that makes a big difference. In this section we'll see a
 way to interpret the model visually and validate it against data.
 
+\pagebreak
+
 Here's the model from the previous exercise.
 
 \begin{lstlisting}[language=Python,style=source]
@@ -342,6 +353,8 @@ The result from \passthrough{\lstinline!predict!} is a
 can plot it with age on the x-axis and the predicted income for each age
 group on the y-axis. And we'll plot the data for comparison.
 
+\pagebreak
+
 \begin{lstlisting}[language=Python,style=source]
 plt.plot(mean_income_by_age, 'o', alpha=0.5)
 plt.plot(df['age'], pred12, label='High school', color='C4')
@@ -373,6 +386,8 @@ df['educ'] = 14
 df['educ2'] = df['educ']**2
 pred14 = results.predict(df)
 \end{lstlisting}
+
+\pagebreak
 
 \begin{lstlisting}[language=Python,style=source]
 plt.plot(mean_income_by_age, 'o', alpha=0.5)
@@ -539,7 +554,11 @@ Optimization terminated successfully.
 Estimating the parameters for the logistic model is an iterative
 process, so the output contains information about the number of
 iterations. Other than that, everything is the same as what we have seen
-before. Here are the estimated parameters.
+before.
+
+\pagebreak
+
+Here are the estimated parameters.
 
 \begin{lstlisting}[language=Python,style=source]
 results.params
@@ -702,4 +721,3 @@ We moved through a lot of material quickly, but if you practice and
 apply these methods to other questions and datasets, you will learn more
 as you go. In the next chapter, we will move on to a new topic,
 resampling, which is a versatile tool for statistical inference.
-
