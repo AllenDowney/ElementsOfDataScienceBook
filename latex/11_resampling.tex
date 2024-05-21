@@ -175,13 +175,15 @@ bernoulli.rvs(p=0.7, size=10)
 \end{lstlisting}
 
 \begin{lstlisting}[style=output]
-array([1, 1, 0, 1, 1, 1, 1, 1, 1, 0])
+array([1, 1, 1, 0, 0, 1, 1, 1, 1, 1])
 \end{lstlisting}
 
 The result is an array where \passthrough{\lstinline!1!} represents
 heads and \passthrough{\lstinline!0!} represents tails.
 
-We can use this function to simulate a group of
+\pagebreak
+
+We can use the following function to simulate a group of
 \passthrough{\lstinline!n!} patients, where the probability is
 \passthrough{\lstinline!p!} that each of them gets the disease.
 
@@ -204,14 +206,14 @@ simulate_group(n_treatment, p)
 \end{lstlisting}
 
 \begin{lstlisting}[style=output]
-5.202866140294829
+5.339783670302587
 \end{lstlisting}
 
 The result is a risk from a single simulated trial. If we run this
 function many times, it's like running the trial over and over.
 
 \begin{lstlisting}[language=Python,style=source]
-t = [simulate_group(n_treatment, p) 
+t = [simulate_group(n_treatment, p)
      for i in range(1001)]
 \end{lstlisting}
 
@@ -671,4 +673,3 @@ Let's review the examples in this chapter:
   almost any statistic. As an exercise, you computed the sampling
   distribution of the coefficient of variation.
 \end{enumerate}
-
