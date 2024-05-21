@@ -33,7 +33,7 @@ gss.head()
 \end{lstlisting}
 
 \begin{tabular}{lrrrrrrrrr}
-\midrule
+\toprule
  & year & id & age & educ & degree & sex & gunlaw & grass & realinc \\
 \midrule
 0 & 1972 & 1 & 23 & 16 & 3 & 2 & 1 & NaN & 18951 \\
@@ -41,7 +41,7 @@ gss.head()
 2 & 1972 & 3 & 48 & 12 & 1 & 2 & 1 & NaN & 24366 \\
 3 & 1972 & 4 & 27 & 17 & 3 & 2 & 1 & NaN & 30458 \\
 4 & 1972 & 5 & 61 & 12 & 1 & 2 & 1 & NaN & 50763 \\
-\midrule
+\bottomrule
 \end{tabular}
 
 The column \passthrough{\lstinline!realinc!} records family income,
@@ -164,11 +164,11 @@ summary1
 \end{lstlisting}
 
 \begin{tabular}{lrrl}
-\midrule
+\toprule
  & Estimate & SE & CI90 \\
 \midrule
  & 32533.8 & 120.7 & [32331.4 32724.2] \\
-\midrule
+\bottomrule
 \end{tabular}
 
 The result shows the mean of the sampling distribution, the standard
@@ -360,17 +360,17 @@ normal model.
 \begin{lstlisting}[language=Python,style=source]
 summary3 = summarize(t3)
 table = pd.concat([summary1, summary3])
-table.index=['normal model', 'bootstrapping']
+table.index = ['normal model', 'bootstrapping']
 table
 \end{lstlisting}
 
 \begin{tabular}{lrrl}
-\midrule
+\toprule
  & Estimate & SE & CI90 \\
 \midrule
 normal model & 32533.8 & 120.7 & [32331.4 32724.2] \\
 bootstrapping & 32541 & 120.44 & [32345.43 32735.15] \\
-\midrule
+\bottomrule
 \end{tabular}
 
 The results from bootstrap sampling are consistent with the results
@@ -399,17 +399,17 @@ normal model.
 summary2 = summarize(t2)
 summary4 = summarize(t4)
 table = pd.concat([summary2, summary4])
-table.index=['normal model', 'bootstrapping']
+table.index = ['normal model', 'bootstrapping']
 table
 \end{lstlisting}
 
 \begin{tabular}{lrrl}
-\midrule
+\toprule
  & Estimate & SE & CI90 \\
 \midrule
 normal model & -7036.41 & 206.15 & [-7377.72 -6709.54] \\
 bootstrapping & 5687.12 & 91.42 & [5512.5 5827.5] \\
-\midrule
+\bottomrule
 \end{tabular}
 
 The results from bootstrapping are more sensible -- the mean of the
@@ -426,6 +426,8 @@ As sample size increases, errors due to random sampling get smaller. To
 demonstrate this effect, we'll use data from the Behavioral Risk Factor
 Surveillance System (BRFSS) to estimate the average height for men in
 the United States.
+
+\pagebreak
 
 First, let's read the 2021 data, which I have stored in an HDF file.
 Instructions for downloading it are in the notebook for this chapter.
@@ -449,16 +451,18 @@ rows.
 brfss.head()
 \end{lstlisting}
 
-\begin{tabular}{lrrrrrrrrrr}
+
+
+\begin{tabular}{lrrrrrrrrr}
+\toprule
+ & HTM4 & WTKG3 & \_SEX & \_AGEG5YR & \_VEGESU1 & \_INCOMG1 & \_LLCPWT & \_HTM4G10 & AGE \\
 \midrule
- & SEQNO & HTM4 & WTKG3 & \_SEX & \_AGEG5YR & \_VEGESU1 & \_INCOMG1 & \_LLCPWT & \_HTM4G10 & AGE \\
-\midrule
-0 & 2021000001 & 150 & 32.66 & 2 & 11 & 2.14 & 3 & 744.746 & 140 & 72 \\
-1 & 2021000002 & 168 & NaN & 2 & 10 & 1.28 & NaN & 299.137 & 160 & 67 \\
-2 & 2021000003 & 165 & 77.11 & 2 & 11 & 0.71 & 2 & 587.863 & 160 & 72 \\
-3 & 2021000004 & 163 & 88.45 & 2 & 9 & 1.65 & 5 & 1099.62 & 160 & 62 \\
-4 & 2021000005 & 180 & 93.44 & 1 & 12 & 2.58 & 2 & 1711.83 & 170 & 77 \\
-\midrule
+0 & 150 & 32.66 & 2 & 11 & 2.14 & 3 & 744.746 & 140 & 72 \\
+1 & 168 & NaN & 2 & 10 & 1.28 & NaN & 299.137 & 160 & 67 \\
+2 & 165 & 77.11 & 2 & 11 & 0.71 & 2 & 587.863 & 160 & 72 \\
+3 & 163 & 88.45 & 2 & 9 & 1.65 & 5 & 1099.62 & 160 & 62 \\
+4 & 180 & 93.44 & 1 & 12 & 2.58 & 2 & 1711.83 & 170 & 77 \\
+\bottomrule
 \end{tabular}
 
 The \passthrough{\lstinline!HTM4!} column contains the respondents'
@@ -493,6 +497,8 @@ n_height
 193701
 \end{lstlisting}
 
+\pagebreak
+
 Here is the mean and standard deviation of these values.
 
 \begin{lstlisting}[language=Python,style=source]
@@ -518,11 +524,11 @@ summarize(t5, digits=3)
 \end{lstlisting}
 
 \begin{tabular}{lrrl}
-\midrule
+\toprule
  & Estimate & SE & CI90 \\
 \midrule
  & 178.148 & 0.018 & [178.121 178.176] \\
-\midrule
+\bottomrule
 \end{tabular}
 
 Because the sample size is so large, the standard error is small and the
@@ -601,10 +607,13 @@ bootstrapped = brfss.sample(n=n, replace=True, weights='_LLCPWT')
 \end{lstlisting}
 
 As we saw with unweighted bootstrapping, the same row can appear more
-than once. To see how many times, we can use
+than once.
+To see how many times, we can use
 \passthrough{\lstinline!value\_counts!} and the
 \passthrough{\lstinline!SEQNO!} column, which contains a unique
 identifier for each respondent.
+
+\pagebreak
 
 \begin{lstlisting}[language=Python,style=source]
 repeats = bootstrapped['SEQNO'].value_counts()
@@ -669,22 +678,24 @@ weighted_bootstrap_mean(male_df)
 177.569630553049
 \end{lstlisting}
 
+\pagebreak
+
 If we run it many times, we get a random sample from the sampling
 distribution.
 
 \begin{lstlisting}[language=Python,style=source]
-t6 = [weighted_bootstrap_mean(male_df) 
+t6 = [weighted_bootstrap_mean(male_df)
       for i in range(201)]
 
 summarize(t6, digits=3)
 \end{lstlisting}
 
 \begin{tabular}{lrrl}
-\midrule
+\toprule
  & Estimate & SE & CI90 \\
 \midrule
  & 177.541 & 0.018 & [177.513 177.573] \\
-\midrule
+\bottomrule
 \end{tabular}
 
 The mean of the sampling distribution estimates the average height for
@@ -794,7 +805,9 @@ one_year = gss['year']==2018
 gss2018 = gss[one_year]
 \end{lstlisting}
 
-And I'll use bootstrapping to generate values from the sampling
+\pagebreak
+
+And use bootstrapping to generate values from the sampling
 distribution of the 10th percentile.
 
 \begin{lstlisting}[language=Python,style=source]
@@ -810,11 +823,11 @@ summary9
 \end{lstlisting}
 
 \begin{tabular}{lrrl}
-\midrule
+\toprule
  & Estimate & SE & CI90 \\
 \midrule
  & 5155.46 & 223.92 & [5107.5 5107.5] \\
-\midrule
+\bottomrule
 \end{tabular}
 
 The estimate and the standard error look plausible at first glance, but
@@ -895,7 +908,7 @@ plt.title('Estimated distribution of income');
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[scale=0.6666666]{12_bootstrap_files/12_bootstrap_121_0.png}
+\includegraphics[scale=0.6666666]{12_bootstrap_files/12_bootstrap_122_0.png}
 \end{center}
 
 To draw samples from this distribution, we'll use a Scipy function
@@ -952,21 +965,23 @@ bootstrapping.
 
 \begin{lstlisting}[language=Python,style=source]
 table = pd.concat([summary9, summary10])
-table.index=['bootstrapping', 'KDE resampling']
+table.index = ['bootstrapping', 'KDE resampling']
 table
 \end{lstlisting}
 
 \begin{tabular}{lrrl}
-\midrule
+\toprule
  & Estimate & SE & CI90 \\
 \midrule
 bootstrapping & 5155.46 & 223.92 & [5107.5 5107.5] \\
 KDE resampling & 5097.59 & 246.25 & [4692.62 5485.93] \\
-\midrule
+\bottomrule
 \end{tabular}
 
 The means and standard errors are about the same with either method. But
 the confidence interval we get from KDE resampling is sensible.
+
+\pagebreak
 
 \section{Summary}\label{summary}
 
@@ -1020,6 +1035,8 @@ In the exercise below, you can work on one more example. It is a little
 more involved than the previous exercises, but I will walk you through
 it.
 
+\pagebreak
+
 \textbf{Exercise:} In Chapter 10 we used logistic regression to model
 support for legalizing marijuana as a function of age, sex, and
 education level. Going back to that example, let's explore changes in
@@ -1068,100 +1085,6 @@ Optimization terminated successfully.
          Iterations 5
 \end{lstlisting}
 
-\begin{lstlisting}[language=Python,style=source]
-results.summary()
-\end{lstlisting}
-
-Logit Regression Results
-
-Dep. Variable:
-
-\begin{lstlisting}[style=output]
-   <td>grass</td>      <th>  No. Observations:  </th>  <td> 38669</td> 
-\end{lstlisting}
-
-Model:
-
-\begin{lstlisting}[style=output]
-           <td>Logit</td>      <th>  Df Residuals:      </th>  <td> 38666</td> 
-\end{lstlisting}
-
-Method:
-
-\begin{lstlisting}[style=output]
-           <td>MLE</td>       <th>  Df Model:          </th>  <td>     2</td> 
-\end{lstlisting}
-
-Date:
-
-\begin{lstlisting}[style=output]
-      <td>Wed, 15 May 2024</td> <th>  Pseudo R-squ.:     </th>  <td>0.07506</td>
-\end{lstlisting}
-
-Time:
-
-\begin{lstlisting}[style=output]
-          <td>17:02:11</td>     <th>  Log-Likelihood:    </th> <td> -22624.</td>
-\end{lstlisting}
-
-converged:
-
-\begin{lstlisting}[style=output]
-       <td>True</td>       <th>  LL-Null:           </th> <td> -24460.</td>
-\end{lstlisting}
-
-Covariance Type:
-
-nonrobust
-
-LLR p-value:
-
-0.000
-
-coef
-
-std err
-
-z
-
-P\textgreater\textbar z\textbar{}
-
-{[}0.025{]}
-
-Intercept
-
--42.0901
-
-2.372
-
--17.746
-
-0.000
-
--46.739
-
--37.441
-
-year
-
-\begin{lstlisting}[style=output]
-<td>    0.0205</td> <td>    0.001</td> <td>   17.203</td> <td> 0.000</td> <td>    0.018</td> <td>    0.023</td>
-\end{lstlisting}
-
-year2
-
-0.0016
-
-6.3e-05
-
-25.436
-
-0.000
-
-0.001
-
-0.002
-
 To generate predictions, I'll create a
 \passthrough{\lstinline!DataFrame!} with a range of values of
 \passthrough{\lstinline!year!} up to 2030, and corresponding values of
@@ -1202,7 +1125,7 @@ plot_data()
 \end{lstlisting}
 
 \begin{center}
-\includegraphics[scale=0.6666666]{12_bootstrap_files/12_bootstrap_151_0.png}
+\includegraphics[scale=0.6666666]{12_bootstrap_files/12_bootstrap_152_0.png}
 \end{center}
 
 The model fits past data reasonably well and makes plausible predictions
@@ -1222,6 +1145,8 @@ Write a function called
 regression model, generates predictions for the rows in
 \passthrough{\lstinline!df\_pred!}, and returns the predictions.
 
+\pagebreak
+
 Call this function 101 times and save the results as a list of
 \passthrough{\lstinline!Series!} objects. To visualize the results, you
 have two options:
@@ -1240,4 +1165,3 @@ have two options:
   \passthrough{\lstinline!plt.fill\_between!} to plot a shaded region
   between them.
 \end{enumerate}
-
