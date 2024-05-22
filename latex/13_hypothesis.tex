@@ -34,6 +34,8 @@ related to peanut allergies, and survey data from the National Survey of
 Family Growth (NSFG) and the Behavioral Risk Factor Surveillance System
 (BRFSS).
 
+\pagebreak
+
 \section{Testing Medical Treatments}\label{testing-medical-treatments}
 
 The LEAP study was a randomized trial that tested the effect of eating
@@ -94,8 +96,11 @@ risk_treatment
 3.1847133757961785
 \end{lstlisting}
 
-These are consistent with the percentages reported in the paper. To
-quantify the difference between the groups, we'll use relative risk,
+These are consistent with the percentages reported in the paper.
+
+\pagebreak
+
+To quantify the difference between the groups, we'll use relative risk,
 which is the ratio of the risks in the two groups.
 
 \begin{lstlisting}[language=Python,style=source]
@@ -265,6 +270,8 @@ see a relative risk as low as 0.78 about 13\% of the time. So, for this
 imagined experiment, we can't rule out the possibility that the apparent
 difference is due to chance.
 
+\pagebreak
+
 \section{Are First Babies More Likely To Be
 Late?}\label{are-first-babies-more-likely-to-be-late}
 
@@ -290,7 +297,7 @@ nsfg.head()
 
 
 \begin{tabular}{lrrrrrrr}
-\midrule
+\toprule
  & CASEID & PREGORDR & HOWPREG\_N & HOWPREG\_P & MOSCURRP & NOWPRGDK & PREGEND1 \\
 \midrule
 0 & 70627 & 1 & NaN & NaN & NaN & NaN & 6 \\
@@ -298,7 +305,7 @@ nsfg.head()
 2 & 70627 & 3 & NaN & NaN & NaN & NaN & 6 \\
 3 & 70628 & 1 & NaN & NaN & NaN & NaN & 6 \\
 4 & 70628 & 2 & NaN & NaN & NaN & NaN & 6 \\
-\midrule
+\bottomrule
 \end{tabular}
 
 We'll use the \passthrough{\lstinline!OUTCOME!} column to select
@@ -332,6 +339,8 @@ n_first
 \begin{lstlisting}[style=output]
 2724
 \end{lstlisting}
+
+\pagebreak
 
 And 3115 other (not first) babies.
 
@@ -394,6 +403,8 @@ mean, std
 \begin{lstlisting}[style=output]
 (39.29046069532454, 1.1864094701037655)
 \end{lstlisting}
+
+\pagebreak
 
 Now we can use \passthrough{\lstinline!simulate\_sample\_mean!} from
 Chapter 11 to draw a random sample from a normal distribution with the
@@ -611,6 +622,8 @@ brfss.shape
 (418268, 9)
 \end{lstlisting}
 
+\pagebreak
+
 The correlations we computed were between height, weight and age.
 
 \begin{lstlisting}[language=Python,style=source]
@@ -621,13 +634,13 @@ corr_actual
 \end{lstlisting}
 
 \begin{tabular}{lrrr}
-\midrule
+\toprule
  & HTM4 & WTKG3 & AGE \\
 \midrule
 HTM4 & 1 & 0.477151 & -0.13598 \\
 WTKG3 & 0.477151 & 1 & -0.0649505 \\
 AGE & -0.13598 & -0.0649505 & 1 \\
-\midrule
+\bottomrule
 \end{tabular}
 
 The correlation between height and weight is about 0.48, which is
@@ -663,6 +676,9 @@ The idiomatic way to shuffle a \passthrough{\lstinline!Series!} is to
 use \passthrough{\lstinline!sample!} with the argument
 \passthrough{\lstinline!frac=1!}, which means that the fraction of the
 elements we want is \passthrough{\lstinline!1!}, that is, all of them.
+
+\pagebreak
+
 By default, \passthrough{\lstinline!sample!} chooses elements without
 replacement, so the result contains all of the elements in a random
 order.
@@ -887,6 +903,8 @@ is due to chance. To answer that question, we'll use permutation to
 simulate a world where there is no relationship between mother's age and
 birth weight.
 
+\pagebreak
+
 The following function takes a \passthrough{\lstinline!DataFrame!},
 shuffles the \passthrough{\lstinline!AGECON!} column, computes a linear
 regression model, and returns the estimated slope.
@@ -1015,6 +1033,8 @@ parameter, shuffles the \passthrough{\lstinline!FIRST!} column, runs the
 regression model with \passthrough{\lstinline!AGECON!} and
 \passthrough{\lstinline!AGECON2!}, and returns the estimated difference.
 
+\pagebreak
+
 \begin{lstlisting}[language=Python,style=source]
 def simulate_slope2(data):
     data['SHUFFLED'] = shuffle(data['FIRST'])
@@ -1137,6 +1157,8 @@ true for the babies in the NSFG dataset. The
 data['YO_DAD'] = data['HPAGELB'].isin([1, 6])
 \end{lstlisting}
 
+\pagebreak
+
 We can use the result in a regression model to compute the difference in
 birth weight for young and old fathers compared to the others.
 
@@ -1166,4 +1188,3 @@ function that shuffles \passthrough{\lstinline!YO\_DAD!}, runs the
 regression model, and returns the parameter associated with the shuffled
 column. How often does this parameter exceed the observed value? What
 conclusion can we draw from the results?
-
