@@ -72,11 +72,11 @@ a chance, or would they try to be fair?
 The possible responses are:
 
 \begin{longtable}[]{ll}
-\midrule
+\toprule
 Code & Response \\
 \midrule
 \endhead
-\midrule
+\bottomrule
 \endlastfoot
 1 & Take advantage \\
 2 & Fair \\
@@ -102,6 +102,8 @@ Name: count, dtype: int64
 The plurality think people try to be fair (2), but a substantial
 minority think people would take advantage (1). There are also a number
 of NaNs, mostly respondents who were not asked this question.
+
+\pagebreak
 
 To count the number of people who chose a positive response, we'll use a
 dictionary to recode option \passthrough{\lstinline!2!} as
@@ -214,6 +216,8 @@ liberals. We'll group the respondents by
 by_polviews = gss.groupby('polviews3')
 \end{lstlisting}
 
+\pagebreak
+
 And compute the mean of \passthrough{\lstinline!fair2!} in each group.
 
 \begin{lstlisting}[language=Python,style=source]
@@ -276,7 +280,11 @@ table = gss.pivot_table(
 
 The result is a \passthrough{\lstinline!DataFrame!} that has years
 running down the rows and political alignment running across the
-columns. Each entry in the table is the mean of
+columns.
+
+\pagebreak
+
+Each entry in the table is the mean of
 \passthrough{\lstinline!fair2!} for a given group in a given year.
 
 \begin{lstlisting}[language=Python,style=source]
@@ -284,7 +292,7 @@ table.head()
 \end{lstlisting}
 
 \begin{tabular}{lrrr}
-\midrule
+\toprule
 polviews3 & Conservative & Liberal & Moderate \\
 year &  &  &  \\
 \midrule
@@ -293,7 +301,7 @@ year &  &  &  \\
 1978 & 0.694915 & 0.65942 & 0.665455 \\
 1980 & 0.6 & 0.554945 & 0.640264 \\
 1983 & 0.572438 & 0.585366 & 0.463492 \\
-\midrule
+\bottomrule
 \end{tabular}
 
 Reading across the first row, we can see that in 1975, moderates were
@@ -321,10 +329,12 @@ sns.palplot(muted)
 And here's the dictionary.
 
 \begin{lstlisting}[language=Python,style=source]
-color_map = {'Conservative': muted[3], 
-             'Moderate': muted[4], 
+color_map = {'Conservative': muted[3],
+             'Moderate': muted[4],
              'Liberal': muted[0]}
 \end{lstlisting}
+
+\pagebreak
 
 Now we can plot the results.
 
@@ -362,6 +372,8 @@ the GSS data. Some of the features we see in these figures might be due
 to random sampling rather than actual changes in the world. By
 generating the same figures with different resampled datasets, we can
 get a sense of how much variation there is due to random sampling.
+
+\pagebreak
 
 To make that easier, the following function contains the code from the
 previous analysis all in one place.
@@ -478,4 +490,3 @@ The tools we used in this case study are versatile -- they are useful
 for exploring other variables in the GSS dataset, and other datasets as
 well. And the process we followed is one I recommend whenever you are
 exploring a new dataset.
-
