@@ -9,7 +9,7 @@ You might wonder why we need three ways to represent the same thing.
 Most of the time we don't, but each of them has different capabilities.
 For work with data, we will use arrays most of the time.
 
-As an example, we will use a small dataset from an article in \emph{The
+As an example, we will use a small dataset from an article in \textit{The
 Economist} about the price of sandwiches. It's a silly example, but I'll
 use it to introduce relative differences and ways to summarize them.
 
@@ -20,6 +20,8 @@ latitude and longitude, the sequence only contains two elements, and
 they are both floating-point numbers. But in general a tuple can contain
 any number of elements, and the elements can be values of any type. For
 example, here's a tuple of two strings.
+\index{element}
+\index{tuple}
 
 \begin{lstlisting}[language=Python,style=source]
 ('Data', 'Science')
@@ -43,6 +45,7 @@ string, an integer, and a floating-point number.
 When you create a tuple, the parentheses are optional, but the commas
 are required. So how do you think you create a tuple with a single
 element? You might be tempted to write:
+\index{parentheses}
 
 \begin{lstlisting}[language=Python,style=source]
 x = (5)
@@ -55,6 +58,7 @@ x
 
 But you will find that the result is just a number, not a tuple. To make
 a tuple with a single element, you need a comma:
+\index{comma}
 
 \begin{lstlisting}[language=Python,style=source]
 t = (5,)
@@ -81,6 +85,8 @@ tuple('DataScience')
 The result is a sequence of single-character strings. You can also use
 the \passthrough{\lstinline!tuple!} function to make an empty tuple --
 that is, one that has no elements.
+\index{tuple function}
+\index{empty tuple}
 
 \begin{lstlisting}[language=Python,style=source]
 tuple()
@@ -95,6 +101,9 @@ tuple()
 Python provides another way to store a sequence of elements: a
 \textbf{list}. To create a list, you put a sequence of elements in
 square brackets.
+\index{list}
+\index{element}
+\index{square brackets}
 
 \begin{lstlisting}[language=Python,style=source]
 [1, 2, 3]
@@ -109,18 +118,22 @@ elements, the elements can be any type, and the elements don't have to
 be the same type. The difference is that you can modify a list and you
 can't modify a tuple -- that is, tuples are \textbf{immutable}. This
 difference will matter later, but for now we can ignore it.
+\index{mutable}
+\index{immutable}
 
 \pagebreak
 
 When you make a list, the brackets are required, but if there is a
 single element, you don't need a comma. So you can make a list like
 this:
+\index{comma}
 
 \begin{lstlisting}[language=Python,style=source]
 single = [5]
 \end{lstlisting}
 
 It is also possible to make a list with no elements, like this:
+\index{empty list}
 
 \begin{lstlisting}[language=Python,style=source]
 empty = []
@@ -150,6 +163,7 @@ prices.
 In September 2019, \emph{The Economist} published an article comparing
 sandwich prices in Boston and London, called ``Why Americans pay more
 for lunch than Britons do''.
+\index{sandwich prices}
 
 It includes this graph showing prices of several sandwiches in the two
 cities:
@@ -174,6 +188,7 @@ name_list = [
 I contacted \emph{The Economist} to ask for the data they used to create
 that graph, and they were kind enough to share it with me. Here are the
 sandwich prices in Boston:
+\index{The Economist@\textit{The Economist}}
 
 \begin{lstlisting}[language=Python,style=source]
 boston_price_list = [9.99, 7.99, 7.49, 7.00, 6.29, 4.99]
@@ -200,6 +215,8 @@ boston_price_list + london_price_list
 But it concatenates the two lists, which is not very useful in this
 example. To compute differences between prices, you might try
 subtracting lists, but it doesn't work.
+\index{concatenation}
+\index{list concatenation}
 
 We can solve this problem with NumPy.
 
@@ -209,6 +226,9 @@ We've already seen that the NumPy library provides math functions. It
 also provides a type of sequence called an \textbf{array}. You can
 create a new array with the \passthrough{\lstinline!np.array!} function,
 starting with a list or tuple.
+\index{NumPy}
+\index{array}
+\index{np.array}
 
 \begin{lstlisting}[language=Python,style=source]
 import numpy as np
@@ -233,6 +253,7 @@ The ``nd'' stands for ``n-dimensional'', which indicates that NumPy
 arrays can have any number of dimensions. But for now we will work with
 one-dimensional sequences. If you display an array, Python displays the
 elements:
+\index{ndarray}
 
 \begin{lstlisting}[language=Python,style=source]
 boston_price_array
@@ -244,6 +265,7 @@ array([9.99, 7.99, 7.49, 7.  , 6.29, 4.99])
 
 You can also display the \textbf{data type} of the array, which is the
 type of the elements:
+\index{data type}
 
 \begin{lstlisting}[language=Python,style=source]
 boston_price_array.dtype
@@ -258,6 +280,7 @@ floating-point numbers that take up 64 bits each. The elements of a
 NumPy array can be any type, but they all have to be the same type. Most
 often the elements are numbers, but you can also make an array of
 strings.
+\index{float64}
 
 \begin{lstlisting}[language=Python,style=source]
 name_array = np.array(name_list)
@@ -275,10 +298,12 @@ indicates that the elements are Unicode strings. Unicode is the standard
 Python uses to represent strings. The number
 \passthrough{\lstinline!17!} is the length of the longest string in the
 array.
+\index{Unicode}
 
 Now, here's why NumPy arrays are useful -- they can do arithmetic. For
 example, to compute the differences between Boston and London prices, we
 can write:
+\index{array arithmetic}
 
 \begin{lstlisting}[language=Python,style=source]
 differences = boston_price_array - london_price_array
@@ -292,11 +317,16 @@ array([2.49, 2.99, 3.09, 2.  , 2.54, 2.74])
 Subtraction is done \textbf{elementwise} -- that is, NumPy lines up the
 two arrays and subtracts corresponding elements. The result is a new
 array.
+\index{elementwise operation}
 
 \section{Statistical Summaries}\label{statistical-summaries}
 
 NumPy provides functions that compute statistical summaries like the
 mean:
+\index{summary statistics}
+\index{statistical summary}
+\index{mean}
+\index{np.mean}
 
 \begin{lstlisting}[language=Python,style=source]
 np.mean(differences)
@@ -335,6 +365,9 @@ np.mean(boston_price_list) - np.mean(london_price_list)
 \textbf{Exercise:} Standard deviation is way to quantify the variability
 in a set of numbers. The NumPy function that computes standard deviation
 is \passthrough{\lstinline!np.std!}.
+\index{standard deviation}
+\index{std}
+\index{np.std}
 
 Compute the standard deviation of sandwich prices in Boston and London.
 By this measure, which set of prices is more variable?
@@ -346,6 +379,7 @@ often when we make this kind of comparison, we are interested in
 \textbf{relative differences}, which are differences expressed as a
 fraction or percentage of a quantity. Taking the lobster roll as an
 example, the difference in price is:
+\index{relative difference}
 
 \begin{lstlisting}[language=Python,style=source]
 9.99 - 7.5
@@ -367,6 +401,7 @@ this:
 \end{lstlisting}
 
 Or as a \emph{percentage} of the London price, like this:
+\index{percentage difference}
 
 \begin{lstlisting}[language=Python,style=source]
 (9.99 - 7.5) / 7.5 * 100
@@ -428,6 +463,11 @@ Now let's think about how to summarize an array of percentage
 differences. One option is to report the range, which we can compute
 with \passthrough{\lstinline!np.min!} and
 \passthrough{\lstinline!np.max!}.
+\index{range}
+\index{min}
+\index{max}
+\index{np.min}
+\index{np.max}
 
 \begin{lstlisting}[language=Python,style=source]
 np.min(percent_differences), np.max(percent_differences)
@@ -490,6 +530,7 @@ is 56\% higher in Boston. As this example demonstrates:
 In this example, I think the second option (the relative difference in
 the means) is more meaningful, because it reflects the difference in
 price between ``baskets of goods'' that include one of each sandwich.
+\index{basket of goods}
 
 \section{Debugging}\label{debugging}
 
@@ -497,11 +538,13 @@ So far, most of the exercises have only required a few lines of code. If
 you made errors along the way, you probably found them quickly.
 As we go along, the exercises will be more substantial, and you may find
 yourself spending more time debugging.
+\index{debugging}
 
 \pagebreak
 
 Here are a couple of suggestions
 to help you find errors quickly -- and avoid them in the first place.
+\index{incremental development}
 
 \begin{itemize}
 \item
@@ -554,6 +597,7 @@ elementwise, as we intended. Because the arguments are lists, the
 \passthrough{\lstinline!+!} operator concatenates them rather than
 adding the elements. We can solve this problem by using the arrays
 rather than the lists.
+\index{elementwise operation}
 
 \begin{lstlisting}[language=Python,style=source]
 total_price_array = boston_price_array + london_price_array

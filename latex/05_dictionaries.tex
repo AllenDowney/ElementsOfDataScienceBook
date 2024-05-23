@@ -5,6 +5,7 @@ read a file and count the words. In this chapter we'll count the number
 of \emph{unique} words and the number of times each one appears. To do
 that, we'll use one of Python's most useful features, a
 \textbf{dictionary}.
+\index{dictionary}
 
 You will also see how to select an element from a sequence (tuple, list,
 or array). And you will learn a little about Unicode, which is used to
@@ -17,6 +18,8 @@ Suppose you have a variable named \passthrough{\lstinline!t!} that
 refers to a list or tuple. You can select an element using the
 \textbf{bracket operator}, \passthrough{\lstinline![]!}. For example,
 here's a tuple of strings:
+\index{bracket operator}
+\index{element}
 
 \begin{lstlisting}[language=Python,style=source]
 t = ('zero', 'one', 'two')
@@ -61,6 +64,7 @@ The number in brackets is called an \textbf{index} because it indicates
 which element we want. Tuples and lists use zero-based numbering -- that
 is, the index of the first element is 0. Some other programming
 languages use one-based numbering.
+\index{index}
 
 The index in brackets can also be a variable:
 
@@ -84,6 +88,7 @@ t[i+1]
 \end{lstlisting}
 
 But if the index goes past the end of the sequence, you get an error.
+\index{IndexError}
 
 \begin{lstlisting}[language=Python,style=source]
 %%expect IndexError
@@ -97,6 +102,7 @@ IndexError: tuple index out of range
 
 Also, the index has to be an integer -- if it is any other type, you get
 an error.
+\index{TypeError}
 
 \begin{lstlisting}[language=Python,style=source]
 %%expect TypeError
@@ -127,6 +133,8 @@ indices, and see if you can figure out what they do.
 A dictionary is similar to a tuple or list, but in a dictionary, the
 index can be almost any type, not just an integer. We can create an
 empty dictionary like this:
+\index{dictionary}
+\index{empty dictionary}
 
 \begin{lstlisting}[language=Python,style=source]
 d = {}
@@ -170,11 +178,17 @@ corresponding values are integers. A dictionary is also called a
 \textbf{map}, because it represents a correspondence or ``mapping'',
 between keys and values. So we might say that this dictionary maps from
 English number names to the corresponding integers.
+\index{key, in dictionary}
+\index{dictionary key}
+\index{value, in dictionary}
+\index{dictionary value}
+\index{mapping}
 
 \pagebreak
 
 You can use the bracket operator to select an element from a dictionary,
 like this:
+\index{bracket operator}
 
 \begin{lstlisting}[language=Python,style=source]
 d['two']
@@ -186,6 +200,7 @@ d['two']
 
 But don't forget the quotation marks. Without them, Python looks for a
 variable named \passthrough{\lstinline!two!} and doesn't find one.
+\index{NameError}
 
 \begin{lstlisting}[language=Python,style=source]
 %%expect NameError
@@ -218,6 +233,7 @@ False
 
 Because the word \passthrough{\lstinline!in!} is an operator in Python,
 you can't use it as a variable name.
+\index{in operator}
 
 \begin{lstlisting}[language=Python,style=source]
 %%expect SyntaxError
@@ -315,6 +331,7 @@ In the previous chapter we downloaded \emph{War and Peace} from Project
 Gutenberg and counted the number of lines and words. Now that we have
 dictionaries, we can also count the number of unique words and the
 number of times each one appears.
+\index{unique words}
 
 As we did in the previous chapter, we can read the text of \emph{War and
 Peace} and count the number of words.
@@ -345,6 +362,8 @@ for line in fp:
 
 This is the first example we've seen with one loop \textbf{nested}
 inside another.
+\index{nested loop}
+\index{loop, nested}
 
 \begin{itemize}
 \item
@@ -372,6 +391,7 @@ The \passthrough{\lstinline!list!} function puts the keys from the
 dictionary in a list. In the bracket operator,
 \passthrough{\lstinline!:8!} is a special index called a \emph{slice}
 that selects the first eight elements.
+\index{slice}
 
 Each word only appears once, so the number of keys is the number of
 unique words.
@@ -406,6 +426,8 @@ When we count unique words, we probably want to treat
 \passthrough{\lstinline!The!} and \passthrough{\lstinline!the!} as the
 same word. We can do that by converting all words to lower case, using
 the \passthrough{\lstinline!lower!} function:
+\index{capitalization}
+\index{lower, (string method)}
 
 \begin{lstlisting}[language=Python,style=source]
 word = 'The'
@@ -455,6 +477,8 @@ lowercase?
 To remove punctuation from the words, we can use
 \passthrough{\lstinline!strip!}, which removes characters from the
 beginning and end of a string. Here's an example:
+\index{punctuation}
+\index{strip (string method)}
 
 \begin{lstlisting}[language=Python,style=source]
 word = 'abracadabra'
@@ -482,6 +506,7 @@ word
 To remove punctuation, we can use the \passthrough{\lstinline!string!}
 library, which provides a variable named
 \passthrough{\lstinline!punctuation!}.
+\index{string library}
 
 \begin{lstlisting}[language=Python,style=source]
 import string
@@ -569,6 +594,8 @@ we'll use the following loop, which
 
 You don't have to understand everything about how it works, but I
 suggest you read it and see how much you can figure out.
+\index{Unicode}
+\index{unicodedata library}
 
 \begin{lstlisting}[language=Python,style=source]
 import unicodedata
@@ -609,6 +636,8 @@ might also want to know how often each word appears. Then we can find
 the most common and least common words in the book. To count the
 frequency of each word, we'll make a dictionary that maps from each word
 to the number of times it appears.
+\index{frequency}
+\index{word frequency}
 
 Here's an example that loops through a string and counts the number of
 times each letter appears.
@@ -657,6 +686,8 @@ times it appears. To get the most common letters, we can use a
 \passthrough{\lstinline!Counter!}, which is similar to a dictionary. To
 use it, we have to import a library called
 \passthrough{\lstinline!collections!}:
+\index{Counter object}
+\index{collections library}
 
 \begin{lstlisting}[language=Python,style=source]
 import collections
@@ -677,6 +708,7 @@ collections.Counter
 \passthrough{\lstinline!Counter!} provides a function called
 \passthrough{\lstinline!most\_common!} we can use to get the most common
 characters:
+\index{most\_common (Counter method)}
 
 \begin{lstlisting}[language=Python,style=source]
 counter.most_common(3)

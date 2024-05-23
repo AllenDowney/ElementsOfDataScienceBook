@@ -21,6 +21,8 @@ projects use at least one.
 A \textbf{string} is a sequence of letters, numbers, and punctuation
 marks. In Python you can create a string by enclosing text between
 single or double quotation marks.
+\index{string}
+\index{quotation mark}
 
 \begin{lstlisting}[language=Python,style=source]
 'Elements'
@@ -39,6 +41,8 @@ single or double quotation marks.
 \end{lstlisting}
 
 And you can assign string values to variables.
+\index{variable}
+\index{assignment}
 
 \begin{lstlisting}[language=Python,style=source]
 first = 'Data'
@@ -49,6 +53,8 @@ Some arithmetic operators work with strings, but they might not do what
 you expect. For example, the \passthrough{\lstinline!+!} operator
 \textbf{concatenates} two strings -- that is, it creates a new string
 that contains the first string followed by the second string:
+\index{concatenation}
+\index{string concatenation}
 
 \begin{lstlisting}[language=Python,style=source]
 first + last
@@ -78,6 +84,7 @@ not_actually_a_number = '123'
 \end{lstlisting}
 
 If you try to do math with these strings, you \emph{might} get an error.
+\index{TypeError}
 
 \begin{lstlisting}[language=Python,style=source]
 %%expect TypeError
@@ -102,9 +109,12 @@ not_actually_a_number * 3
 
 If you multiply a string by an integer, Python repeats the string the
 given number of times.
+\index{string multiplication}
+\index{multiplication}
 
 If you have a string that contains only digits, you can convert it to an
 integer using the \passthrough{\lstinline!int!} function:
+\index{int function}
 
 \begin{lstlisting}[language=Python,style=source]
 int('123')
@@ -118,6 +128,7 @@ int('123')
 
 Or you can convert it to a floating-point number using
 \passthrough{\lstinline!float!}:
+\index{float function}
 
 \begin{lstlisting}[language=Python,style=source]
 float('12.3')
@@ -142,6 +153,7 @@ ValueError: invalid literal for int() with base 10: '12.3'
 
 Going in the other direction, you can convert any type of value to a
 string using \passthrough{\lstinline!str!}:
+\index{str function}
 
 \begin{lstlisting}[language=Python,style=source]
 str(123)
@@ -184,6 +196,8 @@ Times}\label{representing-dates-and-times}
 
 When you read data from a file, you might find that dates and times are
 represented with strings.
+\index{date}
+\index{time}
 
 \begin{lstlisting}[language=Python,style=source]
 not_really_a_date = 'June 4, 1989'
@@ -223,6 +237,8 @@ for working with date and time data -- the one we'll use is called
 Pandas. As always, we have to import a library before we use it. It is
 conventional to import Pandas with the abbreviated name
 \passthrough{\lstinline!pd!}:
+\index{pandas}
+\index{import statement}
 
 \begin{lstlisting}[language=Python,style=source]
 import pandas as pd
@@ -232,6 +248,7 @@ Pandas provides a type called \passthrough{\lstinline!Timestamp!}, which
 represents a date and time. If we have a string that contains a time or
 date, we can convert it to a \passthrough{\lstinline!Timestamp!} like
 this:
+\index{Timestamp}
 
 \begin{lstlisting}[language=Python,style=source]
 pd.Timestamp('6:30:00')
@@ -292,6 +309,7 @@ date_of_birth.day_name(), date_of_birth.month_name()
 
 \passthrough{\lstinline!Timestamp!} provides a function called
 \passthrough{\lstinline!now!} that returns the current date and time.
+\index{now function}
 
 \begin{lstlisting}[language=Python,style=source]
 now = pd.Timestamp.now()
@@ -326,6 +344,7 @@ current age of someone born on
 \passthrough{\lstinline!Timedelta!} contains
 \passthrough{\lstinline!components!} that store the number of days,
 hours, etc. between the two \passthrough{\lstinline!Timestamp!} values.
+\index{Timedelta}
 
 \begin{lstlisting}[language=Python,style=source]
 from utils import wrap
@@ -356,6 +375,9 @@ defined. Most years are \passthrough{\lstinline!365!} days, but some are
 \passthrough{\lstinline!366!}. The average calendar year is
 \passthrough{\lstinline!365.24!} days, which is a very good
 approximation of a solar year, but even that's not exact.
+\index{day}
+\index{year}
+\index{solar year}
 
 Expressing a duration in days is clearly defined -- but it is not easy
 to interpret. To express \passthrough{\lstinline!age!} in years, we can
@@ -399,6 +421,7 @@ birthdate has already had a birthday this year. Here's a new
 \passthrough{\lstinline!Timestamp!} with the year from
 \passthrough{\lstinline!now!} and the month and day from
 \passthrough{\lstinline!date\_of\_birth!}.
+\index{birthday}
 
 \begin{lstlisting}[language=Python,style=source]
 bday_this_year = pd.Timestamp(now.year,
@@ -431,6 +454,10 @@ The result is either \passthrough{\lstinline!True!} or
 \passthrough{\lstinline!False!}. These values belong to a type called
 \passthrough{\lstinline!bool!}. The name comes from ``Boolean algebra'',
 which is a branch of algebra where all values are either true or false.
+\index{bool}
+\index{Boolean algebra}
+\index{True}
+\index{False}
 
 \begin{lstlisting}[language=Python,style=source]
 type(True)
@@ -455,6 +482,7 @@ given two \passthrough{\lstinline!Timestamp!} values,
 represent birthdays for two people. Use
 \passthrough{\lstinline!Timestamp!} arithmetic to compute their double
 day. With the following dates, the result should be December 19, 2009.
+\index{Double Day}
 
 \begin{lstlisting}[language=Python,style=source]
 d1 = pd.Timestamp('2003-07-12')
@@ -470,6 +498,9 @@ global data, is latitude and longitude. When stored in a string,
 latitude and longitude are expressed in degrees with compass directions
 N, S, E, and W. For example, this string represents the location of
 Boston, Massachusetts, USA:
+\index{location data}
+\index{longitude}
+\index{latitude}
 
 \begin{lstlisting}[language=Python,style=source]
 lat_lon_string = '42.3601° N, 71.0589° W'
@@ -494,6 +525,7 @@ are arbitrary choices that were made for historical reasons.
 
 Here's how
 we might represent the location of Boston with two variables.
+\index{Boston}
 
 \begin{lstlisting}[language=Python,style=source]
 lat = 42.3601
@@ -516,6 +548,7 @@ The type of this variable is \passthrough{\lstinline!tuple!}, which is a
 mathematical term for a value that contains a sequence of elements. Math
 people pronounce it ``tuh' ple'', but computational people usually say
 ``too' ple''. Either is fine.
+\index{tuple}
 
 \begin{lstlisting}[language=Python,style=source]
 type(boston)
@@ -527,6 +560,7 @@ tuple
 
 If you have a tuple with two elements, you can assign them to two
 variables, like this:
+\index{assignment}
 
 \begin{lstlisting}[language=Python,style=source]
 y, x = boston
@@ -560,6 +594,8 @@ floating-point numbers that represents that location.
 If you are given two tuples that represent locations, you can compute
 the approximate distance between them, along the surface of the globe,
 using the haversine function:
+\index{distance}
+\index{haversine function}
 
 \(\mathrm{haversine}(\theta)=\sin^2(\theta/2)\)
 
@@ -585,6 +621,8 @@ You can use Greek letters in variable names, but there is currently no
 way to type them in Jupyter/Colab, so I usually copy them from a web
 page and paste them in. To avoid the inconvenience, it is common to
 write out letter names, like this:
+\index{Greek letter}
+\index{variable}
 
 \begin{lstlisting}[language=Python,style=source]
 theta = 1
@@ -599,12 +637,15 @@ Remember that the operator for exponentiation is
 \passthrough{\lstinline!**!}. In some other languages it's
 \passthrough{\lstinline!\^!}, which is also an operator in Python, but
 it performs another operation altogether.
+\index{exponentiation}
 
 \section{Defining Functions}\label{defining-functions}
 
 If we are planning to use an expression like
 \passthrough{\lstinline!np.sin(theta/2)**2!} more than a few times, we
 can define a new function that computes it, like this:
+\index{function}
+\index{defining functions}
 
 \begin{lstlisting}[language=Python,style=source]
 def haversine(theta):
@@ -617,6 +658,9 @@ defining a function. The second line is a triple-quoted string, which is
 a \textbf{comment}: it describes what the function does, but has no
 effect when the program runs. On the third line,
 \passthrough{\lstinline!return!} indicates the result of the function.
+\index{triple-quoted string}
+\index{quotation mark}
+\index{comment}
 
 When you run the previous cell, it creates a new variable called
 \passthrough{\lstinline!haversine!}. You can display its value like
@@ -644,6 +688,9 @@ So \passthrough{\lstinline!haversine!} is a variable that refers to a
 function. To run the function and compute a result, we have to
 \textbf{call} the function and provide a value for
 \passthrough{\lstinline!theta!}:
+\index{function object}
+\index{function call}
+\index{call a function}
 
 \begin{lstlisting}[language=Python,style=source]
 haversine(1)
@@ -662,6 +709,7 @@ Now we can use \passthrough{\lstinline!haversine!} as part of a function
 that computes haversine distances. I won't explain this function in as
 much detail, but if you read through it, you can get a sense of how it
 works.
+\index{haversine distance}
 
 \begin{lstlisting}[language=Python,style=source]
 def haversine_distance(coord1, coord2):
@@ -687,10 +735,11 @@ def haversine_distance(coord1, coord2):
     return distance
 \end{lstlisting}
 
-When we call this function, we provide two tuples; each is a
+When we call this function, we provide two tuples -- each is a
 latitude-longitude pair. We already have a tuple that represents the
 location of Boston. Now here's a tuple that represents the location of
 London, England, UK:
+\index{London}
 
 \begin{lstlisting}[language=Python,style=source]
 london = 51.5074, -0.1278
@@ -722,6 +771,7 @@ most popular is Geopandas, which is based on Pandas and another library
 called Shapely. Shapely provides \passthrough{\lstinline!Point!} and
 \passthrough{\lstinline!LineString!} values, which we'll use to
 represent geographic locations and lines between them.
+\index{Geopandas}
 
 \begin{lstlisting}[language=Python,style=source]
 from shapely.geometry import Point, LineString
@@ -734,6 +784,7 @@ the order of the coordinates, providing them in
 than \passthrough{\lstinline!lat!}-\passthrough{\lstinline!lon!} order,
 because that's the order the \passthrough{\lstinline!Point!} function
 expects.
+\index{Shapely}
 
 \begin{lstlisting}[language=Python,style=source]
 lat, lon = boston
@@ -781,6 +832,9 @@ By default, Geopandas uses an equirectangular projection, which provides
 a misleading picture of relative land areas. Other projections are
 available that show land areas accurately, but they can be misleading in
 other ways. You can't make a map without making visualization decisions.
+\index{projection of a map}
+\index{map projection}
+\index{equirectangular projection}
 
 Now let's put dots on the map for Boston and London. First, we have to
 put the \passthrough{\lstinline!Point!} values and the
@@ -812,10 +866,13 @@ series.plot();
 
 The two plots are on different axes, which is not what we want in this
 case.
+\index{axes}
+\index{figure axes}
 
 To get the points and the map on the same axes, we have to use a
 function from Matplotlib, which is a visualization library we will use
 extensively. We'll import it like this.
+\index{Matplotlib}
 
 \begin{lstlisting}[language=Python,style=source]
 import matplotlib.pyplot as plt
@@ -825,6 +882,7 @@ From Matplotlib, we'll use the function \passthrough{\lstinline!gca!},
 which stands for ``get current axes''. With the result we can tell
 \passthrough{\lstinline!plot!} to put the points and lines on the
 current axes, rather than create a new one.
+\index{gca function}
 
 \begin{lstlisting}[language=Python,style=source]
 ax = plt.gca()

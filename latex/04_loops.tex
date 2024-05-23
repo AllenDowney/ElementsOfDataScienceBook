@@ -13,6 +13,7 @@ One of the most important elements of computation is repetition, and the
 most common way to perform repetitive computations is a
 \passthrough{\lstinline!for!} loop. As a simple example, suppose we want
 to display the elements of a tuple. Here's a tuple of three integers:
+\index{loop}
 
 \begin{lstlisting}[language=Python,style=source]
 t = (1, 2, 3)
@@ -20,6 +21,7 @@ t = (1, 2, 3)
 
 And here's a \passthrough{\lstinline!for!} loop that prints the
 elements.
+\index{element}
 
 \begin{lstlisting}[language=Python,style=source]
 for x in t:
@@ -37,12 +39,15 @@ tuple, \passthrough{\lstinline!t!}, and a variable name,
 \passthrough{\lstinline!x!}. The tuple must already exists, but if
 \passthrough{\lstinline!x!} does not, the loop will create it. Note that
 the header ends with a colon, \passthrough{\lstinline!:!}.
+\index{header}
+\index{colon}
 
 \pagebreak
 
 Inside the loop is a \passthrough{\lstinline!print!} statement, which
 displays the value of \passthrough{\lstinline!x!}. So here's what
 happens:
+\index{print statement}
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
@@ -85,6 +90,8 @@ it any name you like -- in this example, I chose
 \passthrough{\lstinline!letter!} to remind me what kind of value it
 contains. After the loop ends, the loop variable contains the last
 value.
+\index{loop variable}
+\index{variable, loop}
 
 \begin{lstlisting}[language=Python,style=source]
 letter
@@ -144,6 +151,8 @@ count
 Increasing the value of a variable is called \textbf{incrementing} and
 decreasing the value is called \textbf{decrementing}. These operations
 are so common that there are special operators for them.
+\index{increment}
+\index{decrement}
 
 \begin{lstlisting}[language=Python,style=source]
 count += 1
@@ -160,6 +169,8 @@ value of \passthrough{\lstinline!count!}, adds
 \passthrough{\lstinline!count!}. Python also provides
 \passthrough{\lstinline!-=!} and other update operators like
 \passthrough{\lstinline!*=!} and \passthrough{\lstinline!/=!}.
+\index{operator, update}
+\index{update operator}
 
 \textbf{Exercise:} The following is a number trick from the website
 \emph{Learn With Math Games}:
@@ -192,6 +203,9 @@ As an example, we'll read a file that contains the text of Tolstoy's
 famous novel, \emph{War and Peace}. We can download it from Project
 Gutenberg, which is a repository of free books. Instructions are in the
 notebook for this chapter.
+\index{file}
+\index{Project Gutenberg}
+\index{War and Peace@\textit{War and Peace}}
 
 In order to read the contents of the file, you have to \textbf{open} it,
 which you can do with the \passthrough{\lstinline!open!} function.
@@ -211,6 +225,8 @@ of \textbf{file pointer}. It contains the name of the file, the mode
 (which is \passthrough{\lstinline!UTF!} for ``Unicode Transformation
 Format''). A file pointer is like a bookmark -- it keeps track of which
 parts of the file you have read.
+\index{file pointer}
+\index{Unicode}
 
 If you use a file pointer in a \passthrough{\lstinline!for!} loop, it
 loops through the lines in the file. So we can count the number of lines
@@ -243,6 +259,8 @@ computations. A condition is an expression whose value is either
 \passthrough{\lstinline!True!} or \passthrough{\lstinline!False!}. For
 example, the following expression compares the final value of
 \passthrough{\lstinline!count!} to a number:
+\index{if statement}
+\index{condition}
 
 \begin{lstlisting}[language=Python,style=source]
 count > 60000
@@ -271,12 +289,14 @@ Long book!
 The first line specifies the condition we're checking for. Like the
 header of a \passthrough{\lstinline!for!} statement, the first line of
 an \passthrough{\lstinline!if!} statement has to end with a colon.
+\index{colon}
 
 If the condition is true, the indented statement runs; otherwise, it
 doesn't. In the previous example, the condition is true, so the
 \passthrough{\lstinline!print!} statement runs. In the following
 example, the condition is false, so the \passthrough{\lstinline!print!}
 statement doesn't run.
+\index{indentation}
 
 \begin{lstlisting}[language=Python,style=source]
 if count < 1000:
@@ -321,6 +341,7 @@ in assignment statements. Also, notice the indentation in this example:
 
 It is legal in Python to use spaces or tabs for indentation, but the
 most common convention is to use four spaces, never tabs.
+\index{indentation}
 
 \section{\texorpdfstring{The \texttt{break}
 Statement}{The break Statement}}\label{the-break-statement}
@@ -338,6 +359,7 @@ count
 
 We can avoid reading the whole file by using a
 \passthrough{\lstinline!break!} statement, like this:
+\index{break statement}
 
 \begin{lstlisting}[language=Python,style=source]
 fp = open('2600-0.txt')
@@ -373,6 +395,7 @@ file and then breaks out of the loop.
 If we run the loop again and display the final value of
 \passthrough{\lstinline!line!}, we see the special sequence
 \passthrough{\lstinline!\\n!} at the end.
+\index{whitespace}
 
 \begin{lstlisting}[language=Python,style=source]
 fp = open('2600-0.txt')
@@ -394,6 +417,7 @@ that puts vertical space between lines. If we use a
 \passthrough{\lstinline!print!} statement to display
 \passthrough{\lstinline!line!}, we don't see the special sequence, but
 we do see extra space after the line.
+\index{newline}
 
 \begin{lstlisting}[language=Python,style=source]
 print(line)
@@ -408,6 +432,7 @@ In other strings, you might see the sequence
 \passthrough{\lstinline!\\t!}, which represents a tab character. When
 you print a tab character, it adds enough space to make the next
 character appear in a column that is a multiple of 8.
+\index{tab character}
 
 \begin{lstlisting}[language=Python,style=source]
 print('|       ' * 6)
@@ -431,6 +456,7 @@ To split a line into words, we can use a function called
 of words. To be more precise, \passthrough{\lstinline!split!} doesn't
 actually know what a word is -- it just splits the line wherever there's
 a space or other whitespace character.
+\index{split method}
 
 \begin{lstlisting}[language=Python,style=source]
 line.split()
@@ -475,6 +501,7 @@ is attached to the string, so we can only refer to it using the string
 and the \textbf{dot operator}, which is the period between
 \passthrough{\lstinline!line!} and \passthrough{\lstinline!split!}. For
 historical reasons, functions like this are called \textbf{methods}.
+\index{method}
 
 Now that we can split a line into a list of words, we can use
 \passthrough{\lstinline!len!} to get the number of words in each list,
@@ -503,6 +530,7 @@ the text, the file includes special lines that begin with
 \passthrough{\lstinline!'***'!}. We can identify these lines with the
 \passthrough{\lstinline!startswith!} function, which checks whether a
 string begins with a particular sequence of characters.
+\index{startswith method}
 
 \begin{lstlisting}[language=Python,style=source]
 line = '*** START OF THIS PROJECT GUTENBERG EBOOK WAR AND PEACE ***'
