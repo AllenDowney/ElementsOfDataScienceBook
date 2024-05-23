@@ -127,7 +127,7 @@ supplemental article called ``How We Analyzed the COMPAS Recidivism
 Algorithm''. It includes this table, which summarizes many of the
 results they report:
 
-\includegraphics{figs/machine_bias_table.png}
+\includegraphics[scale=0.333333]{figs/machine_bias_table.png}
 
 The table summarizes results for all defendants and two subgroups:
 defendants classified as White (``Caucasian'' in the original dataset)
@@ -159,7 +159,6 @@ the output of the COMPAS algorithm. \passthrough{\lstinline!1!} is the
 lowest risk category; \passthrough{\lstinline!10!} is the highest.
 
 \begin{lstlisting}[language=Python,style=source]
-
 values(cp["decile_score"])
 \end{lstlisting}
 
@@ -251,13 +250,13 @@ pd.crosstab(new_charge, high_risk)
 \end{lstlisting}
 
 \begin{tabular}{lrr}
-\midrule
+\toprule
 HighRisk & False & True \\
 NewCharge &  &  \\
 \midrule
 False & 2681 & 1282 \\
 True & 1216 & 2035 \\
-\midrule
+\bottomrule
 \end{tabular}
 
 This table is called a \textbf{confusion matrix} or error matrix.
@@ -328,14 +327,16 @@ pd.crosstab(new_charge[white], high_risk[white])
 \end{lstlisting}
 
 \begin{tabular}{lrr}
-\midrule
+\toprule
 HighRisk & False & True \\
 NewCharge &  &  \\
 \midrule
 False & 1139 & 349 \\
 True & 461 & 505 \\
-\midrule
+\bottomrule
 \end{tabular}
+
+\pagebreak
 
 \passthrough{\lstinline!black!} is a Boolean Series that is
 \passthrough{\lstinline!True!} for Black defendants.
@@ -360,13 +361,13 @@ pd.crosstab(new_charge[black], high_risk[black])
 \end{lstlisting}
 
 \begin{tabular}{lrr}
-\midrule
+\toprule
 HighRisk & False & True \\
 NewCharge &  &  \\
 \midrule
 False & 990 & 805 \\
 True & 532 & 1369 \\
-\midrule
+\bottomrule
 \end{tabular}
 
 All of these results are consistent with the ProPublica article.
@@ -411,7 +412,7 @@ But it is more common to arrange the matrix like this:
   >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3043}}
   >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3478}}
   >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3478}}@{}}
-\midrule
+\toprule
 \begin{minipage}[b]{\linewidth}\raggedright
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
 \textbf{Predicted positive}
@@ -420,7 +421,7 @@ But it is more common to arrange the matrix like this:
 \end{minipage} \\
 \midrule
 \endhead
-\midrule
+\bottomrule
 \endlastfoot
 \textbf{Actual positive} & True positive (TP) & False negative (FN) \\
 \textbf{Actual negative} & False positive (FP) & True negative (TN) \\
@@ -525,6 +526,8 @@ def predictive_value(m):
     return ppv, npv
 \end{lstlisting}
 
+\pagebreak
+
 Here are the predictive values for all defendants.
 
 \begin{lstlisting}[language=Python,style=source]
@@ -586,6 +589,8 @@ sens, spec
 (62.59612426945556, 67.65076961897553)
 \end{lstlisting}
 
+\pagebreak
+
 If we evaluate COMPAS as a binary classifier:
 
 \begin{itemize}
@@ -600,11 +605,11 @@ you are learning about them for the first time. The following table
 might help:
 
 \begin{longtable}[]{ll}
-\midrule
+\toprule
 Metric & Definition \\
 \midrule
 \endhead
-\midrule
+\bottomrule
 \endlastfoot
 PPV & TP / (TP + FP) \\
 Sensitivity & TP / (TP + FN) \\
@@ -722,9 +727,10 @@ and FNR because
   I think the positive framing is easier to interpret than the negative
   framing, and
 \item
-  I find it easier to remember what ``sensitivity'' and ``specificity''
-  mean.
+  It's easier to remember what ``sensitivity'' and ``specificity'' mean.
 \end{itemize}
+
+\pagebreak
 
 I find ``false positive rate'' and ``false negative rate'' harder to
 remember. For example, ``false positive rate'' could just as easily mean
@@ -779,6 +785,8 @@ prev
 About 45\% of the defendants in this dataset were charged with another
 crime within two years of their release.
 
+\pagebreak
+
 \section{All Metrics}\label{all-metrics}
 
 The following function takes a confusion matrix, computes all the
@@ -810,7 +818,7 @@ compute_metrics(matrix_all, "All defendants")
 \end{lstlisting}
 
 \begin{tabular}{lr}
-\midrule
+\toprule
  & Percent \\
 All defendants &  \\
 \midrule
@@ -819,11 +827,13 @@ FN rate & 37.4 \\
 PPV & 61.4 \\
 NPV & 68.8 \\
 Prevalence & 45.1 \\
-\midrule
+\bottomrule
 \end{tabular}
 
 Comparing these results to the table from ProPublica, it looks like our
 analysis agrees with theirs.
+
+\pagebreak
 
 Here are the same metrics for Black defendants.
 
@@ -832,7 +842,7 @@ compute_metrics(matrix_black, "Black defendants")
 \end{lstlisting}
 
 \begin{tabular}{lr}
-\midrule
+\toprule
  & Percent \\
 Black defendants &  \\
 \midrule
@@ -841,7 +851,7 @@ FN rate & 28 \\
 PPV & 63 \\
 NPV & 65 \\
 Prevalence & 51.4 \\
-\midrule
+\bottomrule
 \end{tabular}
 
 And for White defendants.
@@ -851,7 +861,7 @@ compute_metrics(matrix_white, "White defendants")
 \end{lstlisting}
 
 \begin{tabular}{lr}
-\midrule
+\toprule
  & Percent \\
 White defendants &  \\
 \midrule
@@ -860,7 +870,7 @@ FN rate & 47.7 \\
 PPV & 59.1 \\
 NPV & 71.2 \\
 Prevalence & 39.4 \\
-\midrule
+\bottomrule
 \end{tabular}
 
 All of these results are consistent with those reported in the article,
@@ -892,6 +902,8 @@ error_rates(matrix_white)
 (23.45430107526882, 47.72256728778468)
 \end{lstlisting}
 
+\pagebreak
+
 In other words:
 
 \begin{itemize}
@@ -915,4 +927,3 @@ actually not that clear.''
 
 I encourage you to read that article, and then read the next chapter,
 where I will unpack their arguments and replicate their analysis.
-
