@@ -93,7 +93,7 @@
 \AtBeginEnvironment{tabular}{\footnotesize\sffamily}
 
 % use toprule to shade the first line of each table
-\renewcommand{\toprule}{\rowcolor{gray!10}\hline}
+\renewcommand{\toprule}{\hline\rowcolor{gray!10}}
 \renewcommand{\midrule}{\hline}
 \renewcommand{\bottomrule}{\hline}
 
@@ -208,12 +208,12 @@
     columns=fullflexible,
     keepspaces=true,
     showstringspaces=false,
-    upquote=true,
     xleftmargin=0pt,
     commentstyle=\color{codepurple},
     identifierstyle=\color{codeblue},
     stringstyle=\color{codered},
     keywordstyle=\color{codegreen},
+    upquote=true,
 }
 
 \lstset{style=codestyle}
@@ -246,6 +246,7 @@
     commentstyle=\color{outputgray},
     identifierstyle=\color{outputgray},
     stringstyle=\color{outputgray},
+    showlines=true,
     tabsize=8,
 }
 
@@ -265,8 +266,8 @@
 }
 
 
-% TODO: the left and right double quotes are not quite correct,
-% if anyone cares
+% in listings, replace characters that are not UTF-8 with legal
+% latex sequences
 
 \lstset{literate=
   {á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1
@@ -284,6 +285,6 @@
   {€}{{\euro}}1 {£}{{\pounds}}1 {«}{{\guillemotleft}}1
   {»}{{\guillemotright}}1 {ñ}{{\~n}}1 {Ñ}{{\~N}}1 {¿}{{?`}}1
   {°}{{\textdegree}}1 {θ}{{$\theta$}}1
-  {’}{{\lq}}1 {“}{{\lq\lq}}1  {‘}{{\rq}}1 {”}{{\rq\rq}}1
+  {’}{{\rq}}1 {‘}{{\lq}}1 {”}{{\rq\rq}}1 {“}{{\lq\lq}}1
   {—}{{\textemdash}}1
 }

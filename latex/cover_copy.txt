@@ -1,0 +1,19 @@
+Getting Started with Data Science and Python
+
+Elements of Data Science is an introduction to the practical skills of working with data, written for people with no programming experience. Concepts are explained clearly and concisely, and exercises in each chapter demonstrate the real-world use of each skill.
+
+Key Features:
+
+*    Step-by-Step Approach: Learn how to execute a data science project from start to finish, formulating questions, visualizing data, choosing statistical methods, and communicating results.
+
+*     Practical Python Programming: No programming experience? No problem. This book starts with basic Python concepts and builds up to advanced data manipulation and analysis techniques.
+
+*    Interactive Learning: Jupyter notebooks are available for each chapter, so readers can follow along, experiment with code, and build understanding through hands-on exercises.
+
+*    Solid foundation: Explore fundamental concepts such as exploratory data analysis, statistical inference, regression analysis, classification algorithms, and more, all through the lens of real-world case studies.
+
+Whether you're a student, professional, or simply curious about the power of data, Elements of Data Science provides the essential foundation for finding insights in data.
+
+Allen Downey is a professor emeritus at Olin College and the author of several books about programming and data science, including Think Python, Think Bayes, and Probably Overthinking It. He received a Ph.D. in computer science from the University of California, Berkeley, and Bachelor's and Masters degrees from MIT.
+
+More free books by Allen Downey are available from greenteapress.com.
