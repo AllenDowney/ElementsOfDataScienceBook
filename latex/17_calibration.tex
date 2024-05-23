@@ -45,7 +45,7 @@ The WaPo article includes this figure, which shows ``White and Black
 defendants with the same risk score are roughly equally likely to
 reoffend.''
 
-\includegraphics{figs/calibration1.png}
+\includegraphics[scale=0.3]{figs/calibration1.png}
 
 To understand this figure, let's start by replicating it.
 
@@ -64,6 +64,8 @@ def calibration_curve(df):
     grouped = df.groupby("decile_score")
     return grouped["two_year_recid"].mean()
 \end{lstlisting}
+
+\pagebreak
 
 The following figure shows this calibration curve for all defendants and
 for White and Black defendants separately.
@@ -96,6 +98,8 @@ be charged with a new crime within two years. In that sense COMPAS works
 as intended. Furthermore, the test is equally \textbf{calibrated} for
 Black and White defendants -- that is, in each risk group, the rate of
 recidivism is about the same for both groups.
+
+\pagebreak
 
 The WaPo article explains why this is important:
 
@@ -148,6 +152,8 @@ Positive & 1369 & 532 \\
 Negative & 805 & 990 \\
 \bottomrule
 \end{tabular}
+
+\pagebreak
 
 And here are the metrics we computed from the confusion matrices:
 
@@ -267,6 +273,8 @@ table_all.head()
 \bottomrule
 \end{tabular}
 
+\pagebreak
+
 The following figure shows error rates as a function of threshold.
 
 \begin{lstlisting}[language=Python,style=source]
@@ -306,6 +314,8 @@ and the metrics are the other way around:
   group.
 \end{itemize}
 
+\pagebreak
+
 The following figure shows predictive values for a range of thresholds.
 
 \begin{lstlisting}[language=Python,style=source]
@@ -336,6 +346,8 @@ table_black = sweep_threshold(cp[black])
 To calibrate the test, we'll use the following function, which estimates
 the threshold where a column from the table passes through a given
 metric.
+
+\pagebreak
 
 \begin{lstlisting}[language=Python,style=source]
 from scipy.interpolate import interp1d
@@ -400,6 +412,8 @@ array(5.01788384)
 
 To get the same error rates for Black and White defendants, we need
 different thresholds: about 5.1 compared to 3.2.
+
+\pagebreak
 
 Now let's see what the predictive values are if we use different
 thresholds for different groups. We'll use the following function to
@@ -470,6 +484,8 @@ interpolate(table_black["NPV"], 5.1)
 array(62.19)
 \end{lstlisting}
 
+\pagebreak
+
 With equal error rates, the NPVs are substantially different:
 
 \begin{itemize}
@@ -526,6 +542,8 @@ def plot_roc(table, **options):
     plt.plot(table["FPR"], sens, **options)
     decorate(xlabel="FPR", ylabel="Sensitivity (1-FNR)", title="ROC curve")
 \end{lstlisting}
+
+\pagebreak
 
 Here's the ROC curve for all defendants.
 
@@ -616,6 +634,8 @@ def compute_auc(table):
     x = x.sort_index(ascending=False) / 100
     return simpson(y=y.values, x=x.values)
 \end{lstlisting}
+
+\pagebreak
 
 The concordance for all respondents is about 70\%.
 
@@ -730,4 +750,3 @@ The goal of this case study is to help us measure the accuracy of these
 algorithms and quantify their fairness. I hope it will contribute to the
 ongoing debate as we address the many challenges of the criminal justice
 system and the use of algorithms in our lives.
-
