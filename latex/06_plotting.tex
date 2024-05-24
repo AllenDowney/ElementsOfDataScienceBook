@@ -56,6 +56,9 @@ position determines how they are used. In the second example,
 \passthrough{\lstinline!power!} computes \passthrough{\lstinline!10!} to
 the sixth power, not \passthrough{\lstinline!6!} to the tenth power --
 because of the order of the arguments.
+\index{argument}
+\index{keyword argument}
+\index{positional argument}
 
 Many functions also take \textbf{keyword arguments}, which are
 identified by name. For example, we have previously used
@@ -91,6 +94,7 @@ argument looks like an assignment statement, but it does not create a
 new variable. And when you provide a keyword argument, you don't choose
 the variable name -- it is specified by the function. If you provide a
 name that is not specified by the function, you get an error.
+\index{TypeError}
 
 \begin{lstlisting}[language=Python,style=source]
 %%expect TypeError
@@ -145,6 +149,7 @@ that.
 The data from the figure are available from Pew Research, but they are
 in a PDF document. It is sometimes possible to extract data from PDF
 documents, but for now we'll enter the data by hand.
+\index{Pew Research}
 
 \begin{lstlisting}[language=Python,style=source]
 year = [2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018]
@@ -161,6 +166,8 @@ unaffiliated = [17, 17, 19, 19, 20, 21, 24, 23, 25, 26]
 The library we'll use for plotting is Matplotlib -- more specifically,
 we'll use a part of it called Pyplot, which we'll import with the
 shortened name \passthrough{\lstinline!plt!}.
+\index{Matplotlib}
+\index{Pyplot}
 
 \begin{lstlisting}[language=Python,style=source]
 import matplotlib.pyplot as plt
@@ -170,6 +177,7 @@ Pyplot provides a function called \passthrough{\lstinline!plot!} that
 makes a line plot. It takes two sequences as arguments, the
 \passthrough{\lstinline!x!} values and the \passthrough{\lstinline!y!}
 values. The sequences can be tuples, lists, or arrays.
+\index{plot (Pyplot function)}
 
 \begin{lstlisting}[language=Python,style=source]
 plt.plot(year, christian);
@@ -182,6 +190,7 @@ plt.plot(year, christian);
 The semi-colon at the end of the line prevents the return value from
 \passthrough{\lstinline!plot!}, which is an object representing the
 line, from being displayed.
+\index{semi-colon}
 
 \pagebreak
 
@@ -200,11 +209,13 @@ plt.plot(year, unaffiliated);
 Plotting them on the same axes makes it possible to compare them
 directly. However, notice that Pyplot chooses the range for the axes
 automatically. In this example the y-axis starts around 15, not zero.
+\index{axes}
 
 As a result, it provides a misleading picture, making the ratio of the
 two lines look bigger than it really is. We can set the limits of the
 y-axis using the function \passthrough{\lstinline!plt.ylim!} -- the
 arguments are the lower bound and the upper bounds.
+\index{ylim (Pyplot function)}
 
 \begin{lstlisting}[language=Python,style=source]
 plt.plot(year, christian)
@@ -225,6 +236,9 @@ for the axes, a title, and a legend.
 To label the axes and add a title, we'll use Pyplot functions
 \passthrough{\lstinline!xlabel!}, \passthrough{\lstinline!ylabel!}, and
 \passthrough{\lstinline!title!}. All of them take strings as arguments.
+\index{xlabel (Pyplot function)}
+\index{ylabel (Pyplot function)}
+\index{title (Pyplot function)}
 
 \begin{lstlisting}[language=Python,style=source]
 plt.plot(year, christian)
@@ -243,6 +257,7 @@ plt.title('Religious affiliation of U.S adults');
 To add a legend, first we add a label to each line, using the keyword
 argument \passthrough{\lstinline!label!}. Then we call
 \passthrough{\lstinline!plt.legend!} to create the legend.
+\index{legend (Pyplot function)}
 
 \begin{lstlisting}[language=Python,style=source]
 plt.plot(year, christian, label='Christian')
@@ -289,6 +304,8 @@ this function and move the legend to the center left of the figure.
 In Chapter 3 we used data from an article in \emph{The Economist}
 comparing sandwich prices in Boston and London: ``Why Americans pay more
 for lunch than Britons do''.
+\index{The Economist@\textit{The Economist}}
+\index{sandwich prices}
 
 \pagebreak
 
@@ -368,6 +385,7 @@ Now, to approximate the colors in the original figure, we can use the
 strings \passthrough{\lstinline!'C3'!} and
 \passthrough{\lstinline!'C0'!}, which specify colors from the default
 color sequence.
+\index{color sequence (Pyplot)}
 
 \begin{lstlisting}[language=Python,style=source]
 plt.plot(boston_price_list, name_list, 'o', color='C3')
@@ -386,6 +404,7 @@ To connect the dots with lines, we'll use
 takes three arguments: a sequence of values on the y-axis, which are the
 sandwich names in this example, and two sequences of values on the
 x-axis, which are the London prices and Boston prices.
+\index{hlines (Pyplot function)}
 
 \pagebreak
 
@@ -427,11 +446,13 @@ is an inverse relationship between the rank of the words -- first,
 second, third, etc. -- and the number of times they appear. This
 observation was most famously made by George Kingsley Zipf, so it is
 called Zipf's law.
+\index{Zipf's law}
 
 \pagebreak
 
 To see if this law holds for the words in \emph{War and Peace}, we'll
 make a Zipf plot, which shows:
+\index{Zipf plot}
 
 \begin{itemize}
 \item
@@ -476,6 +497,7 @@ values are their frequencies. We can use the
 \passthrough{\lstinline!values!} function to get the values from the
 dictionary. The result has the type
 \passthrough{\lstinline!dict\_values!}:
+\index{values (dict function)}
 
 \begin{lstlisting}[language=Python,style=source]
 freqs = unique_words.values()
@@ -491,6 +513,7 @@ dict_values
 Before we plot them, we have to sort them, but the
 \passthrough{\lstinline!sort!} function doesn't work with
 \passthrough{\lstinline!dict\_values!}.
+\index{AttributeError}
 
 \begin{lstlisting}[language=Python,style=source]
 %%expect AttributeError
@@ -516,6 +539,7 @@ list
 And now we can use \passthrough{\lstinline!sort!}. By default it sorts
 in ascending order, but we can pass a keyword argument to reverse the
 order.
+\index{sort (list method)}
 
 \begin{lstlisting}[language=Python,style=source]
 freq_list.sort(reverse=True)
@@ -527,6 +551,7 @@ number of elements in \passthrough{\lstinline!freq\_list!}. We can use
 the \passthrough{\lstinline!range!} function, which returns a value with
 type \passthrough{\lstinline!range!}. As a small example, here's the
 range from 1 to 5.
+\index{range function}
 
 \begin{lstlisting}[language=Python,style=source]
 range(1, 5)
@@ -564,6 +589,7 @@ list(range(1, 6))
 
 So, finally, we can make a range that represents the ranks from
 \passthrough{\lstinline!1!} to \passthrough{\lstinline!n!}:
+\index{rank}
 
 \begin{lstlisting}[language=Python,style=source]
 n = len(freq_list)
@@ -576,6 +602,7 @@ range(1, 20484)
 \end{lstlisting}
 
 And now we can plot the frequencies versus the ranks:
+\index{frequency}
 
 \begin{lstlisting}[language=Python,style=source]
 plt.plot(ranks, freq_list)
@@ -608,6 +635,8 @@ slope \(-1\).
 
 We can use \passthrough{\lstinline!plt.xscale!} to plot the x-axis on a
 log scale.
+\index{logarithmic scale}
+\index{xscale (Pyplot function)}
 
 \begin{lstlisting}[language=Python,style=source]
 plt.plot(ranks, freq_list)
@@ -624,6 +653,7 @@ plt.xscale('log')
 
 And \passthrough{\lstinline!plt.yscale!} to plot the y-axis on a log
 scale.
+\index{yscale (Pyplot function)}
 
 \begin{lstlisting}[language=Python,style=source]
 plt.plot(ranks, freq_list)
@@ -685,6 +715,8 @@ The slope of this line is the ``rise over run'', that is, the difference
 on the y-axis divided by the difference on the x-axis. We can compute
 the rise using \passthrough{\lstinline!np.log10!} to compute the log
 base 10 of the first and last values:
+\index{slope of a line}
+\index{rise over run}
 
 \begin{lstlisting}[language=Python,style=source]
 np.log10(ys)

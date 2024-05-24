@@ -5,6 +5,7 @@ for reading and writing data files, exploring and analyzing data, and
 generating visualizations. And it provides two new types for working
 with data, \passthrough{\lstinline!DataFrame!} and
 \passthrough{\lstinline!Series!}.
+\index{Pandas}
 
 We will use these tools to answer a data question -- what is the average
 birth weight of babies in the United States? This example will
@@ -39,6 +40,8 @@ Survey of Family Growth (NSFG), which is available from the National
 Center for Health Statistics. To download the data, you have to agree to
 the Data User's Agreement. URLs for the data and the agreement are in
 the notebook for this chapter.
+\index{National Survey of Family Growth}
+\index{NSFG}
 
 You should read the terms carefully, but let me draw your attention to
 what I think is the most important one:
@@ -59,17 +62,20 @@ they have been pregnant, which is stored in the pregnancy file.
 
 We will work with the pregnancy file, which contains one row for each
 pregnancy and one column for each question on the NSFG questionnaire.
+\index{pregnancy}
 
 The data is stored in a fixed-width format, which means that every row
 is the same length and each column spans a fixed range of characters.
 For example, the first six characters in each row represent a a unique
 identifier for each respondent; the next two characters indicate whether
 a pregnancy is the respondent's first, second, etc.
+\index{fixed-width format}
 
 To read this data, we need a \textbf{data dictionary}, which specifies
 the names of the columns and the index where each one begins and ends.
 The data and the data dictionary are available in separate files.
 Instructions for downloading them are in the notebook for this chapter.
+\index{data dictionary}
 
 \begin{lstlisting}[language=Python,style=source]
 dict_file = '2015_2017_FemPregSetup.dct'
@@ -80,6 +86,7 @@ Pandas can read data in most common formats, including CSV, Excel, and
 fixed-width format, but it cannot read the data dictionary, which is in
 Stata format. For that, we'll use a Python library called
 \passthrough{\lstinline!statadict!}.
+\index{statadict library}
 
 \pagebreak
 
@@ -111,6 +118,7 @@ The result is an object that contains
 These values are exactly the arguments we need to use
 \passthrough{\lstinline!read\_fwf!}, which is the Pandas function that
 reads a file in fixed-width format.
+\index{read\_fwf (Pandas function)}
 
 \begin{lstlisting}[language=Python,style=source]
 import pandas as pd
@@ -129,6 +137,8 @@ The result is a \passthrough{\lstinline!DataFrame!}, which is the
 primary type Pandas uses to store data.
 \passthrough{\lstinline!DataFrame!} has a method called
 \passthrough{\lstinline!head!} that shows the first 5 rows:
+\index{DataFrame}
+\index{head (DataFrame method)}
 
 \begin{lstlisting}[language=Python,style=source]
 nsfg.head()
@@ -155,6 +165,7 @@ this respondent reported three pregnancies. The values of
 \passthrough{\lstinline!PREGORDR!} indicate that they are the first,
 second, and third pregnancies, in that order. We will learn more about
 the other columns as we go along.
+\index{column}
 
 In addition to methods like \passthrough{\lstinline!head!}, a
 \passthrough{\lstinline!Dataframe!} object has several
@@ -162,6 +173,7 @@ In addition to methods like \passthrough{\lstinline!head!}, a
 example, \passthrough{\lstinline!nsfg!} has an attribute called
 \passthrough{\lstinline!shape!}, which is a tuple containing the number
 of rows and columns:
+\index{shape (DataFrame method)}
 
 \begin{lstlisting}[language=Python,style=source]
 nsfg.shape
@@ -175,6 +187,7 @@ There are 9553 rows in this dataset, one for each pregnancy, and 248
 columns, one for each question. \passthrough{\lstinline!nsfg!} also has
 an attribute called \passthrough{\lstinline!columns!}, which contains
 the column names:
+\index{columns (DataFrame attribute)}
 
 \begin{lstlisting}[language=Python,style=source]
 nsfg.columns
@@ -191,6 +204,7 @@ Index(['CASEID', 'PREGORDR', 'HOWPREG_N', 'HOWPREG_P', 'MOSCURRP', 'NOWPRGDK',
 
 The column names are stored in an \passthrough{\lstinline!Index!}, which
 is another Pandas type, similar to a list.
+\index{Inded (Pandas object)}
 
 Based on the names, you might be able to guess what some of the columns
 are, but in general you have to read the documentation. When you work
@@ -201,9 +215,11 @@ nonsense results and never realize it.
 So, before we start looking at data, let's get familiar with the NSFG
 codebook, which describes every column. Instructions for downloading it
 are in the notebook for this chapter.
+\index{codebook}
 
 If you search that document for ``weigh at birth'' you should find these
 columns related to birth weight.
+\index{birth weight}
 
 \begin{itemize}
 \item
@@ -225,6 +241,7 @@ dictionary, where the column names are the keys and the columns are the
 values. You can select a column from a
 \passthrough{\lstinline!DataFrame!} using the bracket operator, with a
 string as the key.
+\index{bracket operator}
 
 \begin{lstlisting}[language=Python,style=source]
 pounds = nsfg['BIRTHWGT_LB1']
@@ -239,10 +256,12 @@ The result is a \passthrough{\lstinline!Series!}, which is a Pandas type
 that represents a single column of data. In this case the
 \passthrough{\lstinline!Series!} contains the birth weight, in pounds,
 for each live birth.
+\index{Series (Pandas object)}
 
 \passthrough{\lstinline!head!} shows the first five values in the
 \passthrough{\lstinline!Series!}, the name of the
 \passthrough{\lstinline!Series!}, and the data type:
+\index{head (Series method)}
 
 \begin{lstlisting}[language=Python,style=source]
 pounds.head()
@@ -261,6 +280,9 @@ One of the values is \passthrough{\lstinline!NaN!}, which stands for
 ``Not a Number''. \passthrough{\lstinline!NaN!} is a special value used
 to indicate invalid or missing data. In this example, the pregnancy did
 not end in live birth, so birth weight is inapplicable.
+\index{NaN}
+\index{missing data}
+\index{Not a Number}
 
 \textbf{Exercise:} The column \passthrough{\lstinline!BIRTHWGT\_OZ1!}
 contains the ounces part of birth weight. Select this column from
@@ -281,6 +303,8 @@ ounces = nsfg['BIRTHWGT_OZ1']
 
 Before we do anything with this data, we have to validate it. One part
 of validation is confirming that we are interpreting the data correctly.
+\index{validation}
+\index{data validation}
 
 \pagebreak
 
@@ -291,6 +315,8 @@ it includes NaNs. By default, the results are sorted with the highest
 count first, but we can use \passthrough{\lstinline!sort\_index!} to
 sort them by value instead, with the lightest babies first and heaviest
 babies last.
+\index{value\_counts (Series method)}
+\index{sort\_index (Series method)}
 
 \begin{lstlisting}[language=Python,style=source]
 pounds.value_counts(dropna=False).sort_index()
@@ -351,6 +377,7 @@ Total & 9553 & \\
 The results from \passthrough{\lstinline!value\_counts!} agree with the
 codebook, so we can be confident that we are reading and interpreting
 the data correctly.
+\index{codebook}
 
 \textbf{Exercise:} In \passthrough{\lstinline!nsfg!}, the
 \passthrough{\lstinline!OUTCOME!} column encodes the outcome of each
@@ -383,6 +410,9 @@ Another way to validate the data is with
 \passthrough{\lstinline!describe!}, which computes statistics that
 summarize the data, like the mean, standard deviation, minimum, and
 maximum. Here are the results for \passthrough{\lstinline!pounds!}.
+\index{summary statistics}
+\index{describe (Series method)}
+
 
 \begin{lstlisting}[language=Python,style=source]
 pounds.describe()
@@ -406,6 +436,7 @@ Name: BIRTHWGT_LB1, dtype: float64
 \passthrough{\lstinline!min!} and \passthrough{\lstinline!max!} are the
 minimum and maximum values, and in between are the 25th, 50th, and 75th
 percentiles. The 50th percentile is the median.
+\index{mean (Series method)}
 
 The mean is about 8.05, but that doesn't mean much because it includes
 the special values \passthrough{\lstinline!98!} and
@@ -413,6 +444,7 @@ the special values \passthrough{\lstinline!98!} and
 have to replace those values with \passthrough{\lstinline!NaN!} to
 identify them as missing data. The \passthrough{\lstinline!replace!}
 method does what we want:
+\index{replace (Series method)}
 
 \begin{lstlisting}[language=Python,style=source]
 import numpy as np
@@ -430,6 +462,9 @@ as \passthrough{\lstinline!np!}. The result is a new
 \passthrough{\lstinline!describe!} again, we see that
 \passthrough{\lstinline!count!} is smaller now because it includes only
 the valid values.
+\index{NumPy}
+\index{NaN}
+
 
 \begin{lstlisting}[language=Python,style=source]
 pounds_clean.describe()
@@ -456,6 +491,7 @@ The effect on standard deviation is even more dramatic. If we include
 the values \passthrough{\lstinline!98!} and
 \passthrough{\lstinline!99!}, the standard deviation is 10.8. If we
 remove them -- as we should -- the standard deviation is 1.4.
+\index{standard deviation}
 
 \textbf{Exercise:} Use \passthrough{\lstinline!describe!} to summarize
 \passthrough{\lstinline!ounces!}. Then use
@@ -473,6 +509,8 @@ Now we want to combine \passthrough{\lstinline!pounds!} and
 \passthrough{\lstinline!Series!} that contains total birth weight. With
 \passthrough{\lstinline!Series!} objects, the arithmetic operators work
 elementwise, as they do with NumPy arrays.
+\index{Series arithmetic}
+\index{arithmetic, Series}
 
 So, to convert \passthrough{\lstinline!pounds!} to ounces, we can write
 \passthrough{\lstinline!pounds * 16!}. Then, to add in
@@ -508,12 +546,16 @@ look at the whole distribution of values. A \textbf{distribution} is a
 set of possible values and their frequencies. One way to visualize a
 distribution is a \textbf{histogram}, which shows values on the x-axis
 and their frequencies on the y-axis.
+\index{distribution}
+\index{histogram}
+
 
 \pagebreak
 
 \passthrough{\lstinline!Series!}
 provides a \passthrough{\lstinline!hist!} method that makes histograms,
 and we can use Pyplot to label the axes.
+\index{hist (Series method)}
 
 \begin{lstlisting}[language=Python,style=source]
 import matplotlib.pyplot as plt
@@ -533,11 +575,13 @@ The keyword argument, \passthrough{\lstinline!bins!}, tells
 intervals, called \textbf{bins}, and count how many values fall in each
 bin. The x-axis is birth weight in pounds; the y-axis is the number of
 births in each bin.
+\index{keyword argument}
 
 The distribution looks like a bell curve, but the tail is longer on the
 left than on the right -- that is, there are more light babies than
 heavy babies. That makes sense, because the distribution includes some
 babies that were born preterm.
+\index{bell curve}
 
 \textbf{Exercise:} The NSFG dataset includes a column called
 \passthrough{\lstinline!AGECON!} that records a woman's age at
@@ -550,6 +594,7 @@ with 20 bins. Label the axes and add a title.
 We have seen that the distribution of birth weights is \textbf{skewed}
 to the left -- that is, the left tail extends farther from the center
 than the right tail. That's because preterm babies tend to be lighter.
+\index{skewed distribution}
 
 \pagebreak
 
@@ -557,6 +602,7 @@ To see which babies are preterm, we can use the
 \passthrough{\lstinline!PRGLNGTH!} column, which records pregnancy
 length in weeks. A baby is considered preterm if it is born prior to the
 37th week of pregnancy.
+\index{preterm birth}
 
 \begin{lstlisting}[language=Python,style=source]
 preterm = (nsfg['PRGLNGTH'] < 37)
@@ -574,6 +620,7 @@ result is a Boolean \passthrough{\lstinline!Series!} -- that is, a
 this case, it's \passthrough{\lstinline!True!} for each preterm baby and
 \passthrough{\lstinline!False!} otherwise. We can use
 \passthrough{\lstinline!head!} to see the first 5 elements.
+\index{Boolean Series}
 
 \begin{lstlisting}[language=Python,style=source]
 preterm.head()
@@ -606,6 +653,7 @@ If you compute the mean of a Boolean \passthrough{\lstinline!Series!},
 the result the \emph{fraction} of \passthrough{\lstinline!True!} values.
 In this case, it's about 0.38 -- which means about 38\% of the
 pregnancies are less than 37 weeks in duration.
+\index{mean (Series method)}
 
 \begin{lstlisting}[language=Python,style=source]
 preterm.mean()
@@ -620,6 +668,7 @@ outcomes, not just live births. We can use the
 \passthrough{\lstinline!OUTCOME!} column to create another Boolean
 \passthrough{\lstinline!Series!} to indicate which pregnancies ended in
 live birth.
+\index{live birth}
 
 \begin{lstlisting}[language=Python,style=source]
 live = (nsfg['OUTCOME'] == 1)
@@ -635,6 +684,9 @@ live.mean()
 Now we can use the \passthrough{\lstinline!\&!} operator, which
 represents the logical AND operation, to identify pregnancies where the
 outcome is a live birth \emph{and} preterm:
+\index{logical operator}
+\index{AND operator}
+
 
 \begin{lstlisting}[language=Python,style=source]
 live_preterm = (live & preterm)
@@ -668,6 +720,7 @@ the NOT operator with a Series that contains
 \passthrough{\lstinline!NaN!} values. For example,
 \passthrough{\lstinline!\~preterm!} would include not just full term
 pregnancies, but also pregnancies with unknown duration.
+\index{NaN}
 
 \textbf{Exercise:} Of all pregnancies, what fraction are live births at
 full term (37 weeks or more)? Of all live births, what fraction are full
@@ -682,6 +735,7 @@ the bracket operator to select values from
 \passthrough{\lstinline!birth\_weight!}, so
 \passthrough{\lstinline!preterm\_weight!} gets birth weights for preterm
 babies.
+\index{filter}
 
 \begin{lstlisting}[language=Python,style=source]
 preterm_weight = birth_weight[preterm]
@@ -700,6 +754,7 @@ fullterm = (nsfg['PRGLNGTH'] >= 37)
 \end{lstlisting}
 
 And use it to select birth weights for full term babies:
+\index{bracket operator}
 
 \begin{lstlisting}[language=Python,style=source]
 full_term_weight = birth_weight[fullterm]
@@ -730,6 +785,9 @@ But in this case we get the same result because
 single births and multiple births (twins, triplets, etc.). The column
 \passthrough{\lstinline!NBRNALIV!} represents the number of babies born
 alive from a single pregnancy.
+\index{multiple birth}
+\index{single birth}
+
 
 \begin{lstlisting}[language=Python,style=source]
 nbrnaliv = nsfg['NBRNALIV']
@@ -766,11 +824,14 @@ sample than others -- that is, they are \textbf{oversampled}.
 Oversampling helps to ensure that you have enough people in every group
 to get reliable statistics, but it makes data analysis a little more
 complicated.
+\index{oversampling}
+\index{representative sampling}
 
 Each pregnancy in the dataset has a \textbf{sampling weight} that
 indicates how many pregnancies it represents. In
 \passthrough{\lstinline!nsfg!}, the sampling weight is stored in a
 column named \passthrough{\lstinline!wgt2015\_2017!}.
+\index{sampling weight}
 
 \pagebreak
 
@@ -798,9 +859,13 @@ column is about \passthrough{\lstinline!7292!}, which means that a
 pregnancy with that weight represents \passthrough{\lstinline!7292!}
 total pregnancies in the population. But the range of values is wide, so
 some rows represent many more pregnancies than others.
+\index{median}
+\index{percentile}
 
 To take these weights into account, we can compute a \textbf{weighted
 mean}. Here are the steps:
+\index{weighted mean}
+\index{mean, weighted}
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
@@ -819,6 +884,10 @@ with that, we'll use two \passthrough{\lstinline!Series!} methods,
 \passthrough{\lstinline!isna!} returns a Boolean
 \passthrough{\lstinline!Series!} that is \passthrough{\lstinline!True!}
 where the corresponding value is \passthrough{\lstinline!NaN!}.
+\index{missing data}
+\index{isna (Series method)}
+\index{notna (Series method)}
+
 
 \begin{lstlisting}[language=Python,style=source]
 missing = birth_weight.isna()
@@ -877,6 +946,9 @@ The NSFG dataset is large, and reading a fixed-width file is relatively
 slow. So now that we've read it, let's save a smaller version in a more
 efficient format. When we come back to this dataset in Chapter 13, here
 are the columns we'll need.
+\index{extract}
+\index{data extract}
+
 
 \begin{lstlisting}[language=Python,style=source]
 variables = ['CASEID', 'OUTCOME', 'BIRTHWGT_LB1', 'BIRTHWGT_OZ1',
@@ -902,6 +974,12 @@ data to a file -- the one we'll use is
 parameters are the name of the new file, the name of the object we're
 storing in the file, and the compression level, which determines how
 effectively the data are compressed.
+\index{to\_hdf (DataFrame method)}
+\index{file}
+\index{HDF file}
+\index{data compression}
+\index{compression}
+
 
 \begin{lstlisting}[language=Python,style=source]
 filename = 'nsfg.hdf'
@@ -935,10 +1013,12 @@ relevant data, we used Boolean \passthrough{\lstinline!Series!} objects.
 Along the way, we had to think more about the question. What do we mean
 by ``average'', and which babies should we include? Should we include
 all live births or exclude preterm babies or multiple births?
+\index{average}
 
 And we had to think about the sampling process. By design, the NSFG
 respondents are not representative of the U.S. population, but we can
 use sampling weights to correct for this effect.
+\index{sampling}
 
 Even a simple question can be a challenging data science project.
 
@@ -949,3 +1029,6 @@ use of the term because it might be confusing to say that we select a
 ``variable'' from a \passthrough{\lstinline!DataFrame!} and assign it to
 a Python variable. But you might see this use of the term elsewhere, so
 I thought I would mention it.
+\index{column}
+\index{variable}
+
