@@ -24,6 +24,8 @@ the Behavioral Risk Factor Surveillance System (BRFSS), which is run by
 the Centers for Disease Control. Based on the BRFSS data from 2021, I
 have created an extract with one row for each survey respondent and one
 column for each of the variables I selected.
+\index{Behavioral Risk Factor Surveillance System}
+\index{BRFSS}
 
 \begin{lstlisting}[language=Python,style=source]
 import pandas as pd
@@ -63,6 +65,8 @@ chapter, we'll work with just these nine. The ones we'll start with are
 \passthrough{\lstinline!HTM4!}, which records each respondent's height
 in centimeters, and \passthrough{\lstinline!WTKG3!}, which records
 weight in kilograms.
+\index{height}
+\index{weight}
 
 \begin{lstlisting}[language=Python,style=source]
 height = brfss['HTM4']
@@ -75,6 +79,7 @@ Scatter plots are common and readily understood, but they are
 surprisingly hard to get right. As a first attempt, we'll use
 \passthrough{\lstinline!plot!} with the style string
 \passthrough{\lstinline!o!}, which plots a circle for each data point.
+\index{scatter plot}
 
 \begin{lstlisting}[language=Python,style=source]
 import matplotlib.pyplot as plt
@@ -97,11 +102,14 @@ importantly, it is \textbf{overplotted}, which means that there are
 markers piled on top of each other so you can't tell where there are a
 lot of data points and where there is just one. When that happens, the
 picture can be misleading.
+\index{overplotting}
 
 One way to improve the plot is to use transparency, which we can do with
 the keyword argument \passthrough{\lstinline!alpha!}. The lower the
 value of alpha, the more transparent each data point is.\\
 Here's what it looks like with \passthrough{\lstinline!alpha=0.01!}.
+\index{transparency}
+\index{alpha (transparency argument)}
 
 \begin{lstlisting}[language=Python,style=source]
 plt.plot(height, weight, 'o', alpha=0.01)
@@ -119,6 +127,7 @@ This is better, but there are so many data points, the scatter plot is
 still overplotted. The next step is to make the markers smaller. With
 \passthrough{\lstinline!markersize=0.5!} and a low value of alpha, the
 scatter plot is less saturated. Here's what it looks like.
+\index{marker size}
 
 \begin{lstlisting}[language=Python,style=source]
 plt.plot(height, weight, 'o', alpha=0.01, markersize=0.5)
@@ -138,6 +147,7 @@ and converted to centimeters. We can break up the columns by adding
 random noise to the values, which is called \textbf{jittering}. We'll
 can use NumPy to generate noise from a normal distribution with mean 0
 and standard deviation 2.
+\index{jittering}
 
 \begin{lstlisting}[language=Python,style=source]
 import numpy as np
@@ -189,6 +199,7 @@ The functions \passthrough{\lstinline!xlim!} and
 \passthrough{\lstinline!ylim!} set the lower and upper limits of the
 x-axis and y-axis; in this case, we plot heights from 140 to 200
 centimeters and weights up to 160 kilograms. Here's what it looks like.
+\index{xlim (Pyplot function)}
 
 \begin{lstlisting}[language=Python,style=source]
 plt.plot(height_jitter, weight_jitter, 'o', alpha=0.01, markersize=0.5)
@@ -223,6 +234,7 @@ can answer this question by visualizing the relationship between weight
 and age. But before we make a scatter plot, it is a good idea to
 visualize distributions one variable at a time. So let's look at the
 distribution of age.
+\index{age}
 
 The BRFSS dataset includes a column, \passthrough{\lstinline!AGE!},
 which represents each respondent's age in years. To protect respondents'
@@ -304,6 +316,9 @@ density function in each column and plot it. This way of visualizing the
 data is called a \textbf{violin plot}. Seaborn provides a function that
 makes violin plots, but before we can use it, we have to get rid of any
 rows with missing data. Here's how:
+\index{KDE}
+\index{violin plot}
+\index{dropna (DataFrame method)}
 
 \begin{lstlisting}[language=Python,style=source]
 data = brfss.dropna(subset=['AGE', 'WTKG3'])
@@ -319,6 +334,8 @@ data.shape
 \passthrough{\lstinline!brfss!} where \passthrough{\lstinline!AGE!} or
 \passthrough{\lstinline!WTKG3!} are \passthrough{\lstinline!NaN!}. Now
 we can call \passthrough{\lstinline!violinplot!} like this:
+\index{Seaborn}
+\index{violinplot (Seaborn function)}
 
 \begin{lstlisting}[language=Python,style=source]
 import seaborn as sns
@@ -346,6 +363,8 @@ Another, related way to look at data like this is called a \textbf{box
 plot}, which shows summary statistics of the values in each group.
 Seaborn provides a function that makes box plots -- we can call it like
 this:
+\index{box plot}
+\index{boxplot (Seaborn function)}
 
 \begin{lstlisting}[language=Python,style=source]
 sns.boxplot(x='AGE', y='WTKG3', data=data, whis=10)
@@ -363,11 +382,15 @@ Each box represents the distribution of weight in an age group. The
 height of each box represents the interquartile range, which is the
 range from the 25th to the 75th percentile. The line in the middle of
 each box is the median.
+\index{interquartile range}
+\index{percentile}
+\index{IQR}
 
 The keyword argument \passthrough{\lstinline!whis!} determines the
 behavior of the whiskers that extend above and below the boxes. With
 \passthrough{\lstinline!whis=10!}, they extend far enough to show the
 minimum and maximum values.
+\index{whisker}
 
 In my opinion, this plot gives us the best view of the relationship
 between weight and age.
@@ -388,6 +411,7 @@ between weight and age.
 When a distribution is skewed toward higher values, it is sometimes
 useful to plot it on a logarithmic scale. We can do that with the Pyplot
 function \passthrough{\lstinline!yscale!}.
+\index{logarithmic scale}
 
 \begin{lstlisting}[language=Python,style=source]
 sns.boxplot(x='AGE', y='WTKG3', data=data, whis=10)
@@ -453,6 +477,7 @@ relationship between two variables. In statistics, it usually means a
 \textbf{correlation coefficient}, which is a number between -1 and 1
 that quantifies the strength of a linear relationship between variables.
 To demonstrate, we'll select three columns from the BRFSS dataset:
+\index{correlation}
 
 \begin{lstlisting}[language=Python,style=source]
 columns = ['HTM4', 'WTKG3', 'AGE']
@@ -480,6 +505,7 @@ AGE & -0.122187 & -0.0679024 & 1 \\
 The result is a \textbf{correlation matrix}. Reading across the first
 row, the correlation of \passthrough{\lstinline!HTM4!} with itself is 1.
 That's expected -- the correlation of anything with itself is 1.
+\index{correlation matrix}
 
 The next entry is more interesting: the correlation of height and weight
 is about 0.45. It's positive, which means taller people are heavier, and
@@ -512,6 +538,7 @@ As age increases, weight goes up and then down, so the relationship is
 nonlinear. But correlation only measures linear relationships. When the
 relationship is nonlinear, correlation generally underestimates how
 strong it is.
+\index{nonlinear relationship}
 
 To demonstrate this point more clearly, let's generate some fake data:
 \passthrough{\lstinline!xs!} contains equally-spaced points between -1
@@ -551,11 +578,11 @@ array([[1.        , 0.00993964],
        [0.00993964, 1.        ]])
 \end{lstlisting}
 
-Even though there is a strong non-linear relationship, the computed
+Even though there is a strong nonlinear relationship, the computed
 correlation is close to zero. In general, if correlation is high -- that
 is, close to 1 or -1 -- you can conclude that there is a strong linear
 relationship. But if correlation is close to zero, that doesn't mean
-there is no relationship; there might be a non-linear relationship. This
+there is no relationship; there might be a nonlinear relationship. This
 is one reason correlation can be misleading.
 
 And there's another reason to be careful with correlation -- it doesn't
@@ -615,6 +642,7 @@ In the first dataset, the correlation is strong, close to 0.75. In the
 second dataset, the correlation is moderate, close to 0.5. So we might
 think the first relationship is more important. But look more closely at
 the y-axis in both figures.
+\index{strength of correlation}
 
 In the first example, the average weight gain over 30 years is less than
 1 kilogram; in the second it is more than 5 kilograms! If we are
@@ -624,6 +652,7 @@ lower. In this scenario, the statistic we really care about is the slope
 of the line that fits the data, not the coefficient of correlation. In
 the next section, we'll use linear regression to compute that slope, but
 first let's practice with correlation.
+\index{slope}
 
 \textbf{Exercise:} The purpose of the BRFSS is to explore health risk
 factors, so it includes questions about diet. The column
@@ -666,6 +695,8 @@ what we really want to know. In this section, we look at an alternative:
 simple linear regression. Here ``simple'' means there are only two
 variables, as opposed to ``multiple'' regression, which can work with
 any number of variables.
+\index{linear regression}
+\index{simple regression}
 
 In the previous section, I generated fake datasets showing two
 hypothetical relationships between weight and age. We computed
@@ -673,6 +704,9 @@ correlations for both datasets, now let's compute lines of best fit. We
 can use \passthrough{\lstinline!linregress!} from the SciPy
 \passthrough{\lstinline!stats!} library, which takes two sequences as
 arguments. Here are the results for Fake Dataset \#1.
+\index{linregress (SciPy function)}
+\index{SciPy}
+
 
 \begin{lstlisting}[language=Python,style=source]
 from scipy.stats import linregress
@@ -695,6 +729,8 @@ contains five values: \passthrough{\lstinline!slope!} is the slope of
 the line of best fit for the data, \passthrough{\lstinline!intercept!}
 is the intercept, and \passthrough{\lstinline!rvalue!} is correlation.
 We'll ignore the other values for now.
+\index{slope}
+\index{intercept}
 
 For Fake Dataset \#1, the estimated slope is about 0.019 kilograms per
 year or about 0.56 kilograms over the 30-year range.
@@ -738,6 +774,7 @@ We can use the results from \passthrough{\lstinline!linregress!} to plot
 the line of best fit and see how it relates to the data. First we get
 the minimum and maximum of the observed \passthrough{\lstinline!xs!}.
 Then we multiply by the slope and add the intercept.
+\index{line of best fit}
 
 \begin{lstlisting}[language=Python,style=source]
 low, high = xs1.min(), xs1.max()
@@ -792,6 +829,8 @@ Weight}\label{regression-of-height-and-weight}
 
 Now let's look at an example of regression with real data. Here's the
 scatter plot of height and weight one more time.
+\index{height}
+\index{weight}
 
 \begin{lstlisting}[language=Python,style=source]
 plt.plot(height_jitter, weight_jitter, 'o',
@@ -837,6 +876,7 @@ res_hw._asdict()
 The slope is about 0.9 kilograms per centimeter, which means that we
 expect a person one centimeter taller to be almost a kilogram heavier.
 That's quite a lot. As before, we can compute the line of best fit:
+\index{line of best fit}
 
 \begin{lstlisting}[language=Python,style=source]
 low, high = data['HTM4'].min(), data['HTM4'].max()
@@ -881,6 +921,7 @@ plt.title('Weight versus age');
 
 As we have seen before, the relationship is nonlinear. Let's see what we
 get if we compute a linear regression.
+\index{nonlinear relationship}
 
 \begin{lstlisting}[language=Python,style=source]
 subset = brfss.dropna(subset=['WTKG3', 'AGE'])
@@ -924,7 +965,7 @@ variables well. That's because linear regression has the same problem as
 correlation -- it only measures the strength of a linear relationship.
 
 In the next chapter, we'll see how to use multiple regression to
-quantify non-linear relationships. But first, let's practice using
+quantify nonlinear relationships. But first, let's practice using
 simple regression.
 
 \textbf{Exercise:} Who do you think eats more vegetables, people with

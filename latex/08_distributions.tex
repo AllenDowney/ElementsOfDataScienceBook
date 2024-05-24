@@ -27,6 +27,8 @@ For example, if you roll a six-sided die, there are six possible
 outcomes -- the numbers 1 through 6 -- and they all have the same
 probability, \(1/6\). We can represent this distribution of outcomes
 with a table, like this:
+\index{distribution}
+\index{dice}
 
 \begin{longtable}[]{lllllll}
 \toprule
@@ -44,6 +46,8 @@ represent distributions in Python, we'll use a library called
 \passthrough{\lstinline!empiricaldist!}, which stands for ``empirical
 distribution'', where ``empirical'' means it is based on data rather
 than a mathematical formula.
+\index{empiricaldist library}
+\index{empirical distribution}
 
 \passthrough{\lstinline!empiricaldist!} provides an object type called
 \passthrough{\lstinline!Pmf!}, which stands for ``probability mass
@@ -51,6 +55,8 @@ function''. A \passthrough{\lstinline!Pmf!} object contains a set of
 possible outcomes and their probabilities. For example, here's a
 \passthrough{\lstinline!Pmf!} that represents the outcome of rolling a
 six-sided die:
+\index{Pmf object}
+\index{probability mass function}
 
 \begin{lstlisting}[language=Python,style=source]
 from empiricaldist import Pmf
@@ -83,6 +89,7 @@ A \passthrough{\lstinline!Pmf!} object is a specialized version of a
 Pandas \passthrough{\lstinline!Series!}, so it provides all of the
 methods of a \passthrough{\lstinline!Series!}, plus some additional
 methods we'll see soon.
+\index{Series (Pandas object)}
 
 \section{The General Social Survey}\label{the-general-social-survey}
 
@@ -92,11 +99,14 @@ distributions of values from a new dataset, the General Social Survey
 U.S. and asks questions about demographics, personal history, and
 beliefs about social and political issues. It is widely used by
 politicians, policy makers, and researchers.
+\index{General Social Survey}
+\index{GSS}
 
 The GSS dataset contains hundreds of columns. I've selected just a few
 and save the extract in an HDF file, which is more compact than the
 original fixed-width file, and faster to read. Instructions for
 downloading the file are in the notebook for this chapter.
+\index{HDF file}
 
 \begin{lstlisting}[language=Python,style=source]
 data_file = 'gss_extract_2022.hdf'
@@ -105,6 +115,7 @@ data_file = 'gss_extract_2022.hdf'
 We'll use the Pandas \passthrough{\lstinline!read\_hdf!} function to
 read the data file and load \passthrough{\lstinline!gss!}, which is a
 \passthrough{\lstinline!DataFrame!}.
+\index{read\_hdf (Pandas function)}
 
 \begin{lstlisting}[language=Python,style=source]
 import pandas as pd
@@ -141,6 +152,8 @@ information, you can read the online documentation at
 \url{https://gssdataexplorer.norc.org}. In the GSS documentation, you'll
 see that they use the term ``variable'' for a column that contains
 answers to survey questions.
+\index{column}
+\index{variable}
 
 \section{Distribution of Education}\label{distribution-of-education}
 
@@ -148,6 +161,7 @@ To get started with this dataset, let's look at the
 \passthrough{\lstinline!educ!} column, which records the number of years
 of education for each respondent. We can select this column from the
 \passthrough{\lstinline!DataFrame!} like this:
+\index{education}
 
 \begin{lstlisting}[language=Python,style=source]
 educ = gss['educ']
@@ -155,6 +169,8 @@ educ = gss['educ']
 
 To see what the distribution of the responses looks like, we can use the
 \passthrough{\lstinline!hist!} method to plot a histogram.
+\index{histogram}
+\index{hist (Series method)}
 
 \begin{lstlisting}[language=Python,style=source]
 import matplotlib.pyplot as plt
@@ -173,12 +189,14 @@ Based on the histogram, we can see the general shape of the distribution
 and the central tendency -- it looks like the peak is near 12 years of
 education. But a histogram is not the best way to visualize this
 distribution because it obscures some important details.
+\index{central tendency}
 
 An alternative is to use a \passthrough{\lstinline!Pmf!} object. The
 function \passthrough{\lstinline!Pmf.from\_seq!} takes any kind of
 sequence -- like a list, tuple, or Pandas
 \passthrough{\lstinline!Series!} -- and computes the distribution of the
 values.
+\index{sequence}
 
 \begin{lstlisting}[language=Python,style=source]
 pmf_educ = Pmf.from_seq(educ, normalize=False)
@@ -192,6 +210,7 @@ empiricaldist.empiricaldist.Pmf
 With the keyword argument \passthrough{\lstinline!normalize=False!}, the
 result contains counts rather than probabilities. Here are the first few
 values in \passthrough{\lstinline!educ!} and their counts.
+\index{normalize}
 
 \begin{lstlisting}[language=Python,style=source]
 pmf_educ.head()
@@ -267,6 +286,7 @@ educ &  \\
 
 Now if we use the bracket operator to look up a value, the result is a
 fraction rather than a count.
+\index{bracket operator}
 
 \begin{lstlisting}[language=Python,style=source]
 pmf_educ_norm[20]
@@ -286,9 +306,12 @@ that it represents a proper probability mass function, or PMF. With
 apologies for confusing notation, I'll use \passthrough{\lstinline!Pmf!}
 to mean a kind of Python object, and PMF to mean the concept of a
 probability mass function.
+\index{probability}
 
 \passthrough{\lstinline!Pmf!} provides a \passthrough{\lstinline!bar!}
 method that plots the values and their probabilities as a bar chart.
+\index{bar chart}
+\index{bar (Pmf method)}
 
 \begin{lstlisting}[language=Python,style=source]
 pmf_educ_norm.bar(label='educ')
@@ -325,6 +348,8 @@ If we compute the cumulative sum of a PMF, the result is a cumulative
 distribution function (CDF). To see what that means, and why it is
 useful, let's look at a simple example. Suppose we have a sequence of
 five values.
+\index{cumulative distribution function}
+\index{CDF}
 
 \begin{lstlisting}[language=Python,style=source]
 values = 1, 2, 2, 3, 5
@@ -371,6 +396,7 @@ The \passthrough{\lstinline!Pmf!} object has a method called
 \passthrough{\lstinline!make\_cdf!} that computes the cumulative sum of
 the probabilities in the \passthrough{\lstinline!Pmf!} and returns a
 \passthrough{\lstinline!Cdf!} object.
+\index{Cdf object}
 
 \begin{lstlisting}[language=Python,style=source]
 cdf = pmf.make_cdf()
@@ -423,6 +449,7 @@ object and CDF to refer to the concept.
 To see why CDFs are useful, let's consider the distribution of ages for
 respondents in the General Social Survey. The column we'll use is
 \passthrough{\lstinline!age!}.
+\index{age}
 
 According to the codebook, the range of the values is from
 \passthrough{\lstinline!18!} to \passthrough{\lstinline!89!}, where
@@ -431,6 +458,7 @@ According to the codebook, the range of the values is from
 ``Don't know'' and ``Didn't answer''. We can use
 \passthrough{\lstinline!replace!} to replace the special codes with
 \passthrough{\lstinline!NaN!}.
+\index{codebook}
 
 \begin{lstlisting}[language=Python,style=source]
 age = gss['age']
@@ -488,6 +516,7 @@ age 51, and the corresponding probability is about 0.62. That means that
 about 62\% of the respondents are age 51 or younger. The arrow in the
 following figure shows how you could read this value from the CDF, at
 least approximately.
+\index{quantity}
 
 
 
@@ -501,6 +530,8 @@ corresponding quantity, \passthrough{\lstinline!q!}. The
 \passthrough{\lstinline!Cdf!} object provides a method called
 \passthrough{\lstinline!inverse!} that computes the inverse of the
 cumulative distribution function.
+\index{invertible function}
+\index{inverse (Cdf method)}
 
 \begin{lstlisting}[language=Python,style=source]
 p1 = 0.25
@@ -548,6 +579,10 @@ Because it is based on percentiles, it doesn't get thrown off by
 outliers as much as standard deviation does. So IQR is more
 \textbf{robust} than variance, which means it works well even if there
 are errors in the data or extreme values.
+\index{interquartile range}
+\index{IQR}
+\index{percentile}
+
 
 \textbf{Exercise:} Using \passthrough{\lstinline!cdf\_age!}, compute the
 fraction of respondents in the GSS dataset who are \emph{older} than
@@ -565,6 +600,7 @@ Select \passthrough{\lstinline!realinc!} from the
 \passthrough{\lstinline!Cdf!} called
 \passthrough{\lstinline!cdf\_income!}, and plot it. Remember to label
 the axes!
+\index{income}
 
 Because the tail of the distribution extends to the right, the mean is
 greater than the median. Use the \passthrough{\lstinline!Cdf!} object to
@@ -617,6 +653,7 @@ A plot as variable as this is often described as \textbf{noisy}. If we
 ignore the noise, it looks like the PMF is higher for men between ages
 40 and 50, and higher for women between ages 70 and 80. But both of
 those differences might be due to randomness.
+\index{noise (variability)}
 
 Now let's do the same thing with CDFs -- everything is the same except
 we replace \passthrough{\lstinline!Pmf!} with
@@ -643,6 +680,7 @@ Because CDFs smooth out randomness, they provide a better view of real
 differences between distributions. In this case, the lines are close
 together until age 40 -- after that, the CDF is higher for men than
 women.
+\index{smoothness (variability)}
 
 So what does that mean? One way to interpret the difference is that the
 fraction of men below a given age is generally more than the fraction of
@@ -661,6 +699,7 @@ cdf_male_age(60), cdf_female_age(60)
 
 Going the other way, we could also compare percentiles. For example, the
 median age woman is older than the median age man, by about one year.
+\index{percentile}
 
 \begin{lstlisting}[language=Python,style=source]
 cdf_male_age.inverse(0.5), cdf_female_age.inverse(0.5)
@@ -680,6 +719,7 @@ distribution before and after 1995 (I chose 1995 because it's roughly
 the midpoint of the survey). We'll make two Boolean
 \passthrough{\lstinline!Series!} objects to select respondents
 interviewed before and after 1995.
+\index{Boolean Series}
 
 \begin{lstlisting}[language=Python,style=source]
 pre95 = (gss['year'] < 1995)
@@ -756,6 +796,9 @@ distribution, binomial distribution, or maybe Poisson distribution.
 These ``distributions with names'' are called \textbf{theoretical}
 because they are based on mathematical functions, as contrasted with
 empirical distributions, which are based on data.
+\index{Gaussian distribution}
+\index{bell curve}
+\index{theoretical distribution}
 
 Many things we measure have distributions that are well approximated by
 theoretical distributions, so these distributions are sometimes good
@@ -772,6 +815,7 @@ data.
 The following statement uses NumPy's \passthrough{\lstinline!random!}
 library to generate 1000 values from a normal distribution with mean 10
 and standard deviation 1.
+\index{random (NumPy library)}
 
 \begin{lstlisting}[language=Python,style=source]
 sample = np.random.normal(10, 1, size=1000)
@@ -812,6 +856,10 @@ Next, \passthrough{\lstinline!norm(10, 1)!} creates an object that
 represents a normal distribution with mean 10 and standard deviation 1.
 Finally, \passthrough{\lstinline!cdf!} computes the CDF of the normal
 distribution, evaluated at each of the \passthrough{\lstinline!qs!}.
+\index{linspace (NumPy function)}
+\index{SciPy}
+\index{norm (SciPy object)}
+
 
 I'll plot the normal CDF with a gray line and then plot the CDF of the
 data again.
@@ -890,6 +938,7 @@ plt.legend();
 The normal PDF is the classic ``bell curve''. Now, it is tempting to
 compare the PMF of the data to the PDF of the normal distribution, but
 that doesn't work. Let's see what happens if we try:
+\index{bell curve}
 
 \begin{lstlisting}[language=Python,style=source]
 plt.plot(xs, ys, color='gray', label='Normal PDF')
@@ -917,6 +966,10 @@ density estimation}, or KDE. To generate a KDE plot, we'll use the
 Seaborn library, imported as \passthrough{\lstinline!sns!}. Seaborn
 provides \passthrough{\lstinline!kdeplot!}, which takes the sample,
 estimates the PDF, and plots it.
+\index{KDE}
+\index{kernel density estimation}
+\index{Seaborn}
+\index{kdeplot (Seaborn function)}
 
 \begin{lstlisting}[language=Python,style=source]
 import seaborn as sns

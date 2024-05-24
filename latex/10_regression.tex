@@ -12,6 +12,9 @@ The GSS dataset contains hundreds of columns. We'll work with an extract
 that contains just the columns we need, as we did in Chapter 8.
 Instructions for downloading the extract are in the notebook for this
 chapter.
+\index{General Social Survey}
+\index{GSS}
+
 
 We can read the \passthrough{\lstinline!DataFrame!} like this and
 display the first few rows.
@@ -37,10 +40,14 @@ gss.head()
 
 We'll start with a simple regression, estimating the parameters of real
 income as a function of years of education.
+\index{simple regression}
+\index{education}
+\index{income}
 
 \pagebreak
 
 First we'll select the subset of the data where both variables are valid.
+\index{dropna (DataFrame method)}
 
 \begin{lstlisting}[language=Python,style=source]
 data = gss.dropna(subset=['realinc', 'educ'])
@@ -50,6 +57,7 @@ ys = data['realinc']
 
 Now we can use \passthrough{\lstinline!linregress!} to fit a line to the
 data.
+\index{linregress (SciPy function)}
 
 \begin{lstlisting}[language=Python,style=source]
 from scipy.stats import linregress
@@ -68,11 +76,13 @@ res._asdict()
 
 The estimated slope is about 3450, which means that each additional year
 of education is associated with an additional \$3450 of income.
+\index{slope}
 
 \section{Regression with StatsModels}\label{regression-with-statsmodels}
 
 SciPy doesn't do multiple regression, so we'll to switch to a new
 library, StatsModels. Here's the import statement.
+\index{StatsModels library}
 
 \begin{lstlisting}[language=Python,style=source]
 import statsmodels.formula.api as smf
@@ -81,6 +91,10 @@ import statsmodels.formula.api as smf
 To fit a regression model, we'll use \passthrough{\lstinline!ols!},
 which stands for ``ordinary least squares'', another name for
 regression.
+\index{ordinary least squares}
+\index{ols (StatsModels function)}
+\index{fit (StatsModels function)}
+
 
 \begin{lstlisting}[language=Python,style=source]
 results = smf.ols('realinc ~ educ', data=data).fit()
@@ -91,6 +105,7 @@ want to regress income as a function of education. The second argument
 is the \passthrough{\lstinline!DataFrame!} containing the subset of
 valid data. The names in the formula string correspond to columns in the
 \passthrough{\lstinline!DataFrame!}.
+\index{formula string}
 
 The result from \passthrough{\lstinline!ols!} is an object that
 represents the model -- it provides a function called
@@ -102,6 +117,9 @@ The result from \passthrough{\lstinline!fit!} is a \passthrough{\lstinline!Regre
 which contains a \passthrough{\lstinline!Series!} called
 \passthrough{\lstinline!params!}, which contains the estimated intercept
 and the slope associated with \passthrough{\lstinline!educ!}.
+\index{slope}
+\index{intercept}
+
 
 \begin{lstlisting}[language=Python,style=source]
 results.params
@@ -131,6 +149,10 @@ In the previous section, we saw that income depends on education, and in
 the exercise we saw that it also depends on
 \passthrough{\lstinline!age!}. Now let's put them together in a single
 model.
+\index{multiple regression}
+\index{income}
+\index{age}
+
 
 \begin{lstlisting}[language=Python,style=source]
 results = smf.ols('realinc ~ educ + age', data=gss).fit()
@@ -152,6 +174,9 @@ we expect it to. The other variables, \passthrough{\lstinline!educ!} and
 or sometimes ``predictors''. The \passthrough{\lstinline!+!} sign
 indicates that we expect the contributions of the independent variables
 to be additive.
+\index{predictor}
+\index{independent variable}
+\index{dependent variable}
 
 The result contains an intercept and two slopes, which estimate the
 average contribution of each predictor with the other predictor held
@@ -178,6 +203,7 @@ Let's look more closely at the relationship between income and age.
 We'll use a Pandas method we have not seen before, called
 \passthrough{\lstinline!groupby!}, to divide the
 \passthrough{\lstinline!DataFrame!} into age groups.
+\index{groupby (DataFrame method)}
 
 \begin{lstlisting}[language=Python,style=source]
 grouped = gss.groupby('age')
@@ -194,6 +220,9 @@ one group for each value of \passthrough{\lstinline!age!}. The
 \passthrough{\lstinline!DataFrame!} in many ways. You can use brackets
 to select a column, like \passthrough{\lstinline!realinc!} in this
 example, and then invoke a method like \passthrough{\lstinline!mean!}.
+\index{DataFrameGroupBy object}
+\index{mean (DataFrame method)}
+\index{bracket operator}
 
 \begin{lstlisting}[language=Python,style=source]
 mean_income_by_age = grouped['realinc'].mean()
@@ -217,14 +246,16 @@ plt.title('Average income, grouped by age');
 
 Average income increases from age 20 to age 50, then starts to fall. And
 that explains why the estimated slope is so small, because the
-relationship is non-linear.
+relationship is nonlinear.
+\index{nonlinear relationship}
 
 \pagebreak
 
-To describe a non-linear relationship, we'll
+To describe a nonlinear relationship, we'll
 create a new variable called \passthrough{\lstinline!age2!} that equals
 \passthrough{\lstinline!age!} squared -- so it is called a
 \textbf{quadratic term}.
+\index{quadratic term}
 
 \begin{lstlisting}[language=Python,style=source]
 gss['age2'] = gss['age']**2
@@ -264,8 +295,8 @@ income in each education group. What can you say about the relationship
 between these variables? Does it look like a linear relationship?
 
 \textbf{Exercise:} The graph in the previous exercise suggests that the
-relationship between income and education is non-linear. So let's try
-fitting a non-linear model.
+relationship between income and education is nonlinear. So let's try
+fitting a nonlinear model.
 
 \begin{itemize}
 \item
@@ -343,6 +374,7 @@ df['educ2'] = df['educ']**2
 
 Then we can use \passthrough{\lstinline!results!} to predict the average
 income for each age group, holding education constant.
+\index{predict method}
 
 \begin{lstlisting}[language=Python,style=source]
 pred12 = results.predict(df)
@@ -372,6 +404,7 @@ plt.legend();
 The dots show the average income in each age group. The line shows the
 predictions generated by the model, holding education constant. This
 plot shows the shape of the model, a downward-facing parabola.
+\index{parabola}
 
 We can do the same thing with other levels of education, like 14 years,
 which is the nominal time to earn an Associate's degree, and 16 years,
@@ -466,6 +499,9 @@ education -- are numerical. But variables like sex and race are
 \textbf{categorical} -- that is, each respondent belongs to one of a
 specified set of categories. If there are only two categories, the
 variable is \textbf{binary}.
+\index{categorical variable}
+\index{binary variable}
+
 
 With StatsModels, it is easy to include a categorical variable as part
 of a regression model. Here's an example:
@@ -503,6 +539,7 @@ gap in income.
 In the previous section, we added a categorical variable on the right
 side of a regression formula -- that is, we used it as a predictive
 variable.
+\index{logistic regression}
 
 But what if the categorical variable is on the left side of the
 regression formula -- that is, it's the value we are trying to predict?
@@ -512,6 +549,7 @@ As an example, one of the GSS questions asks ``Would you favor or oppose
 a law which would require a person to obtain a police permit before he
 or she could buy a gun?'' The responses are in a column called
 \passthrough{\lstinline!gunlaw!} -- here are the values.
+\index{gun control}
 
 \begin{lstlisting}[language=Python,style=source]
 gss['gunlaw'].value_counts()
@@ -526,6 +564,7 @@ Name: count, dtype: int64
 
 \passthrough{\lstinline!1!} means yes and \passthrough{\lstinline!2!}
 means no, so most respondents are in favor.
+\index{sex}
 
 Before we can use this variable in a logistic regression, we have to
 recode it so \passthrough{\lstinline!1!} means ``yes'' and
@@ -580,6 +619,7 @@ more likely and negative values make the outcome less likely. For
 example, the parameter associated with \passthrough{\lstinline!sex=2!}
 is \passthrough{\lstinline!0.74!}, which indicates that women are more
 likely to support this form of gun control.
+\index{log odds}
 
 To see how much more likely, we can generate predictions, as we did with
 linear regression. As an example, we'll generate predictions for
@@ -603,6 +643,7 @@ df['educ2'] = df['educ']**2
 \end{lstlisting}
 
 We can generate predictions for men like this.
+\index{predict method}
 
 \begin{lstlisting}[language=Python,style=source]
 df['sex'] = 1
@@ -653,6 +694,7 @@ legalizing marijuana.
 you think the use of marijuana should be made legal or not?'' Let's use
 logistic regression to explore relationships between this variable and
 age, sex, and education level.
+\index{marijuana}
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
