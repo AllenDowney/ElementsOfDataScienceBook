@@ -3,6 +3,7 @@
 This chapter introduces \textbf{resampling methods}, which are used to
 quantify the precision of an estimate. As a first example, we'll use
 results from a medical trial to estimate the efficacy of the vaccine.
+\index{resampling}
 
 \section{Vaccine Testing}\label{vaccine-testing}
 
@@ -11,6 +12,9 @@ it is 67\% effective at preventing disease. You might wonder where that
 number comes from, what it means, and how confident we should be that it
 is correct. Results like this often come from a randomized controlled
 trial (RCT), which works like this:
+\index{vaccine}
+\index{randomized controlled trial}
+\index{RCT}
 
 \begin{itemize}
 \item
@@ -24,6 +28,8 @@ trial (RCT), which works like this:
 
 As an example, suppose you recruit 43,783 participants and they are
 assigned to groups with approximately the same size.
+\index{treatement group}
+\index{control group}
 
 \begin{lstlisting}[language=Python,style=source]
 n_control = 21885
@@ -40,6 +46,7 @@ k_treatment = 116
 
 We can use these results to compute the risk of getting the disease for
 each group, in cases per 1000 people
+\index{risk}
 
 \begin{lstlisting}[language=Python,style=source]
 risk_control = k_control / n_control * 1000
@@ -63,6 +70,7 @@ The risk is substantially lower in the treatment group -- about 5 per
 1000, compared to 16 -- which suggests that the vaccine is effective. We
 can summarize these results by computing relative risk, which is the
 ratio of the two risks:
+\index{relative risk}
 
 \begin{lstlisting}[language=Python,style=source]
 relative_risk = risk_treatment / risk_control
@@ -77,6 +85,7 @@ The relative risk is about 0.33, which means that the risk of disease in
 the treatment group is 33\% of the risk in the control group.
 Equivalently, we could report the complement of relative risk, which is
 \textbf{efficacy}:
+\index{efficacy}
 
 \begin{lstlisting}[language=Python,style=source]
 efficacy = 1 - relative_risk
@@ -97,6 +106,7 @@ vaccinated, they might take fewer precautions to prevent disease, and
 people in the control group might be more careful. That would affect the
 estimated efficacy, which is why a lot of trials are ``blinded'',
 meaning that the subjects don't know which group they are in.
+\index{blinded study}
 
 The estimate would also be less accurate if people in either group don't
 follow the protocol. For example, someone in the treatment group might
@@ -167,6 +177,8 @@ object from SciPy, which provides a function called
 biased coin tosses. For example, suppose we flip 10 coins where the
 probability is 70\% that each coin comes up heads. We can simulate that
 scenario like this.
+\index{bernoulli (SciPy function)}
+\index{coin toss}
 
 \begin{lstlisting}[language=Python,style=source]
 from scipy.stats import bernoulli
@@ -211,6 +223,7 @@ simulate_group(n_treatment, p)
 
 The result is a risk from a single simulated trial. If we run this
 function many times, it's like running the trial over and over.
+\index{simulation}
 
 \begin{lstlisting}[language=Python,style=source]
 t = [simulate_group(n_treatment, p)
@@ -220,6 +233,7 @@ t = [simulate_group(n_treatment, p)
 The result is a list of risks that shows how much we expect the results
 of the trial to vary due to randomness. We can use a KDE plot to
 visualize the distribution of these results.
+\index{kdeplot (Seaborn function)}
 
 \begin{lstlisting}[language=Python,style=source]
 import matplotlib.pyplot as plt
@@ -250,6 +264,7 @@ np.mean(t), risk_treatment
 The width of this distribution indicates how much variation there is in
 the estimate due to randomness. One way to quantify the width of the
 distribution is the standard deviation.
+\index{standard deviation}
 
 \begin{lstlisting}[language=Python,style=source]
 standard_error = np.std(t)
@@ -261,10 +276,12 @@ standard_error
 \end{lstlisting}
 
 This result is called the \textbf{standard error}.
+\index{standard error}
 
 Another way to quantify the width of the distribution is an interval
 between two percentiles. For example, if we compute the 5th and 95th
 percentiles, the interval we get contains 90\% of the simulated results.
+\index{percentile}
 
 \begin{lstlisting}[language=Python,style=source]
 confidence_interval = np.percentile(t, [5, 95])
@@ -279,6 +296,7 @@ This result is called a \textbf{confidence interval}; specifically, this
 one is a ``90\% confidence interval'', or 90\% CI. If we assume that the
 observed risk is correct, and we run the same trial many times, we
 expect 90\% of the results to fall in this interval.
+\index{confidence interval}
 
 Standard errors and confidence intervals quantify our uncertainty about
 the estimate due to random variation from one trial to another.
@@ -287,6 +305,7 @@ the estimate due to random variation from one trial to another.
 
 In the previous section we simulated one group and estimated their risk.
 Now we'll simulate both groups and estimate the efficacy of the vaccine.
+\index{efficacy}
 
 The following function takes four parameters: the sizes of the two
 groups and their actual risks.
@@ -397,12 +416,14 @@ States. It would be impractical to measure everyone in the country, but
 if we choose a random sample of the population and measure the people in
 the sample, we can use the mean of the measurements to estimate the
 actual average in the population.
+\index{height}
 
 Ideally, the sample should be \textbf{representative}, which means that
 everyone in the population has an equal chance of appearing in the
 sample. In general, that's not easy to do. Depending on how you recruit
 people, your sample might have too many tall people or too many short
 people.
+\index{representative sample}
 
 But let's suppose we have a representative sample of 103 adult male
 residents of the United States, the average height in the sample is 177
@@ -423,6 +444,7 @@ The following function takes as parameters the size of the sample,
 \passthrough{\lstinline!n!}, the presumed average height in the
 population, \passthrough{\lstinline!mu!}, and the presumed standard
 deviation, \passthrough{\lstinline!sigma!}.
+\index{normal (NumPy function)}
 
 \begin{lstlisting}[language=Python,style=source]
 def simulate_sample_mean(n, mu, sigma):
@@ -475,6 +497,7 @@ represents the variation in the results due to the random sampling
 process. If we recruit 103 people and compute the mean of their heights,
 the result might be as low as 176 cm, or as high as 180 cm, due to
 chance.
+\index{sampling distribution}
 
 The average of the sampling distribution is close to the presumed mean
 of the population.
@@ -524,12 +547,14 @@ more than that.
 
 The examples in this chapter fit into the framework shown in this
 diagram:
+\index{resampling framework}
 
 \includegraphics{figs/resampling.png}
 
 Using data from an experiment, we compute a sample statistic. In the
 vaccine example, we computed risks for each group and efficacy. In the
 height example, we computed the average height in the sample.
+\index{sample statistic}
 
 Then we build a model of the sampling process. In the vaccine example,
 the model assumes that everyone in each group has the same probability
@@ -544,6 +569,7 @@ generates a dataset which we use to compute the sample statistic.
 Finally, we collect the sample statistics from the simulations, plot the
 sampling distribution, and compute standard error and a confidence
 interval.
+\index{sampling distribution}
 
 I emphasize the role of the model in this framework because for a given
 experiment there might be several possible models, each including some
@@ -552,6 +578,7 @@ of the vaccine experiment assumes that everyone in each group has the
 same risk, but that's probably not true. Here's another version of
 \passthrough{\lstinline!simulate\_group!} that includes variation in
 risk within each group.
+\index{model}
 
 \begin{lstlisting}[language=Python,style=source]
 def simulate_variable_group(n, p):
@@ -616,6 +643,7 @@ it is easy to compute the sampling distribution for other statistics.
 For example, suppose we want to estimate the coefficient of variation
 (standard deviation as a fraction of the mean) for adult male height.
 Here's how we can compute it.
+\index{coefficient of variation}
 
 \begin{lstlisting}[language=Python,style=source]
 cv = std_height / mean_height
