@@ -22,8 +22,10 @@ As a first example, we'll use data from the General Social Survey to
 estimate average family income. We'll work with an extract that contains
 just the columns we need, as we did in Chapter 8. Instructions for
 downloading the extract are in the notebook for this chapter.
+\index{General Social Survey}
 
 We can load the data like this and display the first few rows.
+\index{read\_hdf (Pandas function)}
 
 \begin{lstlisting}[language=Python,style=source]
 import pandas as pd
@@ -50,6 +52,9 @@ function \passthrough{\lstinline!kdeplot!} to show the distribution of
 family income. The argument \passthrough{\lstinline!cut=0!} cuts off the
 curve so it doesn't extend beyond the observed minimum and maximum
 values.
+\index{Seaborn}
+\index{kdeplot (Seaborn function)}
+\index{income}
 
 \begin{lstlisting}[language=Python,style=source]
 import seaborn as sns
@@ -70,6 +75,8 @@ plt.legend();
 The distribution of income is skewed to the right; most household
 incomes are less than \$60,000, but a few are substantially higher. Here
 are the mean and standard deviation of the reported incomes.
+\index{skewed distribution}
+\index{standard deviation}
 
 \begin{lstlisting}[language=Python,style=source]
 mean_realinc = gss['realinc'].mean()
@@ -97,9 +104,11 @@ def simulate_sample_mean(n, mu, sigma):
 \passthrough{\lstinline!simulate\_sample\_mean!} takes as parameters the
 sample size and the mean and standard deviation. It generates a sample
 from a normal distribution and returns the mean.
+\index{normal distribution}
 
 Before we call this function, we have to count the number of valid
 responses.
+\index{count (Pandas method)}
 
 \begin{lstlisting}[language=Python,style=source]
 n_realinc = gss['realinc'].count()
@@ -112,6 +121,7 @@ n_realinc
 
 Now, if we call \passthrough{\lstinline!simulate\_sample\_mean!} once,
 we get a single value from the sampling distribution of the mean.
+\index{sampling distribution}
 
 \begin{lstlisting}[language=Python,style=source]
 simulate_sample_mean(n_realinc, mean_realinc, std_realinc)
@@ -186,12 +196,14 @@ the distribution of income, but it works well enough for this example,
 and the results are reasonable. In the next section we'll see an example
 where the normal distribution is not good enough and the results are not
 reasonable. Then we'll see how to fix the problem.
+\index{normal distribution}
 
 \section{Estimating Percentiles}\label{estimating-percentiles}
 
 Suppose that, instead of estimating the average income, we want to
 estimate the 10th percentile. Computing percentiles of income is often
 relevant to discussions of income inequality.
+\index{percentile}
 
 To compute the 10th percentile of the data, we can use the Pandas method
 \passthrough{\lstinline!quantile!}, which is similar to the NumPy
@@ -199,6 +211,9 @@ function \passthrough{\lstinline!percentile!}, except that it drops
 \passthrough{\lstinline!NaN!} values. Also, the parameter of
 \passthrough{\lstinline!quantile!} is a probability between 0 and 1,
 rather than a percentage between 0 and 100.
+\index{quantile (Pandas method)}
+\index{percentile (NumPy function)}
+
 
 \begin{lstlisting}[language=Python,style=source]
 gss['realinc'].quantile(0.1)
@@ -273,11 +288,15 @@ plt.legend();
 The problem is that the normal model extends past the lower bound of the
 observed values, so it doesn't produce sensible results. Fortunately
 there is a simple alternative that is more robust: bootstrapping.
+\index{normal distribution}
 
 \section{Bootstrapping}\label{bootstrapping}
 
 Bootstrapping is a kind of resampling, based on the framework we saw in
 the previous chapter:
+\index{bootstrapping}
+\index{resampling}
+
 
 \includegraphics{figs/resampling.png}
 
@@ -286,6 +305,7 @@ population, and simulate the sampling process by choosing random rows
 with replacement. \passthrough{\lstinline!DataFrame!} provides a method
 called \passthrough{\lstinline!sample!} we can use to select a random
 sample of the rows.
+\index{replacement, sampling with}
 
 \begin{lstlisting}[language=Python,style=source]
 bootstrapped = gss.sample(n=n_realinc, replace=True)
@@ -304,6 +324,7 @@ see how many times each row appears in the bootstrapped sample, we can
 use \passthrough{\lstinline!value\_counts!} and the
 \passthrough{\lstinline!id!} column, which contains a unique identifier
 for each respondent.
+\index{value\_counts (Pandas method)}
 
 \begin{lstlisting}[language=Python,style=source]
 repeats = bootstrapped['id'].value_counts()
@@ -325,6 +346,8 @@ many times, other rows don't appear at all. To see how many, we can use
 \passthrough{\lstinline!set!} subtraction to count the values of
 \passthrough{\lstinline!id!} that appear in the original dataset but not
 the bootstrapped sample.
+\index{set (Python type)}
+\index{set subtraction}
 
 \begin{lstlisting}[language=Python,style=source]
 unused = set(gss['id']) - set(bootstrapped['id'])
@@ -377,6 +400,7 @@ The results from bootstrap sampling are consistent with the results
 based on the normal model. Now let's see what happens when we estimate
 the 10th percentile. The following function generates a bootstrapped
 sample and returns the 10th percentile.
+\index{percentile}
 
 \begin{lstlisting}[language=Python,style=source]
 def bootstrap_income_percentile(df):
@@ -419,6 +443,7 @@ positive and consistent with the 10th percentile of the data.
 In general, bootstrapping is robust -- that is, it works well with many
 different distributions and many different statistics. However, at the
 end of the chapter, we'll see one example where it fails.
+\index{robust}
 
 \section{Working with Bigger Data}\label{working-with-bigger-data}
 
@@ -426,11 +451,13 @@ As sample size increases, errors due to random sampling get smaller. To
 demonstrate this effect, we'll use data from the Behavioral Risk Factor
 Surveillance System (BRFSS) to estimate the average height for men in
 the United States.
+\index{Behavioral Risk Factor Surveillance System}
 
 \pagebreak
 
 First, let's read the 2021 data, which I have stored in an HDF file.
 Instructions for downloading it are in the notebook for this chapter.
+\index{HDF file}
 
 \begin{lstlisting}[language=Python,style=source]
 import pandas as pd
@@ -467,6 +494,7 @@ brfss.head()
 
 The \passthrough{\lstinline!HTM4!} column contains the respondents'
 heights in centimeters.
+\index{height}
 
 \begin{lstlisting}[language=Python,style=source]
 height = brfss['HTM4']
@@ -474,6 +502,7 @@ height = brfss['HTM4']
 
 To select male respondents, we'll use the \passthrough{\lstinline!SEX!}
 column to make a Boolean \passthrough{\lstinline!Series!}.
+\index{Boolean Series}
 
 \begin{lstlisting}[language=Python,style=source]
 male = (brfss['_SEX'] == 1)
@@ -484,12 +513,12 @@ male.sum()
 203760
 \end{lstlisting}
 
-We can use \passthrough{\lstinline!notna!} and
-\passthrough{\lstinline!sum!} to count the number of male respondents
+We can use \passthrough{\lstinline!count!} to count the number of male respondents
 with valid height data.
+\index{count (Pandas method)}
 
 \begin{lstlisting}[language=Python,style=source]
-n_height = height[male].notna().sum()
+n_height = height[male].count()
 n_height
 \end{lstlisting}
 
@@ -515,6 +544,7 @@ The average height for men in the U.S. is about 178 cm. To see how
 precise this estimate is, we can use bootstrapping to generate values
 from the sampling distribution. To reduce computation time, I set the
 number of iterations to 201.
+\index{bootstrapping}
 
 \begin{lstlisting}[language=Python,style=source]
 t5 = [bootstrap_mean(brfss[male], 'HTM4')
@@ -535,17 +565,20 @@ Because the sample size is so large, the standard error is small and the
 confidence interval is narrow. This result suggests that our estimate is
 very precise, which is true in the sense that the error due to random
 sampling is small.
+\index{standard error}
 
 But there are other sources of error. For example, the heights and
 weights in this dataset are self-reported, so they are vulnerable to
 \textbf{social desirability bias}, which is the tendency of people to
 represent themselves in a positive light.
+\index{social desirability bias}
 
 It's also possible that there are errors in recording the data. In a
 previous year of the BRFSS, there are a suspicious number of heights
 recorded as 60 or 61 centimeters. I suspect that many of them are six
 feet tall, or six feet and one inch, and something went wrong in
 recording the data.
+\index{measurement error}
 
 And that brings us to the point of this example:
 
@@ -564,6 +597,9 @@ By design, the BRFSS oversamples some demographic groups -- that is,
 people in some groups are more likely than others to appear in the
 sample. If people in these groups are taller than others on average, or
 shorter, our estimated mean would not be accurate.
+\index{oversampling}
+\index{stratified sampling}
+\index{representative sampling}
 
 We encountered this issue in Chapter 7, where we used data from the
 National Survey of Family Growth (NSFG) to compute the average birth
@@ -578,6 +614,7 @@ is the number of people in the population they represent. People in
 oversampled groups have lower sampling weights; people in undersampled
 groups have higher sampling weights. Here's what the range of values
 looks like.
+\index{weighted bootstrapping}
 
 \begin{lstlisting}[language=Python,style=source]
 brfss['_LLCPWT'].describe()
@@ -600,6 +637,7 @@ so that's a very wide range! We can take these weights into account by
 passing them as an argument to \passthrough{\lstinline!sample!}. That
 way, the probability that any row is selected is proportional to its
 sampling weight.
+\index{sample (Pandas method)}
 
 \begin{lstlisting}[language=Python,style=source]
 n = len(brfss)
@@ -668,6 +706,7 @@ def weighted_bootstrap_mean(df):
 I'll test this function with a \passthrough{\lstinline!DataFrame!} that
 contains only male respondents. If we run it once, we get a single value
 from the sampling distribution of the weighted mean.
+\index{sampling distribution}
 
 \begin{lstlisting}[language=Python,style=source]
 male_df = brfss[male]
@@ -724,6 +763,8 @@ random sampling.
 Bootstrap resampling can be used to estimate other statistics and their
 sampling distributions. For example, in Chapter 9 we computed the
 correlation between height and weight, which is about 0.47.
+\index{correlation}
+\index{corr (Pandas method)}
 
 \begin{lstlisting}[language=Python,style=source]
 var1, var2 = 'HTM4', 'WTKG3'
@@ -757,6 +798,7 @@ correlation.
 
 \textbf{Exercise:} In Chapter 9 we also computed the slope of the
 regression line for weight as a function of height. Here's the result.
+\index{linregress (SciPy function)}
 
 \begin{lstlisting}[language=Python,style=source]
 from scipy.stats import linregress
@@ -836,6 +878,7 @@ has gone wrong! The problem is that \passthrough{\lstinline!realinc!} is
 not really a numerical variable -- it is a categorical variable in
 disguise. Using \passthrough{\lstinline!value\_counts!}, we can see that
 there are only 26 distinct values in this column.
+\index{categorical variable}
 
 \begin{lstlisting}[language=Python,style=source]
 len(gss2018['realinc'].value_counts())
@@ -871,7 +914,7 @@ pd.Series(t9).value_counts().sort_index()
 Name: count, dtype: int64
 \end{lstlisting}
 
-There are only four different values, and one of them appears more than
+There are only a few different values, and one of them appears more than
 95\% of the time. When we compute a 90\% confidence interval, this value
 is both the 5th and the 95th percentile.
 
@@ -881,23 +924,30 @@ Fortunately, this problem can be solved. The cause of the problem is
 that the data have been discretized excessively, so the solution is to
 smooth it. Jittering is one option. Another is to use kernel density
 estimation (KDE).
+\index{discretize}
+\index{jittering}
+
 
 \section{Resampling with KDE}\label{resampling-with-kde}
 
 We have used KDE several times to estimate and plot a probability
 density based on a sample. We can also use it to smooth data that have
 been discretized.
+\index{KDE}
+\index{kernel density estimation}
 
-In Chapter 8 we saw that the distribution of income is well modeled by a
-lognormal distribution, so if we take the log of income, it is well
-modeled by a normal distribution. Here are the logarithms of the income
-data.
+For this example, we'll compute the logarithms of the income values.
+\index{logarithm}
+\index{income}
 
 \begin{lstlisting}[language=Python,style=source]
 log_realinc = np.log10(gss2018['realinc'].dropna())
 \end{lstlisting}
 
-And here's what the estimated density looks like.
+In Chapter 8 we saw that the distribution of income is skewed so the tail extends farther to the right than the left.
+The logarithms of income have a more symmetric distribution that makes them work better with KDE.
+Here's what the estimated density looks like.
+\index{skewed distribution}
 
 \begin{lstlisting}[language=Python,style=source]
 sns.kdeplot(log_realinc)
@@ -914,6 +964,7 @@ plt.title('Estimated distribution of income');
 To draw samples from this distribution, we'll use a Scipy function
 called \passthrough{\lstinline!gaussian\_kde!}, which takes the data and
 returns an object that represents the estimated density.
+\index{gaussian_kde (SciPy function)}
 
 \begin{lstlisting}[language=Python,style=source]
 from scipy.stats import gaussian_kde
@@ -926,6 +977,7 @@ kde = gaussian_kde(log_realinc)
 estimated density. As we've done in previous examples, we'll generate a
 resampled dataset with the same size as the original -- which is stored
 as \passthrough{\lstinline!kde.n!}.
+\index{resample (KDE method)}
 
 \begin{lstlisting}[language=Python,style=source]
 sample = kde.resample(kde.n)
@@ -980,6 +1032,9 @@ KDE resampling & 5097.59 & 246.25 & [4692.62 5485.93] \\
 
 The means and standard errors are about the same with either method. But
 the confidence interval we get from KDE resampling is sensible.
+\index{standard error}
+\index{confidence interval}
+
 
 \pagebreak
 
@@ -1041,6 +1096,9 @@ it.
 support for legalizing marijuana as a function of age, sex, and
 education level. Going back to that example, let's explore changes in
 support over time and generate predictions for the next decade.
+\index{marijuana}
+\index{logistic regression}
+\index{recode}
 
 To prepare the data for logistic regression, we have to recode the
 \passthrough{\lstinline!grass!} column so \passthrough{\lstinline!1!}
@@ -1065,6 +1123,7 @@ called \passthrough{\lstinline!year2!}. Subtracting 1990 from
 \passthrough{\lstinline!year!} before squaring keeps the values of
 \passthrough{\lstinline!year2!} relatively small, which makes logistic
 regression work better.
+\index{logit (StatsModels function)} 
 
 \begin{lstlisting}[language=Python,style=source]
 gss['year2'] = (gss['year'] - 1990) ** 2.0
@@ -1101,6 +1160,7 @@ pred = results.predict(df_pred)
 
 I'll use \passthrough{\lstinline!groupby!} to compute the fraction of
 respondents in favor of legalization during each year.
+\index{groupby (Pandas method)}
 
 \begin{lstlisting}[language=Python,style=source]
 grass_by_year = gss.groupby('year')['grass'].mean()
