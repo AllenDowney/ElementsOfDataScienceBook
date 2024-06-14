@@ -944,7 +944,7 @@ For this example, we'll compute the logarithms of the income values.
 log_realinc = np.log10(gss2018['realinc'].dropna())
 \end{lstlisting}
 
-In Chapter 8 we saw that the distribution of income is skewed so the tail extends farther to the right than the left.
+We've seen that the distribution of income is skewed so the tail extends farther to the right than the left.
 The logarithms of income have a more symmetric distribution that makes them work better with KDE.
 Here's what the estimated density looks like.
 \index{skewed distribution}
@@ -964,7 +964,7 @@ plt.title('Estimated distribution of income');
 To draw samples from this distribution, we'll use a Scipy function
 called \passthrough{\lstinline!gaussian\_kde!}, which takes the data and
 returns an object that represents the estimated density.
-\index{gaussian_kde (SciPy function)}
+\index{gaussian\_kde (SciPy function)}
 
 \begin{lstlisting}[language=Python,style=source]
 from scipy.stats import gaussian_kde
@@ -972,7 +972,7 @@ from scipy.stats import gaussian_kde
 kde = gaussian_kde(log_realinc)
 \end{lstlisting}
 
-\passthrough{\lstinline!kde!} provides a method called
+The resulting object provides a method called
 \passthrough{\lstinline!resample!} that draws random values from the
 estimated density. As we've done in previous examples, we'll generate a
 resampled dataset with the same size as the original -- which is stored

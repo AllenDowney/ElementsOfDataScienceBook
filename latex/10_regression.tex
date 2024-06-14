@@ -47,7 +47,7 @@ income as a function of years of education.
 \pagebreak
 
 First we'll select the subset of the data where both variables are valid.
-\index{dropna (DataFrame method)}
+\index{dropna (Pandas method)}
 
 \begin{lstlisting}[language=Python,style=source]
 data = gss.dropna(subset=['realinc', 'educ'])
@@ -203,7 +203,7 @@ Let's look more closely at the relationship between income and age.
 We'll use a Pandas method we have not seen before, called
 \passthrough{\lstinline!groupby!}, to divide the
 \passthrough{\lstinline!DataFrame!} into age groups.
-\index{groupby (DataFrame method)}
+\index{groupby (Pandas method)}
 
 \begin{lstlisting}[language=Python,style=source]
 grouped = gss.groupby('age')
@@ -221,7 +221,7 @@ one group for each value of \passthrough{\lstinline!age!}. The
 to select a column, like \passthrough{\lstinline!realinc!} in this
 example, and then invoke a method like \passthrough{\lstinline!mean!}.
 \index{DataFrameGroupBy object}
-\index{mean (DataFrame method)}
+\index{mean (Pandas method)}
 \index{bracket operator}
 
 \begin{lstlisting}[language=Python,style=source]
@@ -374,7 +374,7 @@ df['educ2'] = df['educ']**2
 
 Then we can use \passthrough{\lstinline!results!} to predict the average
 income for each age group, holding education constant.
-\index{predict method}
+\index{predict (StatsModels method)}
 
 \begin{lstlisting}[language=Python,style=source]
 pred12 = results.predict(df)
@@ -578,6 +578,7 @@ gss['gunlaw'] = gss['gunlaw'].replace([2], [0])
 To run logistic regression, we'll use \passthrough{\lstinline!logit!},
 which is named for the logit function, which is related to logistic
 regression.
+\index{logit (StatsModels function)}
 
 \begin{lstlisting}[language=Python,style=source]
 formula = 'gunlaw ~ age + age2 + educ + educ2 + C(sex)'
@@ -643,7 +644,7 @@ df['educ2'] = df['educ']**2
 \end{lstlisting}
 
 We can generate predictions for men like this.
-\index{predict method}
+\index{predict (StatsModels method)}
 
 \begin{lstlisting}[language=Python,style=source]
 df['sex'] = 1

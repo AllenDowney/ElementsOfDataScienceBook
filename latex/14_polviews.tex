@@ -47,6 +47,12 @@ gss.shape
 The people surveyed for the GSS were asked about their ``political
 alignment'', which is where they place themselves on a spectrum from
 liberal to conservative. They were asked:
+\index{General Social Survey}
+\index{liberal}
+\index{conservative}
+\index{moderate}
+\index{alignment, political}
+\index{political alignment}
 
 \begin{quote}
 We hear a lot of talk these days about liberals and conservatives. I'm
@@ -84,6 +90,7 @@ To see how the responses have changed over time, we'll inspect them at
 the beginning and end of the observation period. First we'll make a
 Boolean Series that's \passthrough{\lstinline!True!} for responses from
 1974, and select the responses from 1974.
+\index{Boolean Series}
 
 \begin{lstlisting}[language=Python,style=source]
 year74 = (gss['year'] == 1974)
@@ -101,6 +108,7 @@ polviews22 = polviews[year22]
 
 We'll use the following function to count the number of times each
 response occurs.
+\index{values function}
 
 \begin{lstlisting}[language=Python,style=source]
 def values(series):
@@ -159,6 +167,9 @@ plotting them.
 
 To visualize these distributions, we'll use a Probability Mass Function
 (PMF), which is similar to a histogram, but there are two differences:
+\index{probability mass function}
+\index{PMF}
+
 
 \begin{itemize}
 \item
@@ -172,6 +183,8 @@ To visualize these distributions, we'll use a Probability Mass Function
 
 We'll use the \passthrough{\lstinline!Pmf!} class from
 \passthrough{\lstinline!empiricaldist!} to compute a PMF.
+\index{empiricaldist library}
+\index{from\_seq (empiricaldist function)}
 
 \begin{lstlisting}[language=Python,style=source]
 from empiricaldist import Pmf
@@ -197,6 +210,7 @@ polviews &  \\
 
 The following cell imports the function we'll use to decorate the axes
 in plots.
+\index{decorate function}
 
 \begin{lstlisting}[language=Python,style=source]
 from utils import decorate
@@ -239,6 +253,8 @@ In both cases, the most common response is \passthrough{\lstinline!4!},
 which is the code for `moderate'. Few respondents describe themselves as
 `extremely' liberal or conservative. So maybe we're not so polarized
 after all.
+\index{polarization, political}
+\index{political polarization}
 
 \pagebreak
 
@@ -272,6 +288,8 @@ over time, that might indicate a shift in the population toward
 conservatism. The standard deviation measures the dispersion of views in
 the population -- if it increases over time, that might indicate an
 increase in polarization.
+\index{polarization, political}
+\index{political polarization}
 
 Compute the mean and standard deviation of
 \passthrough{\lstinline!polviews74!} and
@@ -284,6 +302,9 @@ At this point we have looked at the endpoints, 1974 and 2022, but we
 don't know what happened in between. To see how the distribution changed
 over time, we can use \passthrough{\lstinline!groupby!} to group the
 respondents by year.
+\index{time series}
+\index{groupby (Pandas method)}
+
 
 \begin{lstlisting}[language=Python,style=source]
 gss_by_year = gss.groupby('year')
@@ -299,6 +320,7 @@ represents a collection of groups.
 
 Now we can use the bracket operator to select the
 \passthrough{\lstinline!polviews!} column.
+\index{bracket operator}
 
 \begin{lstlisting}[language=Python,style=source]
 polviews_by_year = gss_by_year['polviews']
@@ -354,6 +376,8 @@ distribution, which is one way to measure polarization. Plot standard
 deviation of \passthrough{\lstinline!polviews!} for each year of the
 survey from 1972 to 2022. Does it show evidence of increasing
 polarization?
+\index{polarization, political}
+\index{political polarization}
 
 \section{Smoothing the Curve}\label{smoothing-the-curve}
 
@@ -361,10 +385,13 @@ In the previous section we plotted mean and standard deviation of
 \passthrough{\lstinline!polviews!} over time. In both plots, the values
 are highly variable from year to year. We can use \textbf{local
 regression} to compute a smooth line through these data points.
+\index{smoothing}
+\index{lowess (StatsModels function)}
+\index{locally weighted scatterplot smoothing}
 
 The following function takes a Pandas \passthrough{\lstinline!Series!}
 and uses an algorithm called LOWESS to compute a smooth line. LOWESS
-stands for `locally weighted scatterplot smoothing'.
+stands for ``locally weighted scatterplot smoothing''.
 
 \begin{lstlisting}[language=Python,style=source]
 from statsmodels.nonparametric.smoothers_lowess import lowess
@@ -443,6 +470,8 @@ changes over time.
 Pandas provides a function called \passthrough{\lstinline!crosstab!}
 that computes a \textbf{cross tabulation} Here's how we can use to
 compute the number of respondents in each category during each year.
+\index{cross tabulation}
+\index{crosstab (Pandas function)}
 
 \begin{lstlisting}[language=Python,style=source]
 year = gss['year']
@@ -482,6 +511,7 @@ comparisons over time, we need to normalize the results, which means
 computing for each year the \emph{fraction} of respondents in each
 category, rather than the count. \passthrough{\lstinline!crosstab!}
 takes an optional argument that normalizes each row.
+\index{normalize}
 
 \begin{lstlisting}[language=Python,style=source]
 xtab_norm = pd.crosstab(year, column, normalize='index')
@@ -527,6 +557,7 @@ polviews_map = {
 
 Then we can use the \passthrough{\lstinline!replace!} function like
 this:
+\index{replace (Pandas method)}
 
 \begin{lstlisting}[language=Python,style=source]
 polviews7 = gss['polviews'].replace(polviews_map)
@@ -576,6 +607,8 @@ To represent political views, we'll use a color palette from blue to
 purple to red. Seaborn provides a variety of color palettes -- we'll
 start with this one, which includes shades of blue and red. To represent
 moderates, we'll replace the middle color with purple.
+\index{color palettes}
+\index{Seaborn}
 
 \begin{lstlisting}[language=Python,style=source]
 palette = sns.color_palette('RdBu_r', 7)
@@ -676,6 +709,10 @@ of the distribution are still small.
 \textbf{Exercise:} Let's do a similar analysis with
 \passthrough{\lstinline!partyid!}, which encodes responses to the
 question:
+\index{party affiliation}
+\index{Democrat}
+\index{Republican}
+\index{Independent (political affiliation)}
 
 \begin{quote}
 Generally speaking, do you usually think of yourself as a Republican,

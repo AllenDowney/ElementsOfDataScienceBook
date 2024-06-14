@@ -21,6 +21,10 @@ the use of predictive algorithms in the criminal justice system.
 We'll start by replicating the analysis reported in ``Machine Bias'', by
 Julia Angwin, Jeff Larson, Surya Mattu and Lauren Kirchner, and
 published by ProPublica in May 2016.
+\index{ProPublica}
+\index{predictive algorithm}
+\index{criminal justice}
+\index{COMPAS}
 
 This article is about a statistical tool called COMPAS which is used in
 some criminal justice systems to inform decisions about which defendants
@@ -29,6 +33,7 @@ should be imprisoned, and whether prisoners should be released on
 parole. COMPAS uses information about defendants to generate a ``risk
 score'' which is intended to quantify the risk that the defendant would
 commit another crime if released.
+\index{risk score}
 
 The authors of the ProPublica article used public data to assess the
 accuracy of those risk scores. They explain:
@@ -63,6 +68,7 @@ a ``recidivist'' if they are charged with another crime within two years
 of release. However, note that there is a big difference between
 \emph{committing} another crime and being \emph{charged} with another
 crime. We will come back to this issue.
+\index{recidivism}
 
 The authors of the ProPublica article use this data to evaluate how well
 COMPAS predicts the risk that a defendant will be charged with another
@@ -91,6 +97,7 @@ very different ways.
 
 This discrepancy suggests that the use of COMPAS in the criminal justice
 system is racially biased.
+\index{racial bias}
 
 Since the ProPublica article was published, it has been widely discussed
 in the media, and a number of researchers have published responses. In
@@ -133,6 +140,7 @@ The table summarizes results for all defendants and two subgroups:
 defendants classified as White (``Caucasian'' in the original dataset)
 and Black (``African-American''). For each group, the summary includes
 several metrics, including:
+\index{metric}
 
 \begin{itemize}
 
@@ -181,6 +189,8 @@ It's important to note that COMPAS is not a binary classifier -- that
 is, it does not predict that a defendant will or will not recidivate.
 Rather, it gives each defendant a score that is intended to reflect the
 risk that they will recidivate.
+\index{binary classifier}
+\index{classifier, binary}
 
 In order to evaluate the performance of COMPAS, the authors of the
 ProPublica article chose a threshold, \passthrough{\lstinline!4!}, and
@@ -188,11 +198,13 @@ defined decile scores at or below the threshold to be ``low risk'', and
 scores above the threshold to be ``high risk''. Their choice of the
 threshold is arbitrary. Later, we'll see what happens with other
 choices, but we'll start by replicating the original analysis.
+\index{threshold}
 
 We'll create a Boolean \passthrough{\lstinline!Series!} called
 \passthrough{\lstinline!high\_risk!} that's
 \passthrough{\lstinline!True!} for respondents with a decile score
 greater than 4.
+\index{Boolean Series}
 
 \begin{lstlisting}[language=Python,style=source]
 high_risk = cp["decile_score"] > 4
@@ -244,6 +256,8 @@ If we make a cross-tabulation of \passthrough{\lstinline!new\_charge!}
 and \passthrough{\lstinline!high\_risk!}, the result is a
 \passthrough{\lstinline!DataFrame!} that indicates how many defendants
 are in each of four groups:
+\index{cross tabulation}
+\index{cross\_tab (Pandas function)}
 
 \begin{lstlisting}[language=Python,style=source]
 pd.crosstab(new_charge, high_risk)
@@ -262,6 +276,7 @@ True & 1216 & 2035 \\
 This table is called a \textbf{confusion matrix} or error matrix.
 Reading from left to right and top to bottom, the elements of the matrix
 show the number of respondents who were:
+\index{confusion matrix}
 
 \begin{itemize}
 \item
@@ -385,6 +400,7 @@ location; the presence of witnesses and their willingness to work with
 police; the decisions of police about where to patrol, what crimes to
 investigate, and who to arrest; and decisions of prosecutors about who
 to charge.
+\index{data bias}
 
 It is likely that every one of these factors depends on the race of the
 defendant. In this dataset, the prevalence of \emph{new charges} is
@@ -463,6 +479,7 @@ question. One of the simplest is overall \textbf{accuracy}, which is the
 fraction (or percentage) of correct predictions. To compute accuracy, it
 is convenient to extract from the confusion matrix the number of true
 positives, false negatives, false positives, and true negatives.
+\index{accuracy}
 
 \begin{lstlisting}[language=Python,style=source]
 tp, fn, fp, tn = matrix_all.to_numpy().flatten()
@@ -497,6 +514,9 @@ and the costs of false positives and false negatives might be different.
 
 One way to make these distinctions is to compute the ``predictive
 value'' of positive and negative tests:
+\index{predictive value}
+\index{positive predictive value}
+\index{negative predictive value}
 
 \begin{itemize}
 \item
@@ -545,6 +565,8 @@ a negative test result is correct about 69\% of the time.
 \section{Sensitivity and Specificity}\label{sensitivity-and-specificity}
 
 Another way to characterize the accuracy of a test is to compute
+\index{sensitivity}
+\index{specificity}
 
 \begin{itemize}
 \item
@@ -648,6 +670,8 @@ Rates}\label{false-positive-and-negative-rates}
 
 The ProPublica article reports PPV and NPV, but instead of sensitivity
 and specificity, it reports their complements:
+\index{false positive rate}
+\index{false negative rate}
 
 \begin{itemize}
 \item
@@ -747,6 +771,7 @@ either
 It is only a convention that the first is called the ``false discovery
 rate'' and the second is called ``false positive rate''. I suspect I am
 not the only one that gets them confused.
+\index{false discovery rate}
 
 So, here's my recommendation: if you have the choice, generally use PPV,
 NPV, sensitivity and specificity, and avoid the other metrics. However,
@@ -759,6 +784,7 @@ included in the ProPublica tables: \textbf{prevalence}, which is the
 fraction of all cases where the condition is positive. In the example,
 it's the fraction of defendants who recidivate. The following function
 computes prevalence:
+\index{prevalence}
 
 \begin{lstlisting}[language=Python,style=source]
 def prevalence(m):
@@ -924,6 +950,7 @@ article, the Washington Post published a response by Sam Corbett-Davies,
 Emma Pierson, Avi Feller and Sharad Goel: ``A computer program used for
 bail and sentencing decisions was labeled biased against blacks. It's
 actually not that clear.''
+\index{fairness}
 
 I encourage you to read that article, and then read the next chapter,
 where I will unpack their arguments and replicate their analysis.

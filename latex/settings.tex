@@ -65,8 +65,11 @@
 \def\fps@figure{h!}
 \makeatother
 
+% configure the index
+\usepackage{imakeidx}
+\makeindex
 
-\usepackage{makeidx}
+% listings
 \usepackage{upquote}
 \usepackage[listings]{tcolorbox}
 \newcommand{\passthrough}[1]{#1}
@@ -151,18 +154,22 @@
     {\normalfont\normalsize\bfseries}}
 \makeatother
 
-% table of contents vertical spacing
+% table of contents
 \usepackage{tocloft}
 \setlength\cftparskip{8pt plus 4pt minus 4pt}
-
-% balanced index with TOC entry
-\usepackage[totoc]{idxlayout}
+\setlength{\cftchapindent}{0em}
+\setlength{\cftchapnumwidth}{2em}
 
 % The following line adds a little extra space to the column
 % where the Section numbers appear in the table of contents
 \makeatletter
-\renewcommand{\l@section}{\@dottedtocline{1}{1.5em}{3.0em}}
+\renewcommand{\l@section}{\@dottedtocline{1}{2em}{3em}}
 \makeatother
+
+% balanced index with TOC entry
+\usepackage[totoc]{idxlayout}
+
+
 
 % customize page headers
 \usepackage{fancyhdr}

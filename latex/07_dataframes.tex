@@ -138,7 +138,7 @@ primary type Pandas uses to store data.
 \passthrough{\lstinline!DataFrame!} has a method called
 \passthrough{\lstinline!head!} that shows the first 5 rows:
 \index{DataFrame}
-\index{head (DataFrame method)}
+\index{head (Pandas method)}
 
 \begin{lstlisting}[language=Python,style=source]
 nsfg.head()
@@ -173,7 +173,7 @@ In addition to methods like \passthrough{\lstinline!head!}, a
 example, \passthrough{\lstinline!nsfg!} has an attribute called
 \passthrough{\lstinline!shape!}, which is a tuple containing the number
 of rows and columns:
-\index{shape (DataFrame method)}
+\index{shape (Pandas method)}
 
 \begin{lstlisting}[language=Python,style=source]
 nsfg.shape
@@ -204,7 +204,7 @@ Index(['CASEID', 'PREGORDR', 'HOWPREG_N', 'HOWPREG_P', 'MOSCURRP', 'NOWPRGDK',
 
 The column names are stored in an \passthrough{\lstinline!Index!}, which
 is another Pandas type, similar to a list.
-\index{Inded (Pandas object)}
+\index{Index (Pandas object)}
 
 Based on the names, you might be able to guess what some of the columns
 are, but in general you have to read the documentation. When you work
@@ -261,7 +261,7 @@ for each live birth.
 \passthrough{\lstinline!head!} shows the first five values in the
 \passthrough{\lstinline!Series!}, the name of the
 \passthrough{\lstinline!Series!}, and the data type:
-\index{head (Series method)}
+\index{head (Pandas method)}
 
 \begin{lstlisting}[language=Python,style=source]
 pounds.head()
@@ -315,8 +315,8 @@ it includes NaNs. By default, the results are sorted with the highest
 count first, but we can use \passthrough{\lstinline!sort\_index!} to
 sort them by value instead, with the lightest babies first and heaviest
 babies last.
-\index{value\_counts (Series method)}
-\index{sort\_index (Series method)}
+\index{value\_counts (Pandas method)}
+\index{sort\_index (Pandas method)}
 
 \begin{lstlisting}[language=Python,style=source]
 pounds.value_counts(dropna=False).sort_index()
@@ -411,7 +411,7 @@ Another way to validate the data is with
 summarize the data, like the mean, standard deviation, minimum, and
 maximum. Here are the results for \passthrough{\lstinline!pounds!}.
 \index{summary statistics}
-\index{describe (Series method)}
+\index{describe (Pandas method)}
 
 
 \begin{lstlisting}[language=Python,style=source]
@@ -436,7 +436,7 @@ Name: BIRTHWGT_LB1, dtype: float64
 \passthrough{\lstinline!min!} and \passthrough{\lstinline!max!} are the
 minimum and maximum values, and in between are the 25th, 50th, and 75th
 percentiles. The 50th percentile is the median.
-\index{mean (Series method)}
+\index{mean (Pandas method)}
 
 The mean is about 8.05, but that doesn't mean much because it includes
 the special values \passthrough{\lstinline!98!} and
@@ -444,7 +444,7 @@ the special values \passthrough{\lstinline!98!} and
 have to replace those values with \passthrough{\lstinline!NaN!} to
 identify them as missing data. The \passthrough{\lstinline!replace!}
 method does what we want:
-\index{replace (Series method)}
+\index{replace (Pandas method)}
 
 \begin{lstlisting}[language=Python,style=source]
 import numpy as np
@@ -555,7 +555,7 @@ and their frequencies on the y-axis.
 \passthrough{\lstinline!Series!}
 provides a \passthrough{\lstinline!hist!} method that makes histograms,
 and we can use Pyplot to label the axes.
-\index{hist (Series method)}
+\index{hist (Pandas method)}
 
 \begin{lstlisting}[language=Python,style=source]
 import matplotlib.pyplot as plt
@@ -653,7 +653,7 @@ If you compute the mean of a Boolean \passthrough{\lstinline!Series!},
 the result the \emph{fraction} of \passthrough{\lstinline!True!} values.
 In this case, it's about 0.38 -- which means about 38\% of the
 pregnancies are less than 37 weeks in duration.
-\index{mean (Series method)}
+\index{mean (Pandas method)}
 
 \begin{lstlisting}[language=Python,style=source]
 preterm.mean()
@@ -885,8 +885,8 @@ with that, we'll use two \passthrough{\lstinline!Series!} methods,
 \passthrough{\lstinline!Series!} that is \passthrough{\lstinline!True!}
 where the corresponding value is \passthrough{\lstinline!NaN!}.
 \index{missing data}
-\index{isna (Series method)}
-\index{notna (Series method)}
+\index{isna (Pandas method)}
+\index{notna (Pandas method)}
 
 
 \begin{lstlisting}[language=Python,style=source]
@@ -974,7 +974,7 @@ data to a file -- the one we'll use is
 parameters are the name of the new file, the name of the object we're
 storing in the file, and the compression level, which determines how
 effectively the data are compressed.
-\index{to\_hdf (DataFrame method)}
+\index{to\_hdf (Pandas method)}
 \index{file}
 \index{HDF file}
 \index{data compression}

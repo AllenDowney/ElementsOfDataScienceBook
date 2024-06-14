@@ -8,6 +8,7 @@ After the ProPublica article, the Washington Post published a response
 by Sam Corbett-Davies, Emma Pierson, Avi Feller and Sharad Goel: ``A
 computer program used for bail and sentencing decisions was labeled
 biased against Blacks. It's actually not that clear.''
+\index{Washington Post@\textit{Washington Post}}
 
 I encourage you to read both of those articles before you go on. In this
 chapter, I explain some of the arguments presented in the Washington
@@ -17,6 +18,9 @@ Post (WaPo) article, and we will replicate their analysis.
 
 The Washington Post article summarizes the ProPublica article and the
 response from Northpointe, the company that makes COMPAS, like this:
+\index{ProPublica}
+\index{Northpointe}
+\index{COMPAS}
 
 \begin{itemize}
 \item
@@ -33,6 +37,7 @@ response from Northpointe, the company that makes COMPAS, like this:
 
 So ProPublica and Northpointe are invoking different definitions of
 ``fair''.
+\index{fairness}
 
 In the previous chapter we explored the first definition by computing
 error rates (false positive and false negative) for White and Black
@@ -48,6 +53,7 @@ reoffend.''
 \includegraphics[scale=0.3]{figs/calibration1.png}
 
 To understand this figure, let's start by replicating it.
+\index{calibration curve}
 
 The following function groups defendants by risk score and computes the
 fraction in each group that were charged with another crime within two
@@ -156,6 +162,7 @@ Negative & 805 & 990 \\
 \pagebreak
 
 And here are the metrics we computed from the confusion matrices:
+\index{metric}
 
 \begin{lstlisting}[language=Python,style=source]
 metrics_white = compute_metrics(matrix_white, "White defendants")
@@ -195,6 +202,7 @@ Prevalence & 51.4 \\
 
 If we look at the error rates (FPR and FNR), it seems like COMPAS is
 biased against Black defendants:
+\index{error rate}
 
 \begin{itemize}
 \item
@@ -209,6 +217,7 @@ biased against Black defendants:
 
 But if we look at the the predictive values (PPV and NPV) it seems like
 COMPAS is biased in favor of Black defendants:
+\index{predictive value}
 
 \begin{itemize}
 \item
@@ -229,6 +238,7 @@ and White defendants. We could do that by using different thresholds for
 the two groups. In this section, we'll figure out what it would take to
 re-calibrate COMPAS -- then we'll see what effect that would have on
 predictive values.
+\index{threshold}
 
 The following function loops through possible thresholds, makes the
 confusion matrix with each threshold, and computes accuracy metrics.
@@ -346,6 +356,7 @@ table_black = sweep_threshold(cp[black])
 To calibrate the test, we'll use the following function, which estimates
 the threshold where a column from the table passes through a given
 metric.
+\index{calibration}
 
 \pagebreak
 
@@ -368,6 +379,7 @@ def crossing(series, value, **options):
 We can use \passthrough{\lstinline!crossing!} to find the threshold that
 makes the error rates for White defendants the same as for the general
 population.
+\index{crossing function}
 
 \begin{lstlisting}[language=Python,style=source]
 matrix_all = make_matrix(cp)
@@ -435,6 +447,7 @@ def interpolate(series, value, **options):
 
 Here's the positive predictive value for White defendants with threshold
 3.2.
+\index{interpolate function}
 
 \begin{lstlisting}[language=Python,style=source]
 interpolate(table_white["PPV"], 3.2)
@@ -514,6 +527,7 @@ different in the two groups: about 39\% of White defendants were charged
 with another crime within two years, compared to 51\% of Black
 defendants. As long as that's the case (for any two groups) the
 predictive values and error rates can't be ``fair'' at the same time.
+\index{prevalence}
 
 That's the argument the Washington Post article presented. In the next
 section, we'll take the argument one step farther by introducing one
@@ -526,6 +540,7 @@ threshold. A common and useful way to visualize these results is to plot
 sensitivity versus false positive rate (FPR). For historical reasons,
 the result is called a \textbf{receiver operating characteristic (ROC)
 curve}. The following function plots the ROC curve:
+\index{ROC curve}
 
 \begin{lstlisting}[language=Python,style=source]
 import matplotlib.pyplot as plt
@@ -594,6 +609,7 @@ their analysis in more detail.
 
 As another metric of accuracy, they estimate \textbf{concordance}, which
 they describe like this:
+\index{concordance}
 
 \begin{quote}
 Overall, {[}COMPAS has{]} a concordance score of 63.6 percent. That
@@ -622,6 +638,8 @@ also called the \textbf{area under the curve} or AUC. Since we've
 already computed the ROC, we can use the SciPy function
 \passthrough{\lstinline!simpson!} to estimate the area under the curve
 by numerical integration.
+\index{area under the curve}
+\index{AUC}
 
 \begin{lstlisting}[language=Python,style=source]
 from scipy.integrate import simpson
@@ -710,6 +728,7 @@ COMPAS has nearly the same concordance for White and Black defendants.
 
 If it is impossible to make a classification algorithm fair for all
 groups, what should we do?
+\index{fairness}
 
 It might be tempting to forbid algorithms like COMPAS in the criminal
 justice system, but unfortunately, that doesn't solve the problem. The
@@ -723,12 +742,14 @@ algorithms are run by humans or machines.
 I don't have a solution to these problems, but I will suggest two
 guidelines: the data we use should be unbiased, and the algorithms
 should be transparent.
+\index{transparency}
 
 I discussed the problem of data bias in the previous chapter. In this
 example, we used data about additional \emph{charges} as a measure of
 additional \emph{crimes}. But not everyone who commits a crime gets
 charged. If one group is more likely than another to be charged with a
 crime, the algorithm will be unfair, no matter how it is calibrated.
+\index{data bias}
 
 Of course we should use unbiased data if we can, but if that's not
 possible, sometimes we can do as well if we \emph{know} the data is
