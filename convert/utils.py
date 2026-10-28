@@ -353,11 +353,11 @@ def read_gss(dict_file='GSS.dct', data_file='GSS.dat.gz'):
     from statadict import parse_stata_dict
 
     download('https://github.com/AllenDowney/' +
-             'ElementsOfDataScience/raw/master/data/' +
+             'ElementsOfDataScience/raw/v1/data/' +
               dict_file)
 
     download('https://github.com/AllenDowney/' +
-             'ElementsOfDataScience/raw/master/data/' +
+             'ElementsOfDataScience/raw/v1/data/' +
               data_file)
 
     stata_dict = parse_stata_dict(dict_file)
